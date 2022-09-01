@@ -89,38 +89,44 @@
 #'
 #' # Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
 #' relMainEffA <- c(0.4, 0.6) # different values for traits 1 and 2
-#' relMainEffDD <- 0.8  # same values used for traits 1 and 2
+#' relMainEffDD <- 0.8 # same values used for traits 1 and 2
 #'
 #' # Additive and dominance degree correlations between traits 1 and 2.
-#' corA <- matrix(c(1.0,  0.3, 0.3,  1.0), ncol = 2)
+#' corA <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2)
 #' corDD <- diag(2) # assuming independence between traits
 #'
-#' input_asr <- compsym_asr_input(nEnvs = 3, nTraits = 2,
-#'                               mean = mean, var = var,
-#'                               relMainEffA = relMainEffA, corA = corA,
-#'                               meanDD = meanDD, varDD = varDD,
-#'                               relMainEffDD = relMainEffDD, corDD = corDD)
+#' input_asr <- compsym_asr_input(
+#'   nEnvs = 3, nTraits = 2,
+#'   mean = mean, var = var,
+#'   relMainEffA = relMainEffA, corA = corA,
+#'   meanDD = meanDD, varDD = varDD,
+#'   relMainEffDD = relMainEffDD, corDD = corDD
+#' )
 #'
 #'
 #' # 2. Use input_asr to simulate genetic values in AlphaSimR based on a compound symmetry model for
 #' #    GxE interaction.
 #'
 #' library("AlphaSimR")
-#' FOUNDERPOP <- quickHaplo(nInd = 100,
-#'                          nChr = 6,
-#'                          segSites = 100)
+#' FOUNDERPOP <- quickHaplo(
+#'   nInd = 100,
+#'   nChr = 6,
+#'   segSites = 100
+#' )
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
-#' SP$addTraitAD(nQtlPerChr = 100,
-#'               mean = input_asr$mean,
-#'               var = input_asr$var,
-#'               meanDD = input_asr$meanDD,
-#'               varDD = input_asr$varDD,
-#'               corA = input_asr$corA,
-#'               corDD = input_asr$corDD,
-#'               useVarA = TRUE)             # Variance in var is used as additive variance.
-#'                                           # If FALSE, var = total genetic variance.
+#' SP$addTraitAD(
+#'   nQtlPerChr = 100,
+#'   mean = input_asr$mean,
+#'   var = input_asr$var,
+#'   meanDD = input_asr$meanDD,
+#'   varDD = input_asr$varDD,
+#'   corA = input_asr$corA,
+#'   corDD = input_asr$corDD,
+#'   useVarA = TRUE
+#' ) # Variance in var is used as additive variance.
+#' # If FALSE, var = total genetic variance.
 #'
 #' pop <- newPop(FOUNDERPOP)
 #'
@@ -128,10 +134,12 @@
 #' # 3. Create a data frame containing the simulated genetic values for each of the two traits
 #' #    and three environments.
 #'
-#' nReps <- c(2, 3, 2)  # Vector with the number of complete replicates in each environment
+#' nReps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 #'
-#' trial_df <- compsym_asr_output(pop = pop, nEnvs = 3, nReps = nReps,
-#'                                nTraits = 2, effects = TRUE)
+#' trial_df <- compsym_asr_output(
+#'   pop = pop, nEnvs = 3, nReps = nReps,
+#'   nTraits = 2, effects = TRUE
+#' )
 #'
 #' @export
 compsym_asr_input <- function(nEnvs,
@@ -147,7 +155,6 @@ compsym_asr_input <- function(nEnvs,
                               relAA = NULL,
                               relMainEffAA = NULL,
                               corAA = NULL) {
-
   if (nEnvs < 2) stop("'nEnvs' must be > 1")
   if (nEnvs %% 1 != 0) stop("'nEnvs' must be an integer")
   if (nTraits < 1 | nTraits %% 1 != 0) stop("'nTraits' must be an integer > 0")
@@ -155,40 +162,38 @@ compsym_asr_input <- function(nEnvs,
 
   if (is.null(meanDD) & is.null(varDD) & is.null(relAA)) {
     labels <- "A"
-    } else if (is.null(meanDD) & is.null(varDD)) {
-      labels <- c("A", "AA")
-      } else if (is.null(relAA)) {
-        labels <- c("A", "DD")
-        } else {
-          labels <- c("A", "DD", "AA")
-          }
+  } else if (is.null(meanDD) & is.null(varDD)) {
+    labels <- c("A", "AA")
+  } else if (is.null(relAA)) {
+    labels <- c("A", "DD")
+  } else {
+    labels <- c("A", "DD", "AA")
+  }
 
 
   for (i in labels) {
-
     if (i == "A") {
-
       if (length(mean) == nTraits) {
         meanVals <- rep(mean, each = nEnvs)
-        } else if (length(mean) == (nTraits * nEnvs)) {
-          meanVals <- mean
-          } else {
-          stop("Number of values in argument 'mean' must either match number of
+      } else if (length(mean) == (nTraits * nEnvs)) {
+        meanVals <- mean
+      } else {
+        stop("Number of values in argument 'mean' must either match number of
                traits or number of trait x environment combinations")
-            }
+      }
 
-      if (length(var) != nTraits){
+      if (length(var) != nTraits) {
         stop("Number of values in argument 'var' must match number of traits")
-        }
+      }
 
       if (length(relMainEffA) == nTraits) {
         relMainEff <- relMainEffA
-        } else if (length(relMainEffA) == 1 & nTraits > 1) {
-          relMainEff <- rep(relMainEffA, nTraits)
-          } else {
-            stop("Number of values in 'relMainEffA' has must either be 1 or must
+      } else if (length(relMainEffA) == 1 & nTraits > 1) {
+        relMainEff <- rep(relMainEffA, nTraits)
+      } else {
+        stop("Number of values in 'relMainEffA' has must either be 1 or must
                  match number of traits")
-            }
+      }
 
       if (any(relMainEffA <= 0) | any(relMainEffA >= 1)) {
         stop("'relMainEffA' must contain values between 0 and 1")
@@ -210,21 +215,19 @@ compsym_asr_input <- function(nEnvs,
       mainMean <- colMeans(matrix(meanVals, ncol = nTraits))
       vars <- var
       Tcor <- as.matrix(corA)
-
-      }
+    }
 
     if (i == "DD") {
-
       if (length(meanDD) == nTraits) {
         meanVals <- rep(meanDD, each = nEnvs)
-        } else if (length(meanDD) == (nTraits * nEnvs)) {
-          meanVals <- meanDD
-          } else {
-            stop("Number of values in argument 'meanDD' must either match number
+      } else if (length(meanDD) == (nTraits * nEnvs)) {
+        meanVals <- meanDD
+      } else {
+        stop("Number of values in argument 'meanDD' must either match number
             of traits or number of trait x environment combinations")
-          }
+      }
 
-      if (length(varDD) != nTraits){
+      if (length(varDD) != nTraits) {
         stop("Number of values in argument 'varDD' must match number of traits")
       }
 
@@ -232,10 +235,10 @@ compsym_asr_input <- function(nEnvs,
 
       if (length(relMainEffDD) == nTraits) {
         relMainEff <- relMainEffDD
-        } else if (length(relMainEffDD) == 1 & nTraits > 1) {
-          relMainEff <- rep(relMainEffDD, nTraits)
-          } else {
-          stop("Number of values in 'relMainEffDD' has must either be 1 or must
+      } else if (length(relMainEffDD) == 1 & nTraits > 1) {
+        relMainEff <- rep(relMainEffDD, nTraits)
+      } else {
+        stop("Number of values in 'relMainEffDD' has must either be 1 or must
                match number of traits")
       }
 
@@ -245,7 +248,7 @@ compsym_asr_input <- function(nEnvs,
 
       if (is.null(corDD)) corDD <- diag(nTraits)
 
-      if (nrow(corDD) != nTraits | ncol(corDD) != nTraits){
+      if (nrow(corDD) != nTraits | ncol(corDD) != nTraits) {
         stop("Dimension of 'corDD' does not match number of traits")
       }
 
@@ -259,12 +262,10 @@ compsym_asr_input <- function(nEnvs,
       mainMean <- colMeans(matrix(meanVals, ncol = nTraits))
       vars <- varDD
       Tcor <- as.matrix(corDD)
-
-      }
+    }
 
     if (i == "AA") {
-
-      if(length(relAA) != nTraits){
+      if (length(relAA) != nTraits) {
         stop("Number of values in argument 'relAA' must match number of traits")
       }
 
@@ -272,10 +273,10 @@ compsym_asr_input <- function(nEnvs,
 
       if (length(relMainEffAA) == nTraits) {
         relMainEff <- relMainEffAA
-        } else if (length(relMainEffAA) == 1 & nTraits > 1) {
-          relMainEff <- rep(relMainEffAA, nTraits)
-          } else {
-          stop("Number of values in 'relMainEffAA' has must either be 1 or must
+      } else if (length(relMainEffAA) == 1 & nTraits > 1) {
+        relMainEff <- rep(relMainEffAA, nTraits)
+      } else {
+        stop("Number of values in 'relMainEffAA' has must either be 1 or must
                match number of traits")
       }
 
@@ -285,7 +286,7 @@ compsym_asr_input <- function(nEnvs,
 
       if (is.null(corAA)) corAA <- diag(nTraits)
 
-      if (nrow(corAA) != nTraits | ncol(corAA) != nTraits){
+      if (nrow(corAA) != nTraits | ncol(corAA) != nTraits) {
         stop("Dimension of 'corAA' does not match number of traits")
       }
 
@@ -300,41 +301,49 @@ compsym_asr_input <- function(nEnvs,
       mainMean <- rep(0, nTraits)
       vars <- relAA
       Tcor <- as.matrix(corAA)
-
-      }
+    }
 
     GEdevs <- as.list(as.data.frame(matrix(meanVals, ncol = nTraits) - rep(mainMean, each = nEnvs)))
     mainVar <- vars * relMainEff
     GEvar <- vars - mainVar
 
-    meanPseudo <- c(mapply(function(x,y) c(x, y), x = mainMean, y = GEdevs))
-    varPseudo <- c(mapply(function(x,y) c(x, rep(y, nEnvs)), x = mainVar, y = GEvar))
+    meanPseudo <- c(mapply(function(x, y) c(x, y), x = mainMean, y = GEdevs))
+    varPseudo <- c(mapply(function(x, y) c(x, rep(y, nEnvs)), x = mainVar, y = GEvar))
 
     corPseudo <- kronecker(Tcor, (diag(nEnvs + 1)))
 
     if (i == "A") {
-      inputAsr <- list(mean = meanPseudo,
-                       var = varPseudo,
-                       corA = corPseudo)
-      }
-
-    if (i == "DD") {
-      inputAsr <- c(inputAsr,
-                    list(meanDD = meanPseudo,
-                         varDD = varPseudo,
-                         corDD = corPseudo))
-      }
-
-    if (i == "AA") {
-      inputAsr <- c(inputAsr,
-                    list(meanAA = meanPseudo,
-                         relAA = varPseudo,
-                         corAA = corPseudo))
-      }
+      inputAsr <- list(
+        mean = meanPseudo,
+        var = varPseudo,
+        corA = corPseudo
+      )
     }
 
-  return(inputAsr)
+    if (i == "DD") {
+      inputAsr <- c(
+        inputAsr,
+        list(
+          meanDD = meanPseudo,
+          varDD = varPseudo,
+          corDD = corPseudo
+        )
+      )
+    }
 
+    if (i == "AA") {
+      inputAsr <- c(
+        inputAsr,
+        list(
+          meanAA = meanPseudo,
+          relAA = varPseudo,
+          corAA = corPseudo
+        )
+      )
+    }
+  }
+
+  return(inputAsr)
 }
 
 
@@ -383,38 +392,44 @@ compsym_asr_input <- function(nEnvs,
 #'
 #' # Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
 #' relMainEffA <- c(0.4, 0.6) # different values for traits 1 and 2
-#' relMainEffDD <- 0.8  # same values used for traits 1 and 2
+#' relMainEffDD <- 0.8 # same values used for traits 1 and 2
 #'
 #' # Additive and dominance degree correlations between traits 1 and 2.
-#' corA <- matrix(c(1.0,  0.3, 0.3,  1.0), ncol = 2)
+#' corA <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2)
 #' corDD <- diag(2) # assuming independence between traits
 #'
-#' input_asr <- compsym_asr_input(nEnvs = 3, nTraits = 2,
-#'                               mean = mean, var = var,
-#'                               relMainEffA = relMainEffA, corA = corA,
-#'                               meanDD = meanDD, varDD = varDD,
-#'                               relMainEffDD = relMainEffDD, corDD = corDD)
+#' input_asr <- compsym_asr_input(
+#'   nEnvs = 3, nTraits = 2,
+#'   mean = mean, var = var,
+#'   relMainEffA = relMainEffA, corA = corA,
+#'   meanDD = meanDD, varDD = varDD,
+#'   relMainEffDD = relMainEffDD, corDD = corDD
+#' )
 #'
 #'
 #' # 2. Use input_asr to simulate genetic values in AlphaSimR based on a compound symmetry model for
 #' #    GxE interaction.
 #'
 #' library("AlphaSimR")
-#' FOUNDERPOP <- quickHaplo(nInd = 100,
-#'                          nChr = 6,
-#'                          segSites = 100)
+#' FOUNDERPOP <- quickHaplo(
+#'   nInd = 100,
+#'   nChr = 6,
+#'   segSites = 100
+#' )
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
-#' SP$addTraitAD(nQtlPerChr = 100,
-#'               mean = input_asr$mean,
-#'               var = input_asr$var,
-#'               meanDD = input_asr$meanDD,
-#'               varDD = input_asr$varDD,
-#'               corA = input_asr$corA,
-#'               corDD = input_asr$corDD,
-#'               useVarA = TRUE)             # Variance in var is used as additive variance.
-#'                                           # If FALSE, var = total genetic variance.
+#' SP$addTraitAD(
+#'   nQtlPerChr = 100,
+#'   mean = input_asr$mean,
+#'   var = input_asr$var,
+#'   meanDD = input_asr$meanDD,
+#'   varDD = input_asr$varDD,
+#'   corA = input_asr$corA,
+#'   corDD = input_asr$corDD,
+#'   useVarA = TRUE
+#' ) # Variance in var is used as additive variance.
+#' # If FALSE, var = total genetic variance.
 #'
 #' pop <- newPop(FOUNDERPOP)
 #'
@@ -422,14 +437,15 @@ compsym_asr_input <- function(nEnvs,
 #' # 3. Create a data frame containing the simulated genetic values for each of the two traits
 #' #    and three environments.
 #'
-#' nReps <- c(2, 3, 2)  # Vector with the number of complete replicates in each environment
+#' nReps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 #'
-#' trial_df <- compsym_asr_output(pop = pop, nEnvs = 3, nReps = nReps,
-#'                                nTraits = 2, effects = TRUE)
+#' trial_df <- compsym_asr_output(
+#'   pop = pop, nEnvs = 3, nReps = nReps,
+#'   nTraits = 2, effects = TRUE
+#' )
 #'
 #' @export
 compsym_asr_output <- function(pop, nEnvs, nReps, nTraits, effects = FALSE) {
-
   if (nEnvs < 2) stop("'nEnvs' must be > 1")
   if (nEnvs %% 1 != 0) stop("'nEnvs' must be an integer")
 
@@ -444,28 +460,29 @@ compsym_asr_output <- function(pop, nEnvs, nReps, nTraits, effects = FALSE) {
   reps <- unlist(lapply(nReps, function(x) rep(1:x, each = length(pop@id))))
 
   g.Main <- as.list(as.data.frame(pop@gv[, seq(1, (nTraits + nTraits * nEnvs), (nEnvs + 1))]))
-  gxe.Env <- pop@gv[ , -seq(1, (nTraits + nTraits * nEnvs), nEnvs + 1)]
+  gxe.Env <- pop@gv[, -seq(1, (nTraits + nTraits * nEnvs), nEnvs + 1)]
   index <- as.list(as.data.frame(t(matrix(1:(nTraits * nEnvs), ncol = nTraits))))
-  gxe.Env <- lapply(index, function(x) gxe.Env[ , x])
+  gxe.Env <- lapply(index, function(x) gxe.Env[, x])
 
   gv <- lapply(gxe.Env, function(x) x + do.call(cbind, g.Main))
-  gv <- do.call(rbind, mapply(function(x, y) x[rep(1:nrow(x), y),], x = gv, y = as.list(nReps), SIMPLIFY = F))
+  gv <- do.call(rbind, mapply(function(x, y) x[rep(1:nrow(x), y), ], x = gv, y = as.list(nReps), SIMPLIFY = F))
   colnames(gv) <- paste0("Trait.", 1:nTraits)
 
 
-  compsymAsr <- data.frame(env = envs,
-                           rep = reps,
-                           id = pop@id,
-                           gv = gv)
+  compsymAsr <- data.frame(
+    env = envs,
+    rep = reps,
+    id = pop@id,
+    gv = gv
+  )
 
 
   if (effects) {
-
     g.Main <- mapply(cbind, list(data.frame(id = pop@id)), g.Main = g.Main, SIMPLIFY = F)
 
-    gxe.Env <- pop@gv[ , -seq(1, (nTraits + nTraits * nEnvs), nEnvs + 1)]
+    gxe.Env <- pop@gv[, -seq(1, (nTraits + nTraits * nEnvs), nEnvs + 1)]
     indexEff <- as.list(as.data.frame(t(matrix(1:(nTraits * nEnvs), nrow = nTraits, byrow = TRUE))))
-    gxe.Env <- lapply(indexEff, function(x) gxe.Env[ , x])
+    gxe.Env <- lapply(indexEff, function(x) gxe.Env[, x])
 
     effComps <- mapply(cbind, g.Main, gxe.Env = gxe.Env, SIMPLIFY = F)
 
@@ -473,9 +490,7 @@ compsym_asr_output <- function(pop, nEnvs, nReps, nTraits, effects = FALSE) {
     compsymAsr <- list(compsymAsr)
     compsymAsr <- c(compsymAsr, effComps)
     names(compsymAsr) <- listNames
-
   }
 
   return(compsymAsr)
-
 }

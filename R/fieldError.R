@@ -69,27 +69,29 @@
 #' # Simulation of residuals for two traits tested in three environments using
 #' # bivariate interpolation to model spatial variation.
 #'
-#' nEnvs <- 3        # number of simulated environments.
-#' nTraits <- 2      # number of simulated traits.
+#' nEnvs <- 3 # number of simulated environments.
+#' nTraits <- 2 # number of simulated traits.
 #'
 #' # Field layout
-#' nCols <- 10              # total number of columns in each environment.
-#' nRows <- c(20, 30, 20)   # total number of rows per environment.
-#' plotLength <- 5          # plot length of 5 meters.
-#' plotWidth <- 2           # plot width of 2 meters.
-#' nReps <- c(2, 3, 2)      # number of complete replicates per environment.
+#' nCols <- 10 # total number of columns in each environment.
+#' nRows <- c(20, 30, 20) # total number of rows per environment.
+#' plotLength <- 5 # plot length of 5 meters.
+#' plotWidth <- 2 # plot width of 2 meters.
+#' nReps <- c(2, 3, 2) # number of complete replicates per environment.
 #'
 #' # Residual variances for traits 1 and 2
 #' varR <- c(0.4, 15)
 #'
 #' # Residual correlations between traits 1 and 2, with regards to spatial model
-#' corR <- matrix(c(1.0,  0.2, 0.2, 1.0), ncol = 2)
+#' corR <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
 #'
-#' plot_df <- field_error(nEnvs = nEnvs, nTraits = nTraits,
-#'                       nCols = nCols, nRows = nRows, plotLength = plotLength,
-#'                       plotWidth = plotWidth, nReps = nReps, repDir = "row",
-#'                       varR = varR, corR = corR, spatialModel = "bivariate",
-#'                       propSpatial = 0.6, complexity = 14, effects = TRUE)
+#' plot_df <- field_error(
+#'   nEnvs = nEnvs, nTraits = nTraits,
+#'   nCols = nCols, nRows = nRows, plotLength = plotLength,
+#'   plotWidth = plotWidth, nReps = nReps, repDir = "row",
+#'   varR = varR, corR = corR, spatialModel = "bivariate",
+#'   propSpatial = 0.6, complexity = 14, effects = TRUE
+#' )
 #'
 #' @export
 field_error <- function(nEnvs,
@@ -109,7 +111,6 @@ field_error <- function(nEnvs,
                         colCor,
                         rowCor,
                         effects = FALSE) {
-
   if (nEnvs < 1 | nEnvs %% 1 != 0) stop("'nEnvs' must be an integer > 0")
   if (nTraits < 1 | nTraits %% 1 != 0) stop("'nTraits' must be an integer > 0")
 
@@ -144,12 +145,12 @@ field_error <- function(nEnvs,
   }
 
   repDir <- tolower(repDir)
-  if (repDir == "column"){
+  if (repDir == "column") {
     if (any((nCols / nReps) %% 1 != 0)) {
       stop("Number of columns not divisible by number of reps in at least one
          environment. Review your trial design!")
     }
-  } else if (repDir == "row"){
+  } else if (repDir == "row") {
     if (any((nRows / nReps) %% 1 != 0)) {
       stop("Number of rows not divisible by number of reps in at least one
            environment. Review your trial design!")
@@ -186,7 +187,6 @@ field_error <- function(nEnvs,
   if (length(propSpatial) == 1) propSpatial <- rep(propSpatial, nEnvs)
   if (length(propSpatial) != nEnvs) {
     stop("Length of vector 'propSpatial' does not match total number of environments")
-
   }
 
   envs <- rep(1:nEnvs, times = nCols * nRows)
@@ -194,21 +194,22 @@ field_error <- function(nEnvs,
   cols <- c(unlist(mapply(function(x, y) rep(1:x, each = y), x = nCols, y = nRows)))
   rows <- c(unlist(mapply(function(x, y) rep(1:x, times = y), y = nCols, x = nRows)))
 
-  if (repDir == "row"){
+  if (repDir == "row") {
     cols <- c(unlist(mapply(function(x, y) rep(1:x, times = y), x = nCols, y = nRows)))
     rows <- c(unlist(mapply(function(x, y) rep(1:x, each = y), y = nCols, x = nRows)))
   }
 
-  plot.df <- data.frame(env = envs,
-                        block = reps,
-                        col = cols,
-                        row = rows)
+  plot.df <- data.frame(
+    env = envs,
+    block = reps,
+    col = cols,
+    row = rows
+  )
 
   plot.df <- plot.df[order(plot.df$env, plot.df$col, plot.df$row), ]
   rownames(plot.df) <- NULL
 
-  if(spatialModel == "ar1:ar1"){
-
+  if (spatialModel == "ar1:ar1") {
     if (any(colCor < 0) | any(colCor > 1)) {
       stop("'colCor' must contain values between 0 and 1'")
     }
@@ -216,7 +217,7 @@ field_error <- function(nEnvs,
     if (length(colCor) != nEnvs) {
       stop("Length of vector 'colCor' does not match total number of environments")
     }
-    if (any(rowCor < 0) | any(rowCor > 1)) stop('rowCor must be between 0 and 1')
+    if (any(rowCor < 0) | any(rowCor > 1)) stop("rowCor must be between 0 and 1")
     if (length(rowCor) == 1) rowCor <- rep(rowCor, nEnvs)
     if (length(rowCor) != nEnvs) {
       stop("Length of vector 'rowCor' does not match total number of environments")
@@ -233,25 +234,28 @@ field_error <- function(nEnvs,
 
     L.lst1 <- lapply(corMat.lst, function(x) chol(x))
     plotError.lst1 <- mapply(function(x, y) matrix(c(stats::rnorm(x) %*% y), ncol = nTraits),
-                             x = nCols * nRows * nTraits, y = L.lst1, SIMPLIFY = FALSE)
-
+      x = nCols * nRows * nTraits, y = L.lst1, SIMPLIFY = FALSE
+    )
   }
 
-  if(spatialModel == "bivariate"){
-
+  if (spatialModel == "bivariate") {
     if (complexity <= 0) stop("'complexity' must be an integer > 0")
 
     nPlots <- nCols * nRows
     cols.lst <- with(plot.df, tapply(col, env, function(x) x))
-    colcentres.lst <- mapply(function(x, y, z) rep(y, z)* (x - 0.5), x = cols.lst,
-                             y = plotLength, z = nPlots, SIMPLIFY = FALSE)
+    colcentres.lst <- mapply(function(x, y, z) rep(y, z) * (x - 0.5),
+      x = cols.lst,
+      y = plotLength, z = nPlots, SIMPLIFY = FALSE
+    )
 
     colcentres <- unlist(colcentres.lst)
     colcentres.lst <- lapply(colcentres.lst, function(x) unique(x))
 
     rows.lst <- with(plot.df, tapply(row, env, function(x) x))
-    rowcentres.lst <- mapply(function(x, y, z) rep(y, z)* (x - 0.5), x = rows.lst,
-                             y = plotWidth, z = nPlots, SIMPLIFY = FALSE)
+    rowcentres.lst <- mapply(function(x, y, z) rep(y, z) * (x - 0.5),
+      x = rows.lst,
+      y = plotWidth, z = nPlots, SIMPLIFY = FALSE
+    )
     rowcentres <- unlist(rowcentres.lst)
     rowcentres.lst <- lapply(rowcentres.lst, function(x) unique(x))
 
@@ -259,27 +263,36 @@ field_error <- function(nEnvs,
     rowGap <- plotWidth / 4
 
     xInterp.list <- mapply(function(x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-                           x = nCols, y = plotLength, z = colGap, SIMPLIFY = FALSE)
+      x = nCols, y = plotLength, z = colGap, SIMPLIFY = FALSE
+    )
     yInterp.list <- mapply(function(x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-                           x = nRows, y = plotWidth, z = rowGap, SIMPLIFY = FALSE)
+      x = nRows, y = plotWidth, z = rowGap, SIMPLIFY = FALSE
+    )
     zInterp.list <- lapply(nCols, function(x) scale(matrix(stats::rnorm((4 + complexity) * nTraits), ncol = nTraits)) %*% chol(corR))
 
 
-    for(i in 1:nTraits) {
-      tmp <- mapply(function(x, y, z, xo, yo)
-        c(t(akima::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z)),
-        x = xInterp.list, y = yInterp.list, z = zInterp.list, xo = colcentres.lst, yo = rowcentres.lst, SIMPLIFY = FALSE)
-      if(i == 1) {plotError.lst1 <- tmp}
-      if(i > 1) {plotError.lst1 <- Map("cbind", plotError.lst1, tmp)}
+    for (i in 1:nTraits) {
+      tmp <- mapply(function(x, y, z, xo, yo) {
+        c(t(akima::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z))
+      },
+      x = xInterp.list, y = yInterp.list, z = zInterp.list, xo = colcentres.lst, yo = rowcentres.lst, SIMPLIFY = FALSE
+      )
+      if (i == 1) {
+        plotError.lst1 <- tmp
+      }
+      if (i > 1) {
+        plotError.lst1 <- Map("cbind", plotError.lst1, tmp)
+      }
     }
   }
 
   plotError.lst2 <- mapply(function(x) matrix(c(stats::rnorm(x)), ncol = nTraits) %*% chol(RcorR),
-                           x = nCols * nRows * nTraits, SIMPLIFY = FALSE)
+    x = nCols * nRows * nTraits, SIMPLIFY = FALSE
+  )
 
   varR <- as.data.frame(t(matrix(varR, ncol = nTraits, byrow = TRUE)))
 
-  if(nTraits == 1) {
+  if (nTraits == 1) {
     varR <- lapply(X = varR, FUN = as.matrix)
   } else {
     varR <- lapply(X = varR, FUN = c)
@@ -298,10 +311,13 @@ field_error <- function(nEnvs,
   if (effects) {
     e.Spat <- do.call("rbind", e.Spat)
     e.Rand <- do.call("rbind", e.Rand)
-    e.all <- lapply(seq_len(ncol(e.Spat)), function(i) cbind(e.Spat[,i], e.Rand[,i]))
-    resids <- lapply(e.all, function(x) data.frame(plot.df[,1:4],
-                                                   e.Spatial = x[,1],
-                                                   e.Random = x[,2]))
+    e.all <- lapply(seq_len(ncol(e.Spat)), function(i) cbind(e.Spat[, i], e.Rand[, i]))
+    resids <- lapply(e.all, function(x) {
+      data.frame(plot.df[, 1:4],
+        e.Spatial = x[, 1],
+        e.Random = x[, 2]
+      )
+    })
 
     listNames <- c("plot_df", paste0("Trait.", 1:nTraits))
     plot.df <- list(plot.df)
@@ -311,4 +327,3 @@ field_error <- function(nEnvs,
 
   return(plot.df)
 }
-

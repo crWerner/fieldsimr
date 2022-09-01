@@ -112,26 +112,28 @@ Between traits and environments, a separable covariance structure is assumed.
 # Simulation of residuals for two traits tested in three environments using
 # bivariate interpolation to model spatial variation.
 
-nEnvs <- 3        # number of simulated environments.
-nTraits <- 2      # number of simulated traits.
+nEnvs <- 3 # number of simulated environments.
+nTraits <- 2 # number of simulated traits.
 
 # Field layout
-nCols <- 10              # total number of columns in each environment.
-nRows <- c(20, 30, 20)   # total number of rows per environment.
-plotLength <- 5          # plot length of 5 meters.
-plotWidth <- 2           # plot width of 2 meters.
-nReps <- c(2, 3, 2)      # number of complete replicates per environment.
+nCols <- 10 # total number of columns in each environment.
+nRows <- c(20, 30, 20) # total number of rows per environment.
+plotLength <- 5 # plot length of 5 meters.
+plotWidth <- 2 # plot width of 2 meters.
+nReps <- c(2, 3, 2) # number of complete replicates per environment.
 
 # Residual variances for traits 1 and 2
 varR <- c(0.4, 15)
 
 # Residual correlations between traits 1 and 2, with regards to spatial model
-corR <- matrix(c(1.0,  0.2, 0.2, 1.0), ncol = 2)
+corR <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
 
-plot_df <- field_error(nEnvs = nEnvs, nTraits = nTraits,
-                      nCols = nCols, nRows = nRows, plotLength = plotLength,
-                      plotWidth = plotWidth, nReps = nReps, repDir = "row",
-                      varR = varR, corR = corR, spatialModel = "bivariate",
-                      propSpatial = 0.6, complexity = 14, effects = TRUE)
+plot_df <- field_error(
+  nEnvs = nEnvs, nTraits = nTraits,
+  nCols = nCols, nRows = nRows, plotLength = plotLength,
+  plotWidth = plotWidth, nReps = nReps, repDir = "row",
+  varR = varR, corR = corR, spatialModel = "bivariate",
+  propSpatial = 0.6, complexity = 14, effects = TRUE
+)
 
 }

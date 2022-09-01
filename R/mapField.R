@@ -18,7 +18,6 @@
 #'
 #' @export
 rand_cor_mat <- function(p, minCor = -1, maxCor = 1, digits = 2) {
-
   if (p < 1 | p %% 1 != 0) stop("'p' must be an integer > 0")
 
   if (minCor < -1 | minCor >= 1) stop("'minCor' must be value >= -1 and < 1")
@@ -68,34 +67,35 @@ rand_cor_mat <- function(p, minCor = -1, maxCor = 1, digits = 2) {
 #' # Simulation of residuals for two traits tested in three environments using
 #' # bivariate interpolation to model spatial variation.
 #'
-#' nEnvs <- 3        # number of simulated environments.
-#' nTraits <- 2      # number of simulated traits.
+#' nEnvs <- 3 # number of simulated environments.
+#' nTraits <- 2 # number of simulated traits.
 #'
 #' # Field layout
-#' nCols <- 10              # total number of columns in each environment.
-#' nRows <- c(20, 30, 20)   # total number of rows per environment.
-#' plotLength <- 5          # plot length of 5 meters.
-#' plotWidth <- 2           # plot width of 2 meters.
-#' nReps <- c(2, 3, 2)      # number of complete replicates per environment.
+#' nCols <- 10 # total number of columns in each environment.
+#' nRows <- c(20, 30, 20) # total number of rows per environment.
+#' plotLength <- 5 # plot length of 5 meters.
+#' plotWidth <- 2 # plot width of 2 meters.
+#' nReps <- c(2, 3, 2) # number of complete replicates per environment.
 #'
 #' # Residual variances for traits 1 and 2
 #' varR <- c(0.4, 15)
 #'
 #' # Residual correlations between traits 1 and 2, with regards to spatial model
-#' corR <- matrix(c(1.0,  0.2, 0.2, 1.0), ncol = 2)
+#' corR <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
 #'
-#' plot_df <- field_error(nEnvs = nEnvs, nTraits = nTraits,
-#'                       nCols = nCols, nRows = nRows, plotLength = plotLength,
-#'                       plotWidth = plotWidth, nReps = nReps, repDir = "row",
-#'                       varR = varR, corR = corR, spatialModel = "bivariate",
-#'                       propSpatial = 0.6, complexity = 14, effects = FALSE)
+#' plot_df <- field_error(
+#'   nEnvs = nEnvs, nTraits = nTraits,
+#'   nCols = nCols, nRows = nRows, plotLength = plotLength,
+#'   plotWidth = plotWidth, nReps = nReps, repDir = "row",
+#'   varR = varR, corR = corR, spatialModel = "bivariate",
+#'   propSpatial = 0.6, complexity = 14, effects = FALSE
+#' )
 #'
 #' # Plot the simulated error for trait 2 in environment 2.
 #' map_field(plot_df, env = 2, trait = "e.Trait.2")
 #'
 #' @export
-map_field <- function(df, env, trait, borders = TRUE){
-
+map_field <- function(df, env, trait, borders = TRUE) {
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
   trt <- which(colnames(df) == trait)
@@ -105,39 +105,40 @@ map_field <- function(df, env, trait, borders = TRUE){
 
   plotMat <- matrix(numeric(), nrow = nRows, ncol = nCols)
 
-  for(i in 1:nrow(df)){
+  for (i in 1:nrow(df)) {
     r <- df$row[i]
     c <- df$col[i]
-    plotMat[r,c] <- df[i, trt]
+    plotMat[r, c] <- df[i, trt]
   }
 
   if (length(unique(df$block)) > 1) {
-
     df1 <- subset(df, df$block == 1)
     df2 <- subset(df, df$block == 2)
 
-    if(any(unique(df1$row) == unique(df2$row)) == FALSE) {
+    if (any(unique(df1$row) == unique(df2$row)) == FALSE) {
       nx <- 0
       ny <- max(df$block)
-      } else if (any(unique(df1$col) == unique(df2$col)) == FALSE) {
-        nx <- max(df$block)
-        ny <- 0
-        } else {
-          stop("Check row and column assignment within blocks")
-        }
+    } else if (any(unique(df1$col) == unique(df2$col)) == FALSE) {
+      nx <- max(df$block)
+      ny <- 0
+    } else {
+      stop("Check row and column assignment within blocks")
+    }
   }
 
   xLabs <- seq(2, ncol(plotMat), 2)
-  xTicks <- (seq(2, ncol(plotMat), 2) -0.5)
+  xTicks <- (seq(2, ncol(plotMat), 2) - 0.5)
 
   yLabs <- seq(2, nrow(plotMat), 2)
-  yTicks <- (seq(2, nrow(plotMat), 2) -0.5)
+  yTicks <- (seq(2, nrow(plotMat), 2) - 0.5)
 
-  fields::image.plot(x = 0:nCols[1], y = 0:nRows[1],
-                     z = t(plotMat), zlim = range(plotMat),
-                     ylim = rev(range(0:nRows[1])),
-                     col = grDevices::hcl.colors(n = 100000, "RdYlGn"),
-                     xlab="Column", ylab = "Row", axes = FALSE)
+  fields::image.plot(
+    x = 0:nCols[1], y = 0:nRows[1],
+    z = t(plotMat), zlim = range(plotMat),
+    ylim = rev(range(0:nRows[1])),
+    col = grDevices::hcl.colors(n = 100000, "RdYlGn"),
+    xlab = "Column", ylab = "Row", axes = FALSE
+  )
 
   graphics::box()
   graphics::axis(1, at = xTicks, labels = xLabs)
@@ -147,5 +148,4 @@ map_field <- function(df, env, trait, borders = TRUE){
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "black", lwd = 5)
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "white", lwd = 3)
   }
-
 }

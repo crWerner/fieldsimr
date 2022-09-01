@@ -185,43 +185,53 @@ varDD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 
 
 # Additive genetic correlations between traits.
-TcorA <- matrix(c(1.0,  0.3,
-                  0.3,  1.0), ncol = 2)
+TcorA <- matrix(c(
+  1.0, 0.3,
+  0.3, 1.0
+), ncol = 2)
 
 # Additive genetic correlations between environments.
-EcorA <- cov2cor(matrix(c(0.5, 0.4,  0.6,
-                          0.4, 1,  0.5,
-                          0.6, 0.5,  1.5), ncol = 3))
+EcorA <- cov2cor(matrix(c(
+  0.5, 0.4, 0.6,
+  0.4, 1, 0.5,
+  0.6, 0.5, 1.5
+), ncol = 3))
 
 # Dominance degree correlation between all six trait-by-environment cobinations
 corDD <- diag(6) # assuming independence between traits
 
-input_asr <- unstr_asr_input(nEnvs = 3, nTraits = 2, mean = mean,
-                             Tvar = Tvar, Evar = Evar,
-                             TcorA = TcorA, EcorA = EcorA,
-                             meanDD = meanDD, varDD = varDD,
-                             corDD = corDD)
+input_asr <- unstr_asr_input(
+  nEnvs = 3, nTraits = 2, mean = mean,
+  Tvar = Tvar, Evar = Evar,
+  TcorA = TcorA, EcorA = EcorA,
+  meanDD = meanDD, varDD = varDD,
+  corDD = corDD
+)
 
 
 # 2. Use input_asr to simulate genetic values in AlphaSimR based on an unstructured model for
 #    GxE interaction.
 
 library(AlphaSimR)
-FOUNDERPOP <- quickHaplo(nInd = 100,
-                         nChr = 6,
-                         segSites = 100)
+FOUNDERPOP <- quickHaplo(
+  nInd = 100,
+  nChr = 6,
+  segSites = 100
+)
 
 SP <- SimParam$new(FOUNDERPOP)
 
-SP$addTraitAD(nQtlPerChr = 100,
-              mean = input_asr$mean,
-              var = input_asr$var,
-              meanDD = input_asr$meanDD,
-              varDD = input_asr$varDD,
-              corA = input_asr$corA,
-              corDD = input_asr$corDD,
-              useVarA = TRUE) # Variance in var is used as additive variance.
-                              # If FALSE, var = total genetic variance.
+SP$addTraitAD(
+  nQtlPerChr = 100,
+  mean = input_asr$mean,
+  var = input_asr$var,
+  meanDD = input_asr$meanDD,
+  varDD = input_asr$varDD,
+  corA = input_asr$corA,
+  corDD = input_asr$corDD,
+  useVarA = TRUE
+) # Variance in var is used as additive variance.
+# If FALSE, var = total genetic variance.
 
 pop <- newPop(FOUNDERPOP)
 
@@ -229,7 +239,7 @@ pop <- newPop(FOUNDERPOP)
 # 3. Create a data frame containing the simulated genetic values for each of the two traits
 #    and three environments.
 
-nReps <- c(2, 3, 2)  # Vector with the number of complete replicates in each environment
+nReps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 
 trial_df <- unstr_asr_output(pop = pop, nEnvs = 3, nReps = nReps, nTraits = 2)
 
