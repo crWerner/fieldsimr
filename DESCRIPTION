@@ -10,10 +10,11 @@ Maintainer: Christian Werner  <c.werner@cgiar.org>
 Description: Simulation of field trial phenotypes by generation of 
     plot-specific residuals either using bivariate interpolation or 
 	a first order autoregressive process (AR1:AR1). 
-License: 'MIT + file LICENSE'
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Imports: 'akima', 'fields'
-Suggests: 'AlphaSimR'
+Imports: akima, fields
+Suggests: AlphaSimR
+URL: add github repos and check in which line to put URL
