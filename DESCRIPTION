@@ -1,18 +1,19 @@
 Package: FieldSimR
-Title: Simulation of field trial phenotypes
+Title: Simulation of Field Trial Phenotypes
 Version: 0.0.0.9000
 Date: 2021-12-09
 Authors@R: c(
-    person("Christian", "Werner", email = "c.werner@cgiar.org", role = c("aut", "cre")),
+    person("Christian", "Werner", email = "c.werner@cgiar.org", role = c("aut", "cre"),
+	comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Daniel", "Tolhurst", role = "aut"))
 Maintainer: Christian Werner  <c.werner@cgiar.org>
-Description: Simulation of field trial phenotypes by generation of plot-specific 
-    residuals either using bivariate interpolation or a first order autoregressive 
-    process (AR1:AR1). 
-License: MIT + file LICENSE
+Description: Simulation of field trial phenotypes by generation of 
+    plot-specific residuals either using bivariate interpolation or 
+	a first order autoregressive process (AR1:AR1). 
+License: 'MIT + file LICENSE'
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Imports: akima, fields
-Suggests: AlphaSimR
+Imports: 'akima', 'fields'
+Suggests: 'AlphaSimR'
