@@ -1,20 +1,28 @@
 Package: FieldSimR
-Title: Simulation of Field Trial Phenotypes
+Title: Simulation of Plot-Level Data in Plant Breeding Field Trials
 Version: 0.0.0.9000
 Date: 2021-12-09
 Authors@R: c(
-    person("Christian", "Werner", email = "c.werner@cgiar.org", role = c("aut", "cre"),
-	comment = c(ORCID = "YOUR-ORCID-ID")),
-    person("Daniel", "Tolhurst", role = "aut"))
-Maintainer: Christian Werner  <c.werner@cgiar.org>
-Description: Simulation of field trial phenotypes by generation of 
-    plot-specific residuals either using bivariate interpolation or 
-	a first order autoregressive process (AR1:AR1). 
+    person("Christian", "Werner", email = "werner.christian@proton.me", 
+	  role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9400-5061")),
+    person("Daniel", "Tolhurst", role = "aut",
+    comment = c(ORCID = "0000-0000-0000-0000")),
+    person("Chris", "Gaynor", role = "ctb", 
+    comment = c(ORCID = "0000-0003-0558-6656"")),
+    person("Lorena", "Batista", role = "ctb", 
+    comment = c(ORCID = "0000-0000-0000-0000")),
+    person("Eduardo", "Covarrubias", role = "ctb", 
+    comment = c(ORCID = "0000-0000-0000-0000")),
+Maintainer: Christian Werner  <werner.christian@proton.me>
+Description: Simulation of plant breeding field trials through generation of 
+    plot-level residuals using bivariate interpolation or a first order 
+    autoregressive process (AR1:AR1).
 License: GPL (>= 3)
+URL: https://github.com/crWerner/fieldsimr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: akima, fields
 Suggests: AlphaSimR
-URL: add github repos and check in which line to put URL
+
