@@ -145,7 +145,7 @@ map_field <- function(df, env, trait, borders = TRUE) {
   graphics::axis(2, at = yTicks, labels = yLabs)
 
   if (borders == TRUE & length(unique(df$block)) > 1) {
-    graphics::grid(nx = nx, ny = ny, lty = 1, col = "black", lwd = 5)
-    graphics::grid(nx = nx, ny = ny, lty = 1, col = "white", lwd = 3)
+    graphics::grid(nx = nx, ny = ny, lty = 1, col = "#000000", lwd = 5)
+    graphics::grid(nx = nx, ny = ny, lty = 1, col = "#FFFFFF", lwd = 3)
   }
 }
