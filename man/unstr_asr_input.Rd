@@ -6,135 +6,135 @@
 input parameters}
 \usage{
 unstr_asr_input(
-  nEnvs,
-  nTraits,
+  n_envs,
+  n_traits,
   mean,
   var = NULL,
-  Tvar = NULL,
-  Evar = NULL,
-  corA = NULL,
-  EcorA = NULL,
-  TcorA = NULL,
-  meanDD = NULL,
-  varDD = NULL,
-  EvarDD = NULL,
-  TvarDD = NULL,
-  corDD = NULL,
-  EcorDD = NULL,
-  TcorDD = NULL,
-  relAA = NULL,
-  ErelAA = NULL,
-  TrelAA = NULL,
-  corAA = NULL,
-  EcorAA = NULL,
-  TcorAA = NULL
+  T_var = NULL,
+  E_var = NULL,
+  cor_A = NULL,
+  E_cor_A = NULL,
+  T_cor_A = NULL,
+  mean_DD = NULL,
+  var_DD = NULL,
+  E_var_DD = NULL,
+  T_var_DD = NULL,
+  cor_DD = NULL,
+  E_cor_DD = NULL,
+  T_cor_DD = NULL,
+  rel_AA = NULL,
+  E_rel_AA = NULL,
+  T_rel_AA = NULL,
+  cor_AA = NULL,
+  E_cor_AA = NULL,
+  T_cor_AA = NULL
 )
 }
 \arguments{
-\item{nEnvs}{Number of environments to be simulated. A minimum of two
+\item{n_envs}{Number of environments to be simulated. A minimum of two
 environments is required.}
 
-\item{nTraits}{Number of traits to be simulated.}
+\item{n_traits}{Number of traits to be simulated.}
 
 \item{mean}{A vector of desired mean genetic values for each trait-by-environment
 combination (ordered as environments within traits). Simulated traits can
 have a different mean for each environment. If the length of \code{mean}
-corresponds to \code{nTraits}, however, then traits will be assigned the
+corresponds to \code{n_traits}, however, then traits will be assigned the
 same mean for each environment.}
 
 \item{var}{A vector of desired genetic variances for each trait-by-environment
 combination (ordered as environments within traits). If the length of
-\code{var} corresponds to \code{nTraits}, however, then traits will be
+\code{var} corresponds to \code{n_traits}, however, then traits will be
 assigned the same genetic variance for each environment. Alternatively,
-\code{Tvar} and \code{Evar} can be provided if a separable structure between
+\code{T_var} and \code{E_var} can be provided if a separable structure between
 traits and environments is required. By default, \code{var = NULL}.}
 
-\item{Tvar}{A vector of desired genetic variances for each trait. Must be
-provided in combination with \code{Evar}.
-Alternatively, \code{var} can be provided. By default, \code{Tvar = NULL}.}
+\item{T_var}{A vector of desired genetic variances for each trait. Must be
+provided in combination with \code{E_var}.
+Alternatively, \code{var} can be provided. By default, \code{T_var = NULL}.}
 
-\item{Evar}{A vector of desired genetic variances for each environment. Must
-be provided in combination with \code{Tvar}. Alternatively, \code{var} can
-be provided. By default, \code{Evar = NULL}.}
+\item{E_var}{A vector of desired genetic variances for each environment. Must
+be provided in combination with \code{T_var}. Alternatively, \code{var} can
+be provided. By default, \code{E_var = NULL}.}
 
-\item{corA}{A matrix of additive genetic correlations between all
-trait-by-environment combinations. If not defined and \code{nTraits > 1}, a
-diagonal matrix is assigned. Alternatively, \code{TcorA} and \code{EcorA}
+\item{cor_A}{A matrix of additive genetic correlations between all
+trait-by-environment combinations. If not defined and \code{n_traits > 1}, a
+diagonal matrix is assigned. Alternatively, \code{T_cor_A} and \code{E_cor_A}
 can be provided.}
 
-\item{EcorA}{A matrix of additive genetic correlations between more than one
-environment. Must be provided in combination with \code{TcorA}. Alternatively,
-\code{corA} can be provided. By default, \code{EcorA = NULL}.}
+\item{E_cor_A}{A matrix of additive genetic correlations between more than one
+environment. Must be provided in combination with \code{T_cor_A}. Alternatively,
+\code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.}
 
-\item{TcorA}{A matrix of additive genetic correlations between more than one
-traits. Must be provided in combination with \code{EcorA}. Alternatively,
-\code{corA} can be provided. By default, \code{TcorA = NULL}.}
+\item{T_cor_A}{A matrix of additive genetic correlations between more than one
+traits. Must be provided in combination with \code{E_cor_A}. Alternatively,
+\code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.}
 
-\item{meanDD}{A vector of mean dominance degrees for each trait-by-environment
+\item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment
 combination (ordered as environments within traits), similar to \code{mean}.
-By default, \code{meanDD = NULL} and dominance is not simulated.}
+By default, \code{mean_DD = NULL} and dominance is not simulated.}
 
-\item{varDD}{A vector of dominance degree variances for each trait-by-environment
+\item{var_DD}{A vector of dominance degree variances for each trait-by-environment
 combination (ordered as environments within traits), similar to \code{var}.
-Alternatively, \code{TvarDD} and \code{EvarDD} can be provided if a separable
+Alternatively, \code{T_var_DD} and \code{E_var_DD} can be provided if a separable
 structure between traits and environments is required. By default,
-\code{varDD = NULL}.}
+\code{var_DD = NULL}.}
 
-\item{EvarDD}{A vector of dominance degree genetic variances for each
-environment, similar to \code{Evar}. Must be provided in combination with
-\code{TvarDD}. Alternatively, \code{varDD} can be provided. By default,
-\code{EvarDD = NULL}.}
+\item{E_var_DD}{A vector of dominance degree genetic variances for each
+environment, similar to \code{E_var}. Must be provided in combination with
+\code{T_var_DD}. Alternatively, \code{var_DD} can be provided. By default,
+\code{E_var_DD = NULL}.}
 
-\item{TvarDD}{A vector of dominance degree variances for each trait, similar
-to \code{Tvar}. Must be provided in combination with \code{EvarDD}.
-Alternatively, \code{varDD} can be provided. By default, \code{TvarDD = NULL}.}
+\item{T_var_DD}{A vector of dominance degree variances for each trait, similar
+to \code{T_var}. Must be provided in combination with \code{E_var_DD}.
+Alternatively, \code{var_DD} can be provided. By default, \code{T_var_DD = NULL}.}
 
-\item{corDD}{A matrix of dominance degree correlations between all
-trait-by-environment combinations, similar to \code{corA}. If not defined
-and \code{nTraits > 1}, a diagonal matrix is assigned. Alternatively,
-\code{TcorDD} and \code{EcorDD} can be provided. By default,
-\code{corDD = NULL}.}
+\item{cor_DD}{A matrix of dominance degree correlations between all
+trait-by-environment combinations, similar to \code{cor_A}. If not defined
+and \code{n_traits > 1}, a diagonal matrix is assigned. Alternatively,
+\code{T_cor_DD} and \code{E_cor_DD} can be provided. By default,
+\code{cor_DD = NULL}.}
 
-\item{EcorDD}{A matrix of dominance degree correlations between more than one
-environment, similar to \code{EcorA}. Must be provided in combination with
-\code{TcorDD}. Alternatively, \code{corDD} can be provided. By default,
-\code{EcorDD = NULL}.}
+\item{E_cor_DD}{A matrix of dominance degree correlations between more than one
+environment, similar to \code{E_cor_A}. Must be provided in combination with
+\code{T_cor_DD}. Alternatively, \code{cor_DD} can be provided. By default,
+\code{E_cor_DD = NULL}.}
 
-\item{TcorDD}{A matrix of dominance degree correlations between more than one
-traits, similar to \code{TcorA}. Must be provided in combination with
-\code{EcorDD}. Alternatively, \code{corDD} can be provided. By default,
-\code{TcorDD = NULL}.}
+\item{T_cor_DD}{A matrix of dominance degree correlations between more than one
+traits, similar to \code{T_cor_A}. Must be provided in combination with
+\code{E_cor_DD}. Alternatively, \code{cor_DD} can be provided. By default,
+\code{T_cor_DD = NULL}.}
 
-\item{relAA}{A vector with the magnitude of additive-by-additive (epistatic)
+\item{rel_AA}{A vector with the magnitude of additive-by-additive (epistatic)
 variance relative to additive genetic variance for each trait-by-environment
 combination (ordered as environments within traits), that is in a diploid
-organism with allele frequency 0.5. Alternatively, \code{TvarAA} and
-\code{EvarAA} can be provided if a separable structure between traits and
-environments is required. By default, \code{relAA = NULL}.}
+organism with allele frequency 0.5. Alternatively, \code{T_varAA} and
+\code{E_varAA} can be provided if a separable structure between traits and
+environments is required. By default, \code{rel_AA = NULL}.}
 
-\item{ErelAA}{A vector with the magnitude of epistatic variance relative to
+\item{E_rel_AA}{A vector with the magnitude of epistatic variance relative to
 additive genetic variance for each environment, that is in a diploid organism
-with allele frequency 0.5. Must be provided in combination with \code{TrelAA}.
-Alternatively, \code{relAA} can be provided. By default, \code{ErelAA = NULL}.}
+with allele frequency 0.5. Must be provided in combination with \code{T_rel_AA}.
+Alternatively, \code{rel_AA} can be provided. By default, \code{E_rel_AA = NULL}.}
 
-\item{TrelAA}{A vector with the magnitude of epistatic variance relative to
+\item{T_rel_AA}{A vector with the magnitude of epistatic variance relative to
 additive genetic variance for each trait, that is in a diploid organism with
-allele frequency 0.5. Must be provided in combination with \code{ErelAA}.
-Alternatively, \code{relAA} can be provided. By default, \code{TrelAA = NULL}.}
+allele frequency 0.5. Must be provided in combination with \code{E_rel_AA}.
+Alternatively, \code{rel_AA} can be provided. By default, \code{T_rel_AA = NULL}.}
 
-\item{corAA}{A matrix of epistatic correlations between all trait-by-environment
-combinations, similar to \code{corA}. If not defined and \code{nTraits > 1},
-a diagonal matrix is assigned. Alternatively, \code{TcorAA} and \code{EcorAA}
-can be provided. By default, \code{corAA = NULL}.}
+\item{cor_AA}{A matrix of epistatic correlations between all trait-by-environment
+combinations, similar to \code{cor_A}. If not defined and \code{n_traits > 1},
+a diagonal matrix is assigned. Alternatively, \code{T_cor_AA} and \code{E_cor_AA}
+can be provided. By default, \code{cor_AA = NULL}.}
 
-\item{EcorAA}{A matrix of epistatic correlations between more than one
-environment, similar to \code{EcorA}. Must be provided in combination with
-\code{TcorAA}. Alternatively, \code{corAA} can be provided. By default,
-\code{EcorAA = NULL}.}
+\item{E_cor_AA}{A matrix of epistatic correlations between more than one
+environment, similar to \code{E_cor_A}. Must be provided in combination with
+\code{T_cor_AA}. Alternatively, \code{cor_AA} can be provided. By default,
+\code{E_cor_AA = NULL}.}
 
-\item{TcorAA}{A matrix of epistatic correlations between more than one traits,
-similar to \code{TcorA}. Must be provided in combination with \code{EcorAA}.
-Alternatively, \code{corAA} can be provided. By default, \code{TcorAA = NULL}.}
+\item{T_cor_AA}{A matrix of epistatic correlations between more than one traits,
+similar to \code{T_cor_A}. Must be provided in combination with \code{E_cor_AA}.
+Alternatively, \code{cor_AA} can be provided. By default, \code{T_cor_AA = NULL}.}
 }
 \value{
 A list containing input parameters for AlphaSimR, which is then used
@@ -154,8 +154,8 @@ for an unstructured model.
 \details{
 \strong{NOTE:} \code{unstr_asr_input} handles non-separable and separable
 structures between traits and environments. For the non-separable structure,
-provide (1) \code{var} and (2) \code{corA}. For the separable structure,
-provide (1) \code{Tvar}, \code{Evar} and (2) \code{TcorA}, \code{EcorA}.
+provide (1) \code{var} and (2) \code{cor_A}. For the separable structure,
+provide (1) \code{T_var}, \code{E_var} and (2) \code{T_cor_A}, \code{E_cor_A}.
 Similar groups of terms are required for dominance and epistatic traits.
 
 \strong{NOTE:} for additive traits use AlphaSimR's \code{addTraitA()};
@@ -172,40 +172,40 @@ check the \code{useVarA} argument of AlphaSimR's \code{addTrait} methods.
 # Mean genetic values and mean dominance degrees for trait 1 in 3 environments
 # and trait 2 in 3 environments.
 mean <- c(1, 3, 2, 80, 70, 100) # trait 1 by 3 envs, trait 2 by 3 envs.
-meanDD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
+mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
 
 # Additive genetic variances (set usevarA=TRUE) and dominance degree variances for the two traits,
 # that is assuming a separable structure between traits and environments
-Tvar <- c(0.2, 10)
-Evar <- c(0.5, 1, 1.5)
+T_var <- c(0.2, 10)
+E_var <- c(0.5, 1, 1.5)
 
 # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments,
 # that is assuming a non-separable structure between traits and environments
-varDD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
+var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 
 
 # Additive genetic correlations between traits.
-TcorA <- matrix(c(
+T_cor_A <- matrix(c(
   1.0, 0.3,
   0.3, 1.0
 ), ncol = 2)
 
 # Additive genetic correlations between environments.
-EcorA <- cov2cor(matrix(c(
+E_cor_A <- cov2cor(matrix(c(
   0.5, 0.4, 0.6,
   0.4, 1, 0.5,
   0.6, 0.5, 1.5
 ), ncol = 3))
 
 # Dominance degree correlation between all six trait-by-environment cobinations
-corDD <- diag(6) # assuming independence between traits
+cor_DD <- diag(6) # assuming independence between traits
 
 input_asr <- unstr_asr_input(
-  nEnvs = 3, nTraits = 2, mean = mean,
-  Tvar = Tvar, Evar = Evar,
-  TcorA = TcorA, EcorA = EcorA,
-  meanDD = meanDD, varDD = varDD,
-  corDD = corDD
+  n_envs = 3, n_traits = 2, mean = mean,
+  T_var = T_var, E_var = E_var,
+  T_cor_A = T_cor_A, E_cor_A = E_cor_A,
+  mean_DD = mean_DD, var_DD = var_DD,
+  cor_DD = cor_DD
 )
 
 
@@ -225,12 +225,13 @@ SP$addTraitAD(
   nQtlPerChr = 100,
   mean = input_asr$mean,
   var = input_asr$var,
-  meanDD = input_asr$meanDD,
-  varDD = input_asr$varDD,
-  corA = input_asr$corA,
-  corDD = input_asr$corDD,
+  meanDD = input_asr$mean_DD,
+  varDD = input_asr$var_DD,
+  corA = input_asr$cor_A,
+  corDD = input_asr$cor_DD,
   useVarA = TRUE
-) # Variance in var is used as additive variance.
+)
+# Variance in var is used as additive variance.
 # If FALSE, var = total genetic variance.
 
 pop <- newPop(FOUNDERPOP)
@@ -239,8 +240,8 @@ pop <- newPop(FOUNDERPOP)
 # 3. Create a data frame containing the simulated genetic values for each of the two traits
 #    and three environments.
 
-nReps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
+n_reps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 
-trial_df <- unstr_asr_output(pop = pop, nEnvs = 3, nReps = nReps, nTraits = 2)
+trial_df <- unstr_asr_output(pop = pop, n_envs = 3, n_reps = n_reps, n_traits = 2)
 
 }

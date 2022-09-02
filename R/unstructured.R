@@ -12,8 +12,8 @@
 #'
 #' \strong{NOTE:} \code{unstr_asr_input} handles non-separable and separable
 #' structures between traits and environments. For the non-separable structure,
-#' provide (1) \code{var} and (2) \code{corA}. For the separable structure,
-#' provide (1) \code{Tvar}, \code{Evar} and (2) \code{TcorA}, \code{EcorA}.
+#' provide (1) \code{var} and (2) \code{cor_A}. For the separable structure,
+#' provide (1) \code{T_var}, \code{E_var} and (2) \code{T_cor_A}, \code{E_cor_A}.
 #' Similar groups of terms are required for dominance and epistatic traits.
 #'
 #' \strong{NOTE:} for additive traits use AlphaSimR's \code{addTraitA()};
@@ -23,89 +23,89 @@
 #' check the \code{useVarA} argument of AlphaSimR's \code{addTrait} methods.
 #'
 #'
-#' @param nEnvs Number of environments to be simulated. A minimum of two
+#' @param n_envs Number of environments to be simulated. A minimum of two
 #'   environments is required.
-#' @param nTraits Number of traits to be simulated.
+#' @param n_traits Number of traits to be simulated.
 #' @param mean A vector of desired mean genetic values for each trait-by-environment
 #'   combination (ordered as environments within traits). Simulated traits can
 #'   have a different mean for each environment. If the length of \code{mean}
-#'   corresponds to \code{nTraits}, however, then traits will be assigned the
+#'   corresponds to \code{n_traits}, however, then traits will be assigned the
 #'   same mean for each environment.
 #' @param var A vector of desired genetic variances for each trait-by-environment
 #'   combination (ordered as environments within traits). If the length of
-#'   \code{var} corresponds to \code{nTraits}, however, then traits will be
+#'   \code{var} corresponds to \code{n_traits}, however, then traits will be
 #'   assigned the same genetic variance for each environment. Alternatively,
-#'   \code{Tvar} and \code{Evar} can be provided if a separable structure between
+#'   \code{T_var} and \code{E_var} can be provided if a separable structure between
 #'   traits and environments is required. By default, \code{var = NULL}.
-#' @param Tvar A vector of desired genetic variances for each trait. Must be
-#'   provided in combination with \code{Evar}.
-#'   Alternatively, \code{var} can be provided. By default, \code{Tvar = NULL}.
-#' @param Evar A vector of desired genetic variances for each environment. Must
-#'   be provided in combination with \code{Tvar}. Alternatively, \code{var} can
-#'   be provided. By default, \code{Evar = NULL}.
-#' @param corA A matrix of additive genetic correlations between all
-#'   trait-by-environment combinations. If not defined and \code{nTraits > 1}, a
-#'   diagonal matrix is assigned. Alternatively, \code{TcorA} and \code{EcorA}
+#' @param T_var A vector of desired genetic variances for each trait. Must be
+#'   provided in combination with \code{E_var}.
+#'   Alternatively, \code{var} can be provided. By default, \code{T_var = NULL}.
+#' @param E_var A vector of desired genetic variances for each environment. Must
+#'   be provided in combination with \code{T_var}. Alternatively, \code{var} can
+#'   be provided. By default, \code{E_var = NULL}.
+#' @param cor_A A matrix of additive genetic correlations between all
+#'   trait-by-environment combinations. If not defined and \code{n_traits > 1}, a
+#'   diagonal matrix is assigned. Alternatively, \code{T_cor_A} and \code{E_cor_A}
 #'   can be provided.
-#' @param TcorA A matrix of additive genetic correlations between more than one
-#'   traits. Must be provided in combination with \code{EcorA}. Alternatively,
-#'   \code{corA} can be provided. By default, \code{TcorA = NULL}.
-#' @param EcorA A matrix of additive genetic correlations between more than one
-#'   environment. Must be provided in combination with \code{TcorA}. Alternatively,
-#'   \code{corA} can be provided. By default, \code{EcorA = NULL}.
-#' @param meanDD A vector of mean dominance degrees for each trait-by-environment
+#' @param T_cor_A A matrix of additive genetic correlations between more than one
+#'   traits. Must be provided in combination with \code{E_cor_A}. Alternatively,
+#'   \code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.
+#' @param E_cor_A A matrix of additive genetic correlations between more than one
+#'   environment. Must be provided in combination with \code{T_cor_A}. Alternatively,
+#'   \code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.
+#' @param mean_DD A vector of mean dominance degrees for each trait-by-environment
 #'   combination (ordered as environments within traits), similar to \code{mean}.
-#'   By default, \code{meanDD = NULL} and dominance is not simulated.
-#' @param varDD A vector of dominance degree variances for each trait-by-environment
+#'   By default, \code{mean_DD = NULL} and dominance is not simulated.
+#' @param var_DD A vector of dominance degree variances for each trait-by-environment
 #'   combination (ordered as environments within traits), similar to \code{var}.
-#'   Alternatively, \code{TvarDD} and \code{EvarDD} can be provided if a separable
+#'   Alternatively, \code{T_var_DD} and \code{E_var_DD} can be provided if a separable
 #'   structure between traits and environments is required. By default,
-#'   \code{varDD = NULL}.
-#' @param TvarDD A vector of dominance degree variances for each trait, similar
-#'   to \code{Tvar}. Must be provided in combination with \code{EvarDD}.
-#'   Alternatively, \code{varDD} can be provided. By default, \code{TvarDD = NULL}.
-#' @param EvarDD A vector of dominance degree genetic variances for each
-#'   environment, similar to \code{Evar}. Must be provided in combination with
-#'   \code{TvarDD}. Alternatively, \code{varDD} can be provided. By default,
-#'   \code{EvarDD = NULL}.
-#' @param corDD A matrix of dominance degree correlations between all
-#'   trait-by-environment combinations, similar to \code{corA}. If not defined
-#'   and \code{nTraits > 1}, a diagonal matrix is assigned. Alternatively,
-#'   \code{TcorDD} and \code{EcorDD} can be provided. By default,
-#'   \code{corDD = NULL}.
-#' @param TcorDD A matrix of dominance degree correlations between more than one
-#'   traits, similar to \code{TcorA}. Must be provided in combination with
-#'   \code{EcorDD}. Alternatively, \code{corDD} can be provided. By default,
-#'   \code{TcorDD = NULL}.
-#' @param EcorDD A matrix of dominance degree correlations between more than one
-#'   environment, similar to \code{EcorA}. Must be provided in combination with
-#'   \code{TcorDD}. Alternatively, \code{corDD} can be provided. By default,
-#'   \code{EcorDD = NULL}.
-#' @param relAA A vector with the magnitude of additive-by-additive (epistatic)
+#'   \code{var_DD = NULL}.
+#' @param T_var_DD A vector of dominance degree variances for each trait, similar
+#'   to \code{T_var}. Must be provided in combination with \code{E_var_DD}.
+#'   Alternatively, \code{var_DD} can be provided. By default, \code{T_var_DD = NULL}.
+#' @param E_var_DD A vector of dominance degree genetic variances for each
+#'   environment, similar to \code{E_var}. Must be provided in combination with
+#'   \code{T_var_DD}. Alternatively, \code{var_DD} can be provided. By default,
+#'   \code{E_var_DD = NULL}.
+#' @param cor_DD A matrix of dominance degree correlations between all
+#'   trait-by-environment combinations, similar to \code{cor_A}. If not defined
+#'   and \code{n_traits > 1}, a diagonal matrix is assigned. Alternatively,
+#'   \code{T_cor_DD} and \code{E_cor_DD} can be provided. By default,
+#'   \code{cor_DD = NULL}.
+#' @param T_cor_DD A matrix of dominance degree correlations between more than one
+#'   traits, similar to \code{T_cor_A}. Must be provided in combination with
+#'   \code{E_cor_DD}. Alternatively, \code{cor_DD} can be provided. By default,
+#'   \code{T_cor_DD = NULL}.
+#' @param E_cor_DD A matrix of dominance degree correlations between more than one
+#'   environment, similar to \code{E_cor_A}. Must be provided in combination with
+#'   \code{T_cor_DD}. Alternatively, \code{cor_DD} can be provided. By default,
+#'   \code{E_cor_DD = NULL}.
+#' @param rel_AA A vector with the magnitude of additive-by-additive (epistatic)
 #'   variance relative to additive genetic variance for each trait-by-environment
 #'   combination (ordered as environments within traits), that is in a diploid
-#'   organism with allele frequency 0.5. Alternatively, \code{TvarAA} and
-#'   \code{EvarAA} can be provided if a separable structure between traits and
-#'   environments is required. By default, \code{relAA = NULL}.
-#' @param TrelAA A vector with the magnitude of epistatic variance relative to
+#'   organism with allele frequency 0.5. Alternatively, \code{T_varAA} and
+#'   \code{E_varAA} can be provided if a separable structure between traits and
+#'   environments is required. By default, \code{rel_AA = NULL}.
+#' @param T_rel_AA A vector with the magnitude of epistatic variance relative to
 #'   additive genetic variance for each trait, that is in a diploid organism with
-#'   allele frequency 0.5. Must be provided in combination with \code{ErelAA}.
-#'   Alternatively, \code{relAA} can be provided. By default, \code{TrelAA = NULL}.
-#' @param ErelAA A vector with the magnitude of epistatic variance relative to
+#'   allele frequency 0.5. Must be provided in combination with \code{E_rel_AA}.
+#'   Alternatively, \code{rel_AA} can be provided. By default, \code{T_rel_AA = NULL}.
+#' @param E_rel_AA A vector with the magnitude of epistatic variance relative to
 #'   additive genetic variance for each environment, that is in a diploid organism
-#'   with allele frequency 0.5. Must be provided in combination with \code{TrelAA}.
-#'   Alternatively, \code{relAA} can be provided. By default, \code{ErelAA = NULL}.
-#' @param corAA A matrix of epistatic correlations between all trait-by-environment
-#'   combinations, similar to \code{corA}. If not defined and \code{nTraits > 1},
-#'   a diagonal matrix is assigned. Alternatively, \code{TcorAA} and \code{EcorAA}
-#'   can be provided. By default, \code{corAA = NULL}.
-#' @param TcorAA A matrix of epistatic correlations between more than one traits,
-#'   similar to \code{TcorA}. Must be provided in combination with \code{EcorAA}.
-#'   Alternatively, \code{corAA} can be provided. By default, \code{TcorAA = NULL}.
-#' @param EcorAA A matrix of epistatic correlations between more than one
-#'   environment, similar to \code{EcorA}. Must be provided in combination with
-#'   \code{TcorAA}. Alternatively, \code{corAA} can be provided. By default,
-#'   \code{EcorAA = NULL}.
+#'   with allele frequency 0.5. Must be provided in combination with \code{T_rel_AA}.
+#'   Alternatively, \code{rel_AA} can be provided. By default, \code{E_rel_AA = NULL}.
+#' @param cor_AA A matrix of epistatic correlations between all trait-by-environment
+#'   combinations, similar to \code{cor_A}. If not defined and \code{n_traits > 1},
+#'   a diagonal matrix is assigned. Alternatively, \code{T_cor_AA} and \code{E_cor_AA}
+#'   can be provided. By default, \code{cor_AA = NULL}.
+#' @param T_cor_AA A matrix of epistatic correlations between more than one traits,
+#'   similar to \code{T_cor_A}. Must be provided in combination with \code{E_cor_AA}.
+#'   Alternatively, \code{cor_AA} can be provided. By default, \code{T_cor_AA = NULL}.
+#' @param E_cor_AA A matrix of epistatic correlations between more than one
+#'   environment, similar to \code{E_cor_A}. Must be provided in combination with
+#'   \code{T_cor_AA}. Alternatively, \code{cor_AA} can be provided. By default,
+#'   \code{E_cor_AA = NULL}.
 #'
 #' @return A list containing input parameters for AlphaSimR, which is then used
 #'   to simulate correlated genetic effects based on an unstructured model for
@@ -119,40 +119,40 @@
 #' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments
 #' # and trait 2 in 3 environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # trait 1 by 3 envs, trait 2 by 3 envs.
-#' meanDD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
+#' mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
 #'
 #' # Additive genetic variances (set usevarA=TRUE) and dominance degree variances for the two traits,
 #' # that is assuming a separable structure between traits and environments
-#' Tvar <- c(0.2, 10)
-#' Evar <- c(0.5, 1, 1.5)
+#' T_var <- c(0.2, 10)
+#' E_var <- c(0.5, 1, 1.5)
 #'
 #' # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments,
 #' # that is assuming a non-separable structure between traits and environments
-#' varDD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
+#' var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 #'
 #'
 #' # Additive genetic correlations between traits.
-#' TcorA <- matrix(c(
+#' T_cor_A <- matrix(c(
 #'   1.0, 0.3,
 #'   0.3, 1.0
 #' ), ncol = 2)
 #'
 #' # Additive genetic correlations between environments.
-#' EcorA <- cov2cor(matrix(c(
+#' E_cor_A <- cov2cor(matrix(c(
 #'   0.5, 0.4, 0.6,
 #'   0.4, 1, 0.5,
 #'   0.6, 0.5, 1.5
 #' ), ncol = 3))
 #'
 #' # Dominance degree correlation between all six trait-by-environment cobinations
-#' corDD <- diag(6) # assuming independence between traits
+#' cor_DD <- diag(6) # assuming independence between traits
 #'
 #' input_asr <- unstr_asr_input(
-#'   nEnvs = 3, nTraits = 2, mean = mean,
-#'   Tvar = Tvar, Evar = Evar,
-#'   TcorA = TcorA, EcorA = EcorA,
-#'   meanDD = meanDD, varDD = varDD,
-#'   corDD = corDD
+#'   n_envs = 3, n_traits = 2, mean = mean,
+#'   T_var = T_var, E_var = E_var,
+#'   T_cor_A = T_cor_A, E_cor_A = E_cor_A,
+#'   mean_DD = mean_DD, var_DD = var_DD,
+#'   cor_DD = cor_DD
 #' )
 #'
 #'
@@ -172,12 +172,13 @@
 #'   nQtlPerChr = 100,
 #'   mean = input_asr$mean,
 #'   var = input_asr$var,
-#'   meanDD = input_asr$meanDD,
-#'   varDD = input_asr$varDD,
-#'   corA = input_asr$corA,
-#'   corDD = input_asr$corDD,
+#'   meanDD = input_asr$mean_DD,
+#'   varDD = input_asr$var_DD,
+#'   corA = input_asr$cor_A,
+#'   corDD = input_asr$cor_DD,
 #'   useVarA = TRUE
-#' ) # Variance in var is used as additive variance.
+#' )
+#' # Variance in var is used as additive variance.
 #' # If FALSE, var = total genetic variance.
 #'
 #' pop <- newPop(FOUNDERPOP)
@@ -186,29 +187,44 @@
 #' # 3. Create a data frame containing the simulated genetic values for each of the two traits
 #' #    and three environments.
 #'
-#' nReps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
+#' n_reps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 #'
-#' trial_df <- unstr_asr_output(pop = pop, nEnvs = 3, nReps = nReps, nTraits = 2)
+#' trial_df <- unstr_asr_output(pop = pop, n_envs = 3, n_reps = n_reps, n_traits = 2)
 #'
 #' @export
-unstr_asr_input <- function(nEnvs, nTraits, mean,
-                            var = NULL, Tvar = NULL, Evar = NULL,
-                            corA = NULL, EcorA = NULL, TcorA = NULL,
-                            meanDD = NULL, varDD = NULL,
-                            EvarDD = NULL, TvarDD = NULL,
-                            corDD = NULL, EcorDD = NULL, TcorDD = NULL,
-                            relAA = NULL, ErelAA = NULL, TrelAA = NULL,
-                            corAA = NULL, EcorAA = NULL, TcorAA = NULL) {
-  if (nEnvs < 2) stop("'nEnvs' must be > 1")
-  if (nEnvs %% 1 != 0) stop("'nEnvs' must be an integer")
-  if (nTraits < 1 | nTraits %% 1 != 0) stop("'nTraits' must be an integer > 0")
+unstr_asr_input <- function(n_envs,
+                            n_traits,
+                            mean,
+                            var = NULL,
+                            T_var = NULL,
+                            E_var = NULL,
+                            cor_A = NULL,
+                            E_cor_A = NULL,
+                            T_cor_A = NULL,
+                            mean_DD = NULL,
+                            var_DD = NULL,
+                            E_var_DD = NULL,
+                            T_var_DD = NULL,
+                            cor_DD = NULL,
+                            E_cor_DD = NULL,
+                            T_cor_DD = NULL,
+                            rel_AA = NULL,
+                            E_rel_AA = NULL,
+                            T_rel_AA = NULL,
+                            cor_AA = NULL,
+                            E_cor_AA = NULL,
+                            T_cor_AA = NULL) {
+
+  if (n_envs < 2) stop("'n_envs' must be > 1")
+  if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
+  if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
 
 
-  if (is.null(meanDD) & is.null(varDD) & is.null(EvarDD) & is.null(relAA) & is.null(ErelAA)) {
+  if (is.null(mean_DD) & is.null(var_DD) & is.null(E_var_DD) & is.null(rel_AA) & is.null(E_rel_AA)) {
     labels <- "A"
-  } else if (is.null(meanDD) & is.null(varDD) & is.null(EvarDD)) {
+  } else if (is.null(mean_DD) & is.null(var_DD) & is.null(E_var_DD)) {
     labels <- c("A", "AA")
-  } else if (is.null(relAA) & is.null(ErelAA)) {
+  } else if (is.null(rel_AA) & is.null(E_rel_AA)) {
     labels <- c("A", "DD")
   } else {
     labels <- c("A", "DD", "AA")
@@ -217,270 +233,270 @@ unstr_asr_input <- function(nEnvs, nTraits, mean,
 
   for (i in labels) {
     if (i == "A") {
-      if (length(mean) == nTraits) {
-        meanPseudo <- rep(mean, each = nEnvs)
-      } else if (length(mean) == (nTraits * nEnvs)) {
-        meanPseudo <- mean
+      if (length(mean) == n_traits) {
+        mean_pseudo <- rep(mean, each = n_envs)
+      } else if (length(mean) == (n_traits * n_envs)) {
+        mean_pseudo <- mean
       } else {
         stop("Number of values in argument 'mean' must either match number of
                traits or number of trait x environment combinations")
       }
 
 
-      if (!is.null(var) & !is.null(Evar)) {
-        stop("Either argument 'var' or 'Evar' must be provided")
+      if (!is.null(var) & !is.null(E_var)) {
+        stop("Either argument 'var' or 'E_var' must be provided")
       } else if (!is.null(var)) {
-        if (!is.null(Tvar)) {
-          stop("Argument 'Tvar' must be NULL if 'var' is provided")
+        if (!is.null(T_var)) {
+          stop("Argument 'T_var' must be NULL if 'var' is provided")
         }
-        if (length(var) == (nTraits * nEnvs)) {
-          varPseudo <- var
+        if (length(var) == (n_traits * n_envs)) {
+          var_pseudo <- var
         } else {
           stop("Number of values in argument 'var' must match number of
                  trait x environment combinations")
         }
-      } else if (!is.null(Evar)) {
-        if (length(Evar) != nEnvs) {
-          stop("Number of values in argument 'Evar' must match number of
-                 environments (nEnvs)")
+      } else if (!is.null(E_var)) {
+        if (length(E_var) != n_envs) {
+          stop("Number of values in argument 'E_var' must match number of
+                 environments (n_envs)")
         }
-        if (is.null(Tvar)) stop("Argument 'Tvar' is not provided")
-        if (length(Tvar) != nTraits) {
-          stop("Number of values in argument 'Tvar' must match number of
-                 traits (nTraits)")
+        if (is.null(T_var)) stop("Argument 'T_var' is not provided")
+        if (length(T_var) != n_traits) {
+          stop("Number of values in argument 'T_var' must match number of
+                 traits (n_traits)")
         }
-        varPseudo <- rep(Tvar, each = nEnvs) * rep(Evar, nTraits)
+        var_pseudo <- rep(T_var, each = n_envs) * rep(E_var, n_traits)
       } else {
-        stop("Either argument 'var' or 'Evar' must be provided")
+        stop("Either argument 'var' or 'E_var' must be provided")
       }
 
 
-      if (!is.null(corA) & !is.null(EcorA)) { ### CHECK @Chrstian
-        stop("Either argument 'corA' or 'EcorA' must be provided")
-      } else if (!is.null(corA)) {
-        if (!is.null(TcorA)) {
-          stop("Argument 'TcorA' must be NULL if 'corA' is provided")
+      if (!is.null(cor_A) & !is.null(E_cor_A)) {
+        stop("Either argument 'cor_A' or 'E_cor_A' must be provided")
+      } else if (!is.null(cor_A)) {
+        if (!is.null(T_cor_A)) {
+          stop("Argument 'T_cor_A' must be NULL if 'cor_A' is provided")
         }
-        if (nrow(corA) != length(meanPseudo) | ncol(corA) != length(meanPseudo)) {
-          stop("Dimension of 'corA' does not match number of trait x
+        if (nrow(cor_A) != length(mean_pseudo) | ncol(cor_A) != length(mean_pseudo)) {
+          stop("Dimension of 'cor_A' does not match number of trait x
                environment combinations")
         }
-        if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < (-1))) {
-          stop("'corA' is not a correlation matrix")
+        if (any(unique(diag(cor_A)) != 1) | any(cor_A > 1) | any(cor_A < (-1))) {
+          stop("'cor_A' is not a correlation matrix")
         }
-        if (!isSymmetric(corA)) stop("corA is not symmetric")
-        corPseudo <- corA
-      } else if (!is.null(EcorA)) {
-        if (is.null(TcorA) & nTraits == 1) {
-          TcorA <- matrix(1)
-        } else if (is.null(TcorA) & nTraits > 1) {
-          stop("Argument 'TcorA' must be provided if in combination with
-                   'EcorA' if nTraits > 1")
-        } else if (length(TcorA) == 1) {
-          TcorA <- matrix(1)
+        if (!isSymmetric(cor_A)) stop("cor_A is not symmetric")
+        cor_pseudo <- cor_A
+      } else if (!is.null(E_cor_A)) {
+        if (is.null(T_cor_A) & n_traits == 1) {
+          T_cor_A <- matrix(1)
+        } else if (is.null(T_cor_A) & n_traits > 1) {
+          stop("Argument 'T_cor_A' must be provided if in combination with
+                   'E_cor_A' if n_traits > 1")
+        } else if (length(T_cor_A) == 1) {
+          T_cor_A <- matrix(1)
         } else {
-          if (any(unique(diag(TcorA)) != 1) | any(TcorA > 1) | any(TcorA < (-1))) {
-            stop("'TcorA' is not a correlation matrix")
+          if (any(unique(diag(T_cor_A)) != 1) | any(T_cor_A > 1) | any(T_cor_A < (-1))) {
+            stop("'T_cor_A' is not a correlation matrix")
           }
-          if (!isSymmetric(TcorA)) stop("'TcorA' is not symmetric")
+          if (!isSymmetric(T_cor_A)) stop("'T_cor_A' is not symmetric")
         }
-        if ((nrow(EcorA) * nrow(TcorA)) != length(meanPseudo) | (ncol(EcorA) * ncol(TcorA)) != length(meanPseudo)) {
-          stop("Dimension of the 'EcorA' x 'TcorA' Kronecker product does not
+        if ((nrow(E_cor_A) * nrow(T_cor_A)) != length(mean_pseudo) | (ncol(E_cor_A) * ncol(T_cor_A)) != length(mean_pseudo)) {
+          stop("Dimension of the 'E_cor_A' x 'T_cor_A' Kronecker product does not
                  match number of trait x environment combinations")
         }
-        if (any(unique(diag(EcorA)) != 1) | any(EcorA > 1) | any(EcorA < (-1))) {
-          stop("'EcorA' is not a correlation matrix")
+        if (any(unique(diag(E_cor_A)) != 1) | any(E_cor_A > 1) | any(E_cor_A < (-1))) {
+          stop("'E_cor_A' is not a correlation matrix")
         }
-        if (!isSymmetric(EcorA)) stop("'EcorA' is not symmetric")
-        corPseudo <- kronecker(TcorA, EcorA)
+        if (!isSymmetric(E_cor_A)) stop("'E_cor_A' is not symmetric")
+        cor_pseudo <- kronecker(T_cor_A, E_cor_A)
       } else {
-        stop("Either argument 'corA' or 'EcorA' must be provided")
+        stop("Either argument 'cor_A' or 'E_cor_A' must be provided")
       }
 
 
-      inputAsr <- list(
-        mean = meanPseudo,
-        var = varPseudo,
-        corA = corPseudo
+      input_asr <- list(
+        mean = mean_pseudo,
+        var = var_pseudo,
+        cor_A = cor_pseudo
       )
     }
 
     if (i == "DD") {
-      if (length(meanDD) == nTraits) {
-        meanPseudo <- rep(meanDD, each = nEnvs)
-      } else if (length(meanDD) == (nTraits * nEnvs)) {
-        meanPseudo <- meanDD
+      if (length(mean_DD) == n_traits) {
+        mean_pseudo <- rep(mean_DD, each = n_envs)
+      } else if (length(mean_DD) == (n_traits * n_envs)) {
+        mean_pseudo <- mean_DD
       } else {
-        stop("Number of values in argument 'meanDD' must either match number
+        stop("Number of values in argument 'mean_DD' must either match number
                of traits or number of trait x environment combinations")
       }
 
 
-      if (!is.null(varDD) & !is.null(EvarDD)) {
-        stop("Either argument 'varDD' or 'EvarDD' must be provided")
-      } else if (!is.null(varDD)) {
-        if (!is.null(TvarDD)) {
-          stop("Argument 'TvarDD' must be NULL if 'varDD' is provided")
+      if (!is.null(var_DD) & !is.null(E_var_DD)) {
+        stop("Either argument 'var_DD' or 'E_var_DD' must be provided")
+      } else if (!is.null(var_DD)) {
+        if (!is.null(T_var_DD)) {
+          stop("Argument 'T_var_DD' must be NULL if 'var_DD' is provided")
         }
-        if (length(varDD) == (nTraits * nEnvs)) {
-          varPseudo <- varDD
+        if (length(var_DD) == (n_traits * n_envs)) {
+          var_pseudo <- var_DD
         } else {
-          stop("Number of values in argument 'varDD' must match number of
+          stop("Number of values in argument 'var_DD' must match number of
                  trait x environment combinations")
         }
-      } else if (!is.null(EvarDD)) {
-        if (length(Evar) != nEnvs) {
-          stop("Number of values in argument 'EvarDD' must match number of
-                 environments (nEnvs)")
+      } else if (!is.null(E_var_DD)) {
+        if (length(E_var) != n_envs) {
+          stop("Number of values in argument 'E_var_DD' must match number of
+                 environments (n_envs)")
         }
-        if (is.null(TvarDD)) stop("Argument 'TvarDD' is not provided")
-        if (length(TvarDD) != nTraits) {
-          stop("Number of values in argument 'TvarDD' must match number of
-                 traits (nTraits)")
+        if (is.null(T_var_DD)) stop("Argument 'T_var_DD' is not provided")
+        if (length(T_var_DD) != n_traits) {
+          stop("Number of values in argument 'T_var_DD' must match number of
+                 traits (n_traits)")
         }
-        varPseudo <- rep(TvarDD, each = nEnvs) * rep(EvarDD, nTraits)
+        var_pseudo <- rep(T_var_DD, each = n_envs) * rep(E_var_DD, n_traits)
       } else {
-        stop("Either argument 'varDD' or 'EvarDD' must be provided")
+        stop("Either argument 'var_DD' or 'E_var_DD' must be provided")
       }
 
 
-      if (!is.null(corDD) & !is.null(EcorDD)) {
-        stop("Either argument 'corDD' or 'EcorDD' must be provided")
-      } else if (!is.null(corDD)) {
-        if (!is.null(TcorDD)) {
-          stop("Argument 'TcorDD' must be NULL if 'corDD' is provided")
+      if (!is.null(cor_DD) & !is.null(E_cor_DD)) {
+        stop("Either argument 'cor_DD' or 'E_cor_DD' must be provided")
+      } else if (!is.null(cor_DD)) {
+        if (!is.null(T_cor_DD)) {
+          stop("Argument 'T_cor_DD' must be NULL if 'cor_DD' is provided")
         }
-        if (nrow(corDD) != length(meanPseudo) | ncol(corDD) != length(meanPseudo)) {
-          stop("Dimension of 'corDD' does not match number of trait x
+        if (nrow(cor_DD) != length(mean_pseudo) | ncol(cor_DD) != length(mean_pseudo)) {
+          stop("Dimension of 'cor_DD' does not match number of trait x
                environment combinations")
         }
-        if (any(unique(diag(corDD)) != 1) | any(corDD > 1) | any(corDD < (-1))) {
-          stop("'corDD' is not a correlation matrix")
+        if (any(unique(diag(cor_DD)) != 1) | any(cor_DD > 1) | any(cor_DD < (-1))) {
+          stop("'cor_DD' is not a correlation matrix")
         }
-        if (!isSymmetric(corDD)) stop("corDD is not symmetric")
-        corPseudo <- corDD
-      } else if (!is.null(EcorDD)) {
-        if (is.null(TcorDD) & nTraits == 1) {
-          TcorDD <- matrix(1)
-        } else if (is.null(TcorDD) & nTraits > 1) {
-          stop("Argument 'TcorDD' must be provided if in combination with
-                   'EcorDD' if nTraits > 1")
-        } else if (length(TcorDD) == 1) {
-          TcorDD <- matrix(1)
+        if (!isSymmetric(cor_DD)) stop("cor_DD is not symmetric")
+        cor_pseudo <- cor_DD
+      } else if (!is.null(E_cor_DD)) {
+        if (is.null(T_cor_DD) & n_traits == 1) {
+          T_cor_DD <- matrix(1)
+        } else if (is.null(T_cor_DD) & n_traits > 1) {
+          stop("Argument 'T_cor_DD' must be provided if in combination with
+                   'E_cor_DD' if n_traits > 1")
+        } else if (length(T_cor_DD) == 1) {
+          T_cor_DD <- matrix(1)
         } else {
-          if (any(unique(diag(TcorDD)) != 1) | any(TcorDD > 1) | any(TcorDD < (-1))) {
-            stop("'TcorDD' is not a correlation matrix")
+          if (any(unique(diag(T_cor_DD)) != 1) | any(T_cor_DD > 1) | any(T_cor_DD < (-1))) {
+            stop("'T_cor_DD' is not a correlation matrix")
           }
-          if (!isSymmetric(TcorDD)) stop("'TcorDD' is not symmetric")
+          if (!isSymmetric(T_cor_DD)) stop("'T_cor_DD' is not symmetric")
         }
-        if ((nrow(EcorDD) * nrow(TcorDD)) != length(meanPseudo) | (ncol(EcorDD) * ncol(TcorDD)) != length(meanPseudo)) {
-          stop("Dimension of the 'EcorDD' x 'TcorDD' Kronecker product does
+        if ((nrow(E_cor_DD) * nrow(T_cor_DD)) != length(mean_pseudo) | (ncol(E_cor_DD) * ncol(T_cor_DD)) != length(mean_pseudo)) {
+          stop("Dimension of the 'E_cor_DD' x 'T_cor_DD' Kronecker product does
                  not match number of trait x environment combinations")
         }
-        if (any(unique(diag(EcorDD)) != 1) | any(EcorDD > 1) | any(EcorDD < (-1))) {
-          stop("'EcorDD' is not a correlation matrix")
+        if (any(unique(diag(E_cor_DD)) != 1) | any(E_cor_DD > 1) | any(E_cor_DD < (-1))) {
+          stop("'E_cor_DD' is not a correlation matrix")
         }
-        if (!isSymmetric(EcorDD)) stop("'EcorDD' is not symmetric")
-        corPseudo <- kronecker(TcorDD, EcorDD)
+        if (!isSymmetric(E_cor_DD)) stop("'E_cor_DD' is not symmetric")
+        cor_pseudo <- kronecker(T_cor_DD, E_cor_DD)
       } else {
-        stop("Either argument 'corDD' or 'EcorDD' must be provided")
+        stop("Either argument 'cor_DD' or 'E_cor_DD' must be provided")
       }
 
 
-      inputAsr <- c(
-        inputAsr,
+      input_asr <- c(
+        input_asr,
         list(
-          meanDD = meanPseudo,
-          varDD = varPseudo,
-          corDD = corPseudo
+          mean_DD = mean_pseudo,
+          var_DD = var_pseudo,
+          cor_DD = cor_pseudo
         )
       )
     }
 
     if (i == "AA") {
-      if (!is.null(relAA) & !is.null(ErelAA)) {
-        stop("Either argument 'relAA' or 'ErelAA' must be provided")
-      } else if (!is.null(relAA)) {
-        if (!is.null(TrelAA)) {
-          stop("Argument 'TrelAA' must be NULL if 'relAA' is provided")
+      if (!is.null(rel_AA) & !is.null(E_rel_AA)) {
+        stop("Either argument 'rel_AA' or 'E_rel_AA' must be provided")
+      } else if (!is.null(rel_AA)) {
+        if (!is.null(T_rel_AA)) {
+          stop("Argument 'T_rel_AA' must be NULL if 'rel_AA' is provided")
         }
-        if (length(relAA) == (nTraits * nEnvs)) {
-          varPseudo <- relAA
+        if (length(rel_AA) == (n_traits * n_envs)) {
+          var_pseudo <- rel_AA
         } else {
-          stop("Number of values in argument 'relAA' must match number of
+          stop("Number of values in argument 'rel_AA' must match number of
                trait x environment combinations")
         }
-      } else if (!is.null(ErelAA)) {
-        if (length(ErelAA) != nEnvs) {
-          stop("Number of values in argument 'ErelAA' must match number of
-                 environments (nEnvs)")
+      } else if (!is.null(E_rel_AA)) {
+        if (length(E_rel_AA) != n_envs) {
+          stop("Number of values in argument 'E_rel_AA' must match number of
+                 environments (n_envs)")
         }
-        if (is.null(TrelAA)) stop("Argument 'TrelAA' is not provided")
-        if (length(TrelAA) != nTraits) {
-          stop("Number of values in argument 'TrelAA' must match number of
-                 traits (nTraits)")
+        if (is.null(T_rel_AA)) stop("Argument 'T_rel_AA' is not provided")
+        if (length(T_rel_AA) != n_traits) {
+          stop("Number of values in argument 'T_rel_AA' must match number of
+                 traits (n_traits)")
         }
-        varPseudo <- rep(TrelAA, each = nEnvs) * rep(ErelAA, nTraits)
+        var_pseudo <- rep(T_rel_AA, each = n_envs) * rep(E_rel_AA, n_traits)
       } else {
-        stop("Either argument 'relAA' or 'ErelAA' must be provided")
+        stop("Either argument 'rel_AA' or 'E_rel_AA' must be provided")
       }
 
 
-      if (!is.null(corAA) & !is.null(EcorAA)) {
-        stop("Either argument 'corAA' or 'EcorAA' must be provided")
-      } else if (!is.null(corAA)) {
-        if (!is.null(TcorAA)) {
-          stop("Argument 'TcorAA' must be NULL if 'corAA' is provided")
+      if (!is.null(cor_AA) & !is.null(E_cor_AA)) {
+        stop("Either argument 'cor_AA' or 'E_cor_AA' must be provided")
+      } else if (!is.null(cor_AA)) {
+        if (!is.null(T_cor_AA)) {
+          stop("Argument 'T_cor_AA' must be NULL if 'cor_AA' is provided")
         }
-        if (nrow(corAA) != length(meanPseudo) | ncol(corAA) != length(meanPseudo)) {
-          stop("Dimension of 'corAA' does not match number of trait x
+        if (nrow(cor_AA) != length(mean_pseudo) | ncol(cor_AA) != length(mean_pseudo)) {
+          stop("Dimension of 'cor_AA' does not match number of trait x
                environment combinations")
         }
-        if (any(unique(diag(corAA)) != 1) | any(corAA > 1) | any(corAA < (-1))) {
-          stop("'corAA' is not a correlation matrix")
+        if (any(unique(diag(cor_AA)) != 1) | any(cor_AA > 1) | any(cor_AA < (-1))) {
+          stop("'cor_AA' is not a correlation matrix")
         }
-        if (!isSymmetric(corAA)) stop("corAA is not symmetric")
-        corPseudo <- corAA
-      } else if (!is.null(EcorAA)) {
-        if (is.null(TcorAA) & nTraits == 1) {
-          TcorAA <- matrix(1)
-        } else if (is.null(TcorAA) & nTraits > 1) {
-          stop("Argument 'TcorAA' must be provided if in combination with
-                   'EcorAA' if nTraits > 1")
-        } else if (length(TcorAA) == 1) {
-          TcorAA <- matrix(1)
+        if (!isSymmetric(cor_AA)) stop("cor_AA is not symmetric")
+        cor_pseudo <- cor_AA
+      } else if (!is.null(E_cor_AA)) {
+        if (is.null(T_cor_AA) & n_traits == 1) {
+          T_cor_AA <- matrix(1)
+        } else if (is.null(T_cor_AA) & n_traits > 1) {
+          stop("Argument 'T_cor_AA' must be provided if in combination with
+                   'E_cor_AA' if n_traits > 1")
+        } else if (length(T_cor_AA) == 1) {
+          T_cor_AA <- matrix(1)
         } else {
-          if (any(unique(diag(TcorAA)) != 1) | any(TcorAA > 1) | any(TcorAA < (-1))) {
-            stop("'TcorAA' is not a correlation matrix")
+          if (any(unique(diag(T_cor_AA)) != 1) | any(T_cor_AA > 1) | any(T_cor_AA < (-1))) {
+            stop("'T_cor_AA' is not a correlation matrix")
           }
-          if (!isSymmetric(TcorAA)) stop("'TcorAA' is not symmetric")
+          if (!isSymmetric(T_cor_AA)) stop("'T_cor_AA' is not symmetric")
         }
-        if ((nrow(EcorAA) * nrow(TcorAA)) != length(meanPseudo) | (ncol(EcorAA) * ncol(TcorAA)) != length(meanPseudo)) {
-          stop("Dimension of the 'EcorAA' x 'TcorAA' Kronecker product does not
+        if ((nrow(E_cor_AA) * nrow(T_cor_AA)) != length(mean_pseudo) | (ncol(E_cor_AA) * ncol(T_cor_AA)) != length(mean_pseudo)) {
+          stop("Dimension of the 'E_cor_AA' x 'T_cor_AA' Kronecker product does not
                  match number of trait x environment combinations")
         }
-        if (any(unique(diag(EcorAA)) != 1) | any(EcorAA > 1) | any(EcorAA < (-1))) {
-          stop("'EcorAA' is not a correlation matrix")
+        if (any(unique(diag(E_cor_AA)) != 1) | any(E_cor_AA > 1) | any(E_cor_AA < (-1))) {
+          stop("'E_cor_AA' is not a correlation matrix")
         }
-        if (!isSymmetric(EcorAA)) stop("'EcorAA' is not symmetric")
-        corPseudo <- kronecker(TcorAA, EcorAA)
+        if (!isSymmetric(E_cor_AA)) stop("'E_cor_AA' is not symmetric")
+        cor_pseudo <- kronecker(T_cor_AA, E_cor_AA)
       } else {
-        stop("Either argument 'corAA' or 'EcorAA' must be provided")
+        stop("Either argument 'cor_AA' or 'E_cor_AA' must be provided")
       }
 
 
-      inputAsr <- c(
-        inputAsr,
+      input_asr <- c(
+        input_asr,
         list(
-          meanAA = rep(0, nEnvs * nTraits),
-          relAA = varPseudo,
-          corAA = corPseudo
+          meanAA = rep(0, n_envs * n_traits),
+          rel_AA = var_pseudo,
+          cor_AA = cor_pseudo
         )
       )
     }
   }
 
-  return(inputAsr)
+  return(input_asr)
 }
 
 
@@ -497,10 +513,10 @@ unstr_asr_input <- function(nEnvs, nTraits, mean,
 #' @param pop An AlphaSimR population object
 #'   (\code{\link[AlphaSimR]{Pop-class}} or \code{\link[AlphaSimR]{HybridPop-class}})
 #'    generated using \link[FieldSimR]{unstr_asr_input}.
-#' @param nEnvs Number of simulated environments (same as in \link[FieldSimR]{unstr_asr_input}.
-#' @param nReps A vector with the number of complete replicates in each
+#' @param n_envs Number of simulated environments (same as in \link[FieldSimR]{unstr_asr_input}.
+#' @param n_reps A vector with the number of complete replicates in each
 #'   environment. If only one value is provided, then all environments will be assigned the same value.
-#' @param nTraits Number of simulated traits (same as in \link[FieldSimR]{unstr_asr_input}.
+#' @param n_traits Number of simulated traits (same as in \link[FieldSimR]{unstr_asr_input}.
 #'
 #' @return A data-frame containing environment number, replicate number, genotype
 #'   ID and simulated genetic values for each trait.
@@ -513,40 +529,40 @@ unstr_asr_input <- function(nEnvs, nTraits, mean,
 #' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments
 #' # and trait 2 in 3 environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # trait 1 by 3 envs, trait 2 by 3 envs.
-#' meanDD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
+#' mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
 #'
 #' # Additive genetic variances (set usevarA=TRUE) and dominance degree variances for the two traits,
 #' # that is assuming a separable structure between traits and environments
-#' Tvar <- c(0.2, 10)
-#' Evar <- c(0.5, 1, 1.5)
+#' T_var <- c(0.2, 10)
+#' E_var <- c(0.5, 1, 1.5)
 #'
 #' # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments,
 #' # that is assuming a non-separable structure between traits and environments
-#' varDD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
+#' var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 #'
 #'
 #' # Additive genetic correlations between traits.
-#' TcorA <- matrix(c(
+#' T_cor_A <- matrix(c(
 #'   1.0, 0.3,
 #'   0.3, 1.0
 #' ), ncol = 2)
 #'
 #' # Additive genetic correlations between environments.
-#' EcorA <- cov2cor(matrix(c(
+#' E_cor_A <- cov2cor(matrix(c(
 #'   0.5, 0.4, 0.6,
 #'   0.4, 1, 0.5,
 #'   0.6, 0.5, 1.5
 #' ), ncol = 3))
 #'
 #' # Dominance degree correlation between all six trait-by-environment cobinations
-#' corDD <- diag(6) # assuming independence between traits
+#' cor_DD <- diag(6) # assuming independence between traits
 #'
 #' input_asr <- unstr_asr_input(
-#'   nEnvs = 3, nTraits = 2, mean = mean,
-#'   Tvar = Tvar, Evar = Evar,
-#'   TcorA = TcorA, EcorA = EcorA,
-#'   meanDD = meanDD, varDD = varDD,
-#'   corDD = corDD
+#'   n_envs = 3, n_traits = 2, mean = mean,
+#'   T_var = T_var, E_var = E_var,
+#'   T_cor_A = T_cor_A, E_cor_A = E_cor_A,
+#'   mean_DD = mean_DD, var_DD = var_DD,
+#'   cor_DD = cor_DD
 #' )
 #'
 #'
@@ -566,12 +582,13 @@ unstr_asr_input <- function(nEnvs, nTraits, mean,
 #'   nQtlPerChr = 100,
 #'   mean = input_asr$mean,
 #'   var = input_asr$var,
-#'   meanDD = input_asr$meanDD,
-#'   varDD = input_asr$varDD,
-#'   corA = input_asr$corA,
-#'   corDD = input_asr$corDD,
+#'   meanDD = input_asr$mean_DD,
+#'   varDD = input_asr$var_DD,
+#'   corA = input_asr$cor_A,
+#'   corDD = input_asr$cor_DD,
 #'   useVarA = TRUE
-#' ) # Variance in var is used as additive variance.
+#' )
+#' # Variance in var is used as additive variance.
 #' # If FALSE, var = total genetic variance.
 #'
 #' pop <- newPop(FOUNDERPOP)
@@ -580,36 +597,40 @@ unstr_asr_input <- function(nEnvs, nTraits, mean,
 #' # 3. Create a data frame containing the simulated genetic values for each of the two traits
 #' #    and three environments.
 #'
-#' nReps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
+#' n_reps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 #'
-#' trial_df <- unstr_asr_output(pop = pop, nEnvs = 3, nReps = nReps, nTraits = 2)
+#' trial_df <- unstr_asr_output(pop = pop, n_envs = 3, n_reps = n_reps, n_traits = 2)
 #'
 #' @export
-unstr_asr_output <- function(pop, nEnvs, nReps, nTraits) {
-  if (nEnvs < 2) stop("'nEnvs' must be > 1")
-  if (nEnvs %% 1 != 0) stop("'nEnvs' must be an integer")
+unstr_asr_output <- function(pop,
+                             n_envs,
+                             n_reps,
+                             n_traits) {
 
-  if ((sum(nReps < 1) > 0) | (sum(nReps %% 1 != 0) > 0)) {
-    stop("'nReps' must contain positive integer values")
+  if (n_envs < 2) stop("'n_envs' must be > 1")
+  if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
+
+  if ((sum(n_reps < 1) > 0) | (sum(n_reps %% 1 != 0) > 0)) {
+    stop("'n_reps' must contain positive integer values")
   }
-  if (length(nReps) == 1) nReps <- rep(nReps, nEnvs)
+  if (length(n_reps) == 1) n_reps <- rep(n_reps, n_envs)
 
-  if (nTraits < 1 | nTraits %% 1 != 0) stop("'nTraits' must be an integer > 0")
+  if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
 
-  envs <- rep(1:nEnvs, times = length(pop@id) * nReps)
-  reps <- unlist(lapply(nReps, function(x) rep(1:x, each = length(pop@id))))
+  envs <- rep(1:n_envs, times = length(pop@id) * n_reps)
+  reps <- unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id))))
 
-  index <- as.list(as.data.frame(t(matrix(1:(nTraits * nEnvs), ncol = nTraits))))
+  index <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), ncol = n_traits))))
   gv <- lapply(index, function(x) pop@gv[, x])
-  gv <- do.call(rbind, mapply(function(x, y) x[rep(1:nrow(x), y), ], x = gv, y = as.list(nReps), SIMPLIFY = F))
-  colnames(gv) <- paste0("Trait.", 1:nTraits)
+  gv <- do.call(rbind, mapply(function(x, y) x[rep(1:nrow(x), y), ], x = gv, y = as.list(n_reps), SIMPLIFY = F))
+  colnames(gv) <- paste0("Trait.", 1:n_traits)
 
-  unstrAsr <- data.frame(
+  unstr_asr <- data.frame(
     env = envs,
     rep = reps,
     id = pop@id,
     gv = gv
   )
 
-  return(unstrAsr)
+  return(unstr_asr)
 }

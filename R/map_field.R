@@ -5,34 +5,38 @@
 #' sampled correlations can be set.
 #'
 #' @param p A scalar defining the dimension of the correlation matrix
-#' @param minCor A scalar defining the minimum correlation. By default,
-#'   minCor = -1.
-#' @param maxCor A scalar defining the maximum correlation. By default,
-#'   maxCor = 1.
-#' @param digits Decimal digits. By default, digits = 2.
+#' @param min_cor A scalar defining the minimum correlation. By default,
+#'   min_cor = -1.
+#' @param max_cor A scalar defining the maximum correlation. By default,
+#'   max_cor = 1.
+#' @param n_digits Number of decimal digits. By default, n_digits = 2.
 #'
 #' @return A p x p correlation matrix.
 #'
 #' @examples
-#' # corA <- rand_cor_mat(10, minCor = -0.2, maxCor = 0.8)
+#' # cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8)
 #'
 #' @export
-rand_cor_mat <- function(p, minCor = -1, maxCor = 1, digits = 2) {
+rand_cor_mat <- function(p,
+                         min_cor = -1,
+                         max_cor = 1,
+                         n_digits = 2) {
+
   if (p < 1 | p %% 1 != 0) stop("'p' must be an integer > 0")
 
-  if (minCor < -1 | minCor >= 1) stop("'minCor' must be value >= -1 and < 1")
-  if (maxCor <= -1 | minCor > 1) stop("'maxCor' must be value > -1 and <= 1")
-  if (maxCor < minCor) stop("'maxCor' must not be smaller than 'minCor'")
+  if (min_cor < -1 | min_cor >= 1) stop("'min_cor' must be value >= -1 and < 1")
+  if (max_cor <= -1 | min_cor > 1) stop("'max_cor' must be value > -1 and <= 1")
+  if (max_cor < min_cor) stop("'max_cor' must not be smaller than 'min_cor'")
 
-  nCor <- sum(seq(1, (p - 1)))
+  n_cor <- sum(seq(1, (p - 1)))
 
-  offDg <- round(stats::runif(nCor, min = minCor, max = maxCor), digits = digits)
-  corMat <- diag(p)
-  corMat[lower.tri(corMat, diag = FALSE)] <- offDg
-  corMat <- t(corMat)
-  corMat[lower.tri(corMat, diag = FALSE)] <- offDg
+  off_dg <- round(stats::runif(n_cor, min = min_cor, max = max_cor), n_digits)
+  cor_mat <- diag(p)
+  cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
+  cor_mat <- t(cor_mat)
+  cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
 
-  return(corMat)
+  return(cor_mat)
 }
 
 
@@ -67,48 +71,52 @@ rand_cor_mat <- function(p, minCor = -1, maxCor = 1, digits = 2) {
 #' # Simulation of residuals for two traits tested in three environments using
 #' # bivariate interpolation to model spatial variation.
 #'
-#' nEnvs <- 3 # number of simulated environments.
-#' nTraits <- 2 # number of simulated traits.
+#' n_envs <- 3 # number of simulated environments.
+#' n_traits <- 2 # number of simulated traits.
 #'
 #' # Field layout
-#' nCols <- 10 # total number of columns in each environment.
-#' nRows <- c(20, 30, 20) # total number of rows per environment.
-#' plotLength <- 5 # plot length of 5 meters.
-#' plotWidth <- 2 # plot width of 2 meters.
-#' nReps <- c(2, 3, 2) # number of complete replicates per environment.
+#' n_cols <- 10 # total number of columns in each environment.
+#' n_rows <- c(20, 30, 20) # total number of rows per environment.
+#' plot_length <- 5 # plot length of 5 meters.
+#' plot_width <- 2 # plot width of 2 meters.
+#' n_reps <- c(2, 3, 2) # number of complete replicates per environment.
 #'
 #' # Residual variances for traits 1 and 2
-#' varR <- c(0.4, 15)
+#' var_R <- c(0.4, 15)
 #'
-#' # Residual correlations between traits 1 and 2, with regards to spatial model
-#' corR <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
+#' # Residual cor_Relations between traits 1 and 2, with regards to spatial model
+#' cor_R <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
 #'
 #' plot_df <- field_error(
-#'   nEnvs = nEnvs, nTraits = nTraits,
-#'   nCols = nCols, nRows = nRows, plotLength = plotLength,
-#'   plotWidth = plotWidth, nReps = nReps, repDir = "row",
-#'   varR = varR, corR = corR, spatialModel = "bivariate",
-#'   propSpatial = 0.6, complexity = 14, effects = FALSE
+#'   n_envs = n_envs, n_traits = n_traits,
+#'   n_cols = n_cols, n_rows = n_rows, plot_length = plot_length,
+#'   plot_width = plot_width, n_reps = n_reps, rep_dir = "row",
+#'   var_R = var_R, cor_R = cor_R, spatial_model = "bivariate",
+#'   prop_spatial = 0.6, complexity = 14, effects = FALSE
 #' )
 #'
 #' # Plot the simulated error for trait 2 in environment 2.
 #' map_field(plot_df, env = 2, trait = "e.Trait.2")
 #'
 #' @export
-map_field <- function(df, env, trait, borders = TRUE) {
+map_field <- function(df,
+                      env,
+                      trait,
+                      borders = TRUE) {
+
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
   trt <- which(colnames(df) == trait)
   df <- subset(df, env == env)
-  nRows <- length(unique(df$row))
-  nCols <- length(unique(df$col))
+  n_rows <- length(unique(df$row))
+  n_cols <- length(unique(df$col))
 
-  plotMat <- matrix(numeric(), nrow = nRows, ncol = nCols)
+  plot_mat <- matrix(numeric(), nrow = n_rows, ncol = n_cols)
 
   for (i in 1:nrow(df)) {
     r <- df$row[i]
     c <- df$col[i]
-    plotMat[r, c] <- df[i, trt]
+    plot_mat[r, c] <- df[i, trt]
   }
 
   if (length(unique(df$block)) > 1) {
@@ -126,23 +134,23 @@ map_field <- function(df, env, trait, borders = TRUE) {
     }
   }
 
-  xLabs <- seq(2, ncol(plotMat), 2)
-  xTicks <- (seq(2, ncol(plotMat), 2) - 0.5)
+  x_labs <- seq(2, ncol(plot_mat), 2)
+  x_ticks <- (seq(2, ncol(plot_mat), 2) - 0.5)
 
-  yLabs <- seq(2, nrow(plotMat), 2)
-  yTicks <- (seq(2, nrow(plotMat), 2) - 0.5)
+  y_labs <- seq(2, nrow(plot_mat), 2)
+  y_ticks <- (seq(2, nrow(plot_mat), 2) - 0.5)
 
   fields::image.plot(
-    x = 0:nCols[1], y = 0:nRows[1],
-    z = t(plotMat), zlim = range(plotMat),
-    ylim = rev(range(0:nRows[1])),
+    x = 0:n_cols[1], y = 0:n_rows[1],
+    z = t(plot_mat), zlim = range(plot_mat),
+    ylim = rev(range(0:n_rows[1])),
     col = grDevices::hcl.colors(n = 100000, "RdYlGn"),
     xlab = "Column", ylab = "Row", axes = FALSE
   )
 
   graphics::box()
-  graphics::axis(1, at = xTicks, labels = xLabs)
-  graphics::axis(2, at = yTicks, labels = yLabs)
+  graphics::axis(1, at = x_ticks, labels = x_labs)
+  graphics::axis(2, at = y_ticks, labels = y_labs)
 
   if (borders == TRUE & length(unique(df$block)) > 1) {
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "#000000", lwd = 5)
