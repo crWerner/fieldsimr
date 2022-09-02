@@ -156,7 +156,6 @@ compsym_asr_input <- function(n_envs,
                               rel_AA = NULL,
                               rel_main_eff_AA = NULL,
                               cor_AA = NULL) {
-
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
@@ -453,7 +452,6 @@ compsym_asr_output <- function(pop,
                                n_reps,
                                n_traits,
                                effects = FALSE) {
-
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
 

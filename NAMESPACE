@@ -2,8 +2,8 @@
 
 export(compsym_asr_input)
 export(compsym_asr_output)
-export(field_error)
-export(map_field)
+export(field_trial_error)
+export(plot_trial_effects)
 export(rand_cor_mat)
 export(unstr_asr_input)
 export(unstr_asr_output)

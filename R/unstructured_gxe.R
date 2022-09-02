@@ -214,7 +214,6 @@ unstr_asr_input <- function(n_envs,
                             cor_AA = NULL,
                             E_cor_AA = NULL,
                             T_cor_AA = NULL) {
-
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
@@ -606,7 +605,6 @@ unstr_asr_output <- function(pop,
                              n_envs,
                              n_reps,
                              n_traits) {
-
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
 
