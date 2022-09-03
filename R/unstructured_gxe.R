@@ -1,7 +1,8 @@
 #' Unstructured model for genotype-by-environment interaction using AlphaSimR -
 #' input parameters
 #'
-#' Creates a list of simulation parameters for use with AlphaSimR to simulate
+#' Creates a list of simulation parameters for use with
+#' \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
 #' genetic values across multiple environments and traits based on an
 #' unstructured model for genotype-by-environment (GxE) interaction.
 #' By default AlphaSimR does not support complex models for GxE interaction.
@@ -10,17 +11,24 @@
 #' \code{unstr_asr_input} constructs the required variance structure
 #' for an unstructured model.
 #'
-#' \strong{NOTE:} \code{unstr_asr_input} handles non-separable and separable
-#' structures between traits and environments. For the non-separable structure,
-#' provide (1) \code{var} and (2) \code{cor_A}. For the separable structure,
-#' provide (1) \code{T_var}, \code{E_var} and (2) \code{T_cor_A}, \code{E_cor_A}.
-#' Similar groups of terms are required for dominance and epistatic traits.
+#' \code{unstr_asr_input} handles non-separable and separable structures between
+#' traits and environments.
+#' \itemize{
+#'   \item For the non-separable structure, provide (1) \code{var} & (2) \code{cor_A}.
+#'   \item For the separable structure, provide (1) \code{T_var}, \code{E_var} & (2) \code{T_cor_A},
+#'         \code{E_cor_A}. \cr
+#'   }
 #'
-#' \strong{NOTE:} for additive traits use AlphaSimR's \code{addTraitA()};
-#' for additive + dominance traits use \code{addTraitAD()}; for additive +
-#' epistatic traits use \code{addTraitAE()}; and for additive + dominance +
-#' epistatic traits use \code{addTraitADE()}. If non-additive effects are required,
-#' check the \code{useVarA} argument of AlphaSimR's \code{addTrait} methods.
+#' \strong{Note:} 'AlphaSimR' can simulate different biological effects (see:
+#' \code{\link[AlphaSimR]{SimParam}}).
+#' \itemize{
+#'   \item For additive traits use \code{addTraitA()}.
+#'   \item For additive + dominance traits use \code{addTraitAD()}.
+#'   \item For additive + epistatic traits use \code{addTraitAE()}.
+#'   \item For additive + dominance + epistatic traits use \code{addTraitADE()}.
+#'   }
+#' If non-additive effects are to be simulated, check the \code{useVarA} argument of these
+#' functions.
 #'
 #'
 #' @param n_envs Number of environments to be simulated. A minimum of two
@@ -112,84 +120,49 @@
 #'   GxE interaction.
 #'
 #' @examples
-#' # Simulation of genetic values for two additive + dominance traits in three
-#' # environments in AlphaSimR based on an unstructured GxE interaction model.
+#' # Simulation of genetic values for two additive + dominance traits in three environments in
+#' # AlphaSimR based on an unstructured GxE interaction model.
 #'
-#' # 1. Assign genetic architecture of traits
-#' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments
-#' # and trait 2 in 3 environments.
+#' # 1. Assign genetic architecture of traits.
+#' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments and trait 2 in
+#' # 3 environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # trait 1 by 3 envs, trait 2 by 3 envs.
-#' mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
+#' mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait.
 #'
-#' # Additive genetic variances (set usevarA=TRUE) and dominance degree variances for the two traits,
-#' # that is assuming a separable structure between traits and environments
+#' # Additive genetic variances (usevarA = TRUE) and dominance degree variances for the two traits,
+#' # that is assuming a separable structure between traits and environments.
 #' T_var <- c(0.2, 10)
 #' E_var <- c(0.5, 1, 1.5)
 #'
-#' # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments,
-#' # that is assuming a non-separable structure between traits and environments
+#' # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments, that
+#' # is assuming a non-separable structure between traits and environments.
 #' var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 #'
 #'
 #' # Additive genetic correlations between traits.
-#' T_cor_A <- matrix(c(
-#'   1.0, 0.3,
-#'   0.3, 1.0
-#' ), ncol = 2)
+#' T_cor_A <- matrix(c(1.0, 0.3,
+#'                     0.3, 1.0),
+#'                     ncol = 2)
 #'
 #' # Additive genetic correlations between environments.
-#' E_cor_A <- cov2cor(matrix(c(
-#'   0.5, 0.4, 0.6,
-#'   0.4, 1, 0.5,
-#'   0.6, 0.5, 1.5
-#' ), ncol = 3))
+#' E_cor_A <- cov2cor(matrix(c(0.5, 0.4, 0.6,
+#'                             0.4, 1.0, 0.5,
+#'                             0.6, 0.5, 1.5),
+#'                             ncol = 3))
 #'
-#' # Dominance degree correlation between all six trait-by-environment cobinations
+#' # Dominance degree correlation between all six trait-by-environment combinations.
 #' cor_DD <- diag(6) # assuming independence between traits
 #'
-#' input_asr <- unstr_asr_input(
-#'   n_envs = 3, n_traits = 2, mean = mean,
-#'   T_var = T_var, E_var = E_var,
-#'   T_cor_A = T_cor_A, E_cor_A = E_cor_A,
-#'   mean_DD = mean_DD, var_DD = var_DD,
-#'   cor_DD = cor_DD
-#' )
-#'
-#'
-#' # 2. Use input_asr to simulate genetic values in AlphaSimR based on an unstructured model for
-#' #    GxE interaction.
-#'
-#' library(AlphaSimR)
-#' FOUNDERPOP <- quickHaplo(
-#'   nInd = 100,
-#'   nChr = 6,
-#'   segSites = 100
-#' )
-#'
-#' SP <- SimParam$new(FOUNDERPOP)
-#'
-#' SP$addTraitAD(
-#'   nQtlPerChr = 100,
-#'   mean = input_asr$mean,
-#'   var = input_asr$var,
-#'   meanDD = input_asr$mean_DD,
-#'   varDD = input_asr$var_DD,
-#'   corA = input_asr$cor_A,
-#'   corDD = input_asr$cor_DD,
-#'   useVarA = TRUE
-#' )
-#' # Variance in var is used as additive variance.
-#' # If FALSE, var = total genetic variance.
-#'
-#' pop <- newPop(FOUNDERPOP)
-#'
-#'
-#' # 3. Create a data frame containing the simulated genetic values for each of the two traits
-#' #    and three environments.
-#'
-#' n_reps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
-#'
-#' trial_df <- unstr_asr_output(pop = pop, n_envs = 3, n_reps = n_reps, n_traits = 2)
+#' input_asr <- unstr_asr_input(n_envs = 3,
+#'                              n_traits = 2,
+#'                              mean = mean,
+#'                              T_var = T_var,
+#'                              E_var = E_var,
+#'                              T_cor_A = T_cor_A,
+#'                              E_cor_A = E_cor_A,
+#'                              mean_DD = mean_DD,
+#'                              var_DD = var_DD,
+#'                              cor_DD = cor_DD)
 #'
 #' @export
 unstr_asr_input <- function(n_envs,
@@ -521,72 +494,70 @@ unstr_asr_input <- function(n_envs,
 #'   ID and simulated genetic values for each trait.
 #'
 #' @examples
-#' # Simulation of genetic values for two additive + dominance traits in three
-#' # environments in AlphaSimR based on an unstructured GxE interaction model.
+#' # Simulation of genetic values for two additive + dominance traits in three environments in
+#' # AlphaSimR based on an unstructured GxE interaction model.
 #'
-#' # 1. Assign genetic architecture of traits
-#' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments
-#' # and trait 2 in 3 environments.
+#' # 1. Assign genetic architecture of traits.
+#' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments and trait 2 in
+#' # 3 environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # trait 1 by 3 envs, trait 2 by 3 envs.
-#' mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait
+#' mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait.
 #'
-#' # Additive genetic variances (set usevarA=TRUE) and dominance degree variances for the two traits,
-#' # that is assuming a separable structure between traits and environments
+#' # Additive genetic variances (usevarA = TRUE) and dominance degree variances for the two traits,
+#' # that is assuming a separable structure between traits and environments.
 #' T_var <- c(0.2, 10)
 #' E_var <- c(0.5, 1, 1.5)
 #'
-#' # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments,
-#' # that is assuming a non-separable structure between traits and environments
+#' # Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments, that
+#' # is assuming a non-separable structure between traits and environments.
 #' var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 #'
 #'
 #' # Additive genetic correlations between traits.
-#' T_cor_A <- matrix(c(
-#'   1.0, 0.3,
-#'   0.3, 1.0
-#' ), ncol = 2)
+#' T_cor_A <- matrix(c(1.0, 0.3,
+#'                     0.3, 1.0),
+#'                     ncol = 2)
 #'
 #' # Additive genetic correlations between environments.
-#' E_cor_A <- cov2cor(matrix(c(
-#'   0.5, 0.4, 0.6,
-#'   0.4, 1, 0.5,
-#'   0.6, 0.5, 1.5
-#' ), ncol = 3))
+#' E_cor_A <- cov2cor(matrix(c(0.5, 0.4, 0.6,
+#'                             0.4, 1.0, 0.5,
+#'                             0.6, 0.5, 1.5),
+#'                             ncol = 3))
 #'
-#' # Dominance degree correlation between all six trait-by-environment cobinations
+#' # Dominance degree correlation between all six trait-by-environment combinations.
 #' cor_DD <- diag(6) # assuming independence between traits
 #'
-#' input_asr <- unstr_asr_input(
-#'   n_envs = 3, n_traits = 2, mean = mean,
-#'   T_var = T_var, E_var = E_var,
-#'   T_cor_A = T_cor_A, E_cor_A = E_cor_A,
-#'   mean_DD = mean_DD, var_DD = var_DD,
-#'   cor_DD = cor_DD
-#' )
+#' input_asr <- unstr_asr_input(n_envs = 3,
+#'                              n_traits = 2,
+#'                              mean = mean,
+#'                              T_var = T_var,
+#'                              E_var = E_var,
+#'                              T_cor_A = T_cor_A,
+#'                              E_cor_A = E_cor_A,
+#'                              mean_DD = mean_DD,
+#'                              var_DD = var_DD,
+#'                              cor_DD = cor_DD)
 #'
 #'
 #' # 2. Use input_asr to simulate genetic values in AlphaSimR based on an unstructured model for
-#' #    GxE interaction.
+#' # GxE interaction.
 #'
 #' library(AlphaSimR)
-#' FOUNDERPOP <- quickHaplo(
-#'   nInd = 100,
-#'   nChr = 6,
-#'   segSites = 100
-#' )
+#' FOUNDERPOP <- quickHaplo(nInd = 100,
+#'                          nChr = 6,
+#'                          segSites = 100)
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
-#' SP$addTraitAD(
-#'   nQtlPerChr = 100,
-#'   mean = input_asr$mean,
-#'   var = input_asr$var,
-#'   meanDD = input_asr$mean_DD,
-#'   varDD = input_asr$var_DD,
-#'   corA = input_asr$cor_A,
-#'   corDD = input_asr$cor_DD,
-#'   useVarA = TRUE
-#' )
+#' SP$addTraitAD(nQtlPerChr = 100,
+#'               mean = input_asr$mean,
+#'               var = input_asr$var,
+#'               meanDD = input_asr$mean_DD,
+#'               varDD = input_asr$var_DD,
+#'               corA = input_asr$cor_A,
+#'               corDD = input_asr$cor_DD,
+#'               useVarA = TRUE)
+#'
 #' # Variance in var is used as additive variance.
 #' # If FALSE, var = total genetic variance.
 #'
@@ -594,11 +565,14 @@ unstr_asr_input <- function(n_envs,
 #'
 #'
 #' # 3. Create a data frame containing the simulated genetic values for each of the two traits
-#' #    and three environments.
+#' # and three environments.
 #'
 #' n_reps <- c(2, 3, 2) # Vector with the number of complete replicates in each environment
 #'
-#' trial_df <- unstr_asr_output(pop = pop, n_envs = 3, n_reps = n_reps, n_traits = 2)
+#' trial_df <- unstr_asr_output(pop = pop,
+#'                              n_envs = 3,
+#'                              n_reps = n_reps,
+#'                              n_traits = 2)
 #'
 #' @export
 unstr_asr_output <- function(pop,

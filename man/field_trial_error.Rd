@@ -92,10 +92,10 @@ model and random error within each environment.}
 }
 \value{
 A data-frame containing environment number, block number, column number,
-row number and simulated residuals for each trait. When \code{effects = TRUE},
-a list is returned with additional list entries for each trait containing
-the simulated residuals corresponding to the spatial model and random error
-within each environment.
+  row number and simulated residuals for each trait. When \code{effects = TRUE},
+  a list is returned with additional list entries for each trait containing
+  the simulated residuals corresponding to the spatial model and random error
+  within each environment.
 }
 \description{
 Creates a data frame of residuals for each plot in a simulated multi-environment
@@ -109,31 +109,40 @@ a correlation of the random residual between traits, or ancombination of both.
 Between traits and environments, a separable covariance structure is assumed.
 }
 \examples{
-# Simulation of residuals for two traits tested in three environments using
-# bivariate interpolation to model spatial variation.
+# Simulation of residuals for two traits tested in three environments using bivariate
+# interpolation to model spatial variation.
 
 n_envs <- 3 # number of simulated environments.
 n_traits <- 2 # number of simulated traits.
 
 # Field layout
 n_cols <- 10 # total number of columns in each environment.
-n_rows <- c(20, 30, 20) # total number of rows per environment.
-plot_length <- 5 # plot length of 5 meters.
-plot_width <- 2 # plot width of 2 meters.
-n_reps <- c(2, 3, 2) # number of complete replicates per environment.
+n_rows <- c(20, 30, 20) # total number of rows in each environment.
+plot_length <- 5 # plot length set to 5 meters.
+plot_width <- 2 # plot width set to 2 meters.
+n_reps <- c(2, 3, 2) # number of complete replicates (blocks) per environment.
 
-# Residual variances for traits 1 and 2
+# Residual variances for traits 1 and 2.
 var_R <- c(0.4, 15)
 
-# Residual correlations between traits 1 and 2, with regards to spatial model
-cor_R <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
+# Residual correlations between traits 1 and 2, with regards to spatial model.
+cor_R <- matrix(c(1.0, 0.2,
+                  0.2, 1.0),
+                  ncol = 2)
 
-plot_df <- field_trial_error(
-  n_envs = n_envs, n_traits = n_traits,
-  n_cols = n_cols, n_rows = n_rows, plot_length = plot_length,
-  plot_width = plot_width, n_reps = n_reps, rep_dir = "row",
-  var_R = var_R, cor_R = cor_R, spatial_model = "bivariate",
-  prop_spatial = 0.6, complexity = 14, effects = TRUE
-)
+error_df <- field_trial_error(n_envs = n_envs,
+                              n_traits = n_traits,
+                              n_cols = n_cols,
+                              n_rows = n_rows,
+                              plot_length = plot_length,
+                              plot_width = plot_width,
+                              n_reps = n_reps,
+                              rep_dir = "row",
+                              var_R = var_R,
+                              cor_R = cor_R,
+                              spatial_model = "bivariate",
+                              prop_spatial = 0.6,
+                              complexity = 14,
+                              effects = TRUE)
 
 }

@@ -1,14 +1,11 @@
 #' Simulate a correlation matrix between traits or environments
 #'
-#' Creates a \code{p x p} correlation matrix, which can be used for traits or
-#' environments between genotypes or residuals. An upper and lower bound of the
-#' sampled correlations can be set.
+#' Creates a \code{p x p} correlation matrix. An upper and lower bound of the sampled correlations
+#' can be set.
 #'
-#' @param p A scalar defining the dimension of the correlation matrix
-#' @param min_cor A scalar defining the minimum correlation. By default,
-#'   min_cor = -1.
-#' @param max_cor A scalar defining the maximum correlation. By default,
-#'   max_cor = 1.
+#' @param p A scalar defining the dimension of the correlation matrix.
+#' @param min_cor A scalar defining the minimum correlation. By default, min_cor = -1.
+#' @param max_cor A scalar defining the maximum correlation. By default, max_cor = 1.
 #' @param n_digits Number of decimal digits. By default, n_digits = 2.
 #'
 #' @return A p x p correlation matrix.

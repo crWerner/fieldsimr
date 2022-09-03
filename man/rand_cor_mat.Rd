@@ -7,13 +7,11 @@
 rand_cor_mat(p, min_cor = -1, max_cor = 1, n_digits = 2)
 }
 \arguments{
-\item{p}{A scalar defining the dimension of the correlation matrix}
+\item{p}{A scalar defining the dimension of the correlation matrix.}
 
-\item{min_cor}{A scalar defining the minimum correlation. By default,
-min_cor = -1.}
+\item{min_cor}{A scalar defining the minimum correlation. By default, min_cor = -1.}
 
-\item{max_cor}{A scalar defining the maximum correlation. By default,
-max_cor = 1.}
+\item{max_cor}{A scalar defining the maximum correlation. By default, max_cor = 1.}
 
 \item{n_digits}{Number of decimal digits. By default, n_digits = 2.}
 }
@@ -21,9 +19,8 @@ max_cor = 1.}
 A p x p correlation matrix.
 }
 \description{
-Creates a \code{p x p} correlation matrix, which can be used for traits or
-environments between genotypes or residuals. An upper and lower bound of the
-sampled correlations can be set.
+Creates a \code{p x p} correlation matrix. An upper and lower bound of the sampled correlations
+can be set.
 }
 \examples{
 # cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8)

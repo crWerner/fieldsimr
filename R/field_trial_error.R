@@ -13,7 +13,7 @@
 #' @param n_envs Number of environments to be simulated (same as used in
 #'   \code{compsym_asr_input} or \code{unstr_asr_output}, where applicable).
 #' @param n_traits Number of traits to be simulated.
-#' @param n_cols  A vector containing the number of columns in each environment.
+#' @param n_cols A vector containing the number of columns in each environment.
 #'   If only one value is provided, all environments will be assigned the same
 #'   value.
 #' @param n_rows A vector containing the number of rows in each environment. If
@@ -66,32 +66,41 @@
 #'   within each environment.
 #'
 #' @examples
-#' # Simulation of residuals for two traits tested in three environments using
-#' # bivariate interpolation to model spatial variation.
+#' # Simulation of residuals for two traits tested in three environments using bivariate
+#' # interpolation to model spatial variation.
 #'
 #' n_envs <- 3 # number of simulated environments.
 #' n_traits <- 2 # number of simulated traits.
 #'
 #' # Field layout
 #' n_cols <- 10 # total number of columns in each environment.
-#' n_rows <- c(20, 30, 20) # total number of rows per environment.
-#' plot_length <- 5 # plot length of 5 meters.
-#' plot_width <- 2 # plot width of 2 meters.
-#' n_reps <- c(2, 3, 2) # number of complete replicates per environment.
+#' n_rows <- c(20, 30, 20) # total number of rows in each environment.
+#' plot_length <- 5 # plot length set to 5 meters.
+#' plot_width <- 2 # plot width set to 2 meters.
+#' n_reps <- c(2, 3, 2) # number of complete replicates (blocks) per environment.
 #'
-#' # Residual variances for traits 1 and 2
+#' # Residual variances for traits 1 and 2.
 #' var_R <- c(0.4, 15)
 #'
-#' # Residual correlations between traits 1 and 2, with regards to spatial model
-#' cor_R <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
+#' # Residual correlations between traits 1 and 2, with regards to spatial model.
+#' cor_R <- matrix(c(1.0, 0.2,
+#'                   0.2, 1.0),
+#'                   ncol = 2)
 #'
-#' plot_df <- field_trial_error(
-#'   n_envs = n_envs, n_traits = n_traits,
-#'   n_cols = n_cols, n_rows = n_rows, plot_length = plot_length,
-#'   plot_width = plot_width, n_reps = n_reps, rep_dir = "row",
-#'   var_R = var_R, cor_R = cor_R, spatial_model = "bivariate",
-#'   prop_spatial = 0.6, complexity = 14, effects = TRUE
-#' )
+#' error_df <- field_trial_error(n_envs = n_envs,
+#'                               n_traits = n_traits,
+#'                               n_cols = n_cols,
+#'                               n_rows = n_rows,
+#'                               plot_length = plot_length,
+#'                               plot_width = plot_width,
+#'                               n_reps = n_reps,
+#'                               rep_dir = "row",
+#'                               var_R = var_R,
+#'                               cor_R = cor_R,
+#'                               spatial_model = "bivariate",
+#'                               prop_spatial = 0.6,
+#'                               complexity = 14,
+#'                               effects = TRUE)
 #'
 #' @export
 field_trial_error <- function(n_envs,
@@ -355,35 +364,46 @@ field_trial_error <- function(n_envs,
 #'   red (low value) to green (high value).
 #'
 #' @examples
-#' # Simulation of residuals for two traits tested in three environments using
-#' # bivariate interpolation to model spatial variation.
+#' # Simulation of residuals for two traits tested in three environments using bivariate
+#' # interpolation to model spatial variation.
 #'
 #' n_envs <- 3 # number of simulated environments.
 #' n_traits <- 2 # number of simulated traits.
 #'
 #' # Field layout
 #' n_cols <- 10 # total number of columns in each environment.
-#' n_rows <- c(20, 30, 20) # total number of rows per environment.
-#' plot_length <- 5 # plot length of 5 meters.
-#' plot_width <- 2 # plot width of 2 meters.
-#' n_reps <- c(2, 3, 2) # number of complete replicates per environment.
+#' n_rows <- c(20, 30, 20) # total number of rows in each environment.
+#' plot_length <- 5 # plot length set to 5 meters.
+#' plot_width <- 2 # plot width set to 2 meters.
+#' n_reps <- c(2, 3, 2) # number of complete replicates (blocks) per environment.
 #'
-#' # Residual variances for traits 1 and 2
+#' # Residual variances for traits 1 and 2.
 #' var_R <- c(0.4, 15)
 #'
-#' # Residual cor_Relations between traits 1 and 2, with regards to spatial model
-#' cor_R <- matrix(c(1.0, 0.2, 0.2, 1.0), ncol = 2)
+#' # Residual correlations between traits 1 and 2, with regards to spatial model.
+#' cor_R <- matrix(c(1.0, 0.2,
+#'                   0.2, 1.0),
+#'                   ncol = 2)
 #'
-#' plot_df <- field_trial_error(
-#'   n_envs = n_envs, n_traits = n_traits,
-#'   n_cols = n_cols, n_rows = n_rows, plot_length = plot_length,
-#'   plot_width = plot_width, n_reps = n_reps, rep_dir = "row",
-#'   var_R = var_R, cor_R = cor_R, spatial_model = "bivariate",
-#'   prop_spatial = 0.6, complexity = 14, effects = FALSE
-#' )
+#' error_df <- field_trial_error(n_envs = n_envs,
+#'                               n_traits = n_traits,
+#'                               n_cols = n_cols,
+#'                               n_rows = n_rows,
+#'                               plot_length = plot_length,
+#'                               plot_width = plot_width,
+#'                               n_reps = n_reps,
+#'                               rep_dir = "row",
+#'                               var_R = var_R,
+#'                               cor_R = cor_R,
+#'                               spatial_model = "bivariate",
+#'                               prop_spatial = 0.6,
+#'                               complexity = 14,
+#'                               effects = TRUE)
 #'
 #' # Plot the simulated error for trait 2 in environment 2.
-#' plot_trial_effects(plot_df, env = 2, trait = "e.Trait.2")
+#' plot_trial_effects(error_df,
+#'                    env = 2,
+#'                    trait = "e.Trait.2")
 #'
 #' @export
 plot_trial_effects <- function(df,
