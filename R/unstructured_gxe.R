@@ -115,8 +115,8 @@
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
-#' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments and trait 2 in
-#' # 3 environments.
+#' # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
+#' # in all 3 environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
 #' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all 3 environments for each trait.
 #'
@@ -492,8 +492,8 @@ unstr_asr_input <- function(n_envs,
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
-#' # Mean genetic values and mean dominance degrees for trait 1 in 3 environments and trait 2 in
-#' # 3 environments.
+#' # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
+#' # in all 3 environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
 #' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all 3 environments for each trait.
 #'
