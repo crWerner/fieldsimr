@@ -2,8 +2,8 @@
 % Please edit documentation in R/unstructured_gxe.R
 \name{unstr_asr_input}
 \alias{unstr_asr_input}
-\title{Unstructured model for genotype-by-environment interaction using AlphaSimR -
-input parameters}
+\title{Genetic values based on an unstructured GxE interaction model using 'AlphaSimR' - Input
+parameters}
 \usage{
 unstr_asr_input(
   n_envs,
@@ -31,134 +31,126 @@ unstr_asr_input(
 )
 }
 \arguments{
-\item{n_envs}{Number of environments to be simulated. A minimum of two
-environments is required.}
+\item{n_envs}{Number of environments to be simulated. A minimum of two environments is required.}
 
 \item{n_traits}{Number of traits to be simulated.}
 
-\item{mean}{A vector of desired mean genetic values for each trait-by-environment
-combination (ordered as environments within traits). Simulated traits can
-have a different mean for each environment. If the length of \code{mean}
-corresponds to \code{n_traits}, however, then traits will be assigned the
-same mean for each environment.}
+\item{mean}{A vector of mean genetic values for each trait-by-environment combination (ordered
+as environments within traits!). Simulated traits can have a different mean for each
+environment. If the length of \code{mean} corresponds to \code{n_traits}, the traits will be
+assigned the same mean for each environment, respectively.}
 
-\item{var}{A vector of desired genetic variances for each trait-by-environment
-combination (ordered as environments within traits). If the length of
-\code{var} corresponds to \code{n_traits}, however, then traits will be
-assigned the same genetic variance for each environment. Alternatively,
-\code{T_var} and \code{E_var} can be provided if a separable structure between
-traits and environments is required. By default, \code{var = NULL}.}
+\item{var}{A vector of genetic variances for each trait-by-environment combination (ordered as
+environments within traits!). If the length of \code{var} is equal to \code{n_traits}, the
+traits will be assigned the same error variance in each environment,respectively. \cr
+Alternatively, if a separable structure between traits and environments is desired,
+\code{T_var} and \code{E_var} can be provided. By default, \code{var = NULL}.}
 
-\item{T_var}{A vector of desired genetic variances for each trait. Must be
-provided in combination with \code{E_var}.
+\item{T_var}{A vector of genetic variances for each trait. Must be provided in combination with
+\code{E_var}. \cr
 Alternatively, \code{var} can be provided. By default, \code{T_var = NULL}.}
 
-\item{E_var}{A vector of desired genetic variances for each environment. Must
-be provided in combination with \code{T_var}. Alternatively, \code{var} can
-be provided. By default, \code{E_var = NULL}.}
+\item{E_var}{A vector of genetic variances for each environment. Must be provided in
+combination with \code{T_var}. \cr
+Alternatively, \code{var} can be provided. By default, \code{E_var = NULL}.}
 
-\item{cor_A}{A matrix of additive genetic correlations between all
-trait-by-environment combinations. If not defined and \code{n_traits > 1}, a
-diagonal matrix is assigned. Alternatively, \code{T_cor_A} and \code{E_cor_A}
-can be provided.}
+\item{cor_A}{A matrix of additive genetic correlations between all trait-by-environment
+combinations. If not defined and \code{n_traits > 1}, a diagonal matrix is constructed. \cr
+Alternatively, \code{T_cor_A} and \code{E_cor_A} can be provided.}
 
-\item{E_cor_A}{A matrix of additive genetic correlations between more than one
-environment. Must be provided in combination with \code{T_cor_A}. Alternatively,
-\code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.}
+\item{E_cor_A}{A matrix of additive genetic correlations between more than one environment.
+Must be provided in combination with \code{T_cor_A}. \cr
+Alternatively, \code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.}
 
-\item{T_cor_A}{A matrix of additive genetic correlations between more than one
-traits. Must be provided in combination with \code{E_cor_A}. Alternatively,
-\code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.}
+\item{T_cor_A}{A matrix of additive genetic correlations between more than one trait. Must be
+provided in combination with \code{E_cor_A}. \cr
+Alternatively, \code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.}
 
-\item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment
-combination (ordered as environments within traits), similar to \code{mean}.
-By default, \code{mean_DD = NULL} and dominance is not simulated.}
+\item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment combination
+(ordered as environments within traits!), similar to \code{mean}. By default,
+\code{mean_DD = NULL} and dominance is not simulated.}
 
-\item{var_DD}{A vector of dominance degree variances for each trait-by-environment
-combination (ordered as environments within traits), similar to \code{var}.
-Alternatively, \code{T_var_DD} and \code{E_var_DD} can be provided if a separable
-structure between traits and environments is required. By default,
-\code{var_DD = NULL}.}
+\item{var_DD}{A vector of dominance degree variances for each trait-by-environment combination
+(ordered as environments within traits!), similar to \code{var}. \cr
+Alternatively, if a separable structure between traits and environments is desired,
+\code{T_var_DD} and \code{E_var_DD} can be provided. By default, \code{var_DD = NULL}.}
 
-\item{E_var_DD}{A vector of dominance degree genetic variances for each
-environment, similar to \code{E_var}. Must be provided in combination with
-\code{T_var_DD}. Alternatively, \code{var_DD} can be provided. By default,
-\code{E_var_DD = NULL}.}
+\item{E_var_DD}{A vector of dominance degree genetic variances for each environment, similar to
+\code{E_var}. Must be provided in combination with \code{T_var_DD}. \cr
+Alternatively, \code{var_DD} can be provided. By default, \code{E_var_DD = NULL}.}
 
-\item{T_var_DD}{A vector of dominance degree variances for each trait, similar
-to \code{T_var}. Must be provided in combination with \code{E_var_DD}.
+\item{T_var_DD}{A vector of dominance degree variances for each trait, similar to \code{T_var}.
+Must be provided in combination with \code{E_var_DD}. \cr
 Alternatively, \code{var_DD} can be provided. By default, \code{T_var_DD = NULL}.}
 
-\item{cor_DD}{A matrix of dominance degree correlations between all
-trait-by-environment combinations, similar to \code{cor_A}. If not defined
-and \code{n_traits > 1}, a diagonal matrix is assigned. Alternatively,
-\code{T_cor_DD} and \code{E_cor_DD} can be provided. By default,
+\item{cor_DD}{A matrix of dominance degree correlations between all trait-by-environment
+combinations, similar to \code{cor_A}. If not defined and \code{n_traits > 1}, a diagonal
+matrix is constructed. \cr
+Alternatively, \code{T_cor_DD} and \code{E_cor_DD} can be provided. By default,
 \code{cor_DD = NULL}.}
 
-\item{E_cor_DD}{A matrix of dominance degree correlations between more than one
-environment, similar to \code{E_cor_A}. Must be provided in combination with
-\code{T_cor_DD}. Alternatively, \code{cor_DD} can be provided. By default,
-\code{E_cor_DD = NULL}.}
+\item{E_cor_DD}{A matrix of dominance degree correlations between more than one environment,
+similar to \code{E_cor_A}. Must be provided in combination with \code{T_cor_DD}. \cr
+Alternatively, \code{cor_DD} can be provided. By default, \code{E_cor_DD = NULL}.}
 
-\item{T_cor_DD}{A matrix of dominance degree correlations between more than one
-traits, similar to \code{T_cor_A}. Must be provided in combination with
-\code{E_cor_DD}. Alternatively, \code{cor_DD} can be provided. By default,
-\code{T_cor_DD = NULL}.}
+\item{T_cor_DD}{A matrix of dominance degree correlations between more than one trait, similar
+to \code{T_cor_A}. Must be provided in combination with \code{E_cor_DD}. \cr
+Alternatively, \code{cor_DD} can be provided. By default, \code{T_cor_DD = NULL}.}
 
-\item{rel_AA}{A vector with the magnitude of additive-by-additive (epistatic)
-variance relative to additive genetic variance for each trait-by-environment
-combination (ordered as environments within traits), that is in a diploid
-organism with allele frequency 0.5. Alternatively, \code{T_varAA} and
-\code{E_varAA} can be provided if a separable structure between traits and
-environments is required. By default, \code{rel_AA = NULL}.}
+\item{rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to additive genetic variance for each trait-by-environment combination (ordered as
+environments within traits!), that is in a diploid organism with allele frequency 0.5. \cr
+Alternatively, if a separable structure between traits and environments is desired,
+\code{T_rel_AA} and \code{E_rel_AA} can be provided. By default, \code{rel_AA = NULL} and
+epistasis is not simulated.}
 
-\item{E_rel_AA}{A vector with the magnitude of epistatic variance relative to
-additive genetic variance for each environment, that is in a diploid organism
-with allele frequency 0.5. Must be provided in combination with \code{T_rel_AA}.
+\item{E_rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to the additive genetic variance for each environment, that is in a diploid organism
+with allele frequency 0.5. Must be provided in combination with \code{T_rel_AA}. \cr
 Alternatively, \code{rel_AA} can be provided. By default, \code{E_rel_AA = NULL}.}
 
-\item{T_rel_AA}{A vector with the magnitude of epistatic variance relative to
-additive genetic variance for each trait, that is in a diploid organism with
-allele frequency 0.5. Must be provided in combination with \code{E_rel_AA}.
+\item{T_rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to the additive genetic variance for each trait, that is in a diploid organism with
+allele frequency 0.5. Must be provided in combination with \code{E_rel_AA}. \cr
 Alternatively, \code{rel_AA} can be provided. By default, \code{T_rel_AA = NULL}.}
 
 \item{cor_AA}{A matrix of epistatic correlations between all trait-by-environment
 combinations, similar to \code{cor_A}. If not defined and \code{n_traits > 1},
-a diagonal matrix is assigned. Alternatively, \code{T_cor_AA} and \code{E_cor_AA}
-can be provided. By default, \code{cor_AA = NULL}.}
+a diagonal matrix is constructed. \cr
+Alternatively, \code{T_cor_AA} and \code{E_cor_AA} can be provided. By default,
+\code{cor_AA = NULL}.}
 
-\item{E_cor_AA}{A matrix of epistatic correlations between more than one
-environment, similar to \code{E_cor_A}. Must be provided in combination with
-\code{T_cor_AA}. Alternatively, \code{cor_AA} can be provided. By default,
-\code{E_cor_AA = NULL}.}
+\item{E_cor_AA}{A matrix of epistatic correlations between more than one environment, similar
+to \code{E_cor_A}. Must be provided in combination with \code{T_cor_AA}. \cr
+Alternatively, \code{cor_AA} can be provided. By default, \code{E_cor_AA = NULL}.}
 
-\item{T_cor_AA}{A matrix of epistatic correlations between more than one traits,
-similar to \code{T_cor_A}. Must be provided in combination with \code{E_cor_AA}.
+\item{T_cor_AA}{A matrix of epistatic correlations between more than one trait, similar to
+\code{T_cor_A}. Must be provided in combination with \code{E_cor_AA}. \cr
 Alternatively, \code{cor_AA} can be provided. By default, \code{T_cor_AA = NULL}.}
 }
 \value{
-A list containing input parameters for AlphaSimR, which is then used
-  to simulate correlated genetic effects based on an unstructured model for
-  GxE interaction.
+A list containing input parameters for 'AlphaSimR', which is then used to simulate
+  correlated genetic effects based on an unstructured GxE interaction model.
 }
 \description{
 Creates a list of simulation parameters for use with
 \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
-genetic values across multiple environments and traits based on an
-unstructured model for genotype-by-environment (GxE) interaction.
-By default AlphaSimR does not support complex models for GxE interaction.
-However, its functionality to simulate correlated genetic values can be
-utilised for this purpose by providing the required variance structure.
-\code{unstr_asr_input} constructs the required variance structure
-for an unstructured model.
+genetic values for multiple traits in multiple environments based on an unstructured model for
+genotype-by-environment (GxE) interaction. \cr
+By default, 'AlphaSimR' does not support complex models for GxE interaction. However, its
+functionality to simulate correlated genetic values can be utilised for this purpose by
+providing the required variance structures. \code{unstr_asr_input} is a wrapper function to
+construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
+an unstructured GxE interaction model. \code{compsym_asr_input} is used in combination with the
+wrapper function \link[FieldSimR]{compsym_asr_output}.
 }
 \details{
-\code{unstr_asr_input} handles non-separable and separable structures between
-traits and environments.
+\code{unstr_asr_input} handles non-separable and separable structures between traits and
+environments.
 \itemize{
-  \item For the non-separable structure, provide (1) \code{var} & (2) \code{cor_A}.
-  \item For the separable structure, provide (1) \code{T_var}, \code{E_var} & (2) \code{T_cor_A},
-        \code{E_cor_A}. \cr
+  \item For the non-separable structure, provide (1) \code{var}, and (2) \code{cor_A}.
+  \item For the separable structure, provide (1) \code{T_var} & \code{E_var}, and (2)
+  \code{T_cor_A} & \code{E_cor_A}. \cr
   }
 
 \strong{Note:} 'AlphaSimR' can simulate different biological effects (see:
@@ -173,48 +165,54 @@ If non-additive effects are to be simulated, check the \code{useVarA} argument o
 functions.
 }
 \examples{
-# Simulation of genetic values for two additive + dominance traits in three environments in
-# AlphaSimR based on an unstructured GxE interaction model.
+# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+# three environments based on a compound symmetry model for GxE interaction.
 
-# 1. Assign genetic architecture of traits.
+# 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees for trait 1 in 3 environments and trait 2 in
 # 3 environments.
-mean <- c(1, 3, 2, 80, 70, 100) # trait 1 by 3 envs, trait 2 by 3 envs.
-mean_DD <- c(0.1, 0.4) # trait 1 and trait 2, same values assigned to all 3 envs for each trait.
+mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
+mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all 3 environments for each trait.
 
-# Additive genetic variances (usevarA = TRUE) and dominance degree variances for the two traits,
-# that is assuming a separable structure between traits and environments.
-T_var <- c(0.2, 10)
-E_var <- c(0.5, 1, 1.5)
+# Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2,
+# assuming a separable structure between traits and environments.
+T_var <- c(0.2, 10) # Genetic variances defined for the two traits.
+E_var <- c(0.5, 1, 1.5) # Genetic variances defined for the three environments.
 
-# Dominance degree variances for trait 1 in 3 environments and trait 2 in 3 environments, that
-# is assuming a non-separable structure between traits and environments.
+# Dominance degree variances for trait 1 in 3 environments and for trait 2 in 3 environments,
+# assuming a non-separable structure between traits and environments.
 var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 
+# Additive genetic correlations between the two simulated traits.
+T_cor_A <- matrix(c(
+  1.0, 0.3,
+  0.3, 1.0
+),
+ncol = 2
+)
 
-# Additive genetic correlations between traits.
-T_cor_A <- matrix(c(1.0, 0.3,
-                    0.3, 1.0),
-                    ncol = 2)
-
-# Additive genetic correlations between environments.
-E_cor_A <- cov2cor(matrix(c(0.5, 0.4, 0.6,
-                            0.4, 1.0, 0.5,
-                            0.6, 0.5, 1.5),
-                            ncol = 3))
+# Additive genetic correlations between the three simulated environments.
+E_cor_A <- stats::cov2cor(matrix(c(
+  0.5, 0.4, 0.6,
+  0.4, 1.0, 0.5,
+  0.6, 0.5, 1.5
+),
+ncol = 3
+))
 
 # Dominance degree correlation between all six trait-by-environment combinations.
-cor_DD <- diag(6) # assuming independence between traits
+cor_DD <- diag(6) # Assuming independence between traits
 
-input_asr <- unstr_asr_input(n_envs = 3,
-                             n_traits = 2,
-                             mean = mean,
-                             T_var = T_var,
-                             E_var = E_var,
-                             T_cor_A = T_cor_A,
-                             E_cor_A = E_cor_A,
-                             mean_DD = mean_DD,
-                             var_DD = var_DD,
-                             cor_DD = cor_DD)
-
+input_asr <- unstr_asr_input(
+  n_envs = 3,
+  n_traits = 2,
+  mean = mean,
+  T_var = T_var,
+  E_var = E_var,
+  T_cor_A = T_cor_A,
+  E_cor_A = E_cor_A,
+  mean_DD = mean_DD,
+  var_DD = var_DD,
+  cor_DD = cor_DD
+)
 }

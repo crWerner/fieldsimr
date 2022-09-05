@@ -1,4 +1,4 @@
-#' Simulate a correlation matrix between traits or environments
+#' Random correlation matrix
 #'
 #' Creates a \code{p x p} correlation matrix. An upper and lower bound of the sampled correlations
 #' can be set.
@@ -12,7 +12,6 @@
 #'
 #' @examples
 #' # cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8)
-#'
 #' @export
 rand_cor_mat <- function(p,
                          min_cor = -1,

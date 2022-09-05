@@ -2,7 +2,7 @@
 % Please edit documentation in R/random_corr_mat.R
 \name{rand_cor_mat}
 \alias{rand_cor_mat}
-\title{Simulate a correlation matrix between traits or environments}
+\title{Random correlation matrix}
 \usage{
 rand_cor_mat(p, min_cor = -1, max_cor = 1, n_digits = 2)
 }
@@ -24,5 +24,4 @@ can be set.
 }
 \examples{
 # cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8)
-
 }

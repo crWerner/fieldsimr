@@ -2,7 +2,7 @@
 % Please edit documentation in R/field_trial_error.R
 \name{field_trial_error}
 \alias{field_trial_error}
-\title{Simulate plot-level error in a multi-environment field trial}
+\title{Simulate plot-level errors for a plant breeding trial}
 \usage{
 field_trial_error(
   n_envs,
@@ -21,128 +21,129 @@ field_trial_error(
   complexity = 12,
   col_cor,
   row_cor,
-  effects = FALSE
+  return_effects = FALSE
 )
 }
 \arguments{
-\item{n_envs}{Number of environments to be simulated (same as used in
-\code{compsym_asr_input} or \code{unstr_asr_output}, where applicable).}
+\item{n_envs}{Number of environments to be simulated (same as used in \code{compsym_asr_input}
+or \code{unstr_asr_output}, where applicable).}
 
 \item{n_traits}{Number of traits to be simulated.}
 
-\item{n_reps}{A vector containing the number of complete replicates in each
-environment. If only one value is provided,all environments will be assigned
-the same value.}
+\item{n_reps}{A vector defining the number of complete replicates in each environment. If only
+one value is provided and \code{n_traits > 1}, all environments will be assigned the same
+number of replicates.}
 
-\item{n_cols}{A vector containing the number of columns in each environment.
-If only one value is provided, all environments will be assigned the same
-value.}
+\item{n_cols}{A vector defining the total number of columns in each environment. If only one
+value is provided and \code{n_traits > 1}, all environments will be assigned the same number
+of columns.}
 
-\item{n_rows}{A vector containing the number of rows in each environment. If
-only one value is provided, all environments will be assigned the same value.}
+\item{n_rows}{A vector defining the total number of rows in each environment. If only one
+value is provided and \code{n_traits > 1}, all environments will be assigned the same number
+of rows.}
 
-\item{plot_length}{A vector of plot lengths for each environment. If only
-one value is provided, all environments will be assigned the same value.}
+\item{plot_length}{A vector defining the plot length in each environment. If only one value is
+provided and \code{n_traits > 1}, the plots in all environments will be assigned the same
+plot length.}
 
-\item{plot_width}{A vector of plot widths for each environment. If only one
-value is provided, all environments will be assigned the same value.}
+\item{plot_width}{A vector defining the plot width in each environment. If only one value is
+provided and \code{n_traits > 1}, the plots in all environments will be assigned the same
+plot width.}
 
-\item{rep_dir}{Character string specifying the direction of replicate blocks.
-One of either "column" (side-by-side, the default) or "row" (above-and-below).
-Ignored when \code{n_reps = 1}.}
+\item{rep_dir}{A character string specifying the direction of replicate blocks. One of either
+"column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
+when \code{n_reps = 1}.}
 
-\item{var_R}{A vector of desired residual variances for each trait-by-environment
-combination (ordered as environments within traits). If the length of
-\code{var_R} corresponds to \code{n_traits}, the traits will be assigned the
-same residual variance for each environment.}
+\item{var_R}{A vector of error variances for each trait-by-environment combination (ordered
+as environments within traits!). If the length of \code{var_R} is equal to \code{n_traits},
+the traits will be assigned the same error variance in each environment,respectively.}
 
-\item{cor_R}{A matrix of residual correlations between more than one traits
-with regards to the spatial model only. If not defined and
-\code{n_traits > 1}, a diagonal matrix is assigned.}
+\item{cor_R}{A matrix of spatial error correlations between more than one trait. If not
+defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
-\item{R_cor_R}{A matrix of residual correlations between more than one traits
-with regards to the random error model only. If not defined and
-\code{n_traits > 1}, a diagonal matrix is assigned.}
+\item{R_cor_R}{A matrix of random error correlations between more than one trait. If not
+defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
-\item{spatial_model}{Character string specifying the model used to simulate
-spatial variation. One of either "Bivariate" (bivariate interpolation, the
-default) or "AR1:AR1" (two-dimensional autoregressive process of order one).}
+\item{spatial_model}{A character string specifying the model used to simulate the spatial error
+term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
+(separable first-order autoregressive process (AR1:AR1)).}
 
-\item{prop_spatial}{A vector containing the proportion of residual variance for
-the spatial model compared to the total (spatial + random) error variance.
-If only one value is provided, all environments will be assigned the same
-value. By default, \code{prop_spatial = 0.5}.}
+\item{prop_spatial}{A vector defining the proportion of the spatial error variance in the total
+error variance (spatial + random). If only one value is provided, the spatial error variance
+will be assigned the same proportion in each environment. By default, the spatial error
+variance accounts for half the total error variance (\code{prop_spatial = 0.5}).}
 
-\item{complexity}{A single number indicating the complexity of the bivariate
-interpolation model. By default, \code{complexity = 12}. Note that much
-lower values might result in convergence problems. For more information on
-the complexity parameter check \link[akima]{interp}.}
+\item{complexity}{A single number defining the complexity of the bivariate interpolation model.
+By default, \code{complexity = 12}. Note that lower values might lead to convergence problems.
+See \link[akima]{interp} for further details.}
 
-\item{col_cor}{A vector of column autocorrelations for each environment used in
-the AR1:AR1 model. If only one value is provided, all environments will be
-assigned the same value.}
+\item{col_cor}{A vector of column autocorrelations for each environment used in the AR1:AR1
+spatial error model. If only one value is provided, all environments will be assigned the
+same column autocorrelation.}
 
-\item{row_cor}{A vector of column autocorrelations for each environment used in
-the AR1:AR1 model. If only one value is provided, all environments will be
-assigned the same value.}
+\item{row_cor}{A vector of row autocorrelations for each environment used in the AR1:AR1
+spatial error model. If only one value is provided, all environments will be assigned the
+same row autocorrelation.}
 
-\item{effects}{When true, a list is returned with additional list entries for
-each trait containing the simulated residuals corresponding to the spatial
-model and random error within each environment.}
+\item{return_effects}{When true, a list is returned with additional entries for each trait
+containing the spatial error and the random error.}
 }
 \value{
-A data-frame containing environment number, block number, column number,
-  row number and simulated residuals for each trait. When \code{effects = TRUE},
-  a list is returned with additional list entries for each trait containing
-  the simulated residuals corresponding to the spatial model and random error
-  within each environment.
+A data-frame containing the environment ID, block ID, column ID, row ID, and the
+  simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
+  additional entries for each trait containing the spatial error and the random error.
 }
 \description{
-Creates a data frame of residuals for each plot in a simulated multi-environment
-field trial testing one or multiple traits. Residuals are based on a spatial
-component and a random component. The spatial component can be simulated
-using bivariate interpolation based on akima's \link[akima]{interp} function
-or based on a separable autoregressive process (AR1:AR1) withinmenvironments.
-If multiple traits are simulated, a correlated residual betweenmtraits can be
-simulated based assuming a correlation of the spatial residual between traits,
-a correlation of the random residual between traits, or ancombination of both.
+Creates a data frame with plot-level errors for one or multiple traits in a (multi-environment)
+plant breeding trial. The simulated error consists of a spatial error term and a random error
+term. The spatial error term can be simulated based on 1) bivariate interpolation using the
+\link[akima]{interp} function of the package 'akima', or 2) a separable first-order
+autoregressive process (AR1:AR1) within environments. The the spatial error is combined with
+a random error at a user-defined ratio. \cr
+If multiple traits are simulated, a correlated error between traits can be generated assuming
+1) a correlation of the spatial error between traits, 2) a correlation of the random error
+between traits, or 3) a combination of both. \cr
 Between traits and environments, a separable covariance structure is assumed.
 }
 \examples{
-# Simulation of residuals for two traits tested in three environments using bivariate
+# Simulation of plot-level errors for two traits tested in three environments using bivariate
 # interpolation to model spatial variation.
 
-n_envs <- 3 # number of simulated environments.
-n_traits <- 2 # number of simulated traits.
+n_envs <- 3 # Number of simulated environments.
+n_traits <- 2 # Number of simulated traits.
 
 # Field layout
-n_cols <- 10 # total number of columns in each environment.
-n_rows <- c(20, 30, 20) # total number of rows in each environment.
-plot_length <- 5 # plot length set to 5 meters.
-plot_width <- 2 # plot width set to 2 meters.
-n_reps <- c(2, 3, 2) # number of complete replicates (blocks) per environment.
+n_cols <- 10 # Total number of columns in each environment.
+n_rows <- c(20, 30, 20) # Total number of rows in each environment.
+plot_length <- 5 # Plot length set to 5 meters in each environment.
+plot_width <- 2 # Plot width set to 2 meters in each environment.
+n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
 
-# Residual variances for traits 1 and 2.
+# Error variances for traits 1 and 2.
 var_R <- c(0.4, 15)
 
-# Residual correlations between traits 1 and 2, with regards to spatial model.
-cor_R <- matrix(c(1.0, 0.2,
-                  0.2, 1.0),
-                  ncol = 2)
+# Spatial error correlations between traits 1 and 2.
+cor_R <- matrix(c(
+  1.0, 0.2,
+  0.2, 1.0
+),
+ncol = 2
+)
 
-error_df <- field_trial_error(n_envs = n_envs,
-                              n_traits = n_traits,
-                              n_cols = n_cols,
-                              n_rows = n_rows,
-                              plot_length = plot_length,
-                              plot_width = plot_width,
-                              n_reps = n_reps,
-                              rep_dir = "row",
-                              var_R = var_R,
-                              cor_R = cor_R,
-                              spatial_model = "bivariate",
-                              prop_spatial = 0.6,
-                              complexity = 14,
-                              effects = TRUE)
-
+error_df <- field_trial_error(
+  n_envs = n_envs,
+  n_traits = n_traits,
+  n_cols = n_cols,
+  n_rows = n_rows,
+  plot_length = plot_length,
+  plot_width = plot_width,
+  n_reps = n_reps,
+  rep_dir = "row",
+  var_R = var_R,
+  cor_R = cor_R,
+  spatial_model = "bivariate",
+  prop_spatial = 0.6,
+  complexity = 14,
+  return_effects = TRUE
+)
 }
