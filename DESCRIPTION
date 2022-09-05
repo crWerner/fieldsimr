@@ -1,7 +1,7 @@
 Package: FieldSimR
 Title: Simulation of Plot-Level Data in Plant Breeding Field Trials
-Version: 0.0.0.9000
-Date: 2021-12-09
+Version: 1.0.0
+Date: 2021-09-05
 Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me", 
 	  role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9400-5061")),
     person("Daniel", "Tolhurst", role = "aut",
@@ -13,14 +13,15 @@ Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me",
     person("Lorena", "Batista", role = "ctb", 
     comment = c(ORCID = "0000-0001-8472-8776")))
 Maintainer: Christian Werner <werner.christian@proton.me>
-Description: FieldSimR enables simulation of plant breeding field trials at the  plot level. Its 
-    core functionality is the generation of spatially correlated plot-level residuals using either 
-    bivariate interpolation or a first-order autoregressive process (AR1:AR1). FieldSimR combines 
-    the spatial error with a random error at a user-defined ratio. 
-    For simulation of plot-level phenotypes, the simulated plot-level error has to be combined 
-    with a genotypic value (simulated or data-based). While the simulation of genotypic values is 
-    not implemented in the package, FieldSimR provides wrapper functions to facilitate simulation 
-    genotypes in a multi-environment field trial setting using the R package 'AlphaSimR'.
+Description: FieldSimR enables simulation of multi-environment field trial data at the plot level. 
+    Its core function implements generation of spatially correlated plot-level errors using either 
+    bivariate interpolation or a separable first-order autoregressive process (AR1:AR1). FieldSimR 
+    combines the spatial error with a random error at a user-defined ratio. 
+    For simulation of plot-level (multi-trait) phenotypes, the simulated plot-level error has to 
+    be combined with a genotypic value (simulated or data-based). While the simulation of genotypic 
+    values is not implemented in the package, FieldSimR provides wrapper functions to facilitate 
+    simulation of genotypes for multiple traits in a multi-environment field trial setting using the 
+    R package 'AlphaSimR'.
 License: GPL (>= 3)
 URL: https://github.com/crWerner/fieldsimr
 Encoding: UTF-8
