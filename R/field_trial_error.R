@@ -282,7 +282,7 @@ field_trial_error <- function(n_envs,
 
     for (i in 1:n_traits) {
       tmp <- mapply(function(x, y, z, xo, yo) {
-        c(t(akima::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z))
+        c(t(akima::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean", remove = FALSE)$z))
       },
       x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
       )
