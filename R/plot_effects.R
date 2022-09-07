@@ -74,7 +74,7 @@ plot_trial_effects <- function(df,
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
   eff <- which(colnames(df) == effect)
-  df <- subset(df, env == env)
+  df <- df[ df[["env"]] == env , ]
   n_rows <- length(unique(df$row))
   n_cols <- length(unique(df$col))
 
