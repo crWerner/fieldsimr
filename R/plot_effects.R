@@ -87,8 +87,8 @@ plot_trial_effects <- function(df,
   }
 
   if (length(unique(df$block)) > 1) {
-    df1 <- subset(df, df$block == 1)
-    df2 <- subset(df, df$block == 2)
+    df1 <- df[ df[["block"]] == 1 , ]
+    df2 <- df[ df[["block"]] == 2 , ]
 
     if (any(unique(df1$row) == unique(df2$row)) == FALSE) {
       nx <- 0
@@ -111,7 +111,7 @@ plot_trial_effects <- function(df,
     x = 0:n_cols[1], y = 0:n_rows[1],
     z = t(plot_mat), zlim = range(plot_mat),
     ylim = rev(range(0:n_rows[1])),
-    col = grDevices::hcl.colors(n = 100000, "RdYlGn"),
+    col = grDevices::hcl.colors(n = 10000, "RdYlGn"),
     xlab = "Column", ylab = "Row", axes = FALSE
   )
 
