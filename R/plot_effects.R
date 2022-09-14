@@ -1,6 +1,6 @@
-#' Plot field trial effects
+#' Graphics for plot-level effects
 #'
-#' Plots trial effects (e.g., genetic values, phenotypic values, errors) at the plot-level
+#' Graphically displays the plot-level effects (e.g., genetic values, errors, phenotypic values), where the 
 #' represented by a colour gradient ranging from red (low value) to green (high value). The effect
 #' to be plotted must have a unique value for each row x column combination. \cr
 #' \code{plot_trial_effects} directly takes data frames generated with
