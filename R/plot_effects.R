@@ -3,8 +3,8 @@
 #' Graphically displays plot-level effects (e.g., phenotypic values, genetic values, errors) onto a field array, where the 
 #' colour gradient ranges from red (low value) to green (high value). \cr
 #' This function requires a data frame generated with
-#' \link[FieldSimR]{field_trial_error} as an input, or any data frame which
-#' has columns named "env", "col", "row", and the effect to be displayed. If the data
+#' \link[FieldSimR]{field_trial_error} as an input, or any data frame with
+#' columns named "env", "col", "row", and the effect to be displayed. If the data
 #' frame contains a column named "block", then black borders will distinguish the blocks if \code{blocks = TRUE} is specified.
 #'
 #' @param df A data frame containing the columns "env", "row", "col", and the effect to
@@ -17,7 +17,7 @@
 #' colour gradient ranges from red (low value) to green (high value) of the effect
 #'
 #' @examples
-#' # Simulation of plot-level errors for two traits tested in three environments using the bivariate
+#' # Simulation of plot-level errors for two traits in three environments using the bivariate
 #' # interpolation spatial model.
 #'
 #' n_envs <- 3 # Number of simulated environments.
