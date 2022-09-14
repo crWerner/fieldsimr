@@ -3,14 +3,14 @@
 #'
 #' Creates a list of input simulation parameters for
 #' \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
-#' genetic values for multiple traits in multiple environments based on a compound symmetry
-#' genotype-by-environment (GxE) interaction model. \cr
+#' genetic values for multiple traits in multiple environments based on a compound symmetry model for
+#' genotype-by-environment (GxE) interaction. \cr
 #' By default, 'AlphaSimR' does not support complex models for GxE interaction. However, its
 #' functionality to simulate correlated genetic values can be utilised for this purpose by
 #' providing the required variance structures. \code{compsym_asr_input} is a wrapper function to
 #' construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
-#' a compound symmetry GxE interaction model. This function assumes a separable structure between traits and
-#' environments. \code{compsym_asr_input} is used in combination with the wrapper function
+#' a compound symmetry model. This function assumes a separable structure between traits and
+#' environments. It is also used in combination with the wrapper function
 #' \link[FieldSimR]{compsym_asr_output}.
 #'
 #' \strong{Note:} 'AlphaSimR' can simulate different biological effects (see:
