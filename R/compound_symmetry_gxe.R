@@ -1,7 +1,7 @@
 #' Genetic values based on a compound symmetry GxE interaction model using 'AlphaSimR' - Input
 #' parameters
 #'
-#' Creates a list of simulation parameters for use with
+#' Creates a list of input simulation parameters for use with
 #' \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
 #' genetic values for multiple traits in multiple environments based on a compound symmetry
 #' genotype-by-environment (GxE) interaction model. \cr
@@ -9,7 +9,7 @@
 #' functionality to simulate correlated genetic values can be utilised for this purpose by
 #' providing the required variance structures. \code{compsym_asr_input} is a wrapper function to
 #' construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
-#' a compound symmetry GxE interaction model. It assumes a separable structure between traits and
+#' a compound symmetry GxE interaction model. This function assumes a separable structure between traits and
 #' environments. \code{compsym_asr_input} is used in combination with the wrapper function
 #' \link[FieldSimR]{compsym_asr_output}.
 #'
@@ -21,17 +21,17 @@
 #'   \item For additive + epistatic traits use \code{addTraitAE()}.
 #'   \item For additive + dominance + epistatic traits use \code{addTraitADE()}.
 #'   }
-#' If non-additive effects are to be simulated, check the \code{useVarA} argument of these
+#' If non-additive effects are to be simulated, use the \code{useVarA} argument of these
 #' functions.
 #'
 #' @param n_envs Number of environments to be simulated. A minimum of two environments is required.
 #' @param n_traits Number of traits to be simulated.
 #' @param mean A vector of mean genetic values for each trait-by-environment combination (ordered
-#'   as environments within traits!). Simulated traits can have a different mean for each
+#'   as environments within traits). Simulated traits can have a different mean for each
 #'   environment. If the length of \code{mean} corresponds to \code{n_traits}, the traits will be
-#'   assigned the same mean for each environment, respectively.
+#'   assigned the same mean for each environment.
 #' @param var A vector of genetic variances for each trait. Simulated traits are restricted by the
-#'   compound symmetry model to having the same variance set for each environment (i.e., main
+#'   compound symmetry model to having the same variance for each environment (i.e., main
 #'   effect variance + GxE interaction variance) and the same covariance between each pair of
 #'   environments (main effect variance). \cr
 #'   \strong{Note:} when \code{useVarA = TRUE} is set in 'AlphaSimR' (default) the values in
