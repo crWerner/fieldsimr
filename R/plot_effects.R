@@ -1,6 +1,6 @@
 #' Graphics for plot-level effects
 #'
-#' Graphically displays plot-level effects (e.g., genetic values, errors, phenotypic values) onto a field array, where the 
+#' Graphically displays plot-level effects (e.g., phenotypic values, genetic values, errors) onto a field array, where the 
 #' colour gradient ranges from red (low value) to green (high value). \cr
 #' This function requires a data frame generated with
 #' \link[FieldSimR]{field_trial_error} as an input, or any data frame which
