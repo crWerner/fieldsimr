@@ -368,8 +368,8 @@ compsym_asr_input <- function(n_envs,
 #' )
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a compound symmetry GxE
-#' # interaction model.
+#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a compound symmetry model for GxE
+#' # interaction.
 #'
 #' library("AlphaSimR")
 #' FOUNDERPOP <- quickHaplo(
@@ -398,7 +398,7 @@ compsym_asr_input <- function(n_envs,
 #'
 #'
 #' # 3. Create a data frame containing the simulated genetic values for the two traits
-#' # in three environments.
+#' # in the three environments.
 #'
 #' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
 #' # environment.
