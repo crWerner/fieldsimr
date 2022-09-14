@@ -34,7 +34,7 @@
 #'   compound symmetry model to having the same variance for each environment (i.e., main
 #'   effect variance + GxE interaction variance) and the same covariance between each pair of
 #'   environments (main effect variance). \cr
-#'   \strong{Note:} when \code{useVarA = TRUE} is set in 'AlphaSimR' (default) the values in
+#'   \strong{Note:} when \code{useVarA = TRUE} is specified in 'AlphaSimR' (default) the values in
 #'   \code{var} represent the \code{additive} genetic variances, otherwise they will represent the
 #'   \code{total} (additive + non-additive) genetic variances.
 #' @param rel_main_eff_A  A vector defining the magnitude of the additive main effect variance
@@ -44,7 +44,7 @@
 #' @param cor_A A matrix of additive genetic correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param mean_DD A vector of mean dominance degrees for each trait-by-environment combination
-#'   (ordered as environments within traits!), similar to \code{mean}. By default,
+#'   (ordered as environments within traits), similar to \code{mean}. By default,
 #'   \code{mean_DD = NULL} and dominance is not simulated.
 #' @param var_DD A vector of dominance degree variances for each trait. Simulated traits have the
 #'   same dominance degree variance for each environment and the same dominance degree covariance
@@ -52,14 +52,14 @@
 #' @param rel_main_eff_DD A vector defining the magnitude of the dominance degree main effect
 #'   variance relative to the main effect + GxE interaction variance for each trait (similar to
 #'   \code{rel_main_eff_A}) \cr
-#'   \strong{Note:} \code{0 < rel_main_eff_DD < 1}. By default, \code{relMaiEffDD = NULL}.
+#'   \strong{Note:} \code{0 < rel_main_eff_DD < 1}. By default, \code{rel_main_eff_DD = NULL}.
 #' @param cor_DD A matrix of dominance degree correlations between more than one trait (similar
 #'   to \code{cor_A}). If not defined and \code{n_traits > 1}, a diagonal matrix is constructed.
-#'   By default, \code{cor_DD = NULL} and dominance is not simulated.
+#'   By default, \code{cor_DD = NULL}.
 #' @param rel_AA A vector defining the magnitude of additive-by-additive (epistatic) variance
 #'   relative to the additive genetic variance for each trait, that is in a diploid organism with
 #'   allele frequency 0.5. Simulated traits have the same epistatic variance for each environment
-#'   and same epistatic covariance between each pair of environments (similar to \code{var}). By
+#'   and the same epistatic covariance between each pair of environments (similar to \code{var}). By
 #'   default, \code{rel_AA = NULL} and epistasis is not simulated.
 #' @param rel_main_eff_AA A vector defining the magnitude of the epistatic main effect variance
 #'   relative to the main effect + GxE interaction variance for each trait (similar to
@@ -86,7 +86,7 @@
 #' var <- c(0.2, 10)
 #' var_DD <- c(0.1, 0.2)
 #'
-#' # Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
+#' # Relative magnitude of the additive and dominance degree main effect variance for traits 1 and 2.
 #' rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
 #' rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
 #'
@@ -312,7 +312,7 @@ compsym_asr_input <- function(n_envs,
 #'
 #' Creates a data frame of correlated genetic values for multiple traits in multiple environments
 #' based on a compound symmetry genotype-by-environment (GxE) interaction model. This function
-#' requires an 'AlphaSimR' population object that was generated before using the
+#' requires an 'AlphaSimR' population object generated using the
 #' \link[FieldSimR]{compsym_asr_input} function.
 #'
 #' @param pop An 'AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
@@ -327,7 +327,7 @@ compsym_asr_input <- function(n_envs,
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   trait-by-environment combination. By default, effects = FALSE.
 #'
-#' @return A data-frame containing the environment ID, replicate number, genotype ID and
+#' @return A data-frame containing the environment name, replicate number, genotype ID and
 #'   simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
 #'   additional entries containing the total (additive + dominance + epistatic) main effects and
 #'   GxE interaction effects for each trait-by-environment combination.
@@ -391,16 +391,16 @@ compsym_asr_input <- function(n_envs,
 #'   useVarA = TRUE
 #' )
 #'
-#' # The variance defined in 'var' is the additive variance.
-#' # If FALSE, 'var' = total genetic variance.
+#' # By default, the value provided in 'var' represents the additive variance.
+#' # If useVarA=FALSE, 'var' represents the total genetic variance.
 #'
 #' pop <- newPop(FOUNDERPOP)
 #'
 #'
-#' # 3. Create a data frame containing the simulated genetic values for each of the two traits
-#' # tested in three environments.
+#' # 3. Create a data frame containing the simulated genetic values for the two traits
+#' # in three environments.
 #'
-#' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates tested in each
+#' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
 #' # environment.
 #'
 #' trial_df <- compsym_asr_output(
