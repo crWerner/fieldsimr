@@ -1,9 +1,8 @@
 #' Random correlation matrix
 #'
-#' Creates a \code{p x p} correlation matrix. An upper and lower bound of the sampled correlations
-#' can be set.
+#' Creates a general \code{p x p} correlation matrix, with user-defined maximum and minimum correlation.
 #'
-#' @param p A scalar defining the dimension of the correlation matrix.
+#' @param p A scalar defining the dimensions of the correlation matrix.
 #' @param min_cor A scalar defining the minimum correlation. By default, min_cor = -1.
 #' @param max_cor A scalar defining the maximum correlation. By default, max_cor = 1.
 #' @param n_digits Number of decimal digits. By default, n_digits = 2.
