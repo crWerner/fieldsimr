@@ -17,7 +17,7 @@ Description: FieldSimR simulates plot-level data in plant breeding field trials 
     Its core function simulates spatially correlated plot-level errors across correlated traits using 
     bivariate interpolation or a two-dimensional autoregressive process of order one (AR1:AR1). FieldSimR 
     then combines this spatial error with random measurement error at a user-defined ratio. 
-    The simulated plot-level errors can be combined with genotypic values (true, simulated or predicted) to generate plot-level phenotypic data. 
+    The simulated plot-level errors can be combined with genotypic values (true, simulated or predicted) to generate plot-level phenotypes. 
     FieldSimR provides wrapper functions to simulate the genotypic values for multiple traits and multiple environments using the 
     R package 'AlphaSimR'.
 License: GPL (>= 3)
