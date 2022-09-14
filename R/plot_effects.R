@@ -1,27 +1,24 @@
 #' Graphics for plot-level effects
 #'
-#' Graphically displays the plot-level effects (e.g., genetic values, errors, phenotypic values), where the 
-#' represented by a colour gradient ranging from red (low value) to green (high value). The effect
-#' to be plotted must have a unique value for each row x column combination. \cr
-#' \code{plot_trial_effects} directly takes data frames generated with
-#' \link[FieldSimR]{field_trial_error} as an input, but will also work with other data frames that
-#' contain at least the columns "env", "col", "row", and the effect to be plotted. If the data
-#' frame contains a "block" column, block borders will be indicated if \code{borders = TRUE}.
+#' Graphically displays plot-level effects (e.g., genetic values, errors, phenotypic values) onto a field array, where the 
+#' colour gradient ranges from red (low value) to green (high value). \cr
+#' This function requires a data frame generated with
+#' \link[FieldSimR]{field_trial_error} as an input, or any data frame which
+#' has columns named "env", "col", "row", and the effect to be displayed. If the data
+#' frame contains a column named "block", then black borders will distinguish the blocks if \code{blocks = TRUE} is specified.
 #'
-#' @param df A data frame containing at least the columns "env", "row", "col", and the effect to
-#'   be plotted. If \code{df} contains a a "block" column, block borders will be indicated if
-#'   \code{borders = TRUE}. If \code{df} is a list, the first list entry will be used by default.
-#'   To use a different list entry, the entry to be used needs to be specified.
-#' @param env The ID of the environment to be plotted.
-#' @param effect The column ID of the effect to be plotted.
-#' @param borders When true (default), block boarders are indicated.
+#' @param df A data frame containing the columns "env", "row", "col", and the effect to
+#'   be plotted. If \code{df} contains a column named "block", then black borders will distinguish the blocks if \code{blocks = TRUE} is specified. If \code{df} is a list, only the first entry will be used unless otherwise specified.
+#' @param env The name of the environment to be plotted.
+#' @param effect The name of the effect to be plotted.
+#' @param blocks When true (default), blocks are distinguish with black borders.
 #'
-#' @return A field plot of the input effect represented by a colour gradient from
-#'   red (low value) to green (high value).
+#' @return Graphic of the field array, where the 
+#' colour gradient ranges from red (low value) to green (high value) of the effect
 #'
 #' @examples
-#' # Simulation of plot-level errors for two traits tested in three environments using bivariate
-#' # interpolation to model spatial variation.
+#' # Simulation of plot-level errors for two traits tested in three environments using the bivariate
+#' # interpolation spatial model.
 #'
 #' n_envs <- 3 # Number of simulated environments.
 #' n_traits <- 2 # Number of simulated traits.
@@ -29,14 +26,14 @@
 #' # Field layout
 #' n_cols <- 10 # Total number of columns in each environment.
 #' n_rows <- c(20, 30, 20) # Total number of rows in each environment.
-#' plot_length <- 5 # Plot length set to 5 meters in each environment.
-#' plot_width <- 2 # Plot width set to 2 meters in each environment.
-#' n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
+#' plot_length <- 5 # Plot length set to 5m in each environment.
+#' plot_width <- 2 # Plot width set to 2m in each environment.
+#' n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) in each environment.
 #'
 #' # Error variances for traits 1 and 2.
 #' var_R <- c(0.4, 15)
 #'
-#' # Spatial error correlations between traits 1 and 2.
+#' # Spatial error correlation matrix between traits 1 and 2.
 #' cor_R <- matrix(c(
 #'   1.0, 0.2,
 #'   0.2, 1.0
@@ -61,16 +58,16 @@
 #'   return_effects = TRUE
 #' )
 #'
-#' # Plot the simulated error for trait 2 in environment 2.
-#' plot_trial_effects(error_df,
-#'   env = 2,
-#'   effect = "e.Trait.2"
+#' # Display the simulated error for trait 2 in environment 2.
+#' plot_effects(error_df,
+#'              env = 2,
+#'              effect = "e.Trait.2"
 #' )
 #' @export
-plot_trial_effects <- function(df,
-                               env,
-                               effect,
-                               borders = TRUE) {
+plot_effects <- function(df,
+                         env,
+                         effect,
+                         blocks = TRUE) {
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
   eff <- which(colnames(df) == effect)
@@ -119,7 +116,7 @@ plot_trial_effects <- function(df,
   graphics::axis(1, at = x_ticks, labels = x_labs)
   graphics::axis(2, at = y_ticks, labels = y_labs)
 
-  if (borders == TRUE & length(unique(df$block)) > 1) {
+  if (blocks == TRUE & length(unique(df$block)) > 1) {
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "#000000", lwd = 5)
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "#FFFFFF", lwd = 3)
   }
