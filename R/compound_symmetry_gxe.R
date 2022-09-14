@@ -1,4 +1,4 @@
-#' Genetic values based on a compound symmetry GxE interaction model using 'AlphaSimR' - Input
+#' Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - Input
 #' parameters
 #'
 #' Creates a list of input simulation parameters for
