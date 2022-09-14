@@ -21,14 +21,14 @@
 #'   \item For additive + epistatic traits use \code{addTraitAE()}.
 #'   \item For additive + dominance + epistatic traits use \code{addTraitADE()}.
 #'   }
-#' If non-additive effects are to be simulated, use the \code{useVarA} argument of these
+#' If non-additive effects are to be simulated, check the \code{useVarA} argument of these
 #' functions.
 #'
 #' @param n_envs Number of environments to be simulated. A minimum of two environments is required.
 #' @param n_traits Number of traits to be simulated.
 #' @param mean A vector of mean genetic values for each trait-by-environment combination (ordered
 #'   as environments within traits). Simulated traits can have a different mean for each
-#'   environment. If the length of \code{mean} corresponds to \code{n_traits}, the traits will be
+#'   environment. If the length of \code{mean} corresponds to \code{n_traits}, all traits will be
 #'   assigned the same mean for each environment.
 #' @param var A vector of genetic variances for each trait. Simulated traits are restricted by the
 #'   compound symmetry model to having the same variance for each environment (i.e., main
@@ -69,8 +69,8 @@
 #'   \code{cor_A}). If not defined and \code{n_traits > 1}, a diagonal matrix is constructed. By
 #'   default, \code{cor_AA = NULL}.
 #'
-#' @return A list containing input parameters for 'AlphaSimR', which is then used to simulate
-#'   correlated genetic effects based on a compound symmetry GxE interaction model.
+#' @return A list containing input parameters for 'AlphaSimR', which is used to simulate
+#'   correlated genetic effects based on a compound symmetry model.
 #'
 #' @examples
 #' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
@@ -307,11 +307,11 @@ compsym_asr_input <- function(n_envs,
   return(input_asr)
 }
 
-#' Genetic values based on a compound symmetry GxE interaction model using 'AlphaSimR' - Simulation
+#' Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - Simulation
 #' of genetic values
 #'
 #' Creates a data frame of correlated genetic values for multiple traits in multiple environments
-#' based on a compound symmetry genotype-by-environment (GxE) interaction model. This function
+#' based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
 #' requires an 'AlphaSimR' population object generated using the
 #' \link[FieldSimR]{compsym_asr_input} function.
 #'
