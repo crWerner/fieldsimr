@@ -13,7 +13,7 @@ Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me",
     person("Lorena", "Batista", role = "ctb", 
     comment = c(ORCID = "0000-0001-8472-8776")))
 Maintainer: Christian Werner <werner.christian@proton.me>
-Description: FieldSimR simulates plot-level data in plant breeding field trials for multiple traits and multiple environments. 
+Description: FieldSimR simulates plot-level data in plant breeding field trials for multiple traits in multiple environments. 
     Its core function simulates spatially correlated plot-level errors across correlated traits using 
     bivariate interpolation or a two-dimensional autoregressive process of order one (AR1:AR1). FieldSimR 
     then combines this spatial error with random measurement error at a user-defined ratio. 
