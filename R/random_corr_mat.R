@@ -24,7 +24,7 @@ rand_cor_mat <- function(p,
 
   n_cor <- sum(seq(1, (p - 1)))
 
-  off_dg <- round(stats::runif(n_cor, min = min_cor, max = max_cor), n_digits)
+  off_dg <- round(mbend::bend(stats::runif(n_cor, min = min_cor, max = max_cor)), n_digits)
   cor_mat <- diag(p)
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
   cor_mat <- t(cor_mat)
