@@ -5,7 +5,6 @@
 #' @param p A scalar defining the dimensions of the correlation matrix.
 #' @param min_cor A scalar defining the minimum correlation. By default, min_cor = -1.
 #' @param max_cor A scalar defining the maximum correlation. By default, max_cor = 1.
-#' @param n_digits Number of decimal digits. By default, n_digits = 2.
 #'
 #' @return A p x p correlation matrix.
 #'
@@ -14,8 +13,7 @@
 #' @export
 rand_cor_mat <- function(p,
                          min_cor = -1,
-                         max_cor = 1,
-                         n_digits = 2) {
+                         max_cor = 1) {
   if (p < 1 | p %% 1 != 0) stop("'p' must be an integer > 0")
 
   if (min_cor < -1 | min_cor >= 1) stop("'min_cor' must be value >= -1 and < 1")
@@ -24,7 +22,7 @@ rand_cor_mat <- function(p,
 
   n_cor <- sum(seq(1, (p - 1)))
 
-  off_dg <- round(mbend::bend(stats::runif(n_cor, min = min_cor, max = max_cor)), n_digits)
+  off_dg <- mbend::bend(stats::runif(n_cor, min = min_cor, max = max_cor))
   cor_mat <- diag(p)
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
   cor_mat <- t(cor_mat)
