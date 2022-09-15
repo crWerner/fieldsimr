@@ -540,8 +540,8 @@ unstr_asr_input <- function(n_envs,
 #' )
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured model for GxE
-#' # interaction .
+#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured model for
+#' # GxE interaction.
 #'
 #' library(AlphaSimR)
 #' FOUNDERPOP <- quickHaplo(

@@ -1,19 +1,22 @@
 #' Graphics for plot-level effects
 #'
-#' Graphically displays plot-level effects (e.g., phenotypic values, genetic values, errors) onto a field array, where the 
-#' colour gradient ranges from red (low value) to green (high value). \cr
+#' Graphically displays plot-level effects (e.g., phenotypic values, genetic values, errors) onto
+#' a field array, where the colour gradient ranges from red (low value) to green (high value). \cr
 #' This function requires a data frame generated with
 #' \link[FieldSimR]{field_trial_error} as an input, or any data frame with
 #' columns named "env", "col", "row", and the effect to be displayed. If the data
-#' frame contains a column named "block", then black borders will distinguish the blocks if \code{blocks = TRUE} is specified.
+#' frame contains a column named "block", then black borders will distinguish the blocks if
+#' \code{blocks = TRUE} is specified.
 #'
 #' @param df A data frame containing the columns "env", "row", "col", and the effect to
-#'   be plotted. If \code{df} contains a column named "block", then black borders will distinguish the blocks if \code{blocks = TRUE} is specified. If \code{df} is a list, only the first entry will be used unless otherwise specified.
+#'   be plotted. If \code{df} contains a column named "block", then black borders will distinguish
+#'   the blocks if \code{blocks = TRUE} is specified. If \code{df} is a list, only the first entry
+#'   will be used unless otherwise specified.
 #' @param env The name of the environment to be plotted.
 #' @param effect The name of the effect to be plotted.
 #' @param blocks When true (default), blocks are distinguish with black borders.
 #'
-#' @return Graphic of the field array, where the 
+#' @return Graphic of the field array, where the
 #' colour gradient ranges from red (low value) to green (high value) of the effect
 #'
 #' @examples
@@ -60,8 +63,8 @@
 #'
 #' # Display the simulated error for trait 2 in environment 2.
 #' plot_effects(error_df,
-#'              env = 2,
-#'              effect = "e.Trait.2"
+#'   env = 2,
+#'   effect = "e.Trait.2"
 #' )
 #' @export
 plot_effects <- function(df,
@@ -71,7 +74,7 @@ plot_effects <- function(df,
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
   eff <- which(colnames(df) == effect)
-  df <- df[ df[["env"]] == env , ]
+  df <- df[df[["env"]] == env, ]
   n_rows <- length(unique(df$row))
   n_cols <- length(unique(df$col))
 
@@ -84,8 +87,8 @@ plot_effects <- function(df,
   }
 
   if (length(unique(df$block)) > 1) {
-    df1 <- df[ df[["block"]] == 1 , ]
-    df2 <- df[ df[["block"]] == 2 , ]
+    df1 <- df[df[["block"]] == 1, ]
+    df2 <- df[df[["block"]] == 2, ]
 
     if (any(unique(df1$row) == unique(df2$row)) == FALSE) {
       nx <- 0

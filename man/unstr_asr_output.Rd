@@ -2,7 +2,7 @@
 % Please edit documentation in R/unstructured_gxe.R
 \name{unstr_asr_output}
 \alias{unstr_asr_output}
-\title{Genetic values based on an unstructured GxE interaction model using 'AlphaSimR' - Simulated
+\title{Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Simulated
 genetic values}
 \usage{
 unstr_asr_output(pop, n_envs, n_reps, n_traits)
@@ -20,18 +20,18 @@ number of replicates.}
 \item{n_traits}{Number of simulated traits (same as in \link[FieldSimR]{unstr_asr_input}).}
 }
 \value{
-A data-frame containing the environment ID, replicate number, genotype ID and
+A data-frame containing the environment name, replicate number, genotype ID and
   simulated genetic values for each trait.
 }
 \description{
-Creates a data frame of correlated genetic values for multiple traits tested in multiple
-environments based on an unstructured genotype-by-environment (GxE) interaction model. This
-function requires an 'AlphaSimR' population object that was generated before using the
+Creates a data frame of correlated genetic values for multiple traits in multiple
+environments based on an unstructured model for genotype-by-environment (GxE) interaction. This
+function requires an 'AlphaSimR' population object generated using the
 \link[FieldSimR]{unstr_asr_input} function.
 }
 \examples{
 # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
-# three environments based on a compound symmetry model for GxE interaction.
+# three environments based on an unstructured model for GxE interaction.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
@@ -82,8 +82,8 @@ input_asr <- unstr_asr_input(
 )
 
 
-# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured GxE
-# interaction model.
+# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured model for
+# GxE interaction.
 
 library(AlphaSimR)
 FOUNDERPOP <- quickHaplo(
@@ -105,16 +105,16 @@ SP$addTraitAD(
   useVarA = TRUE
 )
 
-# The variance defined in 'var' is the additive variance.
-# If FALSE, 'var' = total genetic variance.
+# By default, the value provided in 'var' represents the additive variance.
+# If useVarA=FALSE, 'var' represents the total genetic variance.
 
 pop <- newPop(FOUNDERPOP)
 
 
-# 3. Create a data frame containing the simulated genetic values for each of the two traits
-# tested in three environments.
+# 3. Create a data frame containing the simulated genetic values for the two traits
+#  in the three environments.
 
-n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates tested in each
+n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
 # environment.
 
 trial_df <- unstr_asr_output(

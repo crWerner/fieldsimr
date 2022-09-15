@@ -2,7 +2,7 @@
 % Please edit documentation in R/unstructured_gxe.R
 \name{unstr_asr_input}
 \alias{unstr_asr_input}
-\title{Genetic values based on an unstructured GxE interaction model using 'AlphaSimR' - Input
+\title{Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Input
 parameters}
 \usage{
 unstr_asr_input(
@@ -36,13 +36,13 @@ unstr_asr_input(
 \item{n_traits}{Number of traits to be simulated.}
 
 \item{mean}{A vector of mean genetic values for each trait-by-environment combination (ordered
-as environments within traits!). Simulated traits can have a different mean for each
-environment. If the length of \code{mean} corresponds to \code{n_traits}, the traits will be
-assigned the same mean for each environment, respectively.}
+as environments within traits). Simulated traits can have a different mean for each
+environment. If the length of \code{mean} corresponds to \code{n_traits}, all traits will be
+assigned the same mean for each environment.}
 
 \item{var}{A vector of genetic variances for each trait-by-environment combination (ordered as
-environments within traits!). If the length of \code{var} is equal to \code{n_traits}, the
-traits will be assigned the same error variance in each environment,respectively. \cr
+environments within traits). If the length of \code{var} is equal to \code{n_traits}, all
+traits will be assigned the same error variance in each environment. \cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_var} and \code{E_var} can be provided. By default, \code{var = NULL}.}
 
@@ -67,11 +67,11 @@ provided in combination with \code{E_cor_A}. \cr
 Alternatively, \code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.}
 
 \item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment combination
-(ordered as environments within traits!), similar to \code{mean}. By default,
+(ordered as environments within traits), similar to \code{mean}. By default,
 \code{mean_DD = NULL} and dominance is not simulated.}
 
 \item{var_DD}{A vector of dominance degree variances for each trait-by-environment combination
-(ordered as environments within traits!), similar to \code{var}. \cr
+(ordered as environments within traits), similar to \code{var}. \cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_var_DD} and \code{E_var_DD} can be provided. By default, \code{var_DD = NULL}.}
 
@@ -99,7 +99,7 @@ Alternatively, \code{cor_DD} can be provided. By default, \code{T_cor_DD = NULL}
 
 \item{rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to additive genetic variance for each trait-by-environment combination (ordered as
-environments within traits!), that is in a diploid organism with allele frequency 0.5. \cr
+environments within traits), that is in a diploid organism with allele frequency 0.5. \cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_rel_AA} and \code{E_rel_AA} can be provided. By default, \code{rel_AA = NULL} and
 epistasis is not simulated.}
@@ -129,11 +129,11 @@ Alternatively, \code{cor_AA} can be provided. By default, \code{E_cor_AA = NULL}
 Alternatively, \code{cor_AA} can be provided. By default, \code{T_cor_AA = NULL}.}
 }
 \value{
-A list containing input parameters for 'AlphaSimR', which is then used to simulate
-  correlated genetic effects based on an unstructured GxE interaction model.
+A list containing input parameters for 'AlphaSimR', which is used to simulate
+  correlated genetic effects based on an unstructured model.
 }
 \description{
-Creates a list of simulation parameters for use with
+Creates a list of simulation parameters for
 \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
 genetic values for multiple traits in multiple environments based on an unstructured model for
 genotype-by-environment (GxE) interaction. \cr
@@ -141,15 +141,15 @@ By default, 'AlphaSimR' does not support complex models for GxE interaction. How
 functionality to simulate correlated genetic values can be utilised for this purpose by
 providing the required variance structures. \code{unstr_asr_input} is a wrapper function to
 construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
-an unstructured GxE interaction model. \code{compsym_asr_input} is used in combination with the
+an unstructured model. This function is also used in combination with the
 wrapper function \link[FieldSimR]{compsym_asr_output}.
 }
 \details{
-\code{unstr_asr_input} handles non-separable and separable structures between traits and
+\code{unstr_asr_input} can handle non-separable and separable structures between traits and
 environments.
 \itemize{
-  \item For the non-separable structure, provide (1) \code{var}, and (2) \code{cor_A}.
-  \item For the separable structure, provide (1) \code{T_var} & \code{E_var}, and (2)
+  \item For non-separable structures, provide (1) \code{var}, and (2) \code{cor_A}.
+  \item For separable structures, provide (1) \code{T_var} & \code{E_var}, and (2)
   \code{T_cor_A} & \code{E_cor_A}. \cr
   }
 
@@ -166,7 +166,7 @@ functions.
 }
 \examples{
 # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
-# three environments based on a compound symmetry model for GxE interaction.
+# three environments based on an unstructured model for GxE interaction.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2

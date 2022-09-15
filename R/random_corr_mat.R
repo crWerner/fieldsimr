@@ -1,6 +1,7 @@
 #' Random correlation matrix
 #'
-#' Creates a general \code{p x p} correlation matrix, with user-defined maximum and minimum correlation.
+#' Creates a general \code{p x p} correlation matrix, with user-defined maximum and minimum
+#' correlation.
 #'
 #' @param p A scalar defining the dimensions of the correlation matrix.
 #' @param min_cor A scalar defining the minimum correlation. By default, min_cor = -1.

@@ -3,8 +3,8 @@
 #'
 #' Creates a list of input simulation parameters for
 #' \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
-#' genetic values for multiple traits in multiple environments based on a compound symmetry model for
-#' genotype-by-environment (GxE) interaction. \cr
+#' genetic values for multiple traits in multiple environments based on a compound symmetry model
+#' for genotype-by-environment (GxE) interaction. \cr
 #' By default, 'AlphaSimR' does not support complex models for GxE interaction. However, its
 #' functionality to simulate correlated genetic values can be utilised for this purpose by
 #' providing the required variance structures. \code{compsym_asr_input} is a wrapper function to
@@ -59,8 +59,8 @@
 #' @param rel_AA A vector defining the magnitude of additive-by-additive (epistatic) variance
 #'   relative to the additive genetic variance for each trait, that is in a diploid organism with
 #'   allele frequency 0.5. Simulated traits have the same epistatic variance for each environment
-#'   and the same epistatic covariance between each pair of environments (similar to \code{var}). By
-#'   default, \code{rel_AA = NULL} and epistasis is not simulated.
+#'   and the same epistatic covariance between each pair of environments (similar to \code{var}).
+#'   By default, \code{rel_AA = NULL} and epistasis is not simulated.
 #' @param rel_main_eff_AA A vector defining the magnitude of the epistatic main effect variance
 #'   relative to the main effect + GxE interaction variance for each trait (similar to
 #'   \code{rel_main_eff_A}). \cr
@@ -307,8 +307,8 @@ compsym_asr_input <- function(n_envs,
   return(input_asr)
 }
 
-#' Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - Simulation
-#' of genetic values
+#' Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' -
+#' Simulation of genetic values
 #'
 #' Creates a data frame of correlated genetic values for multiple traits in multiple environments
 #' based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
@@ -368,8 +368,8 @@ compsym_asr_input <- function(n_envs,
 #' )
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a compound symmetry model for GxE
-#' # interaction.
+#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a compound symmetry model
+#' # for GxE interaction.
 #'
 #' library("AlphaSimR")
 #' FOUNDERPOP <- quickHaplo(

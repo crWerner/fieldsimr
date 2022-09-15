@@ -2,7 +2,7 @@
 % Please edit documentation in R/compound_symmetry_gxe.R
 \name{compsym_asr_input}
 \alias{compsym_asr_input}
-\title{Genetic values based on a compound symmetry GxE interaction model using 'AlphaSimR' - Input
+\title{Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - Input
 parameters}
 \usage{
 compsym_asr_input(
@@ -27,15 +27,15 @@ compsym_asr_input(
 \item{n_traits}{Number of traits to be simulated.}
 
 \item{mean}{A vector of mean genetic values for each trait-by-environment combination (ordered
-as environments within traits!). Simulated traits can have a different mean for each
-environment. If the length of \code{mean} corresponds to \code{n_traits}, the traits will be
-assigned the same mean for each environment, respectively.}
+as environments within traits). Simulated traits can have a different mean for each
+environment. If the length of \code{mean} corresponds to \code{n_traits}, all traits will be
+assigned the same mean for each environment.}
 
 \item{var}{A vector of genetic variances for each trait. Simulated traits are restricted by the
-compound symmetry model to having the same variance set for each environment (i.e., main
+compound symmetry model to having the same variance for each environment (i.e., main
 effect variance + GxE interaction variance) and the same covariance between each pair of
 environments (main effect variance). \cr
-\strong{Note:} when \code{useVarA = TRUE} is set in 'AlphaSimR' (default) the values in
+\strong{Note:} when \code{useVarA = TRUE} is specified in 'AlphaSimR' (default) the values in
 \code{var} represent the \code{additive} genetic variances, otherwise they will represent the
 \code{total} (additive + non-additive) genetic variances.}
 
@@ -48,7 +48,7 @@ value is provided and \code{n_traits > 1}, all traits will be assigned the same 
 defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
 \item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment combination
-(ordered as environments within traits!), similar to \code{mean}. By default,
+(ordered as environments within traits), similar to \code{mean}. By default,
 \code{mean_DD = NULL} and dominance is not simulated.}
 
 \item{var_DD}{A vector of dominance degree variances for each trait. Simulated traits have the
@@ -58,17 +58,17 @@ between each pair of environments (similar to \code{var}). By default, \code{var
 \item{rel_main_eff_DD}{A vector defining the magnitude of the dominance degree main effect
 variance relative to the main effect + GxE interaction variance for each trait (similar to
 \code{rel_main_eff_A}) \cr
-\strong{Note:} \code{0 < rel_main_eff_DD < 1}. By default, \code{relMaiEffDD = NULL}.}
+\strong{Note:} \code{0 < rel_main_eff_DD < 1}. By default, \code{rel_main_eff_DD = NULL}.}
 
 \item{cor_DD}{A matrix of dominance degree correlations between more than one trait (similar
 to \code{cor_A}). If not defined and \code{n_traits > 1}, a diagonal matrix is constructed.
-By default, \code{cor_DD = NULL} and dominance is not simulated.}
+By default, \code{cor_DD = NULL}.}
 
 \item{rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to the additive genetic variance for each trait, that is in a diploid organism with
 allele frequency 0.5. Simulated traits have the same epistatic variance for each environment
-and same epistatic covariance between each pair of environments (similar to \code{var}). By
-default, \code{rel_AA = NULL} and epistasis is not simulated.}
+and the same epistatic covariance between each pair of environments (similar to \code{var}).
+By default, \code{rel_AA = NULL} and epistasis is not simulated.}
 
 \item{rel_main_eff_AA}{A vector defining the magnitude of the epistatic main effect variance
 relative to the main effect + GxE interaction variance for each trait (similar to
@@ -80,20 +80,20 @@ relative to the main effect + GxE interaction variance for each trait (similar t
 default, \code{cor_AA = NULL}.}
 }
 \value{
-A list containing input parameters for 'AlphaSimR', which is then used to simulate
-  correlated genetic effects based on a compound symmetry GxE interaction model.
+A list containing input parameters for 'AlphaSimR', which is used to simulate
+  correlated genetic effects based on a compound symmetry model.
 }
 \description{
-Creates a list of simulation parameters for use with
+Creates a list of input simulation parameters for
 \href{https://cran.r-project.org/web/packages/AlphaSimR/index.html}{'AlphaSimR'} to simulate
-genetic values for multiple traits in multiple environments based on a compound symmetry
-genotype-by-environment (GxE) interaction model. \cr
+genetic values for multiple traits in multiple environments based on a compound symmetry model
+for genotype-by-environment (GxE) interaction. \cr
 By default, 'AlphaSimR' does not support complex models for GxE interaction. However, its
 functionality to simulate correlated genetic values can be utilised for this purpose by
 providing the required variance structures. \code{compsym_asr_input} is a wrapper function to
 construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
-a compound symmetry GxE interaction model. It assumes a separable structure between traits and
-environments. \code{compsym_asr_input} is used in combination with the wrapper function
+a compound symmetry model. This function assumes a separable structure between traits and
+environments. It is also used in combination with the wrapper function
 \link[FieldSimR]{compsym_asr_output}.
 }
 \details{
@@ -122,7 +122,7 @@ mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in 3 environments for ea
 var <- c(0.2, 10)
 var_DD <- c(0.1, 0.2)
 
-# Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
+# Relative magnitude of the additive and dominance degree main effect variance for traits 1 and 2.
 rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
 rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
 
