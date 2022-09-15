@@ -75,7 +75,7 @@ variance accounts for half the total error variance (\code{prop_spatial = 0.5}).
 
 \item{complexity}{A single number defining the complexity of the bivariate interpolation model.
 By default, \code{complexity = 12}. Note that lower values might lead to convergence problems.
-See \link[akima]{interp} for further details.}
+See \link[interp]{interp} for further details.}
 
 \item{col_cor}{A vector of column autocorrelations for each environment used in the AR1:AR1
 spatial error model. If only one value is provided, all environments will be assigned the
@@ -97,7 +97,7 @@ A data-frame containing the environment ID, block ID, column ID, row ID, and the
 Creates a data frame with plot-level errors for one or multiple traits in a (multi-environment)
 plant breeding trial. The simulated error consists of a spatial error term and a random error
 term. The spatial error term can be simulated based on 1) bivariate interpolation using the
-\link[akima]{interp} function of the package 'akima', or 2) a separable first-order
+\link[interp]{interp} function of the package 'interp', or 2) a separable first-order
 autoregressive process (AR1:AR1) within environments. The the spatial error is combined with
 a random error at a user-defined ratio. \cr
 If multiple traits are simulated, a correlated error between traits can be generated assuming

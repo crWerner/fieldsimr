@@ -3,7 +3,7 @@
 #' Creates a data frame with plot-level errors for one or multiple traits in a (multi-environment)
 #' plant breeding trial. The simulated error consists of a spatial error term and a random error
 #' term. The spatial error term can be simulated based on 1) bivariate interpolation using the
-#' \link[akima]{interp} function of the package 'akima', or 2) a separable first-order
+#' \link[interp]{interp} function of the package 'interp', or 2) a separable first-order
 #' autoregressive process (AR1:AR1) within environments. The the spatial error is combined with
 #' a random error at a user-defined ratio. \cr
 #' If multiple traits are simulated, a correlated error between traits can be generated assuming
@@ -48,7 +48,7 @@
 #'   variance accounts for half the total error variance (\code{prop_spatial = 0.5}).
 #' @param complexity A single number defining the complexity of the bivariate interpolation model.
 #'   By default, \code{complexity = 12}. Note that lower values might lead to convergence problems.
-#'   See \link[akima]{interp} for further details.
+#'   See \link[interp]{interp} for further details.
 #' @param col_cor A vector of column autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
 #'   same column autocorrelation.
@@ -283,7 +283,7 @@ field_trial_error <- function(n_envs,
 
     for (i in 1:n_traits) {
       tmp <- mapply(function(x, y, z, xo, yo) {
-        c(t(akima::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean", remove = FALSE)$z))
+        c(t(interp::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z))
       },
       x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
       )
