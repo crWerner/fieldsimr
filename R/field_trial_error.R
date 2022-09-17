@@ -282,7 +282,7 @@ field_trial_error <- function(n_envs,
 
     for (i in 1:n_traits) {
       tmp <- mapply(function(v, w, x, y, z, xo, yo) {
-        c(t(interp::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
+        c(t(interp::interp(x = x, y = y, z = z[, i], xo = round(xo,8), yo = round(yo,8), linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
       },
       v = n_rows, w = n_cols, x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
       )
@@ -302,17 +302,18 @@ field_trial_error <- function(n_envs,
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits, byrow = TRUE)))
 
   var_R <- lapply(X = var_R, FUN = c)
-
   e_spat <- mapply(function(w, x) (scale(w) * sqrt(x)), w = plot_error_lst1, x = prop_spatial, SIMPLIFY = F)
   e_rand <- mapply(function(x, y) (scale(y) * sqrt(1 - x)), x = prop_spatial, y = plot_error_lst2, SIMPLIFY = F)
   if (n_traits > 1) {
     e_scale <- mapply(function(x, y) sqrt(diag(1 / diag(as.matrix(stats::var(x + y))))), x = e_spat, y = e_rand, SIMPLIFY = F)
+    e_spat <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_spat, y = e_scale, z = var_R, SIMPLIFY = F)
+    e_rand <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_rand, y = e_scale, z = var_R, SIMPLIFY = F)
   }
   if (n_traits == 1) {
     e_scale <- mapply(function(x, y) sqrt(1 / stats::var(x + y)), x = e_spat, y = e_rand, SIMPLIFY = F)
+    e_spat <- mapply(function(x, y, z) x %*% y %*% sqrt(z), x = e_spat, y = e_scale, z = var_R, SIMPLIFY = F)
+    e_rand <- mapply(function(x, y, z) x %*% y %*% sqrt(z), x = e_rand, y = e_scale, z = var_R, SIMPLIFY = F)
   }
-  e_spat <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_spat, y = e_scale, z = var_R, SIMPLIFY = F)
-  e_rand <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_rand, y = e_scale, z = var_R, SIMPLIFY = F)
   plot_error_lst <- mapply(function(x, y) x + y, x = e_spat, y = e_rand, SIMPLIFY = F)
   plot_error <- do.call(what = "rbind", plot_error_lst)
   colnames(plot_error) <- paste0("e.Trait.", 1:n_traits)
