@@ -1,16 +1,15 @@
 #' Simulate plot-level errors for a plant breeding trial
 #'
-#' Creates a data frame with simulated plot-level errors for one or more traits in
-#' plant breeding trials across multiple environments. The simulated error consists of a spatial error term as well as a random error term.
-#' term. The spatial error term can be simulated based on 1) bivariate interpolation using the
-#' \link[interp]{interp} function of the package 'interp', or 2) a separable first-order
-#' autoregressive process (AR1:AR1).
-#' The random error term is simulated using an independent process.
-#' The spatial and random error terms are combined according to a user-defined ratio. \cr
-#' For multiple traits, correlated error terms can be generated assuming
-#' 1) correlated spatial errors between traits, 2) correlated random error
-#' between traits, or 3) a combination of both. \cr
-#' Latly, note that a separable covariance structure is assumed between traits and environments.
+#' Creates a data frame with simulated plot-level errors for one or more traits in plant breeding
+#' trials across multiple environments. The simulated error consists of a spatial error term and
+#' a random error term. The spatial error term can be simulated based on 1) bivariate
+#' interpolation using the \link[interp]{interp} function of the package 'interp', or 2) a
+#' separable first-order autoregressive process (AR1:AR1). The random error term is simulated
+#' using an independent process. The spatial and random error terms are combined according to a
+#' user-defined ratio. \cr
+#' For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
+#' errors between traits, 2) correlated random error between traits, or 3) a combination of both. \cr
+#' A separable covariance structure is assumed between traits and environments.
 #'
 #' @param n_envs Number of environments to be simulated (same as for \code{compsym_asr_input}
 #'   or \code{unstr_asr_output}, where applicable).
@@ -44,9 +43,9 @@
 #'   term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 #'   (separable first-order autoregressive process (AR1:AR1)).
 #' @param prop_spatial A vector defining the proportion of spatial error variance to total
-#'   error variance (spatial + random). If only one value is provided, all environennts will be assigned the
-#'   same proportion. By default, the spatial error
-#'   variance accounts for half of the total error variance (\code{prop_spatial = 0.5}).
+#'   error variance (spatial + random). If only one value is provided, all environments will be
+#'   assigned the same proportion. By default, the spatial error variance accounts for half of the
+#'   total error variance (\code{prop_spatial = 0.5}).
 #' @param complexity A scalar defining the complexity of the bivariate interpolation model.
 #'   By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
 #'   See \link[interp]{interp} for further details.
@@ -246,7 +245,7 @@ field_trial_error <- function(n_envs,
 
     l_lst <- lapply(cor_mat_lst, function(x) chol(x))
     plot_error_lst1 <- mapply(function(x, y) matrix(c(stats::rnorm(x) %*% y), ncol = n_traits),
-                              x = n_cols * n_rows * n_traits, y = l_lst, SIMPLIFY = FALSE
+      x = n_cols * n_rows * n_traits, y = l_lst, SIMPLIFY = FALSE
     )
   }
 
@@ -254,17 +253,17 @@ field_trial_error <- function(n_envs,
     if (complexity <= 0) stop("'complexity' must be an integer > 0")
 
     # n_plots <- n_cols * n_rows
-    cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), max(x)+1)))
+    cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), max(x) + 1)))
     col_centres_lst <- mapply(function(x, y) y * (x - 0.5),
-                              x = cols_lst, y = plot_length, SIMPLIFY = FALSE
+      x = cols_lst, y = plot_length, SIMPLIFY = FALSE
     )
 
     # col_centres <- unlist(col_centres_lst)
     # col_centres_lst <- lapply(col_centres_lst, function(x) unique(x))
 
-    rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), max(x)+1)))
+    rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), max(x) + 1)))
     row_centres_lst <- mapply(function(x, y) y * (x - 0.5),
-                              x = rows_lst, y = plot_width, SIMPLIFY = FALSE
+      x = rows_lst, y = plot_width, SIMPLIFY = FALSE
     )
     # row_centres <- unlist(row_centres_lst)
     # row_centres_lst <- lapply(row_centres_lst, function(x) unique(x))
@@ -273,16 +272,16 @@ field_trial_error <- function(n_envs,
     row_gap <- plot_width / 4
 
     xInterp_list <- mapply(function(x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-                           x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+      x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
     )
     yInterp_list <- mapply(function(x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-                           x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+      x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
     )
     zInterp_list <- lapply(n_cols, function(x) scale(matrix(stats::rnorm((4 + complexity) * n_traits), ncol = n_traits)) %*% chol(cor_R))
 
     for (i in 1:n_traits) {
       tmp <- mapply(function(v, w, x, y, z, xo, yo) {
-        c(t(interp::interp(x = x, y = y, z = z[, i], xo = round(xo,8), yo = round(yo,8), linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
+        c(t(interp::interp(x = x, y = y, z = z[, i], xo = round(xo, 8), yo = round(yo, 8), linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
       },
       v = n_rows, w = n_cols, x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
       )
@@ -296,7 +295,7 @@ field_trial_error <- function(n_envs,
   }
 
   plot_error_lst2 <- mapply(function(x) matrix(c(stats::rnorm(x)), ncol = n_traits) %*% chol(R_cor_R),
-                            x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
+    x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
   )
 
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits, byrow = TRUE)))
@@ -325,8 +324,8 @@ field_trial_error <- function(n_envs,
     e_all <- lapply(seq_len(ncol(e_spat)), function(i) cbind(e_spat[, i], e_rand[, i]))
     resids <- lapply(e_all, function(x) {
       data.frame(plot_df[, 1:4],
-                 e_spatial = x[, 1],
-                 e_random = x[, 2]
+        e_spatial = x[, 1],
+        e_random = x[, 2]
       )
     })
 

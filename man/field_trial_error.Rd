@@ -19,13 +19,13 @@ field_trial_error(
   spatial_model = "bivariate",
   prop_spatial = 0.5,
   complexity = 12,
-  col_cor,
-  row_cor,
+  col_cor = NULL,
+  row_cor = NULL,
   return_effects = FALSE
 )
 }
 \arguments{
-\item{n_envs}{Number of environments to be simulated (same as used in \code{compsym_asr_input}
+\item{n_envs}{Number of environments to be simulated (same as for \code{compsym_asr_input}
 or \code{unstr_asr_output}, where applicable).}
 
 \item{n_traits}{Number of traits to be simulated.}
@@ -55,8 +55,8 @@ plot width.}
 when \code{n_reps = 1}.}
 
 \item{var_R}{A vector of error variances for each trait-by-environment combination (ordered
-as environments within traits!). If the length of \code{var_R} is equal to \code{n_traits},
-the traits will be assigned the same error variance in each environment,respectively.}
+as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
+all traits will be assigned the same error variance in each environment.}
 
 \item{cor_R}{A matrix of spatial error correlations between more than one trait. If not
 defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
@@ -68,13 +68,13 @@ defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 (separable first-order autoregressive process (AR1:AR1)).}
 
-\item{prop_spatial}{A vector defining the proportion of the spatial error variance in the total
-error variance (spatial + random). If only one value is provided, the spatial error variance
-will be assigned the same proportion in each environment. By default, the spatial error
-variance accounts for half the total error variance (\code{prop_spatial = 0.5}).}
+\item{prop_spatial}{A vector defining the proportion of spatial error variance to total
+error variance (spatial + random). If only one value is provided, all environments will be
+assigned the same proportion. By default, the spatial error variance accounts for half of the
+total error variance (\code{prop_spatial = 0.5}).}
 
-\item{complexity}{A single number defining the complexity of the bivariate interpolation model.
-By default, \code{complexity = 12}. Note that lower values might lead to convergence problems.
+\item{complexity}{A scalar defining the complexity of the bivariate interpolation model.
+By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
 See \link[interp]{interp} for further details.}
 
 \item{col_cor}{A vector of column autocorrelations for each environment used in the AR1:AR1
@@ -86,28 +86,28 @@ spatial error model. If only one value is provided, all environments will be ass
 same row autocorrelation.}
 
 \item{return_effects}{When true, a list is returned with additional entries for each trait
-containing the spatial error and the random error.}
+containing the spatial and random errors.}
 }
 \value{
-A data-frame containing the environment ID, block ID, column ID, row ID, and the
+A data-frame containing the environment, block, column and row names, as well as the
   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
-  additional entries for each trait containing the spatial error and the random error.
+  additional entries for each trait containing the spatial and random errors.
 }
 \description{
-Creates a data frame with plot-level errors for one or multiple traits in a (multi-environment)
-plant breeding trial. The simulated error consists of a spatial error term and a random error
-term. The spatial error term can be simulated based on 1) bivariate interpolation using the
-\link[interp]{interp} function of the package 'interp', or 2) a separable first-order
-autoregressive process (AR1:AR1) within environments. The the spatial error is combined with
-a random error at a user-defined ratio. \cr
-If multiple traits are simulated, a correlated error between traits can be generated assuming
-1) a correlation of the spatial error between traits, 2) a correlation of the random error
-between traits, or 3) a combination of both. \cr
-Between traits and environments, a separable covariance structure is assumed.
+Creates a data frame with simulated plot-level errors for one or more traits in plant breeding
+trials across multiple environments. The simulated error consists of a spatial error term and
+a random error term. The spatial error term can be simulated based on 1) bivariate
+interpolation using the \link[interp]{interp} function of the package 'interp', or 2) a
+separable first-order autoregressive process (AR1:AR1). The random error term is simulated
+using an independent process. The spatial and random error terms are combined according to a
+user-defined ratio. \cr
+For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
+errors between traits, 2) correlated random error between traits, or 3) a combination of both. \cr
+A separable covariance structure is assumed between traits and environments.
 }
 \examples{
-# Simulation of plot-level errors for two traits tested in three environments using bivariate
-# interpolation to model spatial variation.
+# Simulation of plot-level errors for two traits in three environments using a bivariate
+# interpolation model for spatial variation.
 
 n_envs <- 3 # Number of simulated environments.
 n_traits <- 2 # Number of simulated traits.
