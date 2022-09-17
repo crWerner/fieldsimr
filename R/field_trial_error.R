@@ -35,7 +35,7 @@
 #' @param var_R A vector of error variances for each trait-by-environment combination (ordered
 #'   as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
 #'   all traits will be assigned the same error variance in each environment.
-#' @param cor_R A matrix of spatial error correlations between more than one trait. If not
+#' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
@@ -80,7 +80,7 @@
 #' var_R <- c(0.4, 15)
 #'
 #' # Spatial error correlations between traits 1 and 2.
-#' cor_R <- matrix(c(
+#' S_cor_R <- matrix(c(
 #'   1.0, 0.2,
 #'   0.2, 1.0
 #' ),
@@ -97,7 +97,7 @@
 #'   n_reps = n_reps,
 #'   rep_dir = "row",
 #'   var_R = var_R,
-#'   cor_R = cor_R,
+#'   S_cor_R = S_cor_R,
 #'   spatial_model = "bivariate",
 #'   prop_spatial = 0.6,
 #'   complexity = 14,
@@ -113,7 +113,7 @@ field_trial_error <- function(n_envs,
                               plot_width,
                               rep_dir = "column",
                               var_R,
-                              cor_R = NULL,
+                              S_cor_R = NULL,
                               R_cor_R = NULL,
                               spatial_model = "bivariate",
                               prop_spatial = 0.5,
@@ -184,7 +184,7 @@ field_trial_error <- function(n_envs,
          or number of trait x environment combinations")
   }
 
-  if (is.null(cor_R)) cor_R <- diag(n_traits)
+  if (is.null(S_cor_R)) S_cor_R <- diag(n_traits)
   if (is.null(R_cor_R)) R_cor_R <- diag(n_traits)
 
   spatial_model <- tolower(spatial_model)
@@ -241,61 +241,59 @@ field_trial_error <- function(n_envs,
     row_ar1 <- mapply(function(x, y) x^y, x = row_cor, y = power_lst, SIMPLIFY = FALSE)
 
     cor_mat_lst <- mapply(function(x, y) kronecker(x, y), x = col_ar1, y = row_ar1, SIMPLIFY = FALSE)
-    cor_mat_lst <- mapply(function(x) kronecker(cor_R, x), x = cor_mat_lst, SIMPLIFY = FALSE)
+    cor_mat_lst <- mapply(function(x) kronecker(S_cor_R, x), x = cor_mat_lst, SIMPLIFY = FALSE)
 
     l_lst <- lapply(cor_mat_lst, function(x) chol(x))
     plot_error_lst1 <- mapply(function(x, y) matrix(c(stats::rnorm(x) %*% y), ncol = n_traits),
-      x = n_cols * n_rows * n_traits, y = l_lst, SIMPLIFY = FALSE
+                              x = n_cols * n_rows * n_traits, y = l_lst, SIMPLIFY = FALSE
     )
   }
 
   if (spatial_model == "bivariate") {
     if (complexity <= 0) stop("'complexity' must be an integer > 0")
 
-    # n_plots <- n_cols * n_rows
     cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), max(x) + 1)))
-    col_centres_lst <- mapply(function(x, y) y * (x - 0.5),
-      x = cols_lst, y = plot_length, SIMPLIFY = FALSE
+    col_centres_lst <- mapply(function(x, y) round(y * (x - 0.5),8),
+                              x = cols_lst, y = plot_length, SIMPLIFY = FALSE
     )
-
-    # col_centres <- unlist(col_centres_lst)
-    # col_centres_lst <- lapply(col_centres_lst, function(x) unique(x))
 
     rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), max(x) + 1)))
-    row_centres_lst <- mapply(function(x, y) y * (x - 0.5),
-      x = rows_lst, y = plot_width, SIMPLIFY = FALSE
+    row_centres_lst <- mapply(function(x, y) round(y * (x - 0.5),8),
+                              x = rows_lst, y = plot_width, SIMPLIFY = FALSE
     )
-    # row_centres <- unlist(row_centres_lst)
-    # row_centres_lst <- lapply(row_centres_lst, function(x) unique(x))
 
     col_gap <- plot_length / 4
     row_gap <- plot_width / 4
 
+    plot_error_lst1 <- NA
+    while(sum(is.na(unlist(plot_error_lst1))) > 0){
     xInterp_list <- mapply(function(x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-      x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+                           x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
     )
     yInterp_list <- mapply(function(x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-      x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+                           x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
     )
-    zInterp_list <- lapply(n_cols, function(x) scale(matrix(stats::rnorm((4 + complexity) * n_traits), ncol = n_traits)) %*% chol(cor_R))
+    zInterp_list <- lapply(n_cols, function(x) scale(matrix(stats::rnorm((4 + complexity) * n_traits), ncol = n_traits)) %*% chol(S_cor_R))
 
     for (i in 1:n_traits) {
       tmp <- mapply(function(v, w, x, y, z, xo, yo) {
-        c(t(interp::interp(x = x, y = y, z = z[, i], xo = round(xo, 8), yo = round(yo, 8), linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
+        c(t(interp::interp(x = x, y = y, z = z[, i], xo = c(xo), yo = c(yo), linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
       },
       v = n_rows, w = n_cols, x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
       )
+      # }
       if (i == 1) {
         plot_error_lst1 <- tmp
       }
       if (i > 1) {
         plot_error_lst1 <- Map("cbind", plot_error_lst1, tmp)
       }
+     }
     }
   }
 
   plot_error_lst2 <- mapply(function(x) matrix(c(stats::rnorm(x)), ncol = n_traits) %*% chol(R_cor_R),
-    x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
+                            x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
   )
 
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits, byrow = TRUE)))
@@ -324,8 +322,8 @@ field_trial_error <- function(n_envs,
     e_all <- lapply(seq_len(ncol(e_spat)), function(i) cbind(e_spat[, i], e_rand[, i]))
     resids <- lapply(e_all, function(x) {
       data.frame(plot_df[, 1:4],
-        e_spatial = x[, 1],
-        e_random = x[, 2]
+                 e_spatial = x[, 1],
+                 e_random = x[, 2]
       )
     })
 
@@ -334,6 +332,6 @@ field_trial_error <- function(n_envs,
     plot_df <- c(plot_df, resids)
     names(plot_df) <- list_names
   }
-
+  plot_df
   return(plot_df)
 }
