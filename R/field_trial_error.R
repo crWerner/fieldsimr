@@ -119,8 +119,8 @@ field_trial_error <- function(n_envs,
                               spatial_model = "bivariate",
                               prop_spatial = 0.5,
                               complexity = 12,
-                              col_cor,
-                              row_cor,
+                              col_cor = NULL,
+                              row_cor = NULL,
                               return_effects = FALSE) {
   if (n_envs < 1 | n_envs %% 1 != 0) stop("'n_envs' must be an integer > 0")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
