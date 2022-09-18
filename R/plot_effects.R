@@ -20,8 +20,8 @@
 #' colour gradient ranges from red (low value) to green (high value) of the effect
 #'
 #' @examples
-#' # Simulation of plot-level errors for two traits in three environments using the bivariate
-#' # interpolation spatial model.
+#' # Simulation of plot-level errors for two traits in three environments using a bivariate
+#' # interpolation model for spatial variation.
 #'
 #' n_envs <- 3 # Number of simulated environments.
 #' n_traits <- 2 # Number of simulated traits.
@@ -29,15 +29,15 @@
 #' # Field layout
 #' n_cols <- 10 # Total number of columns in each environment.
 #' n_rows <- c(20, 30, 20) # Total number of rows in each environment.
-#' plot_length <- 5 # Plot length set to 5m in each environment.
-#' plot_width <- 2 # Plot width set to 2m in each environment.
-#' n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) in each environment.
+#' plot_length <- 5 # Plot length set to 5 meters in each environment.
+#' plot_width <- 2 # Plot width set to 2 meters in each environment.
+#' n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
 #'
 #' # Error variances for traits 1 and 2.
 #' var_R <- c(0.4, 15)
 #'
-#' # Spatial error correlation matrix between traits 1 and 2.
-#' cor_R <- matrix(c(
+#' # Spatial error correlations between traits 1 and 2.
+#' S_cor_R <- matrix(c(
 #'   1.0, 0.2,
 #'   0.2, 1.0
 #' ),
@@ -54,7 +54,7 @@
 #'   n_reps = n_reps,
 #'   rep_dir = "row",
 #'   var_R = var_R,
-#'   cor_R = cor_R,
+#'   S_cor_R = S_cor_R,
 #'   spatial_model = "bivariate",
 #'   prop_spatial = 0.6,
 #'   complexity = 14,

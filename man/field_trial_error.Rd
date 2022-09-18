@@ -14,7 +14,7 @@ field_trial_error(
   plot_width,
   rep_dir = "column",
   var_R,
-  cor_R = NULL,
+  S_cor_R = NULL,
   R_cor_R = NULL,
   spatial_model = "bivariate",
   prop_spatial = 0.5,
@@ -58,7 +58,7 @@ when \code{n_reps = 1}.}
 as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
 all traits will be assigned the same error variance in each environment.}
 
-\item{cor_R}{A matrix of spatial error correlations between more than one trait. If not
+\item{S_cor_R}{A matrix of spatial error correlations between more than one trait. If not
 defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
 \item{R_cor_R}{A matrix of random error correlations between more than one trait. If not
@@ -123,7 +123,7 @@ n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
 var_R <- c(0.4, 15)
 
 # Spatial error correlations between traits 1 and 2.
-cor_R <- matrix(c(
+S_cor_R <- matrix(c(
   1.0, 0.2,
   0.2, 1.0
 ),
@@ -140,7 +140,7 @@ error_df <- field_trial_error(
   n_reps = n_reps,
   rep_dir = "row",
   var_R = var_R,
-  cor_R = cor_R,
+  S_cor_R = S_cor_R,
   spatial_model = "bivariate",
   prop_spatial = 0.6,
   complexity = 14,
