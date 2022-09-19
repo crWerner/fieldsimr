@@ -7,29 +7,28 @@
 plot_effects(df, env, effect, blocks = TRUE)
 }
 \arguments{
-\item{df}{A data frame containing the columns "env", "row", "col", and the effect to
-be plotted. If \code{df} contains a column named "block", then black borders will distinguish
-the blocks if \code{blocks = TRUE} is specified. If \code{df} is a list, only the first entry
-will be used unless otherwise specified.}
+\item{df}{A data frame containing the columns "env", "row", "col", and the effect to be plotted.
+If \code{df} contains a column named "block", then block borders will distinguish the blocks
+if \code{blocks = TRUE}. If \code{df} is a list, only the first entry will be used unless
+otherwise specified.}
 
 \item{env}{The name of the environment to be plotted.}
 
 \item{effect}{The name of the effect to be plotted.}
 
-\item{blocks}{When true (default), blocks are distinguish with black borders.}
+\item{blocks}{When TRUE (default), blocks are distinguished with block borders.}
 }
 \value{
-Graphic of the field array, where the
-colour gradient ranges from red (low value) to green (high value) of the effect
+Graphic of the field array, where the colour gradient ranges from red (low value) to
+  green (high value) of the effect
 }
 \description{
 Graphically displays plot-level effects (e.g., phenotypic values, genetic values, errors) onto
 a field array, where the colour gradient ranges from red (low value) to green (high value). \cr
-This function requires a data frame generated with
-\link[FieldSimR]{field_trial_error} as an input, or any data frame with
-columns named "env", "col", "row", and the effect to be displayed. If the data
-frame contains a column named "block", then black borders will distinguish the blocks if
-\code{blocks = TRUE} is specified.
+This function requires a data frame generated with \link[FieldSimR]{field_trial_error} as an
+input, or any data frame with columns named "env", "col", "row", and the effect to be displayed.
+If the data frame contains a column named "block", then block borders will distinguish the
+blocks if \code{blocks = TRUE}.
 }
 \examples{
 # Simulation of plot-level errors for two traits in three environments using a bivariate

@@ -17,9 +17,11 @@ rand_cor_mat(p, min_cor = -1, max_cor = 1)
 A p x p correlation matrix.
 }
 \description{
-Creates a general \code{p x p} correlation matrix, with user-defined maximum and minimum
-correlation.
+Creates a general \code{p x p} correlation matrix with user-defined maximum and minimum
+correlations. If the randomly generated correlation matrix is not positive definite,
+the function \link[mbend]{bend} of the package 'mbend' is used with default arguments to turn
+the correlation matrix into a positive definite correlation matrix.
 }
 \examples{
-# cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8)
+cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8)
 }

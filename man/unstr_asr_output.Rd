@@ -85,7 +85,7 @@ input_asr <- unstr_asr_input(
 # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured model for
 # GxE interaction.
 
-library(AlphaSimR)
+library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(
   nInd = 100,
   nChr = 6,
