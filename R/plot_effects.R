@@ -72,28 +72,34 @@ plot_effects <- function(df,
                          blocks = TRUE) {
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
+  colnames(df) <- toupper(colnames(df))
+  effect <- toupper(effect)
+  if (any(!c("ENV", "COL", "ROW") %in% colnames(df))) {
+    stop("'df' must contain columns 'env', 'row', 'col', and the effect to be plotted.")
+  }
+
   eff <- which(colnames(df) == effect)
-  df <- df[df[["env"]] == env, ]
-  n_rows <- length(unique(df$row))
-  n_cols <- length(unique(df$col))
+  df <- df[df[["ENV"]] == env, ]
+  n_rows <- length(unique(df$ROW))
+  n_cols <- length(unique(df$COL))
 
   plot_mat <- matrix(numeric(), nrow = n_rows, ncol = n_cols)
 
   for (i in 1:nrow(df)) {
-    r <- df$row[i]
-    c <- df$col[i]
+    r <- df$ROW[i]
+    c <- df$COL[i]
     plot_mat[r, c] <- df[i, eff]
   }
 
-  if (length(unique(df$block)) > 1) {
-    df1 <- df[df[["block"]] == 1, ]
-    df2 <- df[df[["block"]] == 2, ]
+  if (length(unique(df$BLOCK)) > 1) {
+    df1 <- df[df[["BLOCK"]] == 1, ]
+    df2 <- df[df[["BLOCK"]] == 2, ]
 
-    if (any(unique(df1$row) == unique(df2$row)) == FALSE) {
+    if (any(unique(df1$ROW) == unique(df2$ROW)) == FALSE) {
       nx <- 0
-      ny <- max(df$block)
-    } else if (any(unique(df1$col) == unique(df2$col)) == FALSE) {
-      nx <- max(df$block)
+      ny <- max(df$BLOCK)
+    } else if (any(unique(df1$COL) == unique(df2$COL)) == FALSE) {
+      nx <- max(df$BLOCK)
       ny <- 0
     } else {
       stop("Check row and column assignment within blocks")
@@ -118,7 +124,7 @@ plot_effects <- function(df,
   graphics::axis(1, at = x_ticks, labels = x_labs)
   graphics::axis(2, at = y_ticks, labels = y_labs)
 
-  if (blocks == TRUE & length(unique(df$block)) > 1) {
+  if (blocks == TRUE & length(unique(df$BLOCK)) > 1) {
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "#000000", lwd = 5)
     graphics::grid(nx = nx, ny = ny, lty = 1, col = "#FFFFFF", lwd = 3)
   }

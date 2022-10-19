@@ -20,14 +20,14 @@ number of replicates.}
 \item{n_traits}{Number of simulated traits (same as in \link[FieldSimR]{unstr_asr_input}).}
 }
 \value{
-A data-frame containing the environment name, replicate number, genotype ID and
+A data frame containing the environment id, replicate number, genotype id, and the
   simulated genetic values for each trait.
 }
 \description{
-Creates a data frame of correlated genetic values for multiple traits in multiple
-environments based on an unstructured model for genotype-by-environment (GxE) interaction. This
-function requires an 'AlphaSimR' population object generated using the
-\link[FieldSimR]{unstr_asr_input} function.
+Creates a data frame of correlated genetic values for multiple traits in multiple environments
+based on an unstructured model for genotype-by-environment (GxE) interaction. This function
+requires an 'AlphaSimR' population object generated using the \link[FieldSimR]{unstr_asr_input}
+function.
 }
 \examples{
 # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
@@ -117,7 +117,7 @@ pop <- newPop(FOUNDERPOP)
 n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
 # environment.
 
-trial_df <- unstr_asr_output(
+gv_df <- unstr_asr_output(
   pop = pop,
   n_envs = 3,
   n_reps = n_reps,

@@ -85,13 +85,13 @@ same column autocorrelation.}
 spatial error model. If only one value is provided, all environments will be assigned the
 same row autocorrelation.}
 
-\item{return_effects}{When true, a list is returned with additional entries for each trait
-containing the spatial and random errors.}
+\item{return_effects}{When TRUE, a list is returned with additional entries for each trait
+containing the spatial and random errors. By default, return_effects = FALSE.}
 }
 \value{
-A data-frame containing the environment, block, column and row names, as well as the
+A data frame containing the environment id, block id, column id, row id, and the
   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
-  additional entries for each trait containing the spatial and random errors.
+  additional entries for each trait containing the spatial and random error values.
 }
 \description{
 Creates a data frame with simulated plot-level errors for one or more traits in plant breeding

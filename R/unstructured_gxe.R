@@ -35,11 +35,11 @@
 #' @param n_traits Number of traits to be simulated.
 #' @param mean A vector of mean genetic values for each trait-by-environment combination (ordered
 #'   as environments within traits). Simulated traits can have a different mean for each
-#'   environment. If the length of \code{mean} corresponds to \code{n_traits}, all traits will be
+#'   environment. If the length of \code{mean} is equal to to \code{n_traits}, all traits will be
 #'   assigned the same mean for each environment.
 #' @param var A vector of genetic variances for each trait-by-environment combination (ordered as
 #'   environments within traits). If the length of \code{var} is equal to \code{n_traits}, all
-#'   traits will be assigned the same error variance in each environment. \cr
+#'   traits will be assigned the same variance in each environment. \cr
 #'   Alternatively, if a separable structure between traits and environments is desired,
 #'   \code{T_var} and \code{E_var} can be provided. By default, \code{var = NULL}.
 #' @param T_var A vector of genetic variances for each trait. Must be provided in combination with
@@ -58,10 +58,13 @@
 #'   Must be provided in combination with \code{T_cor_A}. \cr
 #'   Alternatively, \code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.
 #' @param mean_DD A vector of mean dominance degrees for each trait-by-environment combination
-#'   (ordered as environments within traits), similar to \code{mean}. By default,
-#'   \code{mean_DD = NULL} and dominance is not simulated.
+#'   (ordered as environments within traits), similar to \code{mean}. If the length of
+#'   \code{mean_DD} is equal to \code{n_traits}, all traits will be assigned the same mean_DD for
+#'   each environment. By default, \code{mean_DD = NULL} and dominance is not simulated.
 #' @param var_DD A vector of dominance degree variances for each trait-by-environment combination
-#'   (ordered as environments within traits), similar to \code{var}. \cr
+#'   (ordered as environments within traits), similar to \code{var}. If the length of
+#'   \code{var_DD} is equal to to \code{n_traits}, all traits will be assigned the same var_DD for
+#'   each environment.\cr
 #'   Alternatively, if a separable structure between traits and environments is desired,
 #'   \code{T_var_DD} and \code{E_var_DD} can be provided. By default, \code{var_DD = NULL}.
 #' @param T_var_DD A vector of dominance degree variances for each trait, similar to \code{T_var}.
@@ -83,7 +86,9 @@
 #'   Alternatively, \code{cor_DD} can be provided. By default, \code{E_cor_DD = NULL}.
 #' @param rel_AA A vector defining the magnitude of additive-by-additive (epistatic) variance
 #'   relative to additive genetic variance for each trait-by-environment combination (ordered as
-#'   environments within traits), that is in a diploid organism with allele frequency 0.5. \cr
+#'   environments within traits), that is in a diploid organism with allele frequency 0.5. If the
+#'   length of \code{rel_AA} is equal to to \code{n_traits}, all traits will be assigned the same
+#'   rel_AA for each environment.\cr
 #'   Alternatively, if a separable structure between traits and environments is desired,
 #'   \code{T_rel_AA} and \code{E_rel_AA} can be provided. By default, \code{rel_AA = NULL} and
 #'   epistasis is not simulated.
@@ -218,7 +223,9 @@ unstr_asr_input <- function(n_envs,
         if (!is.null(T_var)) {
           stop("Argument 'T_var' must be NULL if 'var' is provided")
         }
-        if (length(var) == (n_traits * n_envs)) {
+        if (length(var) == n_traits) {
+          var_pseudo <- rep(var, each = n_envs)
+        } else if (length(var) == (n_traits * n_envs)) {
           var_pseudo <- var
         } else {
           stop("Number of values in argument 'var' must match number of
@@ -307,7 +314,9 @@ unstr_asr_input <- function(n_envs,
         if (!is.null(T_var_DD)) {
           stop("Argument 'T_var_DD' must be NULL if 'var_DD' is provided")
         }
-        if (length(var_DD) == (n_traits * n_envs)) {
+        if (length(var_DD) == n_traits) {
+          var_pseudo <- rep(var_DD, each = n_envs)
+        } else if (length(var_DD) == (n_traits * n_envs)) {
           var_pseudo <- var_DD
         } else {
           stop("Number of values in argument 'var_DD' must match number of
@@ -389,7 +398,9 @@ unstr_asr_input <- function(n_envs,
         if (!is.null(T_rel_AA)) {
           stop("Argument 'T_rel_AA' must be NULL if 'rel_AA' is provided")
         }
-        if (length(rel_AA) == (n_traits * n_envs)) {
+        if (length(rel_AA) == n_traits) {
+          var_pseudo <- rep(rel_AA, each = n_envs)
+        } else if (length(rel_AA) == (n_traits * n_envs)) {
           var_pseudo <- rel_AA
         } else {
           stop("Number of values in argument 'rel_AA' must match number of
@@ -471,10 +482,10 @@ unstr_asr_input <- function(n_envs,
 #' Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Simulated
 #' genetic values
 #'
-#' Creates a data frame of correlated genetic values for multiple traits in multiple
-#' environments based on an unstructured model for genotype-by-environment (GxE) interaction. This
-#' function requires an 'AlphaSimR' population object generated using the
-#' \link[FieldSimR]{unstr_asr_input} function.
+#' Creates a data frame of correlated genetic values for multiple traits in multiple environments
+#' based on an unstructured model for genotype-by-environment (GxE) interaction. This function
+#' requires an 'AlphaSimR' population object generated using the \link[FieldSimR]{unstr_asr_input}
+#' function.
 #'
 #' @param pop An 'AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
 #'   \code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{unstr_asr_input}.
@@ -484,7 +495,7 @@ unstr_asr_input <- function(n_envs,
 #'   number of replicates.
 #' @param n_traits Number of simulated traits (same as in \link[FieldSimR]{unstr_asr_input}).
 #'
-#' @return A data-frame containing the environment name, replicate number, genotype ID and
+#' @return A data frame containing the environment id, replicate number, genotype id, and the
 #'   simulated genetic values for each trait.
 #'
 #' @examples
@@ -575,7 +586,7 @@ unstr_asr_input <- function(n_envs,
 #' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
 #' # environment.
 #'
-#' trial_df <- unstr_asr_output(
+#' gv_df <- unstr_asr_output(
 #'   pop = pop,
 #'   n_envs = 3,
 #'   n_reps = n_reps,

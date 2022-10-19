@@ -26,4 +26,4 @@ Encoding: UTF-8
 LazyData: true
 Imports: fields, interp, matrixcalc, mbend
 Suggests: AlphaSimR
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1

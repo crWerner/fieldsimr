@@ -3,6 +3,7 @@
 export(compsym_asr_input)
 export(compsym_asr_output)
 export(field_trial_error)
+export(make_phenotypes)
 export(plot_effects)
 export(rand_cor_mat)
 export(unstr_asr_input)

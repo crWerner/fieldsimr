@@ -37,12 +37,12 @@ unstr_asr_input(
 
 \item{mean}{A vector of mean genetic values for each trait-by-environment combination (ordered
 as environments within traits). Simulated traits can have a different mean for each
-environment. If the length of \code{mean} corresponds to \code{n_traits}, all traits will be
+environment. If the length of \code{mean} is equal to to \code{n_traits}, all traits will be
 assigned the same mean for each environment.}
 
 \item{var}{A vector of genetic variances for each trait-by-environment combination (ordered as
 environments within traits). If the length of \code{var} is equal to \code{n_traits}, all
-traits will be assigned the same error variance in each environment. \cr
+traits will be assigned the same variance in each environment. \cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_var} and \code{E_var} can be provided. By default, \code{var = NULL}.}
 
@@ -67,11 +67,14 @@ provided in combination with \code{E_cor_A}. \cr
 Alternatively, \code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.}
 
 \item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment combination
-(ordered as environments within traits), similar to \code{mean}. By default,
-\code{mean_DD = NULL} and dominance is not simulated.}
+(ordered as environments within traits), similar to \code{mean}. If the length of
+\code{mean_DD} is equal to \code{n_traits}, all traits will be assigned the same mean_DD for
+each environment. By default, \code{mean_DD = NULL} and dominance is not simulated.}
 
 \item{var_DD}{A vector of dominance degree variances for each trait-by-environment combination
-(ordered as environments within traits), similar to \code{var}. \cr
+(ordered as environments within traits), similar to \code{var}. If the length of
+\code{var_DD} is equal to to \code{n_traits}, all traits will be assigned the same var_DD for
+each environment.\cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_var_DD} and \code{E_var_DD} can be provided. By default, \code{var_DD = NULL}.}
 
@@ -99,7 +102,9 @@ Alternatively, \code{cor_DD} can be provided. By default, \code{T_cor_DD = NULL}
 
 \item{rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to additive genetic variance for each trait-by-environment combination (ordered as
-environments within traits), that is in a diploid organism with allele frequency 0.5. \cr
+environments within traits), that is in a diploid organism with allele frequency 0.5. If the
+length of \code{rel_AA} is equal to to \code{n_traits}, all traits will be assigned the same
+rel_AA for each environment.\cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_rel_AA} and \code{E_rel_AA} can be provided. By default, \code{rel_AA = NULL} and
 epistasis is not simulated.}

@@ -327,7 +327,7 @@ compsym_asr_input <- function(n_envs,
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   trait-by-environment combination. By default, effects = FALSE.
 #'
-#' @return A data-frame containing the environment name, replicate number, genotype ID and
+#' @return A data-frame containing the environment id, replicate number, genotype id, and
 #'   simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
 #'   additional entries containing the total (additive + dominance + epistatic) main effects and
 #'   GxE interaction effects for each trait-by-environment combination.
@@ -403,7 +403,7 @@ compsym_asr_input <- function(n_envs,
 #' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
 #' # environment.
 #'
-#' trial_df <- compsym_asr_output(
+#' gv_df <- compsym_asr_output(
 #'   pop = pop,
 #'   n_envs = 3,
 #'   n_reps = n_reps,
