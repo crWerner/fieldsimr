@@ -42,13 +42,13 @@ of columns.}
 value is provided and \code{n_traits > 1}, all environments will be assigned the same number
 of rows.}
 
-\item{plot_length}{A vector defining the plot length in each environment. If only one value is
-provided and \code{n_traits > 1}, the plots in all environments will be assigned the same
-plot length.}
+\item{plot_length}{A vector defining the plot length (column direction, usually longer side) in
+each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+environments will be assigned the same plot length.}
 
-\item{plot_width}{A vector defining the plot width in each environment. If only one value is
-provided and \code{n_traits > 1}, the plots in all environments will be assigned the same
-plot width.}
+\item{plot_width}{A vector defining the plot width (row direction, usually shorter side) in
+each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+environments will be assigned the same plot width.}
 
 \item{rep_dir}{A character string specifying the direction of replicate blocks. One of either
 "column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored

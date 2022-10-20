@@ -101,11 +101,10 @@ SP$addTraitAD(
 pop <- newPop(FOUNDERPOP)
 
 
-# 3. Create a data frame containing the simulated genetic values for the two traits
-# in the three environments.
+# 3. Create a data frame containing the simulated genetic values for the two traits in the
+# three environments.
 
-n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
-# environment.
+n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
 
 gv_df <- compsym_asr_output(
   pop = pop,

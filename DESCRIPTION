@@ -27,3 +27,5 @@ LazyData: true
 Imports: fields, interp, matrixcalc, mbend
 Suggests: AlphaSimR
 RoxygenNote: 7.2.1
+Depends: 
+    R (>= 2.10)

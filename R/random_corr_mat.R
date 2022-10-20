@@ -33,12 +33,9 @@ rand_cor_mat <- function(p,
   cor_mat <- t(cor_mat)
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
 
-  if (pos_def) {
-    if (matrixcalc::is.positive.definite(cor_mat)) {
-      return(cor_mat)
-    } else {
-      cor_mat <- mbend::bend(cor_mat)
-      return(cor_mat$bent)
-    }
+  if (pos_def && !matrixcalc::is.positive.definite(cor_mat)) {
+    cor_mat <- mbend::bend(cor_mat)
+    cor_mat <- cor_mat$bent
   }
+  return(cor_mat)
 }

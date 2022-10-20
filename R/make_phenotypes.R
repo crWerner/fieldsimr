@@ -17,8 +17,17 @@
 #'   and the phenotypic values for each trait.
 #'
 #' @examples
-#' # TBA
+#' # Create data frame of phenotypes through combination of the the genetic values and the
+#' # plot-level errors from the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
 #'
+#' gv_df <- df_gv_unstr
+#' error_df <- df_error_bivar
+#'
+#' pheno_df <- make_phenotypes(
+#'   gv_df,
+#'   error_df,
+#'   randomise = TRUE
+#' )
 #' @export
 make_phenotypes <- function(gv_df, error_df, randomise = FALSE) {
   if (inherits(gv_df, "list")) gv_df <- gv_df[[1]]

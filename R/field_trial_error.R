@@ -20,12 +20,12 @@
 #' @param n_rows A vector defining the total number of rows in each environment. If only one
 #'   value is provided and \code{n_traits > 1}, all environments will be assigned the same number
 #'   of rows.
-#' @param plot_length A vector defining the plot length in each environment. If only one value is
-#'   provided and \code{n_traits > 1}, the plots in all environments will be assigned the same
-#'   plot length.
-#' @param plot_width A vector defining the plot width in each environment. If only one value is
-#'   provided and \code{n_traits > 1}, the plots in all environments will be assigned the same
-#'   plot width.
+#' @param plot_length A vector defining the plot length (column direction, usually longer side) in
+#'   each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+#'   environments will be assigned the same plot length.
+#' @param plot_width A vector defining the plot width (row direction, usually shorter side) in
+#'   each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+#'   environments will be assigned the same plot width.
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
 #'   one value is provided and \code{n_traits > 1}, all environments will be assigned the same
 #'   number of replicates.
