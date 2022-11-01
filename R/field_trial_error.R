@@ -1,6 +1,6 @@
-#' Simulate plot-level errors for a plant breeding trial
+#' Simulate plot errors for a plant breeding trial
 #'
-#' Creates a data frame with simulated plot-level errors for one or more traits in plant breeding
+#' Creates a data frame with simulated plot errors for one or more traits in plant breeding
 #' trials across multiple environments. The simulated error consists of a spatial error term and
 #' a random error term. The spatial error term can be simulated based on 1) bivariate
 #' interpolation using the \link[interp]{interp} function of the package 'interp', or 2) a
@@ -63,7 +63,7 @@
 #'   additional entries for each trait containing the spatial and random error values.
 #'
 #' @examples
-#' # Simulation of plot-level errors for two traits in three environments using a bivariate
+#' # Simulation of plot errors for two traits in three environments using a bivariate
 #' # interpolation model for spatial variation.
 #'
 #' n_envs <- 3 # Number of simulated environments.
