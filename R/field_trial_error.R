@@ -34,7 +34,7 @@
 #'   when \code{n_reps = 1}.
 #' @param var_R A vector of error variances for each trait-by-environment combination (ordered
 #'   as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
-#'   all traits will be assigned the same error variance in each environment.
+#'   all environments will be assigned the same error variance for each trait.
 #' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
@@ -166,7 +166,7 @@ field_trial_error <- function(n_envs,
            environment. Review your trial design!")
     }
   } else {
-    stop("'rep_dir' must be 'row' or 'column'")
+    stop("'rep_dir' must be either 'row' or 'column'")
   }
 
   if (length(n_reps) == 1) n_reps <- rep(n_reps, n_envs)
@@ -180,8 +180,8 @@ field_trial_error <- function(n_envs,
     stop("'var_R' must contain values greater than 0")
   }
   if (length(var_R) != (n_envs * n_traits)) {
-    stop("Number of values in argument 'var_R' must either match number of traits
-         or number of trait x environment combinations")
+    stop("Number of values in argument 'var_R' does not match the total number of traits
+         or the total number of trait-by-environment combinations")
   }
 
   if (is.null(S_cor_R)) S_cor_R <- diag(n_traits)
