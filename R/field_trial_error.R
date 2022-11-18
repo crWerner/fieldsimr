@@ -48,16 +48,6 @@
 #' @param spatial_model A character string specifying the model used to simulate the spatial error
 #'   term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 #'   (separable first-order autoregressive process (AR1:AR1)).
-#' @param prop_spatial A vector defining the proportion of spatial error variance to total
-#'   error variance (spatial + random + extraneous). If only one value is provided, all environments will be
-#'   assigned the same proportion. By default, the spatial error variance accounts for half of the
-#'   total error variance (\code{prop_spatial = 0.5}). The same proportion is assigned to all traits 
-#'   for each environment.
-#' @param prop_Ext A vector defining the proportion of extraneous error variance to total
-#'   error variance (spatial + random + extraneous). If only one value is provided, all environments will be
-#'   assigned the same proportion. By default, the spatial error variance accounts for half of the
-#'   total error variance (\code{prop_spatial = 0.5}). The same proportion is assigned to all traits 
-#'   for each environment.
 #' @param complexity A scalar defining the complexity of the bivariate interpolation model.
 #'   By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
 #'   See \link[interp]{interp} for further details.
@@ -67,6 +57,14 @@
 #' @param row_cor A vector of row autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
 #'   same row autocorrelation.
+#' @param prop_spatial A vector defining the proportion of spatial error variance to total
+#'   error variance (spatial + random + extraneous) for each environment. If only one value is provided, 
+#'   all environments will be assigned the same proportion. By default, the spatial error variance 
+#'   accounts for half of the total error variance (\code{prop_spatial = 0.5}).
+#' @param prop_Ext A vector defining the proportion of extraneous error variance to total
+#'   error variance (spatial + random + extraneous) for each environment. If only one value is provided, 
+#'   all environments will be assigned the same proportion. By default, the extraneous error variance 
+#'   is zero (\code{prop_ext = 0}).
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial and random errors. By default, return_effects = FALSE.
 #'
@@ -111,8 +109,9 @@
 #'   var_R = var_R,
 #'   S_cor_R = S_cor_R,
 #'   spatial_model = "bivariate",
-#'   prop_spatial = 0.6,
 #'   complexity = 14,
+#'   prop_spatial = 0.6,
+#'   prop_ext = 0,
 #'   return_effects = TRUE
 #' )
 #' @export
@@ -127,11 +126,13 @@ field_trial_error <- function(n_envs,
                               var_R,
                               S_cor_R = NULL,
                               R_cor_R = NULL,
+                              E_cor_R = NULL,
                               spatial_model = "bivariate",
-                              prop_spatial = 0.5,
                               complexity = 12,
                               col_cor = NULL,
                               row_cor = NULL,
+                              prop_spatial = 0.5,
+                              prop_ext = 0,
                               return_effects = FALSE) {
   if (n_envs < 1 | n_envs %% 1 != 0) stop("'n_envs' must be an integer > 0")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
@@ -211,7 +212,19 @@ field_trial_error <- function(n_envs,
   if (length(prop_spatial) != n_envs) {
     stop("Length of vector 'prop_spatial' does not match total number of environments")
   }
-
+  if (any(prop_ext < 0) | any(prop_ext > 1)) {
+    stop("'prop_ext' must contain values between 0 and 1")
+  }
+  if (length(prop_ext) == 1) prop_ext <- rep(prop_ext, n_envs)
+  if (length(prop_ext) != n_envs) {
+    stop("Length of vector 'prop_ext' does not match total number of environments")
+  }
+    if (any(prop_spatial + prop_ext > 1)) {
+    stop("The sum of 'prop_spatial' and 'prop_ext' must be between 0 and 1")
+  }
+      if (any(prop_spatial + prop_ext == 1)) {
+    warning("The random error is zero for some environments")
+  }
   envs <- rep(1:n_envs, times = n_cols * n_rows)
   reps <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_reps)))
   cols <- c(unlist(mapply(function(x, y) rep(1:x, each = y), x = n_cols, y = n_rows)))
@@ -307,12 +320,18 @@ field_trial_error <- function(n_envs,
   plot_error_lst2 <- mapply(function(x) matrix(c(stats::rnorm(x)), ncol = n_traits) %*% chol(R_cor_R),
     x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
   )
-
+                             
+  plot_error_lst3 <- mapply(function(x) matrix(c(stats::rnorm(x)), ncol = n_traits) %*% chol(E_cor_R),
+    x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
+  ) # working here
+                             
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits, byrow = TRUE)))
 
   var_R <- lapply(X = var_R, FUN = c)
-  e_spat <- mapply(function(w, x) (scale(w) * sqrt(x)), w = plot_error_lst1, x = prop_spatial, SIMPLIFY = F)
-  e_rand <- mapply(function(x, y) (scale(y) * sqrt(1 - x)), x = prop_spatial, y = plot_error_lst2, SIMPLIFY = F)
+  e_spat <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst1, y = prop_spatial, SIMPLIFY = F)
+  e_rand <- mapply(function(x, y, z) (scale(x) * sqrt(1 - y - z)), x = plot_error_lst2, y = prop_spatial, z = prop_ext, SIMPLIFY = F)
+  e_ext <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3, x = prop_ext, SIMPLIFY = F) # working
+                  
   if (n_traits > 1) {
     e_scale <- mapply(function(x, y) sqrt(diag(1 / diag(as.matrix(stats::var(x + y))))), x = e_spat, y = e_rand, SIMPLIFY = F)
     e_spat <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_spat, y = e_scale, z = var_R, SIMPLIFY = F)
