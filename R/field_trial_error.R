@@ -6,7 +6,7 @@
 #' according to either 1) bivariate interpolation using the \link[interp]{interp} function of 
 #' the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The 
 #' random error term is constructed using an independent process. The extraneous error term is 
-#' constructed as the sum of column and/or row terms.
+#' constructed as the sum of column and/or row terms. something more here?
 #' The spatial, random and extraneous error terms are combined according to a user-defined ratio. 
 #' \cr
 #' For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
@@ -42,13 +42,22 @@
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
+#' @param E_cor_R A matrix of extraneous error correlations between more than one trait. If not
+#'   defined and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation is 
+#'   assigned to the column and row errors.
 #' @param spatial_model A character string specifying the model used to simulate the spatial error
 #'   term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 #'   (separable first-order autoregressive process (AR1:AR1)).
 #' @param prop_spatial A vector defining the proportion of spatial error variance to total
-#'   error variance (spatial + random). If only one value is provided, all environments will be
+#'   error variance (spatial + random + extraneous). If only one value is provided, all environments will be
 #'   assigned the same proportion. By default, the spatial error variance accounts for half of the
-#'   total error variance (\code{prop_spatial = 0.5}).
+#'   total error variance (\code{prop_spatial = 0.5}). The same proportion is assigned to all traits 
+#'   for each environment.
+#' @param prop_Ext A vector defining the proportion of extraneous error variance to total
+#'   error variance (spatial + random + extraneous). If only one value is provided, all environments will be
+#'   assigned the same proportion. By default, the spatial error variance accounts for half of the
+#'   total error variance (\code{prop_spatial = 0.5}). The same proportion is assigned to all traits 
+#'   for each environment.
 #' @param complexity A scalar defining the complexity of the bivariate interpolation model.
 #'   By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
 #'   See \link[interp]{interp} for further details.
