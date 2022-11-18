@@ -1,5 +1,5 @@
 
-#' Simulate plot errors for a plant breeding trial
+#' Simulate plot errors for plant breeding trials
 #'
 #' Creates a data frame with simulated plot errors for one or more traits in plant breeding
 #' trials across multiple environments. The simulated error consists of a spatial error term,
