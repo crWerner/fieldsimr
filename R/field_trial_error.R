@@ -1,14 +1,17 @@
 #' Simulate plot errors for a plant breeding trial
 #'
 #' Creates a data frame with simulated plot errors for one or more traits in plant breeding
-#' trials across multiple environments. The simulated error consists of a spatial error term and
-#' a random error term. The spatial error term can be simulated based on 1) bivariate
-#' interpolation using the \link[interp]{interp} function of the package 'interp', or 2) a
-#' separable first-order autoregressive process (AR1:AR1). The random error term is simulated
-#' using an independent process. The spatial and random error terms are combined according to a
-#' user-defined ratio. \cr
+#' trials across multiple environments. The simulated error consists of a spatial error term,
+#' a random error term and an extraneous error term. The spatial error term is constructed
+#' according to either 1) bivariate interpolation using the \link[interp]{interp} function of 
+#' the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The 
+#' random error term is constructed using an independent process. The extraneous error term is 
+#' constructed as the sum of column and/or row terms.
+#' The spatial, random and extraneous error terms are combined according to a user-defined ratio. 
+#' \cr
 #' For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
-#' errors between traits, 2) correlated random error between traits, or 3) a combination of both. \cr
+#' error between traits, 2) correlated random error between traits, 3) correlated extraneous
+#' error between traits, or 4) some combination of 1-3. \cr
 #' A separable covariance structure is assumed between traits and environments.
 #'
 #' @param n_envs Number of environments to be simulated (same as for \code{compsym_asr_input}
