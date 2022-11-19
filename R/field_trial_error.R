@@ -338,8 +338,7 @@ field_trial_error <- function(n_envs,
   plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(var(x))) %*% chol(E_cor_R)),
                             x = plot_error_lst3c, SIMPLIFY = FALSE
   )
-  Zc <- list()
-  for(i in 1:n_envs){Zc[[i]] <- model.matrix( ~ col-1, droplevels(plot_df[plot_df$env == i,]))}
+  Zc <- lapply(seq_len(n_envs), function(i) model.matrix( ~ col-1, droplevels(plot_df[plot_df$env == i,])))
   plot_error_lst3c <- mapply(function(w,x) scale(w %*% x), w = Zc, x = plot_error_lst3c, SIMPLIFY = F)
 
   plot_error_lst3r <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
@@ -348,8 +347,7 @@ field_trial_error <- function(n_envs,
   plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(var(x))) %*% chol(E_cor_R)),
                            x = plot_error_lst3r, SIMPLIFY = FALSE
   )
-  Zr <- list()
-  for(i in 1:n_envs){Zr[[i]] <- model.matrix( ~ row-1, droplevels(plot_df[plot_df$env == i,]))}
+  Zr <- lapply(seq_len(n_envs), function(i) model.matrix( ~ row-1, droplevels(plot_df[plot_df$env == i,])))
   plot_error_lst3r <- mapply(function(w,x) scale(w %*% x), w = Zr, x = plot_error_lst3r, SIMPLIFY = F)
 
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits)))
