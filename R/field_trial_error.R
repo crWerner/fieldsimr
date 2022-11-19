@@ -2,7 +2,7 @@
 #' Simulate plot errors for plant breeding trials
 #'
 #' Creates a data frame with simulated plot errors for one or more traits in plant breeding
-#' trials across multiple environments. The simulated error consists of a spatial error term,
+#' trials across one or more environments. The simulated error consists of a spatial error term,
 #' a random error term and an extraneous error term. The spatial error term is constructed
 #' according to either 1) bivariate interpolation using the \link[interp]{interp} function of
 #' the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
