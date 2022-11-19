@@ -115,7 +115,7 @@
 #'   complexity = 14,
 #'   prop_spatial = 0.6,
 #'   prop_ext = 0.1,
-#'.  ext_dir = "row",
+#'   ext_dir = "row",
 #'   return_effects = TRUE
 #' )
 #' @export
@@ -184,7 +184,7 @@ field_trial_error <- function(n_envs,
            environment. Review your trial design!")
     }
   } else {
-    stop("'rep_dir' must be either 'row' or 'column'")
+    stop("'rep_dir' must be either 'column' or 'row'")
   }
 
   if (length(n_reps) == 1) n_reps <- rep(n_reps, n_envs)
@@ -230,6 +230,9 @@ field_trial_error <- function(n_envs,
   }
   if (any(prop_spatial + prop_ext == 1)) {
     warning("The random error is zero for some environments")
+  }
+  if (any(prop_ext > 0) & !any(ext_dir %in% c("column","row","both"))) {
+    stop("'ext_dir' must be either 'column', 'row' or 'both'")
   }
   envs <- rep(1:n_envs, times = n_cols * n_rows)
   reps <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_reps)))
