@@ -62,11 +62,11 @@
 #'   error variance (spatial + random + extraneous) for each environment. If only one value is provided,
 #'   all environments will be assigned the same proportion. By default, the spatial error variance
 #'   accounts for half of the total error variance (\code{prop_spatial = 0.5}).
-#' @param prop_Ext A vector defining the proportion of extraneous error variance to total
+#' @param prop_ext A vector defining the proportion of extraneous error variance to total
 #'   error variance (spatial + random + extraneous) for each environment. If only one value is provided,
 #'   all environments will be assigned the same proportion. By default, the extraneous error variance
 #'   is zero (\code{prop_ext = 0}).
-#' @param ext_var A character string specifying the direction of extraneous variation. One of either
+#' @param ext_dir A character string specifying the direction of extraneous variation. One of either
 #'   "column", "row" or "both".
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial and random errors. By default, return_effects = FALSE. # <-- here
@@ -114,7 +114,8 @@
 #'   spatial_model = "Bivariate",
 #'   complexity = 14,
 #'   prop_spatial = 0.6,
-#'   prop_ext = 0.2,
+#'   prop_ext = 0.1,
+#'.  ext_dir = "row",
 #'   return_effects = TRUE
 #' )
 #' @export
@@ -136,7 +137,7 @@ field_trial_error <- function(n_envs,
                               row_cor = NULL,
                               prop_spatial = 0.5,
                               prop_ext = 0,
-                              ext_var = NULL,
+                              ext_dir = NULL,
                               return_effects = FALSE) {
   if (n_envs < 1 | n_envs %% 1 != 0) stop("'n_envs' must be an integer > 0")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
@@ -354,9 +355,9 @@ field_trial_error <- function(n_envs,
   e_rand <- mapply(function(x, y, z) (scale(x) * sqrt(1 - y - z)), x = plot_error_lst2, y = prop_spatial, z = prop_ext, SIMPLIFY = F)
   e_ext_c <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3c, y = prop_ext, SIMPLIFY = F)
   e_ext_r <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3r, y = prop_ext, SIMPLIFY = F)
-  if(ext_var == "column"){e_ext_r <- lapply(e_ext_r, function(x) 0*x)}
-  if(ext_var == "row"){e_ext_c <- lapply(e_ext_c, function(x) 0*x)}
-  if(ext_var == "both"){e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5)*x)
+  if(ext_dir == "column"){e_ext_r <- lapply(e_ext_r, function(x) 0*x)}
+  if(ext_dir == "row"){e_ext_c <- lapply(e_ext_c, function(x) 0*x)}
+  if(ext_dir == "both"){e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5)*x)
                         e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5)*x)}
 
 if (n_traits > 1) {
