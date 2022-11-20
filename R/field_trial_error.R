@@ -276,7 +276,7 @@ field_trial_error <- function(n_envs,
 
     cor_mat_lst <- mapply(function(x, y) kronecker(x, y), x = col_ar1, y = row_ar1, SIMPLIFY = FALSE)
 
-    plot_error_lst1 <- mapply(function(x, y) chol(y) %*% matrix(c(stats::rnorm(x)), ncol = n_traits),
+    plot_error_lst1 <- mapply(function(x, y) t(chol(y)) %*% matrix(c(stats::rnorm(x)), ncol = n_traits),
                               x = n_cols * n_rows * n_traits, y = cor_mat_lst, SIMPLIFY = FALSE
     )
     plot_error_lst1 <- mapply(function(x) scale(x %*% solve(chol(var(x)))) %*% chol(S_cor_R),
