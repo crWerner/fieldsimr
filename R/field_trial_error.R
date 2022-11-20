@@ -287,12 +287,12 @@ field_trial_error <- function(n_envs,
   if (spatial_model == "bivariate") {
     if (complexity <= 0) stop("'complexity' must be an integer > 0")
 
-    cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), max(x) + 1)))
+    cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), length(unique(x)) + 1)))
     col_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
                               x = cols_lst, y = plot_length, SIMPLIFY = FALSE
     )
 
-    rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), max(x) + 1)))
+    rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), length(unique(x)) + 1)))
     row_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
                               x = rows_lst, y = plot_width, SIMPLIFY = FALSE
     )
