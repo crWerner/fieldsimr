@@ -61,9 +61,9 @@ plot_effects <- function(df,
 
     if (any(unique(df1$ROW) == unique(df2$ROW)) == FALSE) {
       nx <- 0
-      ny <- max(df$BLOCK)
+      ny <- max(as.numeric(as.character(df$BLOCK)))
     } else if (any(unique(df1$COL) == unique(df2$COL)) == FALSE) {
-      nx <- max(df$BLOCK)
+      nx <- max(as.numeric(as.character(df$BLOCK)))
       ny <- 0
     } else {
       stop("Check row and column assignment within blocks")
