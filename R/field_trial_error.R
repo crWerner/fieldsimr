@@ -1,5 +1,5 @@
 
-#' Simulate plot errors for plant breeding trials
+#' Simulate plot errors in plant breeding trials
 #'
 #' Creates a data frame with simulated plot errors for one or more traits in plant breeding
 #' trials across one or more environments. The simulated error consists of a spatial error term,
@@ -231,6 +231,7 @@ field_trial_error <- function(n_envs,
   if (any(prop_spatial + prop_ext == 1)) {
     warning("The random error is zero for some environments")
   }
+  ext_dir <- tolower(ext_dir)
   if (any(prop_ext > 0) & !any(ext_dir %in% c("column","row","both"))) {
     stop("'ext_dir' must be either 'column', 'row' or 'both'")
   }
