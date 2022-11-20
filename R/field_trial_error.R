@@ -357,10 +357,10 @@ field_trial_error <- function(n_envs,
   e_rand <- mapply(function(x, y, z) (scale(x) * sqrt(1 - y - z)), x = plot_error_lst2, y = prop_spatial, z = prop_ext, SIMPLIFY = F)
   e_ext_c <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3c, y = prop_ext, SIMPLIFY = F)
   e_ext_r <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3r, y = prop_ext, SIMPLIFY = F)
-  if(ext_dir == "column"){e_ext_r <- lapply(e_ext_r, function(x) 0*x)}
-  if(ext_dir == "row"){e_ext_c <- lapply(e_ext_c, function(x) 0*x)}
-  if(ext_dir == "both"){e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5)*x)
-                        e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5)*x)}
+  if(any(ext_dir == "column")){e_ext_r <- lapply(e_ext_r, function(x) 0*x)}
+  if(any(ext_dir == "row")){e_ext_c <- lapply(e_ext_c, function(x) 0*x)}
+  if(any(ext_dir == "both")){e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5)*x)
+                             e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5)*x)}
 
 if (n_traits > 1) {
     e_scale <- mapply(function(w, x, y, z) sqrt(diag(1 / diag(as.matrix(stats::var(w + x + y + z))))), w = e_spat, x = e_rand, y = e_ext_c, z = e_ext_r, SIMPLIFY = F)
