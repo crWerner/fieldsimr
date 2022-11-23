@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_effects.R
 \name{plot_effects}
 \alias{plot_effects}
-\title{Graphics for plot-level effects}
+\title{Graphics for plot effects}
 \usage{
 plot_effects(df, env, effect, blocks = TRUE)
 }
@@ -23,7 +23,7 @@ Graphic of the field array, where the colour gradient ranges from red (low value
   green (high value) of the effect
 }
 \description{
-Graphically displays plot-level effects (e.g., phenotypic values, genetic values, errors) onto
+Graphically displays plot effects (e.g., phenotypic values, genetic values, errors) onto
 a field array, where the colour gradient ranges from red (low value) to green (high value). \cr
 This function requires a data frame generated with \link[FieldSimR]{field_trial_error} as an
 input, or any data frame with columns named "env", "col", "row", and the effect to be displayed.

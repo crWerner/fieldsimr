@@ -86,7 +86,7 @@ pop <- newPop(FOUNDERPOP)
 
 n_envs <- 3
 n_traits <- 2
-n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each
+n_reps <- c(3, 3, 2) # Vector containing the number of complete replicates in each
 # environment.
 
 df_gv_unstr <- unstr_asr_output(
@@ -103,7 +103,7 @@ df_gv_unstr <- unstr_asr_output(
 
 # Field layout
 n_cols <- 10 # Total number of columns in each environment.
-n_rows <- c(20, 30, 20) # Total number of rows in each environment.
+n_rows <- c(30, 30, 20) # Total number of rows in each environment.
 plot_length <- 5 # Plot length set to 5 meters in each environment.
 plot_width <- 2 # Plot width set to 2 meters in each environment.
 

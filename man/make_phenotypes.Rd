@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_phenotypes.R
 \name{make_phenotypes}
 \alias{make_phenotypes}
-\title{Phenotype simulation through combination of genetic values and plot-level errors}
+\title{Phenotype simulation through combination of genetic values and plot errors}
 \usage{
 make_phenotypes(gv_df, error_df, randomise = FALSE)
 }
@@ -10,7 +10,7 @@ make_phenotypes(gv_df, error_df, randomise = FALSE)
 \item{gv_df}{A data frame of genetic values. Must contain the columns "env", "rep", and "id"
 additional to the genetic values for each trait.}
 
-\item{error_df}{A data frame of plot-level errors. Must contain the columns "env", "block",
+\item{error_df}{A data frame of plot errors. Must contain the columns "env", "block",
 "col", and "row" additional to the error values for each trait.}
 
 \item{randomise}{When TRUE, genotypes are randomly allocated to plots within blocks to simulate
@@ -23,13 +23,13 @@ A data-frame containing the environment id, block id, column id, row id, genotyp
 }
 \description{
 Creates a data frame of simulated field trial phenotypes through combination of the genetic
-values and the plot-level errors generated for one or more traits with 'FieldSimR'. If the
+values and the plot errors generated for one or more traits with 'FieldSimR'. If the
 genetic values were obtained externally, they have to be arranged in a data frame with columns
 "env", "rep", and "id" additional to the genetic values for each trait.
 }
 \examples{
 # Create data frame of phenotypes through combination of the the genetic values and the
-# plot-level errors from the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
+# plot errors from the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
 
 gv_df <- df_gv_unstr
 error_df <- df_error_bivar

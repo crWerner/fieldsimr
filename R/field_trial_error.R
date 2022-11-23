@@ -69,7 +69,7 @@
 #' @param ext_dir A character string specifying the direction of extraneous variation. One of either
 #'   "column", "row" or "both".
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
-#'   containing the spatial and random errors. By default, return_effects = FALSE. # <-- here
+#'   containing the spatial, random and extraneous errors. By default, return_effects = FALSE.
 #'
 #' @return A data frame containing the environment id, block id, column id, row id, and the
 #'   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
@@ -232,7 +232,7 @@ field_trial_error <- function(n_envs,
     warning("The random error is zero for some environments")
   }
   ext_dir <- tolower(ext_dir)
-  if (any(prop_ext > 0) & !any(ext_dir %in% c("column","row","both"))) {
+  if (any(prop_ext > 0) & !any(ext_dir %in% c("column", "row", "both"))) {
     stop("'ext_dir' must be either 'column', 'row' or 'both'")
   }
   envs <- rep(1:n_envs, times = n_cols * n_rows)
@@ -277,10 +277,10 @@ field_trial_error <- function(n_envs,
     cor_mat_lst <- mapply(function(x, y) kronecker(x, y), x = col_ar1, y = row_ar1, SIMPLIFY = FALSE)
 
     plot_error_lst1 <- mapply(function(x, y) t(chol(y)) %*% matrix(c(stats::rnorm(x)), ncol = n_traits),
-                              x = n_cols * n_rows * n_traits, y = cor_mat_lst, SIMPLIFY = FALSE
+      x = n_cols * n_rows * n_traits, y = cor_mat_lst, SIMPLIFY = FALSE
     )
-    plot_error_lst1 <- mapply(function(x) scale(x %*% solve(chol(var(x)))) %*% chol(S_cor_R),
-                              x = plot_error_lst1, SIMPLIFY = FALSE
+    plot_error_lst1 <- mapply(function(x) scale(x %*% solve(chol(stats::var(x)))) %*% chol(S_cor_R),
+      x = plot_error_lst1, SIMPLIFY = FALSE
     )
   }
 
@@ -289,12 +289,12 @@ field_trial_error <- function(n_envs,
 
     cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), length(unique(x)) + 1)))
     col_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
-                              x = cols_lst, y = plot_length, SIMPLIFY = FALSE
+      x = cols_lst, y = plot_length, SIMPLIFY = FALSE
     )
 
     rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), length(unique(x)) + 1)))
     row_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
-                              x = rows_lst, y = plot_width, SIMPLIFY = FALSE
+      x = rows_lst, y = plot_width, SIMPLIFY = FALSE
     )
 
     col_gap <- plot_length / 4
@@ -303,10 +303,10 @@ field_trial_error <- function(n_envs,
     plot_error_lst1 <- NA
     while (sum(is.na(unlist(plot_error_lst1))) > 0) {
       xInterp_list <- mapply(function(x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-                             x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+        x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
       )
       yInterp_list <- mapply(function(x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-                             x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+        x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
       )
       zInterp_list <- lapply(n_cols, function(x) scale(matrix(stats::rnorm((4 + complexity) * n_traits), ncol = n_traits)) %*% chol(S_cor_R))
 
@@ -328,29 +328,29 @@ field_trial_error <- function(n_envs,
   }
 
   plot_error_lst2 <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                            x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
+    x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
   )
-  plot_error_lst2 <- mapply(function(x) scale(x %*% solve(chol(var(x))) %*% chol(R_cor_R)),
-                            x = plot_error_lst2, SIMPLIFY = FALSE
+  plot_error_lst2 <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(R_cor_R)),
+    x = plot_error_lst2, SIMPLIFY = FALSE
   )
 
   plot_error_lst3c <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                            x = n_cols * n_traits, SIMPLIFY = FALSE
+    x = n_cols * n_traits, SIMPLIFY = FALSE
   )
-  plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(var(x))) %*% chol(E_cor_R)),
-                            x = plot_error_lst3c, SIMPLIFY = FALSE
+  plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
+    x = plot_error_lst3c, SIMPLIFY = FALSE
   )
-  Zc <- lapply(seq_len(n_envs), function(i) model.matrix( ~ col-1, droplevels(plot_df[plot_df$env == i,])))
-  plot_error_lst3c <- mapply(function(w,x) scale(w %*% x), w = Zc, x = plot_error_lst3c, SIMPLIFY = F)
+  Zc <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ col - 1, droplevels(plot_df[plot_df$env == i, ])))
+  plot_error_lst3c <- mapply(function(w, x) scale(w %*% x), w = Zc, x = plot_error_lst3c, SIMPLIFY = F)
 
   plot_error_lst3r <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                             x = n_rows * n_traits, SIMPLIFY = FALSE
+    x = n_rows * n_traits, SIMPLIFY = FALSE
   )
-  plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(var(x))) %*% chol(E_cor_R)),
-                           x = plot_error_lst3r, SIMPLIFY = FALSE
+  plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
+    x = plot_error_lst3r, SIMPLIFY = FALSE
   )
-  Zr <- lapply(seq_len(n_envs), function(i) model.matrix( ~ row-1, droplevels(plot_df[plot_df$env == i,])))
-  plot_error_lst3r <- mapply(function(w,x) scale(w %*% x), w = Zr, x = plot_error_lst3r, SIMPLIFY = F)
+  Zr <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ row - 1, droplevels(plot_df[plot_df$env == i, ])))
+  plot_error_lst3r <- mapply(function(w, x) scale(w %*% x), w = Zr, x = plot_error_lst3r, SIMPLIFY = F)
 
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits)))
   var_R <- lapply(X = var_R, FUN = c)
@@ -358,12 +358,18 @@ field_trial_error <- function(n_envs,
   e_rand <- mapply(function(x, y, z) (scale(x) * sqrt(1 - y - z)), x = plot_error_lst2, y = prop_spatial, z = prop_ext, SIMPLIFY = F)
   e_ext_c <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3c, y = prop_ext, SIMPLIFY = F)
   e_ext_r <- mapply(function(x, y) (scale(x) * sqrt(y)), x = plot_error_lst3r, y = prop_ext, SIMPLIFY = F)
-  if(any(ext_dir == "column")){e_ext_r <- lapply(e_ext_r, function(x) 0*x)}
-  if(any(ext_dir == "row")){e_ext_c <- lapply(e_ext_c, function(x) 0*x)}
-  if(any(ext_dir == "both")){e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5)*x)
-                             e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5)*x)}
+  if (any(ext_dir == "column")) {
+    e_ext_r <- lapply(e_ext_r, function(x) 0 * x)
+  }
+  if (any(ext_dir == "row")) {
+    e_ext_c <- lapply(e_ext_c, function(x) 0 * x)
+  }
+  if (any(ext_dir == "both")) {
+    e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5) * x)
+    e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5) * x)
+  }
 
-if (n_traits > 1) {
+  if (n_traits > 1) {
     e_scale <- mapply(function(w, x, y, z) sqrt(diag(1 / diag(as.matrix(stats::var(w + x + y + z))))), w = e_spat, x = e_rand, y = e_ext_c, z = e_ext_r, SIMPLIFY = F)
     e_spat <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_spat, y = e_scale, z = var_R, SIMPLIFY = F)
     e_rand <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_rand, y = e_scale, z = var_R, SIMPLIFY = F)
@@ -371,13 +377,13 @@ if (n_traits > 1) {
     e_ext_r <- mapply(function(x, y, z) x %*% y %*% diag(sqrt(z)), x = e_ext_r, y = e_scale, z = var_R, SIMPLIFY = F)
   }
 
-if (n_traits == 1) {
+  if (n_traits == 1) {
     e_scale <- mapply(function(x, y) sqrt(1 / stats::var(x + y)), x = e_spat, y = e_rand, SIMPLIFY = F)
     e_spat <- mapply(function(x, y, z) x %*% y %*% sqrt(z), x = e_spat, y = e_scale, z = var_R, SIMPLIFY = F)
     e_rand <- mapply(function(x, y, z) x %*% y %*% sqrt(z), x = e_rand, y = e_scale, z = var_R, SIMPLIFY = F)
     e_ext_c <- mapply(function(x, y, z) x %*% y %*% sqrt(z), x = e_ext_c, y = e_scale, z = var_R, SIMPLIFY = F)
     e_ext_r <- mapply(function(x, y, z) x %*% y %*% sqrt(z), x = e_ext_r, y = e_scale, z = var_R, SIMPLIFY = F)
-}
+  }
 
   plot_error_lst <- mapply(function(w, x, y, z) w + x + y + z, w = e_spat, x = e_rand, y = e_ext_c, z = e_ext_r, SIMPLIFY = F)
   plot_error <- do.call(what = "rbind", plot_error_lst)
@@ -392,10 +398,10 @@ if (n_traits == 1) {
     e_all <- lapply(seq_len(ncol(e_spat)), function(i) cbind(e_spat[, i], e_rand[, i], e_ext_c[, i], e_ext_r[, i]))
     resids <- lapply(e_all, function(x) {
       data.frame(plot_df[, 1:4],
-                 e_spatial = x[, 1],
-                 e_random = x[, 2],
-                 e_extraneous_col = x[, 3],
-                 e_extraneous_row = x[, 4]
+        e_spatial = x[, 1],
+        e_random = x[, 2],
+        e_extraneous_col = x[, 3],
+        e_extraneous_row = x[, 4]
       )
     })
 
@@ -407,5 +413,3 @@ if (n_traits == 1) {
   plot_df
   return(plot_df)
 }
-
-

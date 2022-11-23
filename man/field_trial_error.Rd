@@ -2,7 +2,7 @@
 % Please edit documentation in R/field_trial_error.R
 \name{field_trial_error}
 \alias{field_trial_error}
-\title{Simulate plot-level errors for a plant breeding trial}
+\title{Simulate plot errors in plant breeding trials}
 \usage{
 field_trial_error(
   n_envs,
@@ -16,11 +16,14 @@ field_trial_error(
   var_R,
   S_cor_R = NULL,
   R_cor_R = NULL,
+  E_cor_R = NULL,
   spatial_model = "bivariate",
-  prop_spatial = 0.5,
   complexity = 12,
   col_cor = NULL,
   row_cor = NULL,
+  prop_spatial = 0.5,
+  prop_ext = 0,
+  ext_dir = NULL,
   return_effects = FALSE
 )
 }
@@ -56,7 +59,7 @@ when \code{n_reps = 1}.}
 
 \item{var_R}{A vector of error variances for each trait-by-environment combination (ordered
 as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
-all traits will be assigned the same error variance in each environment.}
+all environments will be assigned the same error variance for each trait.}
 
 \item{S_cor_R}{A matrix of spatial error correlations between more than one trait. If not
 defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
@@ -64,14 +67,13 @@ defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 \item{R_cor_R}{A matrix of random error correlations between more than one trait. If not
 defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
-\item{spatial_model}{A character string specifying the model used to simulate the spatial error
-term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
-(separable first-order autoregressive process (AR1:AR1)).}
+\item{E_cor_R}{A matrix of extraneous error correlations between more than one trait. If not
+defined and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation is
+assigned to the column and row errors.}
 
-\item{prop_spatial}{A vector defining the proportion of spatial error variance to total
-error variance (spatial + random). If only one value is provided, all environments will be
-assigned the same proportion. By default, the spatial error variance accounts for half of the
-total error variance (\code{prop_spatial = 0.5}).}
+\item{spatial_model}{A character string specifying the model used to simulate the two-dimensional
+spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
+(separable first-order autoregressive process).}
 
 \item{complexity}{A scalar defining the complexity of the bivariate interpolation model.
 By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
@@ -85,8 +87,21 @@ same column autocorrelation.}
 spatial error model. If only one value is provided, all environments will be assigned the
 same row autocorrelation.}
 
+\item{prop_spatial}{A vector defining the proportion of spatial error variance to total
+error variance (spatial + random + extraneous) for each environment. If only one value is provided,
+all environments will be assigned the same proportion. By default, the spatial error variance
+accounts for half of the total error variance (\code{prop_spatial = 0.5}).}
+
+\item{prop_ext}{A vector defining the proportion of extraneous error variance to total
+error variance (spatial + random + extraneous) for each environment. If only one value is provided,
+all environments will be assigned the same proportion. By default, the extraneous error variance
+is zero (\code{prop_ext = 0}).}
+
+\item{ext_dir}{A character string specifying the direction of extraneous variation. One of either
+"column", "row" or "both".}
+
 \item{return_effects}{When TRUE, a list is returned with additional entries for each trait
-containing the spatial and random errors. By default, return_effects = FALSE.}
+containing the spatial and random errors. By default, return_effects = FALSE. # <-- here}
 }
 \value{
 A data frame containing the environment id, block id, column id, row id, and the
@@ -94,19 +109,22 @@ A data frame containing the environment id, block id, column id, row id, and the
   additional entries for each trait containing the spatial and random error values.
 }
 \description{
-Creates a data frame with simulated plot-level errors for one or more traits in plant breeding
-trials across multiple environments. The simulated error consists of a spatial error term and
-a random error term. The spatial error term can be simulated based on 1) bivariate
-interpolation using the \link[interp]{interp} function of the package 'interp', or 2) a
-separable first-order autoregressive process (AR1:AR1). The random error term is simulated
-using an independent process. The spatial and random error terms are combined according to a
-user-defined ratio. \cr
+Creates a data frame with simulated plot errors for one or more traits in plant breeding
+trials across one or more environments. The simulated error consists of a spatial error term,
+a random error term and an extraneous error term. The spatial error term is constructed
+according to either 1) bivariate interpolation using the \link[interp]{interp} function of
+the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
+random error term is constructed using an independent process. The extraneous error term is
+constructed as the sum of column and/or row terms. something more here?
+The spatial, random and extraneous error terms are combined according to a user-defined ratio.
+\cr
 For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
-errors between traits, 2) correlated random error between traits, or 3) a combination of both. \cr
+error between traits, 2) correlated random error between traits, 3) correlated extraneous
+error between traits, or 4) some combination of 1-3. \cr
 A separable covariance structure is assumed between traits and environments.
 }
 \examples{
-# Simulation of plot-level errors for two traits in three environments using a bivariate
+# Simulation of plot errors for two traits in three environments using a bivariate
 # interpolation model for spatial variation.
 
 n_envs <- 3 # Number of simulated environments.
@@ -141,9 +159,11 @@ error_df <- field_trial_error(
   rep_dir = "row",
   var_R = var_R,
   S_cor_R = S_cor_R,
-  spatial_model = "bivariate",
-  prop_spatial = 0.6,
+  spatial_model = "Bivariate",
   complexity = 14,
+  prop_spatial = 0.6,
+  prop_ext = 0.1,
+  ext_dir = "row",
   return_effects = TRUE
 )
 }

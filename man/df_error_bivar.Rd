@@ -11,15 +11,15 @@ A data frame with 700 rows and 5 columns:
   \item{block}{Block id}
   \item{col}{Column id}
   \item{row}{Row id}
-  \item{e.Trait.1}{Simulated plot-level error for trait 1}
-  \item{e.Trait.2}{Simulated plot_level error for trait 2}
+  \item{e.Trait.1}{Simulated plot error for trait 1}
+  \item{e.Trait.2}{Simulated plot error for trait 2}
 }
 }
 \usage{
 df_error_bivar
 }
 \description{
-An example data frame of simulated field trial error values at the plot-level for two traits
+An example data frame of simulated field trial plot errors for two traits
 tested in three environments. The data frame was generated using the function
 \link[FieldSimR]{field_trial_error} with bivariate interpolation.
 }
