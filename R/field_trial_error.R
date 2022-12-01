@@ -385,6 +385,7 @@ field_trial_error <- function(n_envs,
   if(n_traits == 1){plot_error_lst2 <- mapply(function(x) scale(x %*% chol(R_cor_R)),
                                              x = plot_error_lst2, SIMPLIFY = FALSE)
   }
+
   n_plots <- mapply(function(x,y) x * y, x = n_cols, y = n_rows)
   plot_error_lst3c <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
   if (any(ext_dir %in% c("column","both"))) {
