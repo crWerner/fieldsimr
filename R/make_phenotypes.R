@@ -29,7 +29,9 @@
 #'   randomise = TRUE
 #' )
 #' @export
-make_phenotypes <- function(gv_df, error_df, randomise = FALSE) {
+make_phenotypes <- function(gv_df,
+                            error_df,
+                            randomise = FALSE) {
   if (inherits(gv_df, "list")) gv_df <- gv_df[[1]]
   if (inherits(error_df, "list")) error_df <- error_df[[1]]
 
