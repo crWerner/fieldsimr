@@ -189,20 +189,22 @@ E_var <- c(0.5, 1, 1.5) # Genetic variances defined for the three environments.
 var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
 
 # Additive genetic correlations between the two simulated traits.
-T_cor_A <- matrix(c(
-  1.0, 0.3,
-  0.3, 1.0
-),
-ncol = 2
+T_cor_A <- matrix(
+  c(
+    1.0, 0.3,
+    0.3, 1.0
+  ),
+  ncol = 2
 )
 
 # Additive genetic correlations between the three simulated environments.
-E_cor_A <- stats::cov2cor(matrix(c(
-  0.5, 0.4, 0.6,
-  0.4, 1.0, 0.5,
-  0.6, 0.5, 1.5
-),
-ncol = 3
+E_cor_A <- stats::cov2cor(matrix(
+  c(
+    0.5, 0.4, 0.6,
+    0.4, 1.0, 0.5,
+    0.6, 0.5, 1.5
+  ),
+  ncol = 3
 ))
 
 # Dominance degree correlation between all six trait-by-environment combinations.

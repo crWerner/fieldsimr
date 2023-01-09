@@ -57,7 +57,7 @@ environments will be assigned the same plot width.}
 "column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
 when \code{n_reps = 1}.}
 
-\item{var_R}{A vector of error variances for each trait-by-environment combination (ordered
+\item{var_R}{A vector of error variances for each trait by environment combination (ordered
 as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
 all environments will be assigned the same error variance for each trait.}
 
@@ -87,24 +87,27 @@ same column autocorrelation.}
 spatial error model. If only one value is provided, all environments will be assigned the
 same row autocorrelation.}
 
-\item{prop_spatial}{A vector defining the proportion of spatial error variance to total
-error variance (spatial + random + extraneous) for each environment. If only one value is provided,
-all environments will be assigned the same proportion. By default, the spatial error variance
-accounts for half of the total error variance (\code{prop_spatial = 0.5}).}
+\item{prop_spatial}{A vector defining the proportion of spatial error variance to total error
+variance (spatial + random + extraneous) for each trait by environment combination. If the
+length of \code{prop_spatial} is equal to \code{n_envs}, all traits will be assigned the same
+proportion for each environment. By default, the spatial error variance accounts for half of
+the total error variance (\code{prop_spatial = 0.5}).}
 
-\item{prop_ext}{A vector defining the proportion of extraneous error variance to total
-error variance (spatial + random + extraneous) for each environment. If only one value is provided,
-all environments will be assigned the same proportion. By default, the extraneous error variance
-is zero (\code{prop_ext = 0}).}
+\item{prop_ext}{A vector defining the proportion of extraneous error variance to total error
+variance (spatial + random + extraneous) for each trait by environment combination. If the
+length of \code{prop_ext} is equal to \code{n_envs}, all traits will be assigned the same
+same proportion for each environment. By default, the extraneous error variance is zero
+(\code{prop_ext = 0}).}
 
 \item{ext_dir}{A character string specifying the direction of extraneous variation. One of either
-"column", "row" or "both".}
+"column", "row" or "both". When "both", half the variance is assigned to the columns and half
+is assigned to the rows.}
 
 \item{return_effects}{When TRUE, a list is returned with additional entries for each trait
-containing the spatial and random errors. By default, return_effects = FALSE. # <-- here}
+containing the spatial, random and extraneous errors. By default, return_effects = FALSE.}
 }
 \value{
-A data frame containing the environment id, block id, column id, row id, and the
+A data frame containing the environment, block, column and row identifiers, as well as the
   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
   additional entries for each trait containing the spatial and random error values.
 }
@@ -115,7 +118,7 @@ a random error term and an extraneous error term. The spatial error term is cons
 according to either 1) bivariate interpolation using the \link[interp]{interp} function of
 the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
 random error term is constructed using an independent process. The extraneous error term is
-constructed as the sum of column and/or row terms. something more here?
+constructed as the sum of column and/or row terms.
 The spatial, random and extraneous error terms are combined according to a user-defined ratio.
 \cr
 For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
@@ -141,11 +144,12 @@ n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
 var_R <- c(0.4, 15)
 
 # Spatial error correlations between traits 1 and 2.
-S_cor_R <- matrix(c(
-  1.0, 0.2,
-  0.2, 1.0
-),
-ncol = 2
+S_cor_R <- matrix(
+  c(
+    1.0, 0.2,
+    0.2, 1.0
+  ),
+  ncol = 2
 )
 
 error_df <- field_trial_error(
