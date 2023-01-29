@@ -308,8 +308,6 @@ field_trial_error <- function(n_envs,
       )
 
       x <- any(unlist(lapply(plot_error_lst1, function(x) eigen(stats::var(x))$values < 1e-7)))
-      print("ar1_plot_error_lst1")
-      print(y)
       if (y == 100) {
         stop("Appropriate AR1:AR1 spatial error not obtained in 100 iterations.")
       }
@@ -329,14 +327,16 @@ field_trial_error <- function(n_envs,
   if (spatial_model == "bivariate") {
     if (complexity <= 0) stop("'complexity' must be an integer > 0")
 
-    cols_lst <- with(plot_df, tapply(col, env, function(x) c(unique(x), length(unique(x)) + 1)))
+    cols_lst <- with(plot_df, tapply(col, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
+    rows_lst <- with(plot_df, tapply(row, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
+    max_lst <- mapply(function(x, y) 1:max(x,y), x = cols_lst, y = rows_lst, SIMPLIFY = FALSE)
+
     col_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
-      x = cols_lst, y = plot_length, SIMPLIFY = FALSE
+      x = max_lst, y = plot_length, SIMPLIFY = FALSE
     )
 
-    rows_lst <- with(plot_df, tapply(row, env, function(x) c(unique(x), length(unique(x)) + 1)))
     row_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
-      x = rows_lst, y = plot_width, SIMPLIFY = FALSE
+      x = max_lst, y = plot_width, SIMPLIFY = FALSE
     )
 
     col_gap <- plot_length / 4
@@ -361,8 +361,6 @@ field_trial_error <- function(n_envs,
         )
 
         x <- any(unlist(lapply(zInterp_list, function(x) eigen(stats::var(x))$values < 1e-7)))
-        print("zInterp_list")
-        print(y)
         if (y == 100) {
           stop("Appropriate Bivariate spatial error not obtained in 100 iterations.")
         }
@@ -393,8 +391,6 @@ field_trial_error <- function(n_envs,
           plot_error_lst1 <- Map("cbind", plot_error_lst1, tmp)
         }
       }
-      print("bivariate_plot_error_lst1")
-      print(y)
       if (y == 100) {
         stop("Appropriate bivariate spatial error not obtained in 100 iterations. Consider reseting 'complexity' argument.")
       }
@@ -409,8 +405,6 @@ field_trial_error <- function(n_envs,
       x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
     )
     x <- any(unlist(lapply(plot_error_lst2, function(x) eigen(stats::var(x))$values < 1e-7)))
-    print("rand_plot_error_lst2")
-    print(y)
     if (y == 100) {
       stop("Appropriate random error not obtained in 100 iterations.")
     }
@@ -441,8 +435,6 @@ field_trial_error <- function(n_envs,
       )
       x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
-      print("row_plot_error_lst3c")
-      print(y)
       if (y == 100) {
         stop("Appropriate column extraneous error not obtained in 100 iterations.")
       }
@@ -474,8 +466,6 @@ field_trial_error <- function(n_envs,
       )
       x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
-      print("row_plot_error_lst3r")
-      print(y)
       if (y == 100) {
         stop("Appropriate row extraneous error not obtained in 100 iterations.")
       }
