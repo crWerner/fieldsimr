@@ -380,7 +380,7 @@ field_trial_error <- function(n_envs,
       for (i in 1:n_traits) {
         tmp <- mapply(
           function(v, w, x, y, z, xo, yo) {
-            c(t(interp::interp(x = x, y = y, z = z[, i], xo = c(xo), yo = c(yo), linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w])
+            c(FieldSimR::fill_matrix(t(interp::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w]))
           },
           v = n_rows, w = n_cols, x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
         )
