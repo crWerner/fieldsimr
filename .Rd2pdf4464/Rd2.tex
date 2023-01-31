@@ -1,0 +1,1074 @@
+\nonstopmode{}
+\documentclass[a4paper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8]{inputenc} % @SET ENCODING@
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `FieldSimR'}}
+\par\bigskip{\large \today}
+\end{center}
+\inputencoding{utf8}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdftitle = {FieldSimR: Simulation of Plot-Level Data in Plant Breeding Field Trials}}}{}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdfauthor = {Christian Werner; Daniel Tolhurst}}}{}
+\begin{description}
+\raggedright{}
+\item[Title]\AsIs{Simulation of Plot-Level Data in Plant Breeding Field Trials}
+\item[Version]\AsIs{1.0.0}
+\item[Date]\AsIs{2022-09-19}
+\item[Maintainer]\AsIs{Christian Werner }\email{werner.christian@proton.me}\AsIs{}
+\item[Description]\AsIs{Simulates plot data in plant breeding field trials for multiple traits in multiple 
+environments. Its core function simulates spatially correlated plot errors across correlated 
+traits using bivariate interpolation or a two-dimensional autoregressive process of order one (AR1:AR1). 
+'FieldSimR' then combines this spatial error with random measurement error at a user-defined 
+ratio. The simulated plot errors can be combined with genetic values (e.g. true, simulated or 
+predicted) to generate plot-level phenotypes. 'FieldSimR' provides wrapper functions to simulate the 
+genetic values for multiple traits in multiple environments using the 'R' package 'AlphaSimR'.}
+\item[License]\AsIs{GPL (>= 3)}
+\item[URL]\AsIs{}\url{https://github.com/crWerner/fieldsimr}\AsIs{}
+\item[Encoding]\AsIs{UTF-8}
+\item[LazyData]\AsIs{true}
+\item[Imports]\AsIs{fields, interp, matrixcalc, mbend}
+\item[Suggests]\AsIs{AlphaSimR}
+\item[RoxygenNote]\AsIs{7.2.3}
+\item[Depends]\AsIs{R (>= 2.10)}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{compsym\_asr\_input}{Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - Input parameters}{compsym.Rul.asr.Rul.input}
+%
+\begin{Description}\relax
+Creates a list of input simulation parameters for
+\Rhref{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} to simulate
+genetic values for multiple traits in multiple environments based on a compound symmetry model
+for genotype-by-environment (GxE) interaction. \\{}
+By default, 'AlphaSimR' does not support complex models for GxE interaction. However, its
+functionality to simulate correlated genetic values can be utilised for this purpose by
+providing the required variance structures. \code{compsym\_asr\_input} is a wrapper function to
+construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
+a compound symmetry model. This function assumes a separable structure between traits and
+environments. It is also used in combination with the wrapper function
+\LinkA{compsym\_asr\_output}{compsym.Rul.asr.Rul.output}.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+compsym_asr_input(
+  n_envs,
+  n_traits,
+  mean,
+  var,
+  rel_main_eff_A,
+  cor_A = NULL,
+  mean_DD = NULL,
+  var_DD = NULL,
+  rel_main_eff_DD = NULL,
+  cor_DD = NULL,
+  rel_AA = NULL,
+  rel_main_eff_AA = NULL,
+  cor_AA = NULL
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{n\_envs}] Number of environments to be simulated. A minimum of two environments is required.
+
+\item[\code{n\_traits}] Number of traits to be simulated.
+
+\item[\code{mean}] A vector of mean genetic values for each trait-by-environment combination (ordered
+as environments within traits). Simulated traits can have a different mean for each
+environment. If the length of \code{mean} corresponds to \code{n\_traits}, all traits will be
+assigned the same mean for each environment.
+
+\item[\code{var}] A vector of genetic variances for each trait. Simulated traits are restricted by the
+compound symmetry model to having the same variance for each environment (i.e., main
+effect variance + GxE interaction variance) and the same covariance between each pair of
+environments (main effect variance). \\{}
+\strong{Note:} when \code{useVarA = TRUE} is specified in 'AlphaSimR' (default) the values in
+\code{var} represent the \code{additive} genetic variances, otherwise they will represent the
+\code{total} (additive + non-additive) genetic variances.
+
+\item[\code{rel\_main\_eff\_A}] A vector defining the magnitude of the additive main effect variance
+relative to the additive main effect + GxE interaction variance for each trait. If only one
+value is provided and \code{n\_traits > 1}, all traits will be assigned the same value. \\{}
+\strong{Note:} \code{0 < rel\_main\_eff\_A < 1}.
+
+\item[\code{cor\_A}] A matrix of additive genetic correlations between more than one trait. If not
+defined and \code{n\_traits > 1}, a diagonal matrix is constructed.
+
+\item[\code{mean\_DD}] A vector of mean dominance degrees for each trait-by-environment combination
+(ordered as environments within traits), similar to \code{mean}. By default,
+\code{mean\_DD = NULL} and dominance is not simulated.
+
+\item[\code{var\_DD}] A vector of dominance degree variances for each trait. Simulated traits have the
+same dominance degree variance for each environment and the same dominance degree covariance
+between each pair of environments (similar to \code{var}). By default, \code{var\_DD = NULL}.
+
+\item[\code{rel\_main\_eff\_DD}] A vector defining the magnitude of the dominance degree main effect
+variance relative to the main effect + GxE interaction variance for each trait (similar to
+\code{rel\_main\_eff\_A}) \\{}
+\strong{Note:} \code{0 < rel\_main\_eff\_DD < 1}. By default, \code{rel\_main\_eff\_DD = NULL}.
+
+\item[\code{cor\_DD}] A matrix of dominance degree correlations between more than one trait (similar
+to \code{cor\_A}). If not defined and \code{n\_traits > 1}, a diagonal matrix is constructed.
+By default, \code{cor\_DD = NULL}.
+
+\item[\code{rel\_AA}] A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to the additive genetic variance for each trait, that is in a diploid organism with
+allele frequency 0.5. Simulated traits have the same epistatic variance for each environment
+and the same epistatic covariance between each pair of environments (similar to \code{var}).
+By default, \code{rel\_AA = NULL} and epistasis is not simulated.
+
+\item[\code{rel\_main\_eff\_AA}] A vector defining the magnitude of the epistatic main effect variance
+relative to the main effect + GxE interaction variance for each trait (similar to
+\code{rel\_main\_eff\_A}). \\{}
+\strong{Note:} \code{0 < rel\_main\_eff\_AA < 1}. By default, \code{rel\_main\_eff\_AA = NULL}.
+
+\item[\code{cor\_AA}] A matrix of epistatic correlations between more than one trait (similar to
+\code{cor\_A}). If not defined and \code{n\_traits > 1}, a diagonal matrix is constructed. By
+default, \code{cor\_AA = NULL}.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+\strong{Note:} 'AlphaSimR' can simulate different biological effects (see:
+\code{\LinkA{SimParam}{SimParam}}).
+\begin{itemize}
+
+\item{} For additive traits use \code{addTraitA()}.
+\item{} For additive + dominance traits use \code{addTraitAD()}.
+\item{} For additive + epistatic traits use \code{addTraitAE()}.
+\item{} For additive + dominance + epistatic traits use \code{addTraitADE()}.
+
+\end{itemize}
+
+If non-additive effects are to be simulated, check the \code{useVarA} argument of these
+functions.
+\end{Details}
+%
+\begin{Value}
+A list containing input parameters for 'AlphaSimR', which is used to simulate
+correlated genetic effects based on a compound symmetry model.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+# three environments based on a compound symmetry model for GxE interaction.
+
+# 1. Define the genetic architecture of the simulated traits.
+# Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
+# in all 3 environments.
+mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
+mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in 3 environments for each trait.
+
+# Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2.
+var <- c(0.2, 10)
+var_DD <- c(0.1, 0.2)
+
+# Relative magnitude of the additive and dominance degree main effect variance for traits 1 and 2.
+rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
+rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
+
+# Additive and dominance degree correlations between traits 1 and 2.
+cor_A <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2) # Additive correlation matrix.
+cor_DD <- diag(2) # Assuming independence between traits.
+
+input_asr <- compsym_asr_input(
+  n_envs = 3,
+  n_traits = 2,
+  mean = mean,
+  var = var,
+  rel_main_eff_A = rel_main_eff_A,
+  cor_A = cor_A,
+  mean_DD = mean_DD,
+  var_DD = var_DD,
+  rel_main_eff_DD = rel_main_eff_DD,
+  cor_DD = cor_DD
+)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{compsym\_asr\_output}{Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - Simulation of genetic values}{compsym.Rul.asr.Rul.output}
+%
+\begin{Description}\relax
+Creates a data frame of correlated genetic values for multiple traits in multiple environments
+based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
+requires an 'AlphaSimR' population object generated using the
+\LinkA{compsym\_asr\_input}{compsym.Rul.asr.Rul.input} function.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+compsym_asr_output(pop, n_envs, n_reps, n_traits, effects = FALSE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{pop}] An 'AlphaSimR' population object (\code{\LinkA{Pop-class}{Pop.Rdash.class}} or
+\code{\LinkA{HybridPop-class}{HybridPop.Rdash.class}}) generated using \LinkA{compsym\_asr\_input}{compsym.Rul.asr.Rul.input}.
+
+\item[\code{n\_envs}] Number of simulated environments (same as used in
+\LinkA{compsym\_asr\_input}{compsym.Rul.asr.Rul.input}).
+
+\item[\code{n\_reps}] A vector defining the number of complete replicates in each environment. If only
+one value is provided and \code{n\_traits > 1}, all environments will be assigned the same
+number of replicates.
+
+\item[\code{n\_traits}] Number of simulated traits (same as used in \LinkA{compsym\_asr\_input}{compsym.Rul.asr.Rul.input}).
+
+\item[\code{effects}] When TRUE, a list is returned with additional entries containing the total
+(additive + dominance + epistatic) main effects and GxE interaction effects for each
+trait-by-environment combination. By default, effects = FALSE.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A data-frame containing the environment id, replicate number, genotype id, and
+simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
+additional entries containing the total (additive + dominance + epistatic) main effects and
+GxE interaction effects for each trait-by-environment combination.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+# three environments based on a compound symmetry model for GxE interaction.
+
+# 1. Define the genetic architecture of the simulated traits.
+# Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
+# in all 3 environments.
+mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
+mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in 3 environments for each trait.
+
+# Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2.
+var <- c(0.2, 10)
+var_DD <- c(0.1, 0.2)
+
+# Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
+rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
+rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
+
+# Additive and dominance degree correlations between traits 1 and 2.
+cor_A <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2) # Additive correlation matrix.
+cor_DD <- diag(2) # Assuming independence between traits.
+
+input_asr <- compsym_asr_input(
+  n_envs = 3,
+  n_traits = 2,
+  mean = mean,
+  var = var,
+  rel_main_eff_A = rel_main_eff_A,
+  cor_A = cor_A,
+  mean_DD = mean_DD,
+  var_DD = var_DD,
+  rel_main_eff_DD = rel_main_eff_DD,
+  cor_DD = cor_DD
+)
+
+
+# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a compound symmetry model
+# for GxE interaction.
+
+library("AlphaSimR")
+FOUNDERPOP <- quickHaplo(
+  nInd = 100,
+  nChr = 6,
+  segSites = 100
+)
+
+SP <- SimParam$new(FOUNDERPOP)
+
+SP$addTraitAD(
+  nQtlPerChr = 100,
+  mean = input_asr$mean,
+  var = input_asr$var,
+  meanDD = input_asr$mean_DD,
+  varDD = input_asr$var_DD,
+  corA = input_asr$cor_A,
+  corDD = input_asr$cor_DD,
+  useVarA = TRUE
+)
+
+# By default, the value provided in 'var' represents the additive variance.
+# If useVarA=FALSE, 'var' represents the total genetic variance.
+
+pop <- newPop(FOUNDERPOP)
+
+
+# 3. Create a data frame containing the simulated genetic values for the two traits in the
+# three environments.
+
+n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
+
+gv_df <- compsym_asr_output(
+  pop = pop,
+  n_envs = 3,
+  n_reps = n_reps,
+  n_traits = 2,
+  effects = TRUE
+)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{df\_error\_bivar}{Field trial error example data frame}{df.Rul.error.Rul.bivar}
+\keyword{datasets}{df\_error\_bivar}
+%
+\begin{Description}\relax
+An example data frame of simulated field trial plot errors for two traits
+tested in three environments. The data frame was generated using the function
+\LinkA{field\_trial\_error}{field.Rul.trial.Rul.error} with bivariate interpolation.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+df_error_bivar
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+A data frame with 700 rows and 5 columns:
+\begin{description}
+
+\item[env] Environment id
+\item[block] Block id
+\item[col] Column id
+\item[row] Row id
+\item[e.Trait.1] Simulated plot error for trait 1
+\item[e.Trait.2] Simulated plot error for trait 2
+
+\end{description}
+
+\end{Format}
+\inputencoding{utf8}
+\HeaderA{df\_gv\_unstr}{Genetic values example data frame}{df.Rul.gv.Rul.unstr}
+\keyword{datasets}{df\_gv\_unstr}
+%
+\begin{Description}\relax
+An example data frame of simulated genetic values for two traits tested in three environments.
+The data frame was generated using the wrapper functions \LinkA{unstr\_asr\_input}{unstr.Rul.asr.Rul.input} and
+\LinkA{unstr\_asr\_output}{unstr.Rul.asr.Rul.output} to simulate correlated genetic values based on an
+unstructured model for genotype-by-environment (GxE) interaction with
+\Rhref{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'}.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+df_gv_unstr
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+A data frame with 700 rows and 5 columns:
+\begin{description}
+
+\item[env] Environment id
+\item[rep] Replicate number
+\item[id] Genotype id
+\item[gv.Trait.1] Simulated genetic values for trait 1
+\item[gv.Trait.2] Simulated genetic values for trait 2
+
+\end{description}
+
+\end{Format}
+\inputencoding{utf8}
+\HeaderA{field\_trial\_error}{Simulate plot errors in plant breeding trials}{field.Rul.trial.Rul.error}
+%
+\begin{Description}\relax
+Creates a data frame with simulated plot errors for one or more traits in plant breeding
+trials across one or more environments. The simulated error consists of a spatial error term,
+a random error term and an extraneous error term. The spatial error term is constructed
+according to either 1) bivariate interpolation using the \LinkA{interp}{interp} function of
+the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
+random error term is constructed using an independent process. The extraneous error term is
+constructed as the sum of column and/or row terms.
+The spatial, random and extraneous error terms are combined according to a user-defined ratio.
+\\{}
+For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
+error between traits, 2) correlated random error between traits, 3) correlated extraneous
+error between traits, or 4) some combination of 1-3. \\{}
+A separable covariance structure is assumed between traits and environments.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+field_trial_error(
+  n_envs,
+  n_traits,
+  n_reps,
+  n_cols,
+  n_rows,
+  plot_length,
+  plot_width,
+  rep_dir = "column",
+  var_R,
+  S_cor_R = NULL,
+  R_cor_R = NULL,
+  E_cor_R = NULL,
+  spatial_model = "bivariate",
+  complexity = 12,
+  col_cor = NULL,
+  row_cor = NULL,
+  prop_spatial = 0.5,
+  prop_ext = 0,
+  ext_dir = NULL,
+  return_effects = FALSE
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{n\_envs}] Number of environments to be simulated (same as for \code{compsym\_asr\_input}
+or \code{unstr\_asr\_output}, where applicable).
+
+\item[\code{n\_traits}] Number of traits to be simulated.
+
+\item[\code{n\_reps}] A vector defining the number of complete replicates in each environment. If only
+one value is provided and \code{n\_traits > 1}, all environments will be assigned the same
+number of replicates.
+
+\item[\code{n\_cols}] A vector defining the total number of columns in each environment. If only one
+value is provided and \code{n\_traits > 1}, all environments will be assigned the same number
+of columns.
+
+\item[\code{n\_rows}] A vector defining the total number of rows in each environment. If only one
+value is provided and \code{n\_traits > 1}, all environments will be assigned the same number
+of rows.
+
+\item[\code{plot\_length}] A vector defining the plot length (column direction, usually longer side) in
+each environment. If only one value is provided and \code{n\_traits > 1}, the plots in all
+environments will be assigned the same plot length.
+
+\item[\code{plot\_width}] A vector defining the plot width (row direction, usually shorter side) in
+each environment. If only one value is provided and \code{n\_traits > 1}, the plots in all
+environments will be assigned the same plot width.
+
+\item[\code{rep\_dir}] A character string specifying the direction of replicate blocks. One of either
+"column" (side-by-side, the default) or "row" (above-and-below). \code{rep\_dir} is ignored
+when \code{n\_reps = 1}.
+
+\item[\code{var\_R}] A vector of error variances for each trait by environment combination (ordered
+as environments within traits). If the length of \code{var\_R} is equal to \code{n\_traits},
+all environments will be assigned the same error variance for each trait.
+
+\item[\code{S\_cor\_R}] A matrix of spatial error correlations between more than one trait. If not
+defined and \code{n\_traits > 1}, a diagonal matrix is constructed.
+
+\item[\code{R\_cor\_R}] A matrix of random error correlations between more than one trait. If not
+defined and \code{n\_traits > 1}, a diagonal matrix is constructed.
+
+\item[\code{E\_cor\_R}] A matrix of extraneous error correlations between more than one trait. If not
+defined and \code{n\_traits > 1}, a diagonal matrix is constructed. The same correlation is
+assigned to the column and row errors.
+
+\item[\code{spatial\_model}] A character string specifying the model used to simulate the two-dimensional
+spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
+(separable first-order autoregressive process).
+
+\item[\code{complexity}] A scalar defining the complexity of the bivariate interpolation model.
+By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
+See \LinkA{interp}{interp} for further details.
+
+\item[\code{col\_cor}] A vector of column autocorrelations for each environment used in the AR1:AR1
+spatial error model. If only one value is provided, all environments will be assigned the
+same column autocorrelation.
+
+\item[\code{row\_cor}] A vector of row autocorrelations for each environment used in the AR1:AR1
+spatial error model. If only one value is provided, all environments will be assigned the
+same row autocorrelation.
+
+\item[\code{prop\_spatial}] A vector defining the proportion of spatial error variance to total error
+variance (spatial + random + extraneous) for each trait by environment combination. If the
+length of \code{prop\_spatial} is equal to \code{n\_envs}, all traits will be assigned the same
+proportion for each environment. By default, the spatial error variance accounts for half of
+the total error variance (\code{prop\_spatial = 0.5}).
+
+\item[\code{prop\_ext}] A vector defining the proportion of extraneous error variance to total error
+variance (spatial + random + extraneous) for each trait by environment combination. If the
+length of \code{prop\_ext} is equal to \code{n\_envs}, all traits will be assigned the same
+same proportion for each environment. By default, the extraneous error variance is zero
+(\code{prop\_ext = 0}).
+
+\item[\code{ext\_dir}] A character string specifying the direction of extraneous variation. One of either
+"column", "row" or "both". When "both", half the variance is assigned to the columns and half
+is assigned to the rows.
+
+\item[\code{return\_effects}] When TRUE, a list is returned with additional entries for each trait
+containing the spatial, random and extraneous errors. By default, return\_effects = FALSE.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A data frame containing the environment, block, column and row identifiers, as well as the
+simulated error for each trait. When \code{return\_effects = TRUE}, a list is returned with
+additional entries for each trait containing the spatial and random error values.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Simulation of plot errors for two traits in three environments using a bivariate
+# interpolation model for spatial variation.
+
+n_envs <- 3 # Number of simulated environments.
+n_traits <- 2 # Number of simulated traits.
+
+# Field layout
+n_cols <- 10 # Total number of columns in each environment.
+n_rows <- c(20, 30, 20) # Total number of rows in each environment.
+plot_length <- 5 # Plot length set to 5 meters in each environment.
+plot_width <- 2 # Plot width set to 2 meters in each environment.
+n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
+
+# Error variances for traits 1 and 2.
+var_R <- c(0.4, 15)
+
+# Spatial error correlations between traits 1 and 2.
+S_cor_R <- matrix(
+  c(
+    1.0, 0.2,
+    0.2, 1.0
+  ),
+  ncol = 2
+)
+
+error_df <- field_trial_error(
+  n_envs = n_envs,
+  n_traits = n_traits,
+  n_cols = n_cols,
+  n_rows = n_rows,
+  plot_length = plot_length,
+  plot_width = plot_width,
+  n_reps = n_reps,
+  rep_dir = "row",
+  var_R = var_R,
+  S_cor_R = S_cor_R,
+  spatial_model = "Bivariate",
+  complexity = 14,
+  prop_spatial = 0.6,
+  prop_ext = 0.1,
+  ext_dir = "row",
+  return_effects = TRUE
+)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{make\_phenotypes}{Phenotype simulation through combination of genetic values and plot errors}{make.Rul.phenotypes}
+%
+\begin{Description}\relax
+Creates a data frame of simulated field trial phenotypes through combination of the genetic
+values and the plot errors generated for one or more traits with 'FieldSimR'. If the
+genetic values were obtained externally, they have to be arranged in a data frame with columns
+"env", "rep", and "id" additional to the genetic values for each trait.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_phenotypes(gv_df, error_df, randomise = FALSE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{gv\_df}] A data frame of genetic values. Must contain the columns "env", "rep", and "id"
+additional to the genetic values for each trait.
+
+\item[\code{error\_df}] A data frame of plot errors. Must contain the columns "env", "block",
+"col", and "row" additional to the error values for each trait.
+
+\item[\code{randomise}] When TRUE, genotypes are randomly allocated to plots within blocks to simulate
+a randomized complete block design (RCBD).\\{}
+\strong{Note:} other experimental designs must be generated externally.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A data-frame containing the environment id, block id, column id, row id, genotype id,
+and the phenotypic values for each trait.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Create data frame of phenotypes through combination of the the genetic values and the
+# plot errors from the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
+
+gv_df <- df_gv_unstr
+error_df <- df_error_bivar
+
+pheno_df <- make_phenotypes(
+  gv_df,
+  error_df,
+  randomise = TRUE
+)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{plot\_effects}{Graphics for plot effects}{plot.Rul.effects}
+%
+\begin{Description}\relax
+Graphically displays plot effects (e.g., phenotypic values, genetic values, errors) onto
+a field array, where the colour gradient ranges from red (low value) to green (high value). \\{}
+This function requires a data frame generated with \LinkA{field\_trial\_error}{field.Rul.trial.Rul.error} as an
+input, or any data frame with columns named "env", "col", "row", and the effect to be displayed.
+If the data frame contains a column named "block", then block borders will distinguish the
+blocks if \code{blocks = TRUE}.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+plot_effects(df, env, effect, blocks = TRUE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{df}] A data frame containing the columns "env", "row", "col", and the effect to be plotted.
+If \code{df} contains a column named "block", then block borders will distinguish the blocks
+if \code{blocks = TRUE}. If \code{df} is a list, only the first entry will be used unless
+otherwise specified.
+
+\item[\code{env}] The name of the environment to be plotted.
+
+\item[\code{effect}] The name of the effect to be plotted.
+
+\item[\code{blocks}] When TRUE (default), blocks are distinguished with block borders.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Graphic of the field array, where the colour gradient ranges from red (low value) to
+green (high value) of the effect
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Plot the simulated error for trait 2 in environment 2 of the field trial error example data
+# frame 'df_error_bivar'.
+
+error_df <- df_error_bivar
+
+plot_effects(
+  error_df,
+  env = 2,
+  effect = "e.Trait.2"
+)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{rand\_cor\_mat}{Random correlation matrix}{rand.Rul.cor.Rul.mat}
+%
+\begin{Description}\relax
+Creates a general \code{p x p} correlation matrix with user-defined maximum and minimum
+correlations.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+rand_cor_mat(p, min_cor = -1, max_cor = 1, pos_def = FALSE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{p}] A scalar defining the dimensions of the correlation matrix.
+
+\item[\code{min\_cor}] A scalar defining the minimum correlation. By default, min\_cor = -1.
+
+\item[\code{max\_cor}] A scalar defining the maximum correlation. By default, max\_cor = 1.
+
+\item[\code{pos\_def}] When TRUE, the function \LinkA{bend}{bend} of the package 'mbend' is used with
+default arguments to bend a symmetric non-positive-definite correlation matrix to a
+positive-definite matrix. By default, pos\_def = FALSE.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A p x p correlation matrix.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8, pos_def = TRUE)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{unstr\_asr\_input}{Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Input parameters}{unstr.Rul.asr.Rul.input}
+%
+\begin{Description}\relax
+Creates a list of simulation parameters for
+\Rhref{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} to simulate
+genetic values for multiple traits in multiple environments based on an unstructured model for
+genotype-by-environment (GxE) interaction. \\{}
+By default, 'AlphaSimR' does not support complex models for GxE interaction. However, its
+functionality to simulate correlated genetic values can be utilised for this purpose by
+providing the required variance structures. \code{unstr\_asr\_input} is a wrapper function to
+construct the variance structures required to simulate GxE interaction in 'AlphaSimR' based on
+an unstructured model. This function is also used in combination with the
+wrapper function \LinkA{compsym\_asr\_output}{compsym.Rul.asr.Rul.output}.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+unstr_asr_input(
+  n_envs,
+  n_traits,
+  mean,
+  var = NULL,
+  T_var = NULL,
+  E_var = NULL,
+  cor_A = NULL,
+  E_cor_A = NULL,
+  T_cor_A = NULL,
+  mean_DD = NULL,
+  var_DD = NULL,
+  E_var_DD = NULL,
+  T_var_DD = NULL,
+  cor_DD = NULL,
+  E_cor_DD = NULL,
+  T_cor_DD = NULL,
+  rel_AA = NULL,
+  E_rel_AA = NULL,
+  T_rel_AA = NULL,
+  cor_AA = NULL,
+  E_cor_AA = NULL,
+  T_cor_AA = NULL
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{n\_envs}] Number of environments to be simulated. A minimum of two environments is required.
+
+\item[\code{n\_traits}] Number of traits to be simulated.
+
+\item[\code{mean}] A vector of mean genetic values for each trait-by-environment combination (ordered
+as environments within traits). Simulated traits can have a different mean for each
+environment. If the length of \code{mean} is equal to to \code{n\_traits}, all traits will be
+assigned the same mean for each environment.
+
+\item[\code{var}] A vector of genetic variances for each trait-by-environment combination (ordered as
+environments within traits). If the length of \code{var} is equal to \code{n\_traits}, all
+traits will be assigned the same variance in each environment. \\{}
+Alternatively, if a separable structure between traits and environments is desired,
+\code{T\_var} and \code{E\_var} can be provided. By default, \code{var = NULL}.
+
+\item[\code{T\_var}] A vector of genetic variances for each trait. Must be provided in combination with
+\code{E\_var}. \\{}
+Alternatively, \code{var} can be provided. By default, \code{T\_var = NULL}.
+
+\item[\code{E\_var}] A vector of genetic variances for each environment. Must be provided in
+combination with \code{T\_var}. \\{}
+Alternatively, \code{var} can be provided. By default, \code{E\_var = NULL}.
+
+\item[\code{cor\_A}] A matrix of additive genetic correlations between all trait-by-environment
+combinations. If not defined and \code{n\_traits > 1}, a diagonal matrix is constructed. \\{}
+Alternatively, \code{T\_cor\_A} and \code{E\_cor\_A} can be provided.
+
+\item[\code{E\_cor\_A}] A matrix of additive genetic correlations between more than one environment.
+Must be provided in combination with \code{T\_cor\_A}. \\{}
+Alternatively, \code{cor\_A} can be provided. By default, \code{E\_cor\_A = NULL}.
+
+\item[\code{T\_cor\_A}] A matrix of additive genetic correlations between more than one trait. Must be
+provided in combination with \code{E\_cor\_A}. \\{}
+Alternatively, \code{cor\_A} can be provided. By default, \code{T\_cor\_A = NULL}.
+
+\item[\code{mean\_DD}] A vector of mean dominance degrees for each trait-by-environment combination
+(ordered as environments within traits), similar to \code{mean}. If the length of
+\code{mean\_DD} is equal to \code{n\_traits}, all traits will be assigned the same mean\_DD for
+each environment. By default, \code{mean\_DD = NULL} and dominance is not simulated.
+
+\item[\code{var\_DD}] A vector of dominance degree variances for each trait-by-environment combination
+(ordered as environments within traits), similar to \code{var}. If the length of
+\code{var\_DD} is equal to to \code{n\_traits}, all traits will be assigned the same var\_DD for
+each environment.\\{}
+Alternatively, if a separable structure between traits and environments is desired,
+\code{T\_var\_DD} and \code{E\_var\_DD} can be provided. By default, \code{var\_DD = NULL}.
+
+\item[\code{E\_var\_DD}] A vector of dominance degree genetic variances for each environment, similar to
+\code{E\_var}. Must be provided in combination with \code{T\_var\_DD}. \\{}
+Alternatively, \code{var\_DD} can be provided. By default, \code{E\_var\_DD = NULL}.
+
+\item[\code{T\_var\_DD}] A vector of dominance degree variances for each trait, similar to \code{T\_var}.
+Must be provided in combination with \code{E\_var\_DD}. \\{}
+Alternatively, \code{var\_DD} can be provided. By default, \code{T\_var\_DD = NULL}.
+
+\item[\code{cor\_DD}] A matrix of dominance degree correlations between all trait-by-environment
+combinations, similar to \code{cor\_A}. If not defined and \code{n\_traits > 1}, a diagonal
+matrix is constructed. \\{}
+Alternatively, \code{T\_cor\_DD} and \code{E\_cor\_DD} can be provided. By default,
+\code{cor\_DD = NULL}.
+
+\item[\code{E\_cor\_DD}] A matrix of dominance degree correlations between more than one environment,
+similar to \code{E\_cor\_A}. Must be provided in combination with \code{T\_cor\_DD}. \\{}
+Alternatively, \code{cor\_DD} can be provided. By default, \code{E\_cor\_DD = NULL}.
+
+\item[\code{T\_cor\_DD}] A matrix of dominance degree correlations between more than one trait, similar
+to \code{T\_cor\_A}. Must be provided in combination with \code{E\_cor\_DD}. \\{}
+Alternatively, \code{cor\_DD} can be provided. By default, \code{T\_cor\_DD = NULL}.
+
+\item[\code{rel\_AA}] A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to additive genetic variance for each trait-by-environment combination (ordered as
+environments within traits), that is in a diploid organism with allele frequency 0.5. If the
+length of \code{rel\_AA} is equal to to \code{n\_traits}, all traits will be assigned the same
+rel\_AA for each environment.\\{}
+Alternatively, if a separable structure between traits and environments is desired,
+\code{T\_rel\_AA} and \code{E\_rel\_AA} can be provided. By default, \code{rel\_AA = NULL} and
+epistasis is not simulated.
+
+\item[\code{E\_rel\_AA}] A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to the additive genetic variance for each environment, that is in a diploid organism
+with allele frequency 0.5. Must be provided in combination with \code{T\_rel\_AA}. \\{}
+Alternatively, \code{rel\_AA} can be provided. By default, \code{E\_rel\_AA = NULL}.
+
+\item[\code{T\_rel\_AA}] A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to the additive genetic variance for each trait, that is in a diploid organism with
+allele frequency 0.5. Must be provided in combination with \code{E\_rel\_AA}. \\{}
+Alternatively, \code{rel\_AA} can be provided. By default, \code{T\_rel\_AA = NULL}.
+
+\item[\code{cor\_AA}] A matrix of epistatic correlations between all trait-by-environment
+combinations, similar to \code{cor\_A}. If not defined and \code{n\_traits > 1},
+a diagonal matrix is constructed. \\{}
+Alternatively, \code{T\_cor\_AA} and \code{E\_cor\_AA} can be provided. By default,
+\code{cor\_AA = NULL}.
+
+\item[\code{E\_cor\_AA}] A matrix of epistatic correlations between more than one environment, similar
+to \code{E\_cor\_A}. Must be provided in combination with \code{T\_cor\_AA}. \\{}
+Alternatively, \code{cor\_AA} can be provided. By default, \code{E\_cor\_AA = NULL}.
+
+\item[\code{T\_cor\_AA}] A matrix of epistatic correlations between more than one trait, similar to
+\code{T\_cor\_A}. Must be provided in combination with \code{E\_cor\_AA}. \\{}
+Alternatively, \code{cor\_AA} can be provided. By default, \code{T\_cor\_AA = NULL}.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+\code{unstr\_asr\_input} can handle non-separable and separable structures between traits and
+environments.
+\begin{itemize}
+
+\item{} For non-separable structures, provide (1) \code{var}, and (2) \code{cor\_A}.
+\item{} For separable structures, provide (1) \code{T\_var} \& \code{E\_var}, and (2)
+\code{T\_cor\_A} \& \code{E\_cor\_A}. \\{}
+
+\end{itemize}
+
+
+\strong{Note:} 'AlphaSimR' can simulate different biological effects (see:
+\code{\LinkA{SimParam}{SimParam}}).
+\begin{itemize}
+
+\item{} For additive traits use \code{addTraitA()}.
+\item{} For additive + dominance traits use \code{addTraitAD()}.
+\item{} For additive + epistatic traits use \code{addTraitAE()}.
+\item{} For additive + dominance + epistatic traits use \code{addTraitADE()}.
+
+\end{itemize}
+
+If non-additive effects are to be simulated, check the \code{useVarA} argument of these
+functions.
+\end{Details}
+%
+\begin{Value}
+A list containing input parameters for 'AlphaSimR', which is used to simulate
+correlated genetic effects based on an unstructured model.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+# three environments based on an unstructured model for GxE interaction.
+
+# 1. Define the genetic architecture of the simulated traits.
+# Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
+# in all 3 environments.
+mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
+mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all 3 environments for each trait.
+
+# Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2,
+# assuming a separable structure between traits and environments.
+T_var <- c(0.2, 10) # Genetic variances defined for the two traits.
+E_var <- c(0.5, 1, 1.5) # Genetic variances defined for the three environments.
+
+# Dominance degree variances for trait 1 in 3 environments and for trait 2 in 3 environments,
+# assuming a non-separable structure between traits and environments.
+var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
+
+# Additive genetic correlations between the two simulated traits.
+T_cor_A <- matrix(
+  c(
+    1.0, 0.3,
+    0.3, 1.0
+  ),
+  ncol = 2
+)
+
+# Additive genetic correlations between the three simulated environments.
+E_cor_A <- stats::cov2cor(matrix(
+  c(
+    0.5, 0.4, 0.6,
+    0.4, 1.0, 0.5,
+    0.6, 0.5, 1.5
+  ),
+  ncol = 3
+))
+
+# Dominance degree correlation between all six trait-by-environment combinations.
+cor_DD <- diag(6) # Assuming independence between traits
+
+input_asr <- unstr_asr_input(
+  n_envs = 3,
+  n_traits = 2,
+  mean = mean,
+  T_var = T_var,
+  E_var = E_var,
+  T_cor_A = T_cor_A,
+  E_cor_A = E_cor_A,
+  mean_DD = mean_DD,
+  var_DD = var_DD,
+  cor_DD = cor_DD
+)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{unstr\_asr\_output}{Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Simulated genetic values}{unstr.Rul.asr.Rul.output}
+%
+\begin{Description}\relax
+Creates a data frame of correlated genetic values for multiple traits in multiple environments
+based on an unstructured model for genotype-by-environment (GxE) interaction. This function
+requires an 'AlphaSimR' population object generated using the \LinkA{unstr\_asr\_input}{unstr.Rul.asr.Rul.input}
+function.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+unstr_asr_output(pop, n_envs, n_reps, n_traits)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{pop}] An 'AlphaSimR' population object (\code{\LinkA{Pop-class}{Pop.Rdash.class}} or
+\code{\LinkA{HybridPop-class}{HybridPop.Rdash.class}}) generated using \LinkA{unstr\_asr\_input}{unstr.Rul.asr.Rul.input}.
+
+\item[\code{n\_envs}] Number of simulated environments (same as in \LinkA{unstr\_asr\_input}{unstr.Rul.asr.Rul.input}).
+
+\item[\code{n\_reps}] A vector defining the number of complete replicates in each environment. If only
+one value is provided and \code{n\_traits > 1}, all environments will be assigned the same
+number of replicates.
+
+\item[\code{n\_traits}] Number of simulated traits (same as in \LinkA{unstr\_asr\_input}{unstr.Rul.asr.Rul.input}).
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A data frame containing the environment id, replicate number, genotype id, and the
+simulated genetic values for each trait.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+# three environments based on an unstructured model for GxE interaction.
+
+# 1. Define the genetic architecture of the simulated traits.
+# Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
+# in all 3 environments.
+mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
+mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all 3 environments for each trait.
+
+# Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2,
+# assuming a separable structure between traits and environments.
+T_var <- c(0.2, 10) # Genetic variances defined for the two traits.
+E_var <- c(0.5, 1, 1.5) # Genetic variances defined for the three environments.
+
+# Dominance degree variances for trait 1 in 3 environments and for trait 2 in 3 environments,
+# assuming a non-separable structure between traits and environments.
+var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2)
+
+# Additive genetic correlations between the two simulated traits.
+T_cor_A <- matrix(
+  c(
+    1.0, 0.3,
+    0.3, 1.0
+  ),
+  ncol = 2
+)
+
+# Additive genetic correlations between the three simulated environments.
+E_cor_A <- stats::cov2cor(matrix(
+  c(
+    0.5, 0.4, 0.6,
+    0.4, 1.0, 0.5,
+    0.6, 0.5, 1.5
+  ),
+  ncol = 3
+))
+
+# Dominance degree correlation between all six trait-by-environment combinations.
+cor_DD <- diag(6) # Assuming independence between traits
+
+input_asr <- unstr_asr_input(
+  n_envs = 3,
+  n_traits = 2,
+  mean = mean,
+  T_var = T_var,
+  E_var = E_var,
+  T_cor_A = T_cor_A,
+  E_cor_A = E_cor_A,
+  mean_DD = mean_DD,
+  var_DD = var_DD,
+  cor_DD = cor_DD
+)
+
+
+# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured model for
+# GxE interaction.
+
+library("AlphaSimR")
+FOUNDERPOP <- quickHaplo(
+  nInd = 100,
+  nChr = 6,
+  segSites = 100
+)
+
+SP <- SimParam$new(FOUNDERPOP)
+
+SP$addTraitAD(
+  nQtlPerChr = 100,
+  mean = input_asr$mean,
+  var = input_asr$var,
+  meanDD = input_asr$mean_DD,
+  varDD = input_asr$var_DD,
+  corA = input_asr$cor_A,
+  corDD = input_asr$cor_DD,
+  useVarA = TRUE
+)
+
+# By default, the value provided in 'var' represents the additive variance.
+# If useVarA=FALSE, 'var' represents the total genetic variance.
+
+pop <- newPop(FOUNDERPOP)
+
+
+# 3. Create a data frame containing the simulated genetic values for the two traits in the
+# three environments.
+
+n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
+
+gv_df <- unstr_asr_output(
+  pop = pop,
+  n_envs = 3,
+  n_reps = n_reps,
+  n_traits = 2
+)
+\end{ExampleCode}
+\end{Examples}
+\printindex{}
+\end{document}

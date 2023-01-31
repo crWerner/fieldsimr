@@ -1,4 +1,3 @@
-
 #' Simulate plot errors in plant breeding trials
 #'
 #' Creates a data frame with simulated plot errors for one or more traits in plant breeding
@@ -238,7 +237,8 @@ field_trial_error <- function(n_envs,
   if (length(prop_ext) == 1) prop_ext <- rep(prop_ext, n_envs)
   if (length(prop_ext) == n_envs) prop_ext <- rep(prop_ext, times = n_traits)
   if (length(prop_ext) != n_traits * n_envs) {
-    stop("Length of 'prop_ext' does not match the number of environments or the number of trait by environment combinations")
+    stop("Length of 'prop_ext' does not match the number of environments or the number of trait by
+         environment combinations")
   }
   if (any(prop_spatial + prop_ext > 1)) {
     stop("The sum of 'prop_spatial' and 'prop_ext' must be between 0 and 1")
@@ -329,7 +329,7 @@ field_trial_error <- function(n_envs,
 
     cols_lst <- with(plot_df, tapply(col, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
     rows_lst <- with(plot_df, tapply(row, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
-    max_lst <- mapply(function(x, y) 1:max(x,y), x = cols_lst, y = rows_lst, SIMPLIFY = FALSE)
+    max_lst <- mapply(function(x, y) 1:max(x, y), x = cols_lst, y = rows_lst, SIMPLIFY = FALSE)
 
     col_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
       x = max_lst, y = plot_length, SIMPLIFY = FALSE
@@ -362,7 +362,7 @@ field_trial_error <- function(n_envs,
 
         x <- any(unlist(lapply(zInterp_list, function(x) eigen(stats::var(x))$values < 1e-7)))
         if (y == 100) {
-          stop("Appropriate Bivariate spatial error not obtained in 100 iterations.")
+          stop("Appropriate bivariate spatial error not obtained in 100 iterations.")
         }
       }
       if (n_traits > 1) {
@@ -380,7 +380,7 @@ field_trial_error <- function(n_envs,
       for (i in 1:n_traits) {
         tmp <- mapply(
           function(v, w, x, y, z, xo, yo) {
-            c(FieldSimR::fill_matrix(t(interp::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w]))
+            c(fill_matrix(t(interp::interp(x = x, y = y, z = z[, i], xo = xo, yo = yo, linear = F, extrap = T, duplicate = "mean")$z)[1:v, 1:w]))
           },
           v = n_rows, w = n_cols, x = xInterp_list, y = yInterp_list, z = zInterp_list, xo = col_centres_lst, yo = row_centres_lst, SIMPLIFY = FALSE
         )
