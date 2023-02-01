@@ -7,7 +7,7 @@
 #' If the data frame contains a column named "block", then block borders will distinguish the
 #' blocks if \code{blocks = TRUE}.
 #'
-#' @param df A data frame containing the columns "env", "row", "col", and the effect to be plotted.
+#' @param df A data frame containing the columns "env", "col", "row", and the effect to be plotted.
 #'   If \code{df} contains a column named "block", then block borders will distinguish the blocks
 #'   if \code{blocks = TRUE}. If \code{df} is a list, only the first entry will be used unless
 #'   otherwise specified.
