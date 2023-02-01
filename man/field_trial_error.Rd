@@ -18,7 +18,7 @@ field_trial_error(
   R_cor_R = NULL,
   E_cor_R = NULL,
   spatial_model = "bivariate",
-  complexity = 12,
+  complexity = NULL,
   col_cor = NULL,
   row_cor = NULL,
   prop_spatial = 0.5,
@@ -34,23 +34,23 @@ or \code{unstr_asr_output}, where applicable).}
 \item{n_traits}{Number of traits to be simulated.}
 
 \item{n_reps}{A vector defining the number of complete replicates in each environment. If only
-one value is provided and \code{n_traits > 1}, all environments will be assigned the same
+one value is provided and \code{n_envs > 1}, all environments will be assigned the same
 number of replicates.}
 
 \item{n_cols}{A vector defining the total number of columns in each environment. If only one
-value is provided and \code{n_traits > 1}, all environments will be assigned the same number
+value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 of columns.}
 
 \item{n_rows}{A vector defining the total number of rows in each environment. If only one
-value is provided and \code{n_traits > 1}, all environments will be assigned the same number
+value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 of rows.}
 
 \item{plot_length}{A vector defining the plot length (column direction, usually longer side) in
-each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
 environments will be assigned the same plot length.}
 
 \item{plot_width}{A vector defining the plot width (row direction, usually shorter side) in
-each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
 environments will be assigned the same plot width.}
 
 \item{rep_dir}{A character string specifying the direction of replicate blocks. One of either
@@ -75,9 +75,13 @@ assigned to the column and row errors.}
 spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 (separable first-order autoregressive process).}
 
-\item{complexity}{A scalar defining the complexity of the bivariate interpolation model.
-By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
-See \link[interp]{interp} for further details.}
+\item{complexity}{A vector defining the complexity of the bivariate interpolation in each
+environment. If only one value is provided and \code{n_envs > 1}, all environments will be
+assigned the same complexity. \cr
+\strong{Note:} By default, \code{complexity = NULL}. In this case, the complexity value is
+automatically defined for each environment, based on the maximum number of rows or columns in
+each environment. This usually provides good results. To set user-specific complexity values,
+see \link[interp]{interp} for further details.}
 
 \item{col_cor}{A vector of column autocorrelations for each environment used in the AR1:AR1
 spatial error model. If only one value is provided, all environments will be assigned the

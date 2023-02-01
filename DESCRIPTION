@@ -1,5 +1,5 @@
 Package: FieldSimR
-Title: Simulation of Plot-Level Data in Plant Breeding Field Trials
+Title: Simulation of Plot Errors and Phenotypes in Plant Breeding Field Trials
 Version: 1.0.0
 Date: 2022-09-19
 Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me", 

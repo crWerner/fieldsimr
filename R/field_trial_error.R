@@ -18,19 +18,19 @@
 #'   or \code{unstr_asr_output}, where applicable).
 #' @param n_traits Number of traits to be simulated.
 #' @param n_cols A vector defining the total number of columns in each environment. If only one
-#'   value is provided and \code{n_traits > 1}, all environments will be assigned the same number
+#'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of columns.
 #' @param n_rows A vector defining the total number of rows in each environment. If only one
-#'   value is provided and \code{n_traits > 1}, all environments will be assigned the same number
+#'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of rows.
 #' @param plot_length A vector defining the plot length (column direction, usually longer side) in
-#'   each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+#'   each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
 #'   environments will be assigned the same plot length.
 #' @param plot_width A vector defining the plot width (row direction, usually shorter side) in
-#'   each environment. If only one value is provided and \code{n_traits > 1}, the plots in all
+#'   each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
 #'   environments will be assigned the same plot width.
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
-#'   one value is provided and \code{n_traits > 1}, all environments will be assigned the same
+#'   one value is provided and \code{n_envs > 1}, all environments will be assigned the same
 #'   number of replicates.
 #' @param rep_dir A character string specifying the direction of replicate blocks. One of either
 #'   "column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
@@ -48,9 +48,13 @@
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
 #'   spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 #'   (separable first-order autoregressive process).
-#' @param complexity A scalar defining the complexity of the bivariate interpolation model.
-#'   By default, \code{complexity = 12}. Note that low values may lead to convergence problems.
-#'   See \link[interp]{interp} for further details.
+#' @param complexity A vector defining the complexity of the bivariate interpolation in each
+#'   environment. If only one value is provided and \code{n_envs > 1}, all environments will be
+#'   assigned the same complexity. \cr
+#'   \strong{Note:} By default, \code{complexity = NULL}. In this case, the complexity value is
+#'   automatically defined for each environment, based on the maximum number of rows or columns in
+#'   each environment. This usually provides good results. To set user-specific complexity values,
+#'   see \link[interp]{interp} for further details.
 #' @param col_cor A vector of column autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
 #'   same column autocorrelation.
@@ -135,7 +139,7 @@ field_trial_error <- function(n_envs,
                               R_cor_R = NULL,
                               E_cor_R = NULL,
                               spatial_model = "bivariate",
-                              complexity = 12,
+                              complexity = NULL,
                               col_cor = NULL,
                               row_cor = NULL,
                               prop_spatial = 0.5,
@@ -179,11 +183,11 @@ field_trial_error <- function(n_envs,
   if (rep_dir == "column" & any((n_cols / n_reps) %% 1 != 0)) {
     stop("Number of columns not divisible by number of reps in at least one
          environment. Review your trial design!")
-  } # %% here not working here in the function
+  }
   if (rep_dir == "row" & any((n_rows / n_reps) %% 1 != 0)) {
     stop("Number of rows not divisible by number of reps in at least one
            environment. Review your trial design!")
-  } # %% here not working here in the function
+  }
 
   if (!rep_dir %in% c("column", "row")) {
     stop("'rep_dir' must be either 'column' or 'row'")
@@ -325,7 +329,7 @@ field_trial_error <- function(n_envs,
   }
 
   if (spatial_model == "bivariate") {
-   if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, max)
+    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, max)
     if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
     if (length(complexity) != n_envs) {
       stop("Length of 'complexity' does not match the number of environments")
@@ -352,17 +356,17 @@ field_trial_error <- function(n_envs,
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
       y <- y + 1
       xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
-                             w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+        w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
       )
       yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
-                             w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+        w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
       )
       x <- T
       w <- 0
       while (x | w == 100) {
         w <- w + 1
         zInterp_list <- mapply(function(w) scale(matrix(stats::rnorm((4 + w) * n_traits), ncol = n_traits)),
-                               w = complexity, SIMPLIFY = FALSE
+          w = complexity, SIMPLIFY = FALSE
         )
 
         x <- any(unlist(lapply(zInterp_list, function(x) eigen(stats::var(x))$values < 1e-7)))
@@ -501,12 +505,7 @@ field_trial_error <- function(n_envs,
   e_rand <- mapply(function(x, y, z) (x %*% sqrt(diag(1, nrow = n_traits) - y - z)), x = plot_error_lst2, y = prop_spatial, z = prop_ext, SIMPLIFY = F)
   e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext, SIMPLIFY = F)
   e_ext_r <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3r, y = prop_ext, SIMPLIFY = F)
-  # if (any(ext_dir == "column")) {
-  #   e_ext_r <- lapply(e_ext_r, function(x) 0 * x)
-  # }
-  # if (any(ext_dir == "row")) {
-  #   e_ext_c <- lapply(e_ext_c, function(x) 0 * x)
-  # }
+
   if (any(ext_dir == "both")) {
     e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5) * x)
     e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5) * x)
