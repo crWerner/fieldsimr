@@ -325,7 +325,12 @@ field_trial_error <- function(n_envs,
   }
 
   if (spatial_model == "bivariate") {
-    if (complexity <= 0) stop("'complexity' must be an integer > 0")
+   if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, max)
+    if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
+    if (length(complexity) != n_envs) {
+      stop("Length of 'complexity' does not match the number of environments")
+    }
+    if (any(complexity <= 0)) stop("'complexity' values must be integers > 0")
 
     cols_lst <- with(plot_df, tapply(col, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
     rows_lst <- with(plot_df, tapply(row, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
@@ -346,18 +351,18 @@ field_trial_error <- function(n_envs,
     y <- 0
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
       y <- y + 1
-      xInterp_list <- mapply(function(x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-        x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+      xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
+                             w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
       )
-      yInterp_list <- mapply(function(x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = complexity, min = 0, max = (x * y)))),
-        x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+      yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
+                             w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
       )
       x <- T
       w <- 0
       while (x | w == 100) {
         w <- w + 1
-        zInterp_list <- mapply(function(x) scale(matrix(stats::rnorm((4 + complexity) * n_traits), ncol = n_traits)),
-          x = n_cols, SIMPLIFY = FALSE
+        zInterp_list <- mapply(function(w) scale(matrix(stats::rnorm((4 + w) * n_traits), ncol = n_traits)),
+                               w = complexity, SIMPLIFY = FALSE
         )
 
         x <- any(unlist(lapply(zInterp_list, function(x) eigen(stats::var(x))$values < 1e-7)))
