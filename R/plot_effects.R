@@ -39,7 +39,7 @@ plot_effects <- function(df,
   colnames(df) <- toupper(colnames(df))
   effect <- toupper(effect)
   if (any(!c("ENV", "COL", "ROW") %in% colnames(df))) {
-    stop("'df' must contain columns 'env', 'row', 'col', and the effect to be plotted.")
+    stop("'df' must contain columns 'env', 'col', 'row', and the effect to be plotted.")
   }
 
   eff <- which(colnames(df) == effect)
