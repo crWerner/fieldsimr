@@ -7,11 +7,11 @@
 make_phenotypes(gv_df, error_df, randomise = FALSE)
 }
 \arguments{
-\item{gv_df}{A data frame of genetic values. Must contain the columns "env", "rep", and "id"
-additional to the genetic values for each trait.}
+\item{gv_df}{A data frame of genetic values. Must contain the columns "env", "rep", and "id",
+followed by the genetic values for each trait.}
 
 \item{error_df}{A data frame of plot errors. Must contain the columns "env", "block",
-"col", and "row" additional to the error values for each trait.}
+"col", and "row", followed by the error values for each trait.}
 
 \item{randomise}{When TRUE, genotypes are randomly allocated to plots within blocks to simulate
 a randomized complete block design (RCBD).\cr
@@ -19,17 +19,17 @@ a randomized complete block design (RCBD).\cr
 }
 \value{
 A data-frame containing the environment id, block id, column id, row id, genotype id,
-  and the phenotypic values for each trait.
+  and phenotypic values for each trait.
 }
 \description{
-Creates a data frame of simulated field trial phenotypes through combination of the genetic
-values and the plot errors generated for one or more traits with 'FieldSimR'. If the
-genetic values were obtained externally, they have to be arranged in a data frame with columns
-"env", "rep", and "id" additional to the genetic values for each trait.
+Creates a data frame of simulated field trial phenotypes for one or more traits through the
+combination of simulated plot errors with genetic values (e.g. true, simulated or predicted).
+If the genetic values were obtained externally, they have to be arranged in a data frame with
+columns "env", "rep", and "id", followed by the genetic values for each trait.
 }
 \examples{
-# Create data frame of phenotypes through combination of the the genetic values and the
-# plot errors from the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
+# Create phenotypes through combination of the the genetic values and plot errors provided in
+# the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
 
 gv_df <- df_gv_unstr
 error_df <- df_error_bivar

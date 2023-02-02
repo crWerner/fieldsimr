@@ -1,6 +1,7 @@
 # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
 # three environments based on an unstructured model for GxE interaction.
 
+set.seed(1312)
 library(FieldSimR)
 
 # 1. Define the genetic architecture of the simulated traits.
@@ -28,14 +29,14 @@ T_cor_A <- matrix(
 )
 
 # Additive genetic correlations between the three simulated environments.
-E_cor_A <- stats::cov2cor(matrix(
+E_cor_A <- matrix(
   c(
-    0.5, 0.4, 0.6,
-    0.4, 1.0, 0.5,
-    0.6, 0.5, 1.5
+    1, 0.2, 0.45,
+    0.2, 1, -0.15,
+    0.45, -0.15, 1
   ),
   ncol = 3
-))
+)
 
 # Dominance degree correlation between all six trait-by-environment combinations.
 cor_DD <- diag(6) # Assuming independence between traits
@@ -60,7 +61,7 @@ input_asr <- unstr_asr_input(
 library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(
   nInd = 100,
-  nChr = 6,
+  nChr = 7,
   segSites = 100
 )
 
@@ -99,7 +100,6 @@ df_gv_unstr <- unstr_asr_output(
 )
 
 
-
 # Simulation of plot-level errors for two traits in three environments using a bivariate
 # interpolation model for spatial variation.
 
@@ -121,37 +121,37 @@ S_cor_R <- matrix(
   ncol = 2
 )
 
+# Simulate field error using bivariate interpolation.
 df_error_bivar <- field_trial_error(
   n_envs = n_envs,
   n_traits = n_traits,
+  n_reps = n_reps,
   n_cols = n_cols,
   n_rows = n_rows,
   plot_length = plot_length,
   plot_width = plot_width,
-  n_reps = n_reps,
   rep_dir = "row",
   var_R = var_R,
   S_cor_R = S_cor_R,
   spatial_model = "bivariate",
-  prop_spatial = 0.6,
-  complexity = 14,
+  complexity = NULL,
+  prop_spatial = 0.5,
+  prop_ext = 0.2,
+  ext_dir = "row",
   return_effects = FALSE
 )
 
+# Combine genetic values and field error to obtain phenotypes.
+pheno_df <- make_phenotypes(df_gv_unstr, df_error_bivar, randomise = TRUE)
 
-
-
-str(gv_df_unstr)
-str(error_df_bivar)
-
-pheno_df <- make_phenotypes(gv_df_unstr, error_df_bivar, randomise = TRUE)
-head(pheno_df)
-
-plot_effects(pheno_df,
-  env = 2,
-  effect = "phe.Trait.2"
-)
-
+# str(df_gv_unstr)
+# str(df_error_bivar)
+# head(pheno_df)
+#
+# plot_effects(pheno_df,
+#   env = 2,
+#   effect = "phe.Trait.2"
+# )
 
 usethis::use_data(df_gv_unstr, overwrite = TRUE)
 usethis::use_data(df_error_bivar, overwrite = TRUE)

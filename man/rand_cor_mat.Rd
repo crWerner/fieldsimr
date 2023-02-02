@@ -9,9 +9,9 @@ rand_cor_mat(p, min_cor = -1, max_cor = 1, pos_def = FALSE)
 \arguments{
 \item{p}{A scalar defining the dimensions of the correlation matrix.}
 
-\item{min_cor}{A scalar defining the minimum correlation. By default, min_cor = -1.}
+\item{min_cor}{A scalar defining the minimum correlation limit. By default, min_cor = -1.}
 
-\item{max_cor}{A scalar defining the maximum correlation. By default, max_cor = 1.}
+\item{max_cor}{A scalar defining the maximum correlation limit. By default, max_cor = 1.}
 
 \item{pos_def}{When TRUE, the function \link[mbend]{bend} of the package 'mbend' is used with
 default arguments to bend a symmetric non-positive-definite correlation matrix to a
@@ -21,7 +21,7 @@ positive-definite matrix. By default, pos_def = FALSE.}
 A p x p correlation matrix.
 }
 \description{
-Creates a general \code{p x p} correlation matrix with user-defined maximum and minimum
+Creates a general \code{p x p} correlation matrix with user-defined minimum and maximum
 correlations.
 }
 \examples{

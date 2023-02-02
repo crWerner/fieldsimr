@@ -5,7 +5,7 @@
 \alias{df_error_bivar}
 \title{Field trial error example data frame}
 \format{
-A data frame with 700 rows and 5 columns:
+A data frame with 800 rows and 6 columns:
 \describe{
   \item{env}{Environment id}
   \item{block}{Block id}

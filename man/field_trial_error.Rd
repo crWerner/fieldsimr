@@ -10,8 +10,6 @@ field_trial_error(
   n_reps,
   n_cols,
   n_rows,
-  plot_length,
-  plot_width,
   rep_dir = "column",
   var_R,
   S_cor_R = NULL,
@@ -19,6 +17,8 @@ field_trial_error(
   E_cor_R = NULL,
   spatial_model = "bivariate",
   complexity = NULL,
+  plot_length,
+  plot_width,
   col_cor = NULL,
   row_cor = NULL,
   prop_spatial = 0.5,
@@ -45,14 +45,6 @@ of columns.}
 value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 of rows.}
 
-\item{plot_length}{A vector defining the plot length (column direction, usually longer side) in
-each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
-environments will be assigned the same plot length.}
-
-\item{plot_width}{A vector defining the plot width (row direction, usually shorter side) in
-each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
-environments will be assigned the same plot width.}
-
 \item{rep_dir}{A character string specifying the direction of replicate blocks. One of either
 "column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
 when \code{n_reps = 1}.}
@@ -77,19 +69,29 @@ spatial error term. One of either "Bivariate" (bivariate interpolation, the defa
 
 \item{complexity}{A vector defining the complexity of the bivariate interpolation in each
 environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-assigned the same complexity. \cr
+assigned the same complexity. Only required when \code{spatial_model = "Bivariate"}. \cr
 \strong{Note:} By default, \code{complexity = NULL}. In this case, the complexity value is
 automatically defined for each environment, based on the maximum number of rows or columns in
 each environment. This usually provides good results. To set user-specific complexity values,
 see \link[interp]{interp} for further details.}
 
+\item{plot_length}{A vector defining the plot length (column direction, usually longer side) in
+each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
+environments will be assigned the same plot length. Only required when \code{spatial_model =
+"Bivariate"}.}
+
+\item{plot_width}{A vector defining the plot width (row direction, usually shorter side) in
+each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
+environments will be assigned the same plot width. Only required when \code{spatial_model =
+"Bivariate"}.}
+
 \item{col_cor}{A vector of column autocorrelations for each environment used in the AR1:AR1
 spatial error model. If only one value is provided, all environments will be assigned the
-same column autocorrelation.}
+same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.}
 
 \item{row_cor}{A vector of row autocorrelations for each environment used in the AR1:AR1
 spatial error model. If only one value is provided, all environments will be assigned the
-same row autocorrelation.}
+same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.}
 
 \item{prop_spatial}{A vector defining the proportion of spatial error variance to total error
 variance (spatial + random + extraneous) for each trait by environment combination. If the
@@ -139,10 +141,10 @@ n_traits <- 2 # Number of simulated traits.
 
 # Field layout
 n_cols <- 10 # Total number of columns in each environment.
-n_rows <- c(20, 30, 20) # Total number of rows in each environment.
+n_rows <- c(30, 30, 20) # Total number of rows in each environment.
 plot_length <- 5 # Plot length set to 5 meters in each environment.
 plot_width <- 2 # Plot width set to 2 meters in each environment.
-n_reps <- c(2, 3, 2) # Number of complete replicates (blocks) per environment.
+n_reps <- c(3, 3, 2) # Number of complete replicates (blocks) per environment.
 
 # Error variances for traits 1 and 2.
 var_R <- c(0.4, 15)
@@ -159,17 +161,16 @@ S_cor_R <- matrix(
 error_df <- field_trial_error(
   n_envs = n_envs,
   n_traits = n_traits,
+  n_reps = n_reps,
   n_cols = n_cols,
   n_rows = n_rows,
-  plot_length = plot_length,
-  plot_width = plot_width,
-  n_reps = n_reps,
   rep_dir = "row",
   var_R = var_R,
   S_cor_R = S_cor_R,
   spatial_model = "Bivariate",
-  complexity = 14,
-  prop_spatial = 0.6,
+  plot_length = plot_length,
+  plot_width = plot_width,
+  prop_spatial = 0.5,
   prop_ext = 0.1,
   ext_dir = "row",
   return_effects = TRUE

@@ -7,31 +7,31 @@
 plot_effects(df, env, effect, blocks = TRUE)
 }
 \arguments{
-\item{df}{A data frame containing the columns "env", "col", "row", and the effect to be plotted.
-If \code{df} contains a column named "block", then block borders will distinguish the blocks
-if \code{blocks = TRUE}. If \code{df} is a list, only the first entry will be used unless
-otherwise specified.}
+\item{df}{A data frame with columns "env", "col", "row", and the effect to be plotted.
+If \code{df} contains a “block” column, the field array is split into blocks if
+\code{blocks = TRUE}. \cr
+\strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
+otherwise.}
 
-\item{env}{The name of the environment to be plotted.}
+\item{env}{The ID of the environment to be plotted.}
 
-\item{effect}{The name of the effect to be plotted.}
+\item{effect}{The effect to be plotted.}
 
-\item{blocks}{When TRUE (default), blocks are distinguished with block borders.}
+\item{blocks}{When TRUE (default), the field array is split into blocks.}
 }
 \value{
-Graphic of the field array, where the colour gradient ranges from red (low value) to
-  green (high value) of the effect
+A graphical field array, in which the colour gradient ranges from red (low value)
+to green (high value).
 }
 \description{
-Graphically displays plot effects (e.g., phenotypic values, genetic values, errors) onto
-a field array, where the colour gradient ranges from red (low value) to green (high value). \cr
-This function requires a data frame generated with \link[FieldSimR]{field_trial_error} as an
-input, or any data frame with columns named "env", "col", "row", and the effect to be displayed.
-If the data frame contains a column named "block", then block borders will distinguish the
-blocks if \code{blocks = TRUE}.
+Graphically displays plot effects (e.g., phenotypic values, genetic values, error terms) onto a
+field array, in which the colour gradient ranges from red (low value) to green (high value).
+The function requires a data frame generated with field_trial_error as an input, or any data
+frame with columns “env”, “col”, “row”, and the effect to be displayed. If the data frame
+contains a “block” column, the field array is split into blocks if \code{blocks = TRUE}.
 }
 \examples{
-# Plot the simulated error for trait 2 in environment 2 of the field trial error example data
+# Plot the simulated total error term for trait 2 in environment 2 provided in the example data
 # frame 'df_error_bivar'.
 
 error_df <- df_error_bivar

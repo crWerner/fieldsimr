@@ -4,7 +4,7 @@
 #' tested in three environments. The data frame was generated using the function
 #' \link[FieldSimR]{field_trial_error} with bivariate interpolation.
 #'
-#' @format A data frame with 700 rows and 5 columns:
+#' @format A data frame with 800 rows and 6 columns:
 #' \describe{
 #'   \item{env}{Environment id}
 #'   \item{block}{Block id}
@@ -17,13 +17,13 @@
 
 #' Genetic values example data frame
 #'
-#' An example data frame of simulated genetic values for two traits tested in three environments.
-#' The data frame was generated using the wrapper functions \link[FieldSimR]{unstr_asr_input} and
-#' \link[FieldSimR]{unstr_asr_output} to simulate correlated genetic values based on an
-#' unstructured model for genotype-by-environment (GxE) interaction with
-#' \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'}.
+#' An example data frame of simulated genetic values for 100 genotypes with two traits, tested in
+#' three environments. The data frame was generated using the wrapper functions
+#' \link[FieldSimR]{unstr_asr_input} and \link[FieldSimR]{unstr_asr_output} to simulate correlated
+#' genetic values based on an unstructured model for genotype-by-environment (GxE) interaction
+#' with \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'}.
 #'
-#' @format A data frame with 700 rows and 5 columns:
+#' @format A data frame with 800 rows and 5 columns:
 #' \describe{
 #'   \item{env}{Environment id}
 #'   \item{rep}{Replicate number}
