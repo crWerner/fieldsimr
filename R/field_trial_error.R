@@ -17,13 +17,13 @@
 #' @param n_envs Number of environments to be simulated (same as for \code{compsym_asr_input}
 #'   or \code{unstr_asr_output}, where applicable).
 #' @param n_traits Number of traits to be simulated.
-#' @param n_reps A vector defining the number of complete replicates in each environment. If only
+#' @param n_reps A vector specifying the number of complete replicates in each environment. If only
 #'   one value is provided and \code{n_envs > 1}, all environments will be assigned the same
 #'   number of replicates.
-#' @param n_cols A vector defining the total number of columns in each environment. If only one
+#' @param n_cols A vector specifying the total number of columns in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of columns.
-#' @param n_rows A vector defining the total number of rows in each environment. If only one
+#' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of rows.
 #' @param rep_dir A character string specifying the direction of replicate blocks. One of either
@@ -37,42 +37,42 @@
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param E_cor_R A matrix of extraneous error correlations between more than one trait. If not
-#'   defined and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation is
-#'   assigned to the column and row errors.
+#'   defined and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation between 
+#'   traits is used for the column and row errors (where applicable).
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
 #'   spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 #'   (separable first-order autoregressive process).
-#' @param complexity A vector defining the complexity of the bivariate interpolation in each
+#' @param complexity A vector specifying the complexity of the bivariate interpolation in each
 #'   environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-#'   assigned the same complexity. Only required when \code{spatial_model = "Bivariate"}. \cr
-#'   \strong{Note:} By default, \code{complexity = NULL}. In this case, the complexity value is
-#'   automatically defined for each environment, based on the maximum number of rows or columns in
-#'   each environment. This usually provides good results. To set user-specific complexity values,
-#'   see \link[interp]{interp} for further details.
-#' @param plot_length A vector defining the plot length (column direction, usually longer side) in
-#'   each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
-#'   environments will be assigned the same plot length. Only required when \code{spatial_model =
-#'   "Bivariate"}.
-#' @param plot_width A vector defining the plot width (row direction, usually shorter side) in
-#'   each environment. If only one value is provided and \code{n_envs > 1}, the plots in all
-#'   environments will be assigned the same plot width. Only required when \code{spatial_model =
-#'   "Bivariate"}.
+#'   assigned the same complexity. If not specified and \code{spatial_model = "Bivariate"}, the 
+#'   complexity is set to the maximum number of columns and rows for each environment.
+#'   This generally provides good results. See \link[interp]{interp} for further details.
+#' @param plot_length A vector of plot lengths (column direction, usually longer side) for
+#'   each environment. If only one value is provided and \code{n_envs > 1}, all environments will be 
+#'   assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}.
+#' @param plot_width A vector of plot widths (row direction, usually shorter side) for
+#'   each environment. If only one value is provided and \code{n_envs > 1}, all environments will be 
+#'   assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}.
 #' @param col_cor A vector of column autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
 #'   same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
 #' @param row_cor A vector of row autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
 #'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
-#' @param prop_spatial A vector defining the proportion of spatial error variance to total error
+#' @param prop_spatial A vector specifying the proportion of spatial error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
 #'   length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be assigned the same
-#'   proportion for each trait By default, the spatial error variance accounts for half of
-#'   the total error variance (\code{prop_spatial = 0.5}).
-#' @param prop_ext A vector defining the proportion of extraneous error variance to total error
+#'   proportion for each trait By default, \code{prop_spatial = 0.5}.
+#' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
+#'   error model. If only one value is provided, all environments will be assigned the same column
+#'   autocorrelation. By default, \code{ext_col_cor = 0}.
+#' @param ext_row_cor A vector of row autocorrelations for each environment used in the extraneous
+#'   error model. If only one value is provided, all environments will be assigned the same row
+#'   autocorrelation. By default, \code{ext_row_cor = 0}.
+#' @param prop_ext A vector specifying the proportion of extraneous error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
 #'   length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
-#'   same proportion for each trait By default, the extraneous error variance is zero
-#'   (\code{prop_ext = 0}).
+#'   same proportion for each trait. By default, \code{prop_ext = 0}.
 #' @param ext_dir A character string specifying the direction of extraneous variation. One of either
 #'   "column", "row" or "both". When "both", half the variance is assigned to the columns and half
 #'   is assigned to the rows.
@@ -122,6 +122,7 @@
 #'   plot_length = plot_length,
 #'   plot_width = plot_width,
 #'   prop_spatial = 0.5,
+#'   ext_row_cor = -0.6,
 #'   prop_ext = 0.1,
 #'   ext_dir = "row",
 #'   return_effects = TRUE
@@ -144,6 +145,8 @@ field_trial_error <- function(n_envs,
                               col_cor = NULL,
                               row_cor = NULL,
                               prop_spatial = 0.5,
+                              ext_col_cor = 0,
+                              ext_row_cor = 0,
                               prop_ext = 0,
                               ext_dir = NULL,
                               return_effects = FALSE) {
@@ -441,14 +444,29 @@ field_trial_error <- function(n_envs,
   n_plots <- mapply(function(x, y) x * y, x = n_cols, y = n_rows)
   plot_error_lst3c <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
   if (any(ext_dir %in% c("column", "both"))) {
-    plot_error_lst3c <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-      x = n_cols * n_traits, SIMPLIFY = FALSE
+
+    if (is.null(ext_col_cor)) ext_col_cor <- 0
+    if (length(ext_col_cor) == 1) ext_col_cor <- rep(ext_col_cor, n_envs)
+    if (length(ext_col_cor) != n_envs) {
+      stop("Length of vector 'ext_col_cor' does not match total number of environments")
+    }
+    if (any(ext_col_cor < -1) | any(ext_col_cor > 1)) {
+      stop("'ext_col_cor' must contain values between -1 and 1'")
+    }
+    if(any(abs(ext_col_cor) == 1)) {ext_col_cor[abs(ext_col_cor) == 1] <- sign(ext_col_cor[abs(ext_col_cor) == 1])*(1-1e-7)}
+
+    power_lst <- lapply(n_cols, function(x) abs(outer(1:x, 1:x, "-")))
+    ext_col_ar1 <- mapply(function(x, y) x^y, x = ext_col_cor, y = power_lst, SIMPLIFY = FALSE)
+    ext_col_cor_mat_lst <- mapply(function(x) t(chol(x)), x = ext_col_ar1, SIMPLIFY = FALSE)
+
+    plot_error_lst3c <- mapply(function(x,y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                               x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
     )
     x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_cols > n_traits) | y == 100 & all(n_cols > n_traits)) {
-      plot_error_lst3c <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-        x = n_cols * n_traits, SIMPLIFY = FALSE
+      plot_error_lst3c <- mapply(function(x,y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                                 x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
@@ -458,12 +476,12 @@ field_trial_error <- function(n_envs,
     }
     if (n_traits > 1 & all(n_cols > n_traits)) {
       plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
-        x = plot_error_lst3c, SIMPLIFY = FALSE
+                                 x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1 | any(n_cols <= n_traits)) {
       plot_error_lst3c <- mapply(function(x) scale(x),
-        x = plot_error_lst3c, SIMPLIFY = FALSE
+                                 x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     Zc <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ col - 1, droplevels(plot_df[plot_df$env == i, ])))
@@ -472,14 +490,29 @@ field_trial_error <- function(n_envs,
 
   plot_error_lst3r <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
   if (any(ext_dir %in% c("row", "both"))) {
-    plot_error_lst3r <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-      x = n_rows * n_traits, SIMPLIFY = FALSE
+
+    if (is.null(ext_row_cor)) ext_row_cor <- 0
+    if (length(ext_row_cor) == 1) ext_row_cor <- rep(ext_row_cor, n_envs)
+    if (length(ext_row_cor) != n_envs) {
+      stop("Length of vector 'ext_row_cor' does not match total number of environments")
+    }
+    if (any(ext_row_cor < -1) | any(ext_row_cor > 1)) {
+      stop("'ext_row_cor' must contain values between -1 and 1'")
+    }
+    if(any(abs(ext_row_cor) == 1)) {ext_row_cor[abs(ext_row_cor) == 1] <- sign(ext_row_cor[abs(ext_row_cor) == 1])*(1-1e-7)}
+
+    power_lst <- lapply(n_rows, function(x) abs(outer(1:x, 1:x, "-")))
+    ext_row_ar1 <- mapply(function(x, y) x^y, x = ext_row_cor, y = power_lst, SIMPLIFY = FALSE)
+    ext_row_cor_mat_lst <- mapply(function(x) t(chol(x)), x = ext_row_ar1, SIMPLIFY = FALSE)
+
+    plot_error_lst3r <- mapply(function(x,y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                               x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
     )
     x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_rows > n_traits) | y == 100 & all(n_rows > n_traits)) {
-      plot_error_lst3r <- mapply(function(x) (matrix(c(stats::rnorm(x)), ncol = n_traits)),
-        x = n_rows * n_traits, SIMPLIFY = FALSE
+      plot_error_lst3r <- mapply(function(x,y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                                 x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
@@ -489,12 +522,12 @@ field_trial_error <- function(n_envs,
     }
     if (n_traits > 1 & all(n_rows > n_traits)) {
       plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
-        x = plot_error_lst3r, SIMPLIFY = FALSE
+                                 x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1 | any(n_rows <= n_traits)) {
       plot_error_lst3r <- mapply(function(x) scale(x),
-        x = plot_error_lst3r, SIMPLIFY = FALSE
+                                 x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     Zr <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ row - 1, droplevels(plot_df[plot_df$env == i, ])))
