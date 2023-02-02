@@ -65,13 +65,13 @@
 #'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
 #' @param prop_spatial A vector defining the proportion of spatial error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
-#'   length of \code{prop_spatial} is equal to \code{n_envs}, all traits will be assigned the same
-#'   proportion for each environment. By default, the spatial error variance accounts for half of
+#'   length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be assigned the same
+#'   proportion for each trait By default, the spatial error variance accounts for half of
 #'   the total error variance (\code{prop_spatial = 0.5}).
 #' @param prop_ext A vector defining the proportion of extraneous error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
-#'   length of \code{prop_ext} is equal to \code{n_envs}, all traits will be assigned the same
-#'   same proportion for each environment. By default, the extraneous error variance is zero
+#'   length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
+#'   same proportion for each trait By default, the extraneous error variance is zero
 #'   (\code{prop_ext = 0}).
 #' @param ext_dir A character string specifying the direction of extraneous variation. One of either
 #'   "column", "row" or "both". When "both", half the variance is assigned to the columns and half
@@ -231,8 +231,8 @@ field_trial_error <- function(n_envs,
   if (any(prop_spatial < 0) | any(prop_spatial > 1)) {
     stop("'prop_spatial' must contain values between 0 and 1")
   }
-  if (length(prop_spatial) == 1) prop_spatial <- rep(prop_spatial, n_envs)
-  if (length(prop_spatial) == n_envs) prop_spatial <- rep(prop_spatial, times = n_traits)
+  if (length(prop_spatial) == 1) prop_spatial <- rep(prop_spatial, n_traits)
+  if (length(prop_spatial) == n_traits) prop_spatial <- rep(prop_spatial, each = n_envs)
   if (length(prop_spatial) != n_traits * n_envs) {
     stop("Length of 'prop_spatial' does not match the number of environments or the number of trait by environment combinations")
   }
@@ -241,8 +241,8 @@ field_trial_error <- function(n_envs,
   if (any(prop_ext < 0) | any(prop_ext > 1)) {
     stop("'prop_ext' must contain values between 0 and 1")
   }
-  if (length(prop_ext) == 1) prop_ext <- rep(prop_ext, n_envs)
-  if (length(prop_ext) == n_envs) prop_ext <- rep(prop_ext, times = n_traits)
+  if (length(prop_ext) == 1) prop_ext <- rep(prop_ext, n_traits)
+  if (length(prop_ext) == n_traits) prop_ext <- rep(prop_ext, each = n_envs)
   if (length(prop_ext) != n_traits * n_envs) {
     stop("Length of 'prop_ext' does not match the number of environments or the number of trait by
          environment combinations")
