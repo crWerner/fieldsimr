@@ -121,9 +121,9 @@
 #'   spatial_model = "Bivariate",
 #'   plot_length = plot_length,
 #'   plot_width = plot_width,
-#'   prop_spatial = 0.5,
+#'   prop_spatial = 0.4,
 #'   ext_row_cor = -0.6,
-#'   prop_ext = 0.1,
+#'   prop_ext = 0.2,
 #'   ext_dir = "row",
 #'   return_effects = TRUE
 #' )
