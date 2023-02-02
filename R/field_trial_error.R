@@ -236,6 +236,8 @@ field_trial_error <- function(n_envs,
   if (length(prop_spatial) != n_traits * n_envs) {
     stop("Length of 'prop_spatial' does not match the number of environments or the number of trait by environment combinations")
   }
+  
+  if(is.null(ext_dir) | prop_ext == 0 ){ext_dir <- "both"}
   if (any(prop_ext < 0) | any(prop_ext > 1)) {
     stop("'prop_ext' must contain values between 0 and 1")
   }
