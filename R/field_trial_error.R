@@ -330,7 +330,7 @@ field_trial_error <- function(n_envs,
       )
     }
     if (n_traits == 1) {
-      plot_error_lst1 <- mapply(function(x) scale(x %*% chol(S_cor_R)),
+      plot_error_lst1 <- mapply(function(x) scale(x),
         x = plot_error_lst1, SIMPLIFY = FALSE
       )
     }
@@ -389,7 +389,7 @@ field_trial_error <- function(n_envs,
       }
 
       if (n_traits == 1) {
-        zInterp_list <- mapply(function(x) scale(x %*% chol(S_cor_R)),
+        zInterp_list <- mapply(function(x) scale(x),
           x = zInterp_list, SIMPLIFY = FALSE
         )
       }
@@ -433,7 +433,7 @@ field_trial_error <- function(n_envs,
     )
   }
   if (n_traits == 1) {
-    plot_error_lst2 <- mapply(function(x) scale(x %*% chol(R_cor_R)),
+    plot_error_lst2 <- mapply(function(x) scale(x),
       x = plot_error_lst2, SIMPLIFY = FALSE
     )
   }
@@ -462,7 +462,7 @@ field_trial_error <- function(n_envs,
       )
     }
     if (n_traits == 1 | any(n_cols <= n_traits)) {
-      plot_error_lst3c <- mapply(function(x) scale(x %*% chol(E_cor_R)),
+      plot_error_lst3c <- mapply(function(x) scale(x),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
@@ -493,7 +493,7 @@ field_trial_error <- function(n_envs,
       )
     }
     if (n_traits == 1 | any(n_rows <= n_traits)) {
-      plot_error_lst3r <- mapply(function(x) scale(x %*% chol(E_cor_R)),
+      plot_error_lst3r <- mapply(function(x) scale(x),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
