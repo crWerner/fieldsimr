@@ -286,18 +286,23 @@ field_trial_error <- function(n_envs,
   rownames(plot_df) <- NULL
 
   if (spatial_model == "ar1:ar1") {
-    if (any(col_cor < 0) | any(col_cor > 1)) {
-      stop("'col_cor' must contain values between 0 and 1'")
-    }
-    if (length(col_cor) == 1) col_cor <- rep(col_cor, n_envs)
+        if (length(col_cor) == 1) col_cor <- rep(col_cor, n_envs)
     if (length(col_cor) != n_envs) {
       stop("Length of vector 'col_cor' does not match total number of environments")
     }
-    if (any(row_cor < 0) | any(row_cor > 1)) stop("row_cor must be between 0 and 1")
+    if (any(col_cor < -1) | any(col_cor > 1)) {
+      stop("'col_cor' must contain values between -1 and 1'")
+    }
+    if(any(abs(col_cor) == 1)) {col_cor[abs(col_cor) == 1] <- sign(col_cor[abs(col_cor) == 1])*(1-1e-7)}
+
     if (length(row_cor) == 1) row_cor <- rep(row_cor, n_envs)
     if (length(row_cor) != n_envs) {
       stop("Length of vector 'row_cor' does not match total number of environments")
     }
+    if (any(row_cor < -1) | any(row_cor > 1)) {
+      stop("row_cor must be between -1 and 1")
+    }
+    if(any(abs(row_cor) == 1)) {row_cor[abs(row_cor) == 1] <- sign(row_cor[abs(row_cor) == 1])*(1-1e-7)}
 
     power_lst <- lapply(n_cols, function(x) abs(outer(1:x, 1:x, "-")))
     col_ar1 <- mapply(function(x, y) x^y, x = col_cor, y = power_lst, SIMPLIFY = FALSE)
