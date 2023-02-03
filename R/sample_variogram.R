@@ -15,17 +15,17 @@
 #' @examples
 #' # Plot the sample variogram for the spatial error component in the data frame error_df.
 #'
-#' sample.vario(
+#' sample_variogram(
 #'   error_df,
 #'   effect = "e_spat",
 #'   plot = TRUE,
 #' )
 #' @export
 #'
-sample.vario <- function(df,
-                         effect,
-                         plot = TRUE,
-                         min.np = 30){
+sample_variogram <- function(df,
+                             effect,
+                             plot = TRUE,
+                             min.np = 30){
 
   colnames(df) <- tolower(colnames(df))
   if (any(!c("col", "row") %in% colnames(df))) {
