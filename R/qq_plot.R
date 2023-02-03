@@ -24,10 +24,10 @@
 #'
 #'
 
-sample.qq <- function(df,
-                      effect,
-                      labels = TRUE,
-                      plot = TRUE){
+qq_plot <- function(df,
+                    effect,
+                    labels = TRUE,
+                    plot = TRUE){
 
   require(ggplot2)
   if(!labels){qq.df <- data.frame(resid = df[[effect]])
