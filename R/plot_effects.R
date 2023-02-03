@@ -134,3 +134,266 @@ plot_effects <- function(df,
   }
   return(p)
 }
+
+#' Construct a qqplot
+#'
+#' @param df A data frame containing the columns "col", "row", and the effect to be plotted.
+#' @param effect The name of the effect to be plotted.
+#' @param labels When TRUE (default), the column and row labels are inserted onto the qqplot.
+#'   Otherwise, data points without labels are plotted. In this case, the data frame does not require
+#'   the columns "col" and "row", just the effect to be plotted.
+#' @param plot When TRUE (default), the qqplot is displayed graphically.
+#'   Otherwise, a data frame is returned.
+#'
+#' @return Graphic of the qqplot, where the x- and y- axes display the theoretical and
+#'   sample quantiles. When \code{plot = FALSE}, a data frame is returned with the column and row displacements
+#'   as well as the estimated semi-variances.
+#'
+#' @examples
+#' # Plot the qqplot for the spatial error component in the data frame error_df.
+#'
+#' qq_plot(
+#'   error_df,
+#'   effect = "e_spat",
+#'   labels = TRUE,
+#'   plot = TRUE,
+#' )
+#' @export
+#'
+#'
+
+qq_plot <- function(df,
+                    effect,
+                    labels = TRUE,
+                    plot = TRUE) {
+  require(ggplot2)
+  if (!labels) {
+    qq.df <- data.frame(resid = df[[effect]])
+    p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = resid)) +
+      ggplot2::stat_qq()
+    qq.df <- data.frame(
+      sample = ggplot2::ggplot_build(p1)$data[[1]]$sample,
+      theoretical = ggplot2::ggplot_build(p1)$data[[1]]$theoretical
+    )
+    if (!plot) {
+      print(qq.df)
+    }
+    if (plot) {
+      p1 <- ggplot2::ggplot(data = qq.df, ggplot2::aes(x = theoretical, y = sample)) +
+        ggplot2::stat_qq_line(data = qq.df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
+        ggplot2::geom_point(size = 2) +
+        ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
+        ggplot2::theme(
+          title = ggplot2::element_text(size = 10),
+          axis.title.x = ggplot2::element_text(size = 12),
+          axis.text.x = ggplot2::element_text(size = 9),
+          axis.title.y = ggplot2::element_text(size = 12),
+          axis.text.y = ggplot2::element_text(size = 9)
+        )
+      print(p1)
+    }
+  }
+
+  if (labels) {
+    colnames(df) <- tolower(colnames(df))
+    if (any(!c("col", "row") %in% colnames(df))) {
+      stop("'df' must contain columns 'col' and 'row' in order to plot labels")
+    }
+    qq.df <- data.frame(
+      col = df[["col"]],
+      row = df[["row"]],
+      resid = df[[effect]]
+    )
+    qq.df$col <- factor(as.numeric(trimws(qq.df$col)))
+    qq.df$row <- factor(as.numeric(trimws(qq.df$row)))
+    p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = resid)) +
+      ggplot2::stat_qq()
+    qq.df <- data.frame(
+      col = qq.df$col[order(qq.df$resid)],
+      row = qq.df$row[order(qq.df$resid)],
+      sample = ggplot2::ggplot_build(p1)$data[[1]]$sample,
+      theoretical = ggplot2::ggplot_build(p1)$data[[1]]$theoretical
+    )
+    qq.df <- qq.df[order(qq.df$col, qq.df$row), ]
+    rownames(qq.df) <- NULL
+    if (!plot) {
+      print(qq.df)
+    }
+    if (plot) {
+      qq.df$name <- paste0(qq.df$col, ":", qq.df$row)
+      p1 <- ggplot2::ggplot(data = qq.df, ggplot2::aes(x = theoretical, y = sample, label = name)) +
+        ggplot2::stat_qq_line(data = qq.df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
+        ggplot2::geom_text(size = 4) +
+        ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
+        ggplot2::ggtitle(label = "Residuals indexed as Col:Row") +
+        ggplot2::theme(
+          title = ggplot2::element_text(size = 10),
+          axis.title.x = ggplot2::element_text(size = 12),
+          axis.text.x = ggplot2::element_text(size = 9),
+          axis.title.y = ggplot2::element_text(size = 12),
+          axis.text.y = ggplot2::element_text(size = 9)
+        )
+      print(p1)
+    }
+  }
+}
+
+#' Construct a sample variogram
+#'
+#' @param df A data frame containing the columns "col", "row", and the effect to be plotted.
+#' @param effect The name of the effect to be plotted.
+#' @param plot When TRUE (default), the sample variogram is displayed graphically.
+#'   Otherwise, a data frame is returned.
+#' @param min.np The minimum number of pairs that semi-variances will be displayed for.
+#'   By default, \code{min.np = 30}.
+#'
+#' @return Graphic of the sample variogram, where the x- and y- axes display the row and
+#'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
+#'   When \code{plot = FALSE}, a data frame is returned with the column and row displacements
+#'   as well as the estimated semi-variances.
+#'
+#' @examples
+#' # Plot the sample variogram for the spatial error component in the data frame error_df.
+#'
+#' sample_variogram(
+#'   error_df,
+#'   effect = "e_spat",
+#'   plot = TRUE,
+#' )
+#' @export
+#'
+sample_variogram <- function(df,
+                             effect,
+                             plot = TRUE,
+                             min.np = 30) {
+  colnames(df) <- tolower(colnames(df))
+  if (any(!c("col", "row") %in% colnames(df))) {
+    stop("'df' must contain columns 'col' and 'row', and the effect to be plotted.")
+  }
+
+  sample.df <- data.frame(
+    col = df[["col"]],
+    row = df[["row"]],
+    effect = df[[effect]]
+  )
+  sample.df <- sample.df[order(sample.df$col, sample.df$row), ]
+
+  col.dis <- abs(outer(as.numeric(trimws(sample.df$col)), as.numeric(trimws(sample.df$col)), FUN = "-"))
+  row.dis <- abs(outer(as.numeric(trimws(sample.df$row)), as.numeric(trimws(sample.df$row)), FUN = "-"))
+  var.mat <- outer(sample.df$effect, sample.df$effect, FUN = "-")^2 / 2
+  sample.df <- data.frame(
+    col.dis = col.dis[upper.tri(col.dis, diag = T)],
+    row.dis = row.dis[upper.tri(row.dis, diag = T)],
+    semi.var = var.mat[upper.tri(var.mat, diag = T)]
+  )
+  sample.df <- sample.df[order(sample.df$col.dis, sample.df$row.dis), ]
+
+  sample.df <- data.frame(
+    col.dis = rep(unique(sample.df$col.dis), each = length(unique(sample.df$row.dis))),
+    row.dis = unique(sample.df$row.dis),
+    semi.var = c(with(sample.df, tapply(semi.var, list(row.dis, col.dis), function(x) mean(x, na.rm = T)))),
+    np = c(with(sample.df, tapply(semi.var, list(row.dis, col.dis), function(x) length(x[!is.na(x)]))))
+  )
+
+  if (!plot) {
+    sample.df$col.dis <- factor(sample.df$col.dis)
+    sample.df$row.dis <- factor(sample.df$row.dis)
+    print(sample.df)
+  }
+
+  if (plot) {
+    require(lattice)
+    lattice::lattice.options(
+      layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
+      layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
+    )
+    graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
+    p1 <- lattice::wireframe(semi.var ~ row.dis * col.dis,
+      data = sample.df[sample.df$np >= min.np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+      screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
+      scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
+      zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+      xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
+      ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
+      par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
+    )
+    print(p1)
+  }
+}
+
+#' Construct a theoretical variogram
+#'
+#' @param n_cols The total number of columns.
+#' @param n_rows The total number of rows.
+#' @param var_R The total error variance. By default, \code{var_R = 1}.
+#' @param prop_spatial The proportion of spatial error variance to total error
+#'   variance (spatial + random). By default, \code{prop_spatial = 0.5}.
+#' @param col_cor The column autocorrelation value.
+#' @param row_cor The row autocorrelation value.
+#' @param plot When TRUE (default), the theoretical variogram is displayed graphically.
+#'   Otherwise, a data frame is returned.
+#'
+#' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
+#'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
+#'   When \code{plot = FALSE}, a data frame is returned with the column and row displacements
+#'   as well as the theoretical semi-variances.
+#'
+#' @examples
+#' # Plot a theoretical variogram for a field with 10 columns and 20 rows,
+#' # using column and row autocorrelations of 0.4 and 0.8.
+#'
+#' theoretical_variogram(
+#'   n_cols = 10,
+#'   n_rows = 20,
+#'   var_R = 1,
+#'   prop_spatial = 0.5,
+#'   col_cor = 0.4,
+#'   row_cor = 0.8,
+#'   plot = TRUE
+#' )
+#' @export
+#'
+theoretical_variogram <- function(n_cols,
+                                  n_rows,
+                                  var_R = 1,
+                                  prop_spatial = 0.5,
+                                  col_cor,
+                                  row_cor,
+                                  plot = TRUE) {
+  prop_rand <- 1 - prop_spatial
+  col.displacement <- rep(0:(n_cols - 1), each = n_rows)
+  row.displacement <- rep(0:(n_rows - 1), times = n_cols)
+  theoretical.df <- data.frame(
+    col.dis = col.displacement,
+    row.dis = row.displacement,
+    semi.var = var_R * (prop_rand + prop_spatial * (1 - col_cor^(col.displacement) * row_cor^(row.displacement)))
+  )
+  theoretical.df$semi.var[1] <- 0
+  theoretical.df$col.dis <- as.numeric(trimws(theoretical.df$col.dis))
+  theoretical.df$row.dis <- as.numeric(trimws(theoretical.df$row.dis))
+
+  if (!plot) {
+    theoretical.df$col.dis <- factor(theoretical.df$col.dis)
+    theoretical.df$row.dis <- factor(theoretical.df$row.dis)
+    print(theoretical.df)
+  }
+
+  if (plot) {
+    require(lattice)
+    lattice::lattice.options(
+      layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
+      layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
+    )
+    graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
+    p1 <- lattice::wireframe(semi.var ~ row.dis * col.dis,
+      data = theoretical.df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+      screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
+      scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
+      zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+      xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
+      ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
+      par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
+    )
+    print(p1)
+  }
+}
