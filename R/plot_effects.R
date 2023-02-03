@@ -42,54 +42,95 @@ plot_effects <- function(df,
     stop("'df' must contain columns 'env', 'col', 'row', and the effect to be plotted.")
   }
 
-  eff <- which(colnames(df) == effect)
   df <- df[df[["ENV"]] == env, ]
+  colnames(df)[colnames(df) %in% effect] <- "EFF"
+
   n_rows <- length(unique(df$ROW))
   n_cols <- length(unique(df$COL))
+  n_blocks <- length(unique(df$BLOCK))
 
-  plot_mat <- matrix(numeric(), nrow = n_rows, ncol = n_cols)
-
-  for (i in 1:nrow(df)) {
-    r <- df$ROW[i]
-    c <- df$COL[i]
-    plot_mat[r, c] <- df[i, eff]
-  }
-
-  if (length(unique(df$BLOCK)) > 1) {
+  if (n_blocks > 1) {
     df1 <- df[df[["BLOCK"]] == 1, ]
     df2 <- df[df[["BLOCK"]] == 2, ]
 
-    if (any(unique(df1$ROW) == unique(df2$ROW)) == FALSE) {
-      nx <- 0
-      ny <- length(unique(df$BLOCK))
-    } else if (any(unique(df1$COL) == unique(df2$COL)) == FALSE) {
-      nx <- length(unique(df$BLOCK))
-      ny <- 0
+    if (any(unique(df[df[["BLOCK"]] == 1, ]$ROW) == unique(df[df[["BLOCK"]] == 2, ]$ROW)) == FALSE) {
+      dist <- (n_rows / n_blocks)
+      x_min <- rep(0.5, n_blocks)
+      y_min <- (seq(0, n_rows, dist) + 0.5)[1:n_blocks]
+      x_max <- rep((n_cols + 0.5), n_blocks)
+      y_max <- (seq(0, n_rows, dist) + 0.5)[2:(n_blocks + 1)]
+
+      block_x_min <- rep(0.5, n_blocks)
+      block_y_min <- y_max
+      block_x_max <- rep((n_cols + 0.5), n_blocks)
+      block_y_max <- y_max
+
+      block_x_min_2 <- rep(0, n_blocks)
+      block_y_min_2 <- y_max
+      block_x_max_2 <- rep((n_cols + 1), n_blocks)
+      block_y_max_2 <- y_max
+    } else if (any(unique(df[df[["BLOCK"]] == 1, ]$COL) == unique(df[df[["BLOCK"]] == 2, ]$COL)) == FALSE) {
+      dist <- (n_cols / n_blocks)
+      x_min <- (seq(0, n_cols, dist) + 0.5)[1:n_blocks]
+      y_min <- rep(0.5, n_blocks)
+      x_max <- (seq(0, n_cols, dist) + 0.5)[2:(n_blocks + 1)]
+      y_max <- rep((n_rows + 0.5), n_blocks)
+
+      block_x_min <- x_max
+      block_y_min <- rep(0.5, n_blocks)
+      block_x_max <- x_max
+      block_y_max <- rep((n_rows + 0.5), n_blocks)
+
+      block_x_min_2 <- x_max
+      block_y_min_2 <- rep(0, n_blocks)
+      block_x_max_2 <- x_max
+      block_y_max_2 <- rep((n_rows + 1), n_blocks)
     } else {
       stop("Check row and column assignment within blocks")
     }
   }
 
-  x_labs <- seq(2, ncol(plot_mat), 2)
-  x_ticks <- (seq(2, ncol(plot_mat), 2) - 0.5)
+  COL <- ROW <- EFF <- NULL
 
-  y_labs <- seq(2, nrow(plot_mat), 2)
-  y_ticks <- (seq(2, nrow(plot_mat), 2) - 0.5)
-
-  fields::image.plot(
-    x = 0:n_cols[1], y = 0:n_rows[1],
-    z = t(plot_mat), zlim = range(plot_mat),
-    ylim = rev(range(0:n_rows[1])),
-    col = grDevices::hcl.colors(n = 10000, "RdYlGn"),
-    xlab = "Column", ylab = "Row", axes = FALSE
-  )
-
-  graphics::box()
-  graphics::axis(1, at = x_ticks, labels = x_labs)
-  graphics::axis(2, at = y_ticks, labels = y_labs)
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = COL, y = ROW)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = EFF)) +
+    ggplot2::scale_fill_gradient2(low = "#A51122", mid = "#FEFDBE", high = "#006228") +
+    ggplot2::xlab("Columns") +
+    ggplot2::ylab("Rows") +
+    ggplot2::theme_grey(base_size = 10) +
+    ggplot2::ggtitle(effect) +
+    ggplot2::theme(
+      axis.ticks = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank(),
+      axis.title = ggplot2::element_text(size = 12),
+      legend.title = ggplot2::element_blank(),
+      panel.background = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(size = 12, colour = "gray40")
+    ) +
+    ggplot2::annotate(
+      geom = "rect", xmin = 0.5, ymin = 0.5,
+      xmax = n_cols + 0.5, ymax = n_rows + 0.5,
+      fill = "transparent", col = "black", lwd = 0.5
+    )
 
   if (blocks == TRUE & length(unique(df$BLOCK)) > 1) {
-    graphics::grid(nx = nx, ny = ny, lty = 1, col = "#000000", lwd = 5)
-    graphics::grid(nx = nx, ny = ny, lty = 1, col = "#FFFFFF", lwd = 3)
+    for (i in 1:(n_blocks - 1)) {
+      p <- p + ggplot2::geom_segment(
+        x = block_x_min[i],
+        y = block_y_min[i],
+        xend = block_x_max[i],
+        yend = block_y_max[i],
+        size = 1.5
+      ) +
+        ggplot2::geom_segment(
+          x = block_x_min_2[i],
+          y = block_y_min_2[i],
+          xend = block_x_max_2[i],
+          yend = block_y_max_2[i],
+          size = 1,
+          col = "white"
+        )
+    }
   }
+  return(p)
 }
