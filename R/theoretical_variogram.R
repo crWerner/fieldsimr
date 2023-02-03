@@ -19,7 +19,7 @@
 #' # Plot a theoretical variogram for a field with 10 columns and 20 rows,
 #' # using column and row autocorrelations of 0.4 and 0.8.
 #'
-#' theoretical.vario(
+#' theoretical_variogram(
 #'   n_cols = 10,
 #'   n_rows = 20,
 #'   var_R = 1,
@@ -30,13 +30,13 @@
 #' )
 #' @export
 #'
-theoretical.vario <- function(n_cols,
-                              n_rows,
-                              var_R = 1,
-                              prop_spatial = 0.5,
-                              col_cor,
-                              row_cor,
-                              plot = TRUE){
+theoretical_variogram <- function(n_cols,
+                                  n_rows,
+                                  var_R = 1,
+                                  prop_spatial = 0.5,
+                                  col_cor,
+                                  row_cor,
+                                  plot = TRUE){
 
 prop_rand <- 1 - prop_spatial
 col.displacement <- rep(0:(n_cols-1), each = n_rows)
