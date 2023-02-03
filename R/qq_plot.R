@@ -2,8 +2,9 @@
 #'
 #' @param df A data frame containing the columns "col", "row", and the effect to be plotted.
 #' @param effect The name of the effect to be plotted.
-#' @param plot When TRUE (default), the qqplot is displayed graphically.
-#'   Otherwise, a data frame is returned.
+#' @param labels When TRUE (default), the column and row labels are inserted onto the qqplot.
+#'   Otherwise, datapoints without labels are plotted. In this case, the data frame does not require
+#'   the columns "col" and "row", just the effect to be plotted.
 #' @param plot When TRUE (default), the qqplot is displayed graphically.
 #'   Otherwise, a data frame is returned.
 #'
@@ -14,7 +15,7 @@
 #' @examples
 #' # Plot the qqplot for the spatial error component in the data frame error_df.
 #'
-#' sample.qq(
+#' qq_plot(
 #'   error_df,
 #'   effect = "e_spat",
 #'   labels = TRUE,
