@@ -79,9 +79,9 @@
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial, random and extraneous errors. By default, return_effects = FALSE.
 #'
-#' @return A data frame containing the environment, block, column and row identifiers, as well as the
+#' @return A data frame with columns "env", "block", "col" and "row", as well as the
 #'   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
-#'   additional entries for each trait containing the spatial and random error values.
+#'   additional columns for each trait providing the spatial, random and extraneous errors.
 #'
 #' @examples
 #' # Simulation of plot errors for two traits in three environments using a bivariate
