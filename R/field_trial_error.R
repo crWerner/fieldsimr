@@ -68,7 +68,7 @@
 #'   length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
 #'   same proportion for each trait. By default, \code{prop_ext = 0}.
 #' @param ext_dir A character string specifying the direction of extraneous variation. One of either
-#'   "column", "row" or "both". When "both", half the variance is assigned to the columns and half
+#'   "column", "row" or "both". When "both" (the default), half the variance is assigned to the columns and half
 #'   is assigned to the rows.
 #' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided, all environments will be assigned the same column
@@ -243,19 +243,25 @@ field_trial_error <- function(n_envs,
   if (length(prop_spatial) == 1) prop_spatial <- rep(prop_spatial, n_traits)
   if (length(prop_spatial) == n_traits) prop_spatial <- rep(prop_spatial, each = n_envs)
   if (length(prop_spatial) != n_traits * n_envs) {
-    stop("Length of 'prop_spatial' does not match the number of environments or the number of trait by environment combinations")
+    stop("Length of 'prop_spatial' does not match the number of traits or the number of trait by environment combinations")
   }
 
-  # if (is.null(ext_dir) | prop_ext == 0) {
-  #   ext_dir <- "both"
-  # }
+  if (is.null(ext_dir)){ext_dir <- "both"}
+  if (length(ext_dir) == 1) ext_dir <- rep(ext_dir, n_traits)
+  if (length(ext_dir) == n_traits) ext_dir <- rep(ext_dir, each = n_envs)
+  if (length(ext_dir) != n_traits * n_envs) {
+    stop("Length of 'ext_dir' does not match the number of traits or the number of trait by
+         environment combinations")
+  }
+  
+  if (is.null(prop_ext)){prop_ext <- 0}
   if (any(prop_ext < 0) | any(prop_ext > 1)) {
     stop("'prop_ext' must contain values between 0 and 1")
   }
   if (length(prop_ext) == 1) prop_ext <- rep(prop_ext, n_traits)
   if (length(prop_ext) == n_traits) prop_ext <- rep(prop_ext, each = n_envs)
   if (length(prop_ext) != n_traits * n_envs) {
-    stop("Length of 'prop_ext' does not match the number of environments or the number of trait by
+    stop("Length of 'prop_ext' does not match the number of traits or the number of trait by
          environment combinations")
   }
   if (any(prop_spatial + prop_ext > 1)) {
