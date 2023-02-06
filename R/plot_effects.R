@@ -168,18 +168,19 @@ qq_plot <- function(df,
                     plot = TRUE) {
   require(ggplot2)
   if (!labels) {
-    qq.df <- data.frame(resid = df[[effect]])
-    p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = resid)) +
+    qq.df <- data.frame(effect = df[[effect]])
+    p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
     qq.df <- data.frame(
-      sample = ggplot2::ggplot_build(p1)$data[[1]]$sample,
-      theoretical = ggplot2::ggplot_build(p1)$data[[1]]$theoretical
+      sample = ggplot2::ggplot_build(p1)$data[[1]][["sample"],
+      theo = ggplot2::ggplot_build(p1)$data[[1]]["theoretical"]
     )
     if (!plot) {
+      colnames(qq.df)[2] <- "theoretical"
       print(qq.df)
     }
     if (plot) {
-      p1 <- ggplot2::ggplot(data = qq.df, ggplot2::aes(x = theoretical, y = sample)) +
+      p1 <- ggplot2::ggplot(data = qq.df, ggplot2::aes(x = theo, y = sample)) +
         ggplot2::stat_qq_line(data = qq.df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
         ggplot2::geom_point(size = 2) +
         ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
@@ -202,26 +203,27 @@ qq_plot <- function(df,
     qq.df <- data.frame(
       col = df[["col"]],
       row = df[["row"]],
-      resid = df[[effect]]
+      effect = df[[effect]]
     )
     qq.df$col <- factor(as.numeric(trimws(qq.df$col)))
     qq.df$row <- factor(as.numeric(trimws(qq.df$row)))
-    p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = resid)) +
+    p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
     qq.df <- data.frame(
-      col = qq.df$col[order(qq.df$resid)],
-      row = qq.df$row[order(qq.df$resid)],
-      sample = ggplot2::ggplot_build(p1)$data[[1]]$sample,
-      theoretical = ggplot2::ggplot_build(p1)$data[[1]]$theoretical
+      col = qq.df$col[order(qq.df$effect)],
+      row = qq.df$row[order(qq.df$effect)],
+      sample = ggplot2::ggplot_build(p1)$data[[1]][["sample"],
+      theo = ggplot2::ggplot_build(p1)$data[[1]]["theoretical"]
     )
     qq.df <- qq.df[order(qq.df$col, qq.df$row), ]
     rownames(qq.df) <- NULL
     if (!plot) {
+      colnames(qq.df)[2] <- "theoretical"
       print(qq.df)
     }
     if (plot) {
-      qq.df$name <- paste0(qq.df$col, ":", qq.df$row)
-      p1 <- ggplot2::ggplot(data = qq.df, ggplot2::aes(x = theoretical, y = sample, label = name)) +
+      qq.df$ColRowLabel <- paste0(qq.df$col, ":", qq.df$row)
+      p1 <- ggplot2::ggplot(data = qq.df, ggplot2::aes(x = theo, y = sample, label = ColRowLabel)) +
         ggplot2::stat_qq_line(data = qq.df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
         ggplot2::geom_text(size = 4) +
         ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
