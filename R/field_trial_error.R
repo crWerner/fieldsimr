@@ -67,9 +67,9 @@
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
 #'   length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
 #'   same proportion for each trait. By default, \code{prop_ext = 0}.
-#' @param ext_dir A character string specifying the direction of extraneous variation. One of either
-#'   "column", "row" or "both". When "both" (the default), half the variance is assigned to the columns and half
-#'   is assigned to the rows.
+#' @param ext_dir A vector specifying the direction of extraneous variation for each trait by environment 
+#'   combination. One of either "column", "row" or "both". When "both" (the default), half the variance is 
+#'   assigned to the columns and half is assigned to the rows.
 #' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided, all environments will be assigned the same column
 #'   autocorrelation. By default, \code{ext_col_cor = 0}.
@@ -285,7 +285,10 @@ field_trial_error <- function(n_envs,
   if (any(ext_dir %in% c("row", "both") & n_cols <= 3 & prop_ext > 0)) {
     stop("'n_rows' must be greater than 3 when simulating row extraneous variation.")
   }
-
+  prop_ext_col <- prop_ext_col <- prop_ext
+  prop_ext_col[ext_dir == "row"] <- prop_ext_row[ext_dir == "col"] <- 0
+  prop_ext_col[ext_dir == "both"] <- prop_ext_row[ext_dir == "both"] <- prop_ext[ext_dir == "both"]/2
+  
   envs <- rep(1:n_envs, times = n_cols * n_rows)
   reps <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_reps)))
   cols <- c(unlist(mapply(function(x, y) rep(1:x, each = y), x = n_cols, y = n_rows)))
@@ -464,7 +467,7 @@ field_trial_error <- function(n_envs,
 
   n_plots <- mapply(function(x, y) x * y, x = n_cols, y = n_rows)
   plot_error_lst3c <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
-  if (any(ext_dir %in% c("column", "both"))) {
+  if (any(prop_ext_col > 0)) {
     if (is.null(ext_col_cor)) ext_col_cor <- 0
     if (length(ext_col_cor) == 1) ext_col_cor <- rep(ext_col_cor, n_envs)
     if (length(ext_col_cor) != n_envs) {
@@ -511,7 +514,7 @@ field_trial_error <- function(n_envs,
   }
 
   plot_error_lst3r <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
-  if (any(ext_dir %in% c("row", "both"))) {
+  if (any(prop_ext_row > 0)) {
     if (is.null(ext_row_cor)) ext_row_cor <- 0
     if (length(ext_row_cor) == 1) ext_row_cor <- rep(ext_row_cor, n_envs)
     if (length(ext_row_cor) != n_envs) {
@@ -567,13 +570,13 @@ field_trial_error <- function(n_envs,
   if (n_traits == 1) prop_ext <- lapply(X = prop_ext, FUN = diag, nrow = 1)
   e_spat <- mapply(function(x, y) (scale(x) %*% sqrt(y)), x = plot_error_lst1, y = prop_spatial, SIMPLIFY = F)
   e_rand <- mapply(function(x, y, z) (x %*% sqrt(diag(1, nrow = n_traits) - y - z)), x = plot_error_lst2, y = prop_spatial, z = prop_ext, SIMPLIFY = F)
-  e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext, SIMPLIFY = F)
-  e_ext_r <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3r, y = prop_ext, SIMPLIFY = F)
+  e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext_col, SIMPLIFY = F)
+  e_ext_r <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3r, y = prop_ext_row, SIMPLIFY = F)
 
-  if (any(ext_dir == "both")) {
-    e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5) * x)
-    e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5) * x)
-  }
+  #if (any(ext_dir == "both")) {
+  #  e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5) * x)
+  #  e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5) * x)
+  #}
 
   if (n_traits > 1) {
     e_scale <- mapply(function(w, x, y, z) sqrt(diag(1 / diag(as.matrix(stats::var(w + x + y + z))))), w = e_spat, x = e_rand, y = e_ext_c, z = e_ext_r, SIMPLIFY = F)
