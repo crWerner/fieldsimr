@@ -234,7 +234,7 @@ field_trial_error <- function(n_envs,
 
   spatial_model <- tolower(spatial_model)
   if (spatial_model != "bivariate" & spatial_model != "ar1:ar1") {
-    stop("'spatial_model' must be 'Bivariate' or 'AR1:AR1'")
+    stop("'spatial_model' must be either 'Bivariate' or 'AR1:AR1'")
   }
 
   if (any(prop_spatial < 0) | any(prop_spatial > 1)) {
@@ -244,14 +244,6 @@ field_trial_error <- function(n_envs,
   if (length(prop_spatial) == n_traits) prop_spatial <- rep(prop_spatial, each = n_envs)
   if (length(prop_spatial) != n_traits * n_envs) {
     stop("Length of 'prop_spatial' does not match the number of traits or the number of trait by environment combinations")
-  }
-
-  if (is.null(ext_dir)){ext_dir <- "both"}
-  if (length(ext_dir) == 1) ext_dir <- rep(ext_dir, n_traits)
-  if (length(ext_dir) == n_traits) ext_dir <- rep(ext_dir, each = n_envs)
-  if (length(ext_dir) != n_traits * n_envs) {
-    stop("Length of 'ext_dir' does not match the number of traits or the number of trait by
-         environment combinations")
   }
   
   if (is.null(prop_ext)){prop_ext <- 0}
@@ -264,6 +256,17 @@ field_trial_error <- function(n_envs,
     stop("Length of 'prop_ext' does not match the number of traits or the number of trait by
          environment combinations")
   }
+  
+  
+  if (is.null(ext_dir)){ext_dir <- "both"}
+  if (length(ext_dir) == 1) ext_dir <- rep(ext_dir, n_traits)
+  if (length(ext_dir) == n_traits) ext_dir <- rep(ext_dir, each = n_envs)
+  if (length(ext_dir) != n_traits * n_envs) {
+    stop("Length of 'ext_dir' does not match the number of traits or the number of trait by
+         environment combinations")
+  }
+  if (any(prop_ext == 0)){ext_dir[prop_ext == 0] <- "neither"}
+  
   if (any(prop_spatial + prop_ext > 1)) {
     stop("The sum of 'prop_spatial' and 'prop_ext' must be between 0 and 1")
   }
@@ -271,15 +274,15 @@ field_trial_error <- function(n_envs,
     warning("The random error is zero for some environments")
   }
   ext_dir <- tolower(ext_dir)
-  if (any(prop_ext > 0) & !any(ext_dir %in% c("column", "row", "both"))) {
-    stop("'ext_dir' must be either 'column', 'row' or 'both'")
+  if (any(prop_ext > 0) & !all(ext_dir %in% c("column", "row", "both", "neither"))) {
+    stop("'ext_dir' must be one of 'column', 'row' or 'both'")
   }
 
-  if (ext_dir %in% c("column", "both") & any(n_cols <= 3 & any(prop_ext > 0))) {
+  if (any(ext_dir %in% c("column", "both") & n_cols <= 3 & prop_ext > 0)) {
     stop("'n_cols' must be greater than 3 when simulating column extraneous variation.")
   }
 
-  if (ext_dir %in% c("row", "both") & any(n_rows <= 3 & prop_ext > 0)) {
+  if (any(ext_dir %in% c("row", "both") & n_cols <= 3 & prop_ext > 0)) {
     stop("'n_rows' must be greater than 3 when simulating row extraneous variation.")
   }
 
