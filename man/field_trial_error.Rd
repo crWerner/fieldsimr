@@ -101,9 +101,9 @@ variance (spatial + random + extraneous) for each trait by environment combinati
 length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
 same proportion for each trait. By default, \code{prop_ext = 0}.}
 
-\item{ext_dir}{A character string specifying the direction of extraneous variation. One of either
-"column", "row" or "both". When "both", half the variance is assigned to the columns and half
-is assigned to the rows.}
+\item{ext_dir}{A vector specifying the direction of extraneous variation for each trait by environment
+combination. One of either "column", "row" or "both". When "both" (the default), half the variance is
+assigned to the columns and half is assigned to the rows.}
 
 \item{ext_col_cor}{A vector of column autocorrelations for each environment used in the extraneous
 error model. If only one value is provided, all environments will be assigned the same column
@@ -117,9 +117,9 @@ autocorrelation. By default, \code{ext_row_cor = 0}.}
 containing the spatial, random and extraneous errors. By default, return_effects = FALSE.}
 }
 \value{
-A data frame containing the environment, block, column and row identifiers, as well as the
+A data frame with columns "env", "block", "col" and "row", as well as the
   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
-  additional entries for each trait containing the spatial and random error values.
+  additional columns for each trait providing the spatial, random and extraneous errors.
 }
 \description{
 Creates a data frame with simulated plot errors for one or more traits in plant breeding

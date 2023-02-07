@@ -166,13 +166,12 @@ qq_plot <- function(df,
                     effect,
                     labels = TRUE,
                     plot = TRUE) {
-  require(ggplot2)
   if (!labels) {
     qq.df <- data.frame(effect = df[[effect]])
     p1 <- ggplot2::ggplot(qq.df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
     qq.df <- data.frame(
-      sample = ggplot2::ggplot_build(p1)$data[[1]][["sample"],
+      sample = ggplot2::ggplot_build(p1)$data[[1]]["sample"],
       theo = ggplot2::ggplot_build(p1)$data[[1]]["theoretical"]
     )
     if (!plot) {
@@ -212,7 +211,7 @@ qq_plot <- function(df,
     qq.df <- data.frame(
       col = qq.df$col[order(qq.df$effect)],
       row = qq.df$row[order(qq.df$effect)],
-      sample = ggplot2::ggplot_build(p1)$data[[1]][["sample"],
+      sample = ggplot2::ggplot_build(p1)$data[[1]]["sample"],
       theo = ggplot2::ggplot_build(p1)$data[[1]]["theoretical"]
     )
     qq.df <- qq.df[order(qq.df$col, qq.df$row), ]
@@ -304,7 +303,6 @@ sample_variogram <- function(df,
   }
 
   if (plot) {
-    require(lattice)
     lattice::lattice.options(
       layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
       layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))

@@ -67,8 +67,8 @@
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
 #'   length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
 #'   same proportion for each trait. By default, \code{prop_ext = 0}.
-#' @param ext_dir A vector specifying the direction of extraneous variation for each trait by environment 
-#'   combination. One of either "column", "row" or "both". When "both" (the default), half the variance is 
+#' @param ext_dir A vector specifying the direction of extraneous variation for each trait by environment
+#'   combination. One of either "column", "row" or "both". When "both" (the default), half the variance is
 #'   assigned to the columns and half is assigned to the rows.
 #' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided, all environments will be assigned the same column
@@ -245,8 +245,10 @@ field_trial_error <- function(n_envs,
   if (length(prop_spatial) != n_traits * n_envs) {
     stop("Length of 'prop_spatial' does not match the number of traits or the number of trait by environment combinations")
   }
-  
-  if (is.null(prop_ext)){prop_ext <- 0}
+
+  if (is.null(prop_ext)) {
+    prop_ext <- 0
+  }
   if (any(prop_ext < 0) | any(prop_ext > 1)) {
     stop("'prop_ext' must contain values between 0 and 1")
   }
@@ -256,17 +258,21 @@ field_trial_error <- function(n_envs,
     stop("Length of 'prop_ext' does not match the number of traits or the number of trait by
          environment combinations")
   }
-  
-  
-  if (is.null(ext_dir)){ext_dir <- "both"}
+
+
+  if (is.null(ext_dir)) {
+    ext_dir <- "both"
+  }
   if (length(ext_dir) == 1) ext_dir <- rep(ext_dir, n_traits)
   if (length(ext_dir) == n_traits) ext_dir <- rep(ext_dir, each = n_envs)
   if (length(ext_dir) != n_traits * n_envs) {
     stop("Length of 'ext_dir' does not match the number of traits or the number of trait by
          environment combinations")
   }
-  if (any(prop_ext == 0)){ext_dir[prop_ext == 0] <- "neither"}
-  
+  if (any(prop_ext == 0)) {
+    ext_dir[prop_ext == 0] <- "neither"
+  }
+
   if (any(prop_spatial + prop_ext > 1)) {
     stop("The sum of 'prop_spatial' and 'prop_ext' must be between 0 and 1")
   }
@@ -287,8 +293,8 @@ field_trial_error <- function(n_envs,
   }
   prop_ext_col <- prop_ext_col <- prop_ext
   prop_ext_col[ext_dir == "row"] <- prop_ext_row[ext_dir == "col"] <- 0
-  prop_ext_col[ext_dir == "both"] <- prop_ext_row[ext_dir == "both"] <- prop_ext[ext_dir == "both"]/2
-  
+  prop_ext_col[ext_dir == "both"] <- prop_ext_row[ext_dir == "both"] <- prop_ext[ext_dir == "both"] / 2
+
   envs <- rep(1:n_envs, times = n_cols * n_rows)
   reps <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_reps)))
   cols <- c(unlist(mapply(function(x, y) rep(1:x, each = y), x = n_cols, y = n_rows)))
@@ -573,10 +579,10 @@ field_trial_error <- function(n_envs,
   e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext_col, SIMPLIFY = F)
   e_ext_r <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3r, y = prop_ext_row, SIMPLIFY = F)
 
-  #if (any(ext_dir == "both")) {
+  # if (any(ext_dir == "both")) {
   #  e_ext_c <- lapply(e_ext_c, function(x) sqrt(0.5) * x)
   #  e_ext_r <- lapply(e_ext_r, function(x) sqrt(0.5) * x)
-  #}
+  # }
 
   if (n_traits > 1) {
     e_scale <- mapply(function(w, x, y, z) sqrt(diag(1 / diag(as.matrix(stats::var(w + x + y + z))))), w = e_spat, x = e_rand, y = e_ext_c, z = e_ext_r, SIMPLIFY = F)
