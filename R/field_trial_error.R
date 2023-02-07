@@ -285,7 +285,7 @@ field_trial_error <- function(n_envs,
   if (any(ext_dir %in% c("row", "both") & n_cols <= 3 & prop_ext > 0)) {
     stop("'n_rows' must be greater than 3 when simulating row extraneous variation.")
   }
-  prop_ext_col <- prop_ext_col <- prop_ext
+  prop_ext_col <- prop_ext_row <- prop_ext
   prop_ext_col[ext_dir == "row"] <- prop_ext_row[ext_dir == "col"] <- 0
   prop_ext_col[ext_dir == "both"] <- prop_ext_row[ext_dir == "both"] <- prop_ext[ext_dir == "both"]/2
   
