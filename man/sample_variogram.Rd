@@ -4,7 +4,7 @@
 \alias{sample_variogram}
 \title{Construct a sample variogram}
 \usage{
-sample_variogram(df, effect, plot = TRUE, min.np = 30)
+sample_variogram(df, effect, plot = TRUE, min_np = 30)
 }
 \arguments{
 \item{df}{A data frame containing the columns "col", "row", and the effect to be plotted.}
@@ -14,8 +14,8 @@ sample_variogram(df, effect, plot = TRUE, min.np = 30)
 \item{plot}{When TRUE (default), the sample variogram is displayed graphically.
 Otherwise, a data frame is returned.}
 
-\item{min.np}{The minimum number of pairs that semi-variances will be displayed for.
-By default, \code{min.np = 30}.}
+\item{min_np}{The minimum number of pairs that semi-variances will be displayed for.
+By default, \code{min_np = 30}.}
 }
 \value{
 Graphic of the sample variogram, where the x- and y- axes display the row and

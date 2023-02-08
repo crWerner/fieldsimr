@@ -12,16 +12,16 @@ qq_plot(df, effect, labels = TRUE, plot = TRUE)
 \item{effect}{The name of the effect to be plotted.}
 
 \item{labels}{When TRUE (default), the column and row labels are inserted onto the qqplot.
-Otherwise, data points without labels are plotted. In this case, the data frame does not require
-the columns "col" and "row", just the effect to be plotted.}
+Otherwise, data points without labels are plotted. In this case, the data frame does not
+require the columns "col" and "row", just the effect to be plotted.}
 
 \item{plot}{When TRUE (default), the qqplot is displayed graphically.
 Otherwise, a data frame is returned.}
 }
 \value{
 Graphic of the qqplot, where the x- and y- axes display the theoretical and
-  sample quantiles. When \code{plot = FALSE}, a data frame is returned with the column and row displacements
-  as well as the estimated semi-variances.
+  sample quantiles. When \code{plot = FALSE}, a data frame is returned with the column and row
+  displacements as well as the estimated semi-variances.
 }
 \description{
 Construct a qqplot
@@ -30,7 +30,7 @@ Construct a qqplot
 # Plot the qqplot for the spatial error component in the data frame error_df.
 
 qq_plot(
-  error_df,
+  error_df,                                                                                # what is error_df ?
   effect = "e_spat",
   labels = TRUE,
   plot = TRUE,
