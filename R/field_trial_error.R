@@ -6,32 +6,33 @@
 #' according to either 1) bivariate interpolation using the \link[interp]{interp} function of
 #' the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
 #' random error term is constructed using an independent process. The extraneous error term is
-#' constructed as the sum of column and/or row terms.
-#' The spatial, random and extraneous error terms are combined according to a user-defined ratio.
+#' constructed as the sum of column and/or row terms, where the user can choose from independent 
+#' correlated processes. The spatial, random and extraneous error terms are combined according 
+#' to a user-defined ratio.
 #' \cr
 #' For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
 #' error between traits, 2) correlated random error between traits, 3) correlated extraneous
 #' error between traits, or 4) some combination of 1-3. \cr
-#' A separable covariance structure is assumed between traits and environments.
+#' A separable covariance structure is assumed between traits and environments. <--- fix.
 #'
 #' @param n_envs Number of environments to be simulated (same as for \code{compsym_asr_input}
-#'   or \code{unstr_asr_output}, where applicable).
-#' @param n_traits Number of traits to be simulated.
+#'   or \code{unstr_asr_output}, where applicable). 3
+#' @param n_traits Number of traits to be simulated. 2
 #' @param n_reps A vector specifying the number of complete replicates in each environment. If only
 #'   one value is provided and \code{n_envs > 1}, all environments will be assigned the same
-#'   number of replicates.
+#'   number of replicates. 2
 #' @param n_cols A vector specifying the total number of columns in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-#'   of columns.
+#'   of columns. 10
 #' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-#'   of rows.
-#' @param rep_dir A character string specifying the direction of replicate blocks. One of either
+#'   of rows.  20
+#' @param rep_dir A vector specifying the direction of replicate blocks in each environment. One of either
 #'   "column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
 #'   when \code{n_reps = 1}.
 #' @param var_R A vector of error variances for each trait by environment combination (ordered
 #'   as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
-#'   all environments will be assigned the same error variance for each trait.
+#'   all environments will be assigned the same error variance for each trait. If only one value is... 1
 #' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
@@ -45,20 +46,20 @@
 #' @param complexity A vector specifying the complexity of the bivariate interpolation in each
 #'   environment. If only one value is provided and \code{n_envs > 1}, all environments will be
 #'   assigned the same complexity. If not specified and \code{spatial_model = "Bivariate"}, the
-#'   complexity is set to the maximum number of columns and rows for each environment.
+#'   complexity is set to the maximum number of columns and rows in each environment.
 #'   This generally provides good results. See \link[interp]{interp} for further details.
 #' @param plot_length A vector of plot lengths (column direction, usually longer side) for
 #'   each environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-#'   assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}.
+#'   assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}. 10
 #' @param plot_width A vector of plot widths (row direction, usually shorter side) for
 #'   each environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-#'   assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}.
+#'   assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}. 2
 #' @param col_cor A vector of column autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
-#'   same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
+#'   same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}. 0.4
 #' @param row_cor A vector of row autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
-#'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
+#'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  0.6
 #' @param prop_spatial A vector specifying the proportion of spatial error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
 #'   length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be assigned the same
@@ -69,7 +70,7 @@
 #'   same proportion for each trait. By default, \code{prop_ext = 0}.
 #' @param ext_dir A vector specifying the direction of extraneous variation for each trait by environment
 #'   combination. One of either "column", "row" or "both". When "both" (the default), half the variance is
-#'   assigned to the columns and half is assigned to the rows.
+#'   assigned to the columns and half is assigned to the rows. defualt is row
 #' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided, all environments will be assigned the same column
 #'   autocorrelation. By default, \code{ext_col_cor = 0}.
@@ -92,8 +93,8 @@
 #'
 #' # Field layout
 #' n_cols <- 10 # Total number of columns in each environment.
-#' n_rows <- c(30, 30, 20) # Total number of rows in each environment.
-#' plot_length <- 5 # Plot length set to 5 meters in each environment.
+#' n_rows <- c(20, 30, 30) # Total number of rows in each environment.
+#' plot_length <- 10 # Plot length set to 10 meters in each environment.
 #' plot_width <- 2 # Plot width set to 2 meters in each environment.
 #' n_reps <- c(3, 3, 2) # Number of complete replicates (blocks) per environment.
 #'
@@ -111,9 +112,9 @@
 #'
 #' # Structure of simulated error.
 #' prop_spatial <- 0.4
-#' ext_row_cor <- -0.6
 #' prop_ext <- 0.2
 #' ext_dir <- "row"
+#' ext_row_cor <- -0.6
 #'
 #' error_df <- field_trial_error(
 #'   n_envs = n_envs,
@@ -134,25 +135,25 @@
 #'   return_effects = TRUE
 #' )
 #' @export
-field_trial_error <- function(n_envs,
-                              n_traits,
-                              n_reps,
-                              n_cols,
-                              n_rows,
+field_trial_error <- function(n_envs = 3,
+                              n_traits = 2,
+                              n_reps = 2,
+                              n_cols = 10,
+                              n_rows = 20,
                               rep_dir = "column",
-                              var_R,
+                              var_R = 1,
                               S_cor_R = NULL,
                               R_cor_R = NULL,
                               E_cor_R = NULL,
                               spatial_model = "bivariate",
                               complexity = NULL,
-                              plot_length,
-                              plot_width,
-                              col_cor = NULL,
-                              row_cor = NULL,
+                              plot_length = 10,
+                              plot_width = 2,
+                              col_cor = 0.4,
+                              row_cor = 0.6,
                               prop_spatial = 0.5,
                               prop_ext = 0,
-                              ext_dir = NULL,
+                              ext_dir = "row",
                               ext_col_cor = 0,
                               ext_row_cor = 0,
                               return_effects = FALSE) {
