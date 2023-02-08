@@ -30,7 +30,7 @@ Construct a qqplot
 # Plot the qqplot for the spatial error component in the data frame error_df.
 
 qq_plot(
-  error_df,                                                                                # what is error_df ?
+  error_df, # what is error_df ?
   effect = "e_spat",
   labels = TRUE,
   plot = TRUE,

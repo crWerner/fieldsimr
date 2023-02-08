@@ -153,7 +153,7 @@ plot_effects <- function(df,
 #' # Plot the qqplot for the spatial error component in the data frame error_df.
 #'
 #' qq_plot(
-#'   error_df,                                                                                # what is error_df ?
+#'   error_df, # what is error_df ?
 #'   effect = "e_spat",
 #'   labels = TRUE,
 #'   plot = TRUE,
@@ -170,7 +170,7 @@ qq_plot <- function(df,
     qq_df <- data.frame(effect = df[[effect]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
-    qq_df <- data.frame(                                                        # new names not written
+    qq_df <- data.frame( # new names not written
       sample = ggplot2::ggplot_build(p)$data[[1]]["sample"],
       theo = ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
     )
@@ -268,7 +268,7 @@ sample_variogram <- function(df,
                              effect,
                              plot = TRUE,
                              min_np = 30) {
-  colnames(df) <- tolower(colnames(df))
+  colnames(df) <- tolower(colnames(df)) # align with plot_effects
   if (any(!c("col", "row") %in% colnames(df))) {
     stop("'df' must contain columns 'col' and 'row', and the effect to be plotted.")
   }
@@ -309,7 +309,7 @@ sample_variogram <- function(df,
       layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
     )
     graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-    p1 <- lattice::wireframe(semi_var ~ row_dis * col_dis,
+    p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
       data = sample_df[sample_df$np >= min_np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
       screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
       scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
@@ -318,7 +318,7 @@ sample_variogram <- function(df,
       ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
       par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
     )
-    return(p1)
+    return(p)
   }
 }
 
@@ -385,7 +385,7 @@ theoretical_variogram <- function(n_cols,
       layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
     )
     graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-    p1 <- lattice::wireframe(semi_var ~ row_dis * col_dis,
+    p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
       data = theoretical_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
       screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
       scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
@@ -394,6 +394,6 @@ theoretical_variogram <- function(n_cols,
       ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
       par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
     )
-    return(p1)
+    return(p)
   }
 }
