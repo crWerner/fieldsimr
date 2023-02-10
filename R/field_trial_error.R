@@ -32,10 +32,11 @@
 #'   that environment has one rep). If only one value is provided and \code{n_envs > 1}, all 
 #'   environments will be assigned the same replicate block direction. 
 #' @param var_R A vector of error variances for each trait by environment combination (ordered
-#'   as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
-#'   all environments will be assigned the same error variance for each trait. If only one value 
-#'   is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
-#'    will be assigned the same error variance.
+#'   as environments within traits). 
+#'   If the length of \code{var_R} is equal to \code{n_traits}, <- possibly delete
+#'   all environments will be assigned the same error variance for each trait.  <- possibly delete
+#'   If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
+#'   will be assigned the same error variance.
 #' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
 #'   specified and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
@@ -68,22 +69,26 @@
 #'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  By default,
 #'   \code{row_cor = 0.6}.
 #' @param prop_spatial A vector specifying the proportion of spatial error variance to total error
-#'   variance (spatial + random + extraneous) for each trait by environment combination. If the
-#'   length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be assigned the same
-#'   proportion for each trait By default, \code{prop_spatial = 0.5}.
+#'   variance (spatial + random + extraneous) for each trait by environment combination. 
+#'   If the length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be  <- possibly delete
+#'   assigned the same proportion for each trait  <- possibly delete
+#'   If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
+#'   will be assigned the proportion of spatial error variance. By default, \code{prop_spatial = 0.5}.
 #' @param prop_ext A vector specifying the proportion of extraneous error variance to total error
-#'   variance (spatial + random + extraneous) for each trait by environment combination. If the
-#'   length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
-#'   same proportion for each trait. By default, \code{prop_ext = 0}.
-#' @param ext_dir A vector specifying the direction of extraneous variation for each trait by environment
-#'   combination. One of either "column", "row" or "both". When "both" (the default), half the variance is
-#'   assigned to the columns and half is assigned to the rows. defualt is row
+#'   variance (spatial + random + extraneous) for each trait by environment combination. 
+#'   If the length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same  <- possibly delete
+#'   same proportion for each trait.  <- possibly delete 
+#'   If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
+#'   will be assigned the proportion of extraneous error variance. By default, \code{prop_ext = 0}.
+#' @param ext_dir A vector specifying the direction of extraneous variation for each environment,
+#'   with elements being one of "col", "row" (the default), "both" or NA (). 
+#'   When "both", half the variance is assigned to the columns and half is assigned to the rows.
 #' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
-#'   error model. If only one value is provided, all environments will be assigned the same column
-#'   autocorrelation. By default, \code{ext_col_cor = 0}.
+#'   error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned 
+#'   the same column autocorrelation. By default, \code{ext_col_cor = 0}.
 #' @param ext_row_cor A vector of row autocorrelations for each environment used in the extraneous
-#'   error model. If only one value is provided, all environments will be assigned the same row
-#'   autocorrelation. By default, \code{ext_row_cor = 0}.
+#'   error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned 
+#'   the same row autocorrelation. By default, \code{ext_row_cor = 0}.
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial, random and extraneous errors. By default, return_effects = FALSE.
 #'
