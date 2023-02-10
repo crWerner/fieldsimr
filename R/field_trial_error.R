@@ -35,7 +35,7 @@
 #'   as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
 #'   all environments will be assigned the same error variance for each trait. If only one value 
 #'   is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
-#'    will be assigned the same rep direction.
+#'    will be assigned the same error variance.
 #' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
