@@ -11,7 +11,6 @@
 #'   \code{blocks = TRUE}. \cr
 #'   \strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
 #'   otherwise.
-#' @param env The ID of the environment to be plotted.
 #' @param effect The effect to be plotted.
 #' @param blocks When TRUE (default), the field array is split into blocks.
 #'
@@ -22,38 +21,35 @@
 #' # Plot the simulated total error term for trait 2 in environment 2 provided in the example data
 #' # frame 'df_error_bivar'.
 #'
-#' error_df <- df_error_bivar
+#' error_df <- df_error_bivar[df_error_bivar$env == 2,]
 #'
 #' plot_effects(
-#'   error_df,
-#'   env = 2,
+#'   df = error_df,
 #'   effect = "e.Trait.2"
 #' )
 #' @export
 plot_effects <- function(df,
-                         env,
                          effect,
                          blocks = TRUE) {
   if (inherits(df, "list")) df <- data.frame(df[[1]])
 
-  colnames(df) <- toupper(colnames(df))
-  effect <- toupper(effect)
-  if (any(!c("ENV", "COL", "ROW") %in% colnames(df))) {
-    stop("'df' must contain columns 'env', 'col', 'row', and the effect to be plotted.")
+  colnames(df) <- tolower(colnames(df))
+  if (any(!c("col", "row") %in% colnames(df))) {
+    stop("'df' must contain columns 'col', 'row', and the effect to be plotted.")
   }
+  
+  effect <- tolower(effect)
+  colnames(df)[colnames(df) %in% effect] <- "eff"
 
-  df <- df[df[["ENV"]] == env, ]
-  colnames(df)[colnames(df) %in% effect] <- "EFF"
-
-  n_rows <- length(unique(df$ROW))
-  n_cols <- length(unique(df$COL))
-  n_blocks <- length(unique(df$BLOCK))
+  n_cols <- length(unique(df$col))
+  n_rows <- length(unique(df$row))
+  n_blocks <- length(unique(df$block))
 
   if (n_blocks > 1) {
-    df1 <- df[df[["BLOCK"]] == 1, ]
-    df2 <- df[df[["BLOCK"]] == 2, ]
+    df1 <- df[df[["block"]] == 1, ]
+    df2 <- df[df[["block"]] == 2, ]
 
-    if (any(unique(df[df[["BLOCK"]] == 1, ]$ROW) == unique(df[df[["BLOCK"]] == 2, ]$ROW)) == FALSE) {
+    if (any(unique(df[df[["block"]] == 1, ]$row) == unique(df[df[["block"]] == 2, ]$row)) == FALSE) {
       dist <- (n_rows / n_blocks)
       x_min <- rep(0.5, n_blocks)
       y_min <- (seq(0, n_rows, dist) + 0.5)[1:n_blocks]
@@ -69,7 +65,7 @@ plot_effects <- function(df,
       block_y_min_2 <- y_max
       block_x_max_2 <- rep((n_cols + 1), n_blocks)
       block_y_max_2 <- y_max
-    } else if (any(unique(df[df[["BLOCK"]] == 1, ]$COL) == unique(df[df[["BLOCK"]] == 2, ]$COL)) == FALSE) {
+    } else if (any(unique(df[df[["block"]] == 1, ]$col) == unique(df[df[["block"]] == 2, ]$col)) == FALSE) {
       dist <- (n_cols / n_blocks)
       x_min <- (seq(0, n_cols, dist) + 0.5)[1:n_blocks]
       y_min <- rep(0.5, n_blocks)
@@ -90,13 +86,13 @@ plot_effects <- function(df,
     }
   }
 
-  COL <- ROW <- EFF <- NULL
+  col <- row <- eff <- NULL
 
-  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = COL, y = ROW)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = EFF)) +
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
     ggplot2::scale_fill_gradient2(low = "#A51122", mid = "#FEFDBE", high = "#006228") +
-    ggplot2::xlab("Columns") +
-    ggplot2::ylab("Rows") +
+    ggplot2::xlab("Column") +
+    ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
     ggplot2::ggtitle(effect) +
     ggplot2::theme(
@@ -150,11 +146,14 @@ plot_effects <- function(df,
 #'   displacements as well as the estimated semi-variances.
 #'
 #' @examples
-#' # Plot the qqplot for the spatial error component in the data frame error_df.
+#' # Plot the simulated total error for trait 2 in environment 2 provided in the example data
+#' # frame 'df_error_bivar'.
 #'
+#' error_df <- df_error_bivar[df_error_bivar$env == 2,]
+#' 
 #' qq_plot(
-#'   error_df, # what is error_df ?
-#'   effect = "e_spat",
+#'   df = error_df,
+#'   effect = "e.Trait.2"
 #'   labels = TRUE,
 #'   plot = TRUE,
 #' )
@@ -166,16 +165,19 @@ qq_plot <- function(df,
                     effect,
                     labels = TRUE,
                     plot = TRUE) {
+   colnames(df) <- tolower(colnames(df))
+   effect <- tolower(effect)
+   colnames(df)[colnames(df) %in% effect] <- "eff"
+  
   if (!labels) {
-    qq_df <- data.frame(effect = df[[effect]])
+    qq_df <- data.frame(effect = df[["eff"]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
-    qq_df <- data.frame( # new names not written
-      sample = ggplot2::ggplot_build(p)$data[[1]]["sample"],
-      theo = ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
+    qq_df <- data.frame(
+      ggplot2::ggplot_build(p)$data[[1]]["sample"],
+      ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
     )
     if (!plot) {
-      # colnames(qq_df)[2] <- "theoretical"                                                  # seems redundant
       return(qq_df)
     }
     if (plot) {
@@ -195,14 +197,13 @@ qq_plot <- function(df,
   }
 
   if (labels) {
-    colnames(df) <- tolower(colnames(df))
     if (any(!c("col", "row") %in% colnames(df))) {
       stop("'df' must contain columns 'col' and 'row' in order to plot labels")
     }
     qq_df <- data.frame(
       col = df[["col"]],
       row = df[["row"]],
-      effect = df[[effect]] # original effect does not match the tolower effect anymore in df
+      effect = df[["eff"]]
     )
     qq_df$col <- factor(as.numeric(trimws(qq_df$col)))
     qq_df$row <- factor(as.numeric(trimws(qq_df$row)))
@@ -211,18 +212,17 @@ qq_plot <- function(df,
     qq_df <- data.frame(
       col = qq_df$col[order(qq_df$effect)],
       row = qq_df$row[order(qq_df$effect)],
-      sample = ggplot2::ggplot_build(p)$data[[1]]["sample"],
-      theo = ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
+      ggplot2::ggplot_build(p)$data[[1]]["sample"],
+      ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
     )
     qq_df <- qq_df[order(qq_df$col, qq_df$row), ]
     rownames(qq_df) <- NULL
     if (!plot) {
-      # colnames(qq_df)[2] <- "theoretical"
       return(qq_df)
     }
     if (plot) {
       qq_df$ColRowLabel <- paste0(qq_df$col, ":", qq_df$row)
-      theoretical <- ColRowLabel <- NULL # TESTING NULLING HERE
+      theoretical <- ColRowLabel <- NULL
       p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = ColRowLabel)) +
         ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
         ggplot2::geom_text(size = 4) +
@@ -246,7 +246,7 @@ qq_plot <- function(df,
 #' @param effect The name of the effect to be plotted.
 #' @param plot When TRUE (default), the sample variogram is displayed graphically.
 #'   Otherwise, a data frame is returned.
-#' @param min_np The minimum number of pairs that semi-variances will be displayed for.
+#' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be displayed.
 #'   By default, \code{min_np = 30}.
 #'
 #' @return Graphic of the sample variogram, where the x- and y- axes display the row and
