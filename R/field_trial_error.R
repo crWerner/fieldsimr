@@ -7,7 +7,7 @@
 #' the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
 #' random error term is constructed using an independent process. The extraneous error term is
 #' constructed as the sum of column and/or row terms, where the user can choose from independent 
-#' correlated processes. The spatial, random and extraneous error terms are combined according 
+#' or correlated processes. The spatial, random and extraneous error terms are combined according 
 #' to a user-defined ratio.
 #' \cr
 #' For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
@@ -16,23 +16,25 @@
 #' A separable covariance structure is assumed between traits and environments. <--- fix.
 #'
 #' @param n_envs Number of environments to be simulated (same as for \code{compsym_asr_input}
-#'   or \code{unstr_asr_output}, where applicable). 3
-#' @param n_traits Number of traits to be simulated. 2
+#'   or \code{unstr_asr_output}, where applicable). By default \code{n_envs = 1}.
+#' @param n_traits Number of traits to be simulated. By default \code{n_traits = 1}.
 #' @param n_reps A vector specifying the number of complete replicates in each environment. If only
 #'   one value is provided and \code{n_envs > 1}, all environments will be assigned the same
-#'   number of replicates. 2
+#'   number of replicates. By default \code{n_reps = 2}.
 #' @param n_cols A vector specifying the total number of columns in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-#'   of columns. 10
+#'   of columns. By default \code{n_cols = 10}.
 #' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-#'   of rows.  20
-#' @param rep_dir A vector specifying the direction of replicate blocks in each environment. One of either
-#'   "column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
-#'   when \code{n_reps = 1}.
+#'   of rows. By default \code{n_rows = 20}.
+#' @param rep_dir A vector specifying the direction of replicate blocks in each environment, with 
+#'   elements being one of "column" (side-by-side, the default), "row" (above-and-below) or NA (when 
+#'   that environment has one rep).
 #' @param var_R A vector of error variances for each trait by environment combination (ordered
 #'   as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
-#'   all environments will be assigned the same error variance for each trait. If only one value is... 1
+#'   all environments will be assigned the same error variance for each trait. If only one value 
+#'   is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
+#'    will be assigned the same rep direction.
 #' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
 #'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
