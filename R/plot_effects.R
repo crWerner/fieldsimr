@@ -142,8 +142,8 @@ plot_effects <- function(df,
 #'   data frame is returned.
 #'
 #' @return Graphic of the qqplot, where the x- and y- axes display the theoretical and
-#'   sample quantiles. When \code{plot = FALSE}, a data frame is returned with the "theoretical" 
-#'   and "sample" quantiles, as well as the columns "col and "row" when \code{labels=TRUE}.
+#'   sample quantiles. When \code{plot = FALSE}, a data frame is returned with the columns 
+#'   "theoretical" and "sample", as well as "col and "row" when \code{labels=TRUE}.
 #'
 #' @examples
 #' # Plot the simulated total error for trait 2 in environment 2 provided in the example data
@@ -245,21 +245,24 @@ qq_plot <- function(df,
 #' @param df A data frame containing the columns "col", "row", and the effect to be plotted.
 #' @param effect The name of the effect to be plotted.
 #' @param plot When TRUE (default), the sample variogram is displayed graphically.
-#'   Otherwise, a data frame is returned.
+#'   When FALSE, a data frame is returned.
 #' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be displayed.
 #'   By default, \code{min_np = 30}.
 #'
 #' @return Graphic of the sample variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-#'   When \code{plot = FALSE}, a data frame is returned with the column and row displacements
-#'   as well as the estimated semi-variances.
+#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and 
+#'   "semi_var".
 #'
 #' @examples
-#' # Plot the sample variogram for the spatial error component in the data frame error_df.
+#' # Plot the simulated total error for trait 2 in environment 2 provided in the example data
+#' # frame 'df_error_bivar'.
+#'
+#' error_df <- df_error_bivar[df_error_bivar$env == 2,]
 #'
 #' sample_variogram(
-#'   error_df,
-#'   effect = "e_spat",
+#'   df = error_df,
+#'   effect = "e.Trait.2",
 #'   plot = TRUE,
 #' )
 #' @export
@@ -268,7 +271,10 @@ sample_variogram <- function(df,
                              effect,
                              plot = TRUE,
                              min_np = 30) {
-  colnames(df) <- tolower(colnames(df)) # align with plot_effects
+  colnames(df) <- tolower(colnames(df)) 
+  effect <- tolower(effect)
+  colnames(df)[colnames(df) %in% effect] <- "eff"
+  
   if (any(!c("col", "row") %in% colnames(df))) {
     stop("'df' must contain columns 'col' and 'row', and the effect to be plotted.")
   }
@@ -276,7 +282,7 @@ sample_variogram <- function(df,
   sample_df <- data.frame(
     col = df[["col"]],
     row = df[["row"]],
-    effect = df[[effect]]
+    effect = df[["eff"]]
   )
   sample_df <- sample_df[order(sample_df$col, sample_df$row), ]
 
@@ -332,12 +338,12 @@ sample_variogram <- function(df,
 #' @param col_cor The column autocorrelation value.
 #' @param row_cor The row autocorrelation value.
 #' @param plot When TRUE (default), the theoretical variogram is displayed graphically.
-#'   Otherwise, a data frame is returned.
+#'   When FALSE, a data frame is returned.
 #'
 #' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-#'   When \code{plot = FALSE}, a data frame is returned with the column and row displacements
-#'   as well as the theoretical semi-variances.
+#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and 
+#'   "semi_var".
 #'
 #' @examples
 #' # Plot a theoretical variogram for a field with 10 columns and 20 rows,
