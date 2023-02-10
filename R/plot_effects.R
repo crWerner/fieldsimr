@@ -133,17 +133,17 @@ plot_effects <- function(df,
 
 #' Construct a qqplot
 #'
-#' @param df A data frame containing the columns "col", "row", and the effect to be plotted.
+#' @param df A data frame containing the effect to be plotted.
 #' @param effect The name of the effect to be plotted.
-#' @param labels When TRUE (default), the column and row labels are inserted onto the qqplot.
-#'   Otherwise, data points without labels are plotted. In this case, the data frame does not
-#'   require the columns "col" and "row", just the effect to be plotted.
-#' @param plot When TRUE (default), the qqplot is displayed graphically.
-#'   Otherwise, a data frame is returned.
+#' @param labels When FALSE (default) data points without labels are plotted. When TRUE, 
+#'   column and row labels are inserted onto the qqplot. This requires the additional columns 
+#'   "col" and "row" in the data frame.
+#' @param plot When TRUE (default), the qqplot is displayed graphically. When FALSE, a 
+#'   data frame is returned.
 #'
 #' @return Graphic of the qqplot, where the x- and y- axes display the theoretical and
-#'   sample quantiles. When \code{plot = FALSE}, a data frame is returned with the column and row
-#'   displacements as well as the estimated semi-variances.
+#'   sample quantiles. When \code{plot = FALSE}, a data frame is returned with the "theoretical" 
+#'   and "sample" quantiles, as well as the columns "col and "row" when \code{labels=TRUE}.
 #'
 #' @examples
 #' # Plot the simulated total error for trait 2 in environment 2 provided in the example data
@@ -163,7 +163,7 @@ plot_effects <- function(df,
 
 qq_plot <- function(df,
                     effect,
-                    labels = TRUE,
+                    labels = FALSE,
                     plot = TRUE) {
    colnames(df) <- tolower(colnames(df))
    effect <- tolower(effect)
