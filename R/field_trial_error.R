@@ -17,13 +17,13 @@
 #'
 #' @param n_envs Number of environments to be simulated (same as for \code{compsym_asr_input}
 #'   or \code{unstr_asr_output}, where applicable). By default \code{n_envs = 1}.
-#' @param n_traits Number of traits to be simulated. By default \code{n_traits = 1}.
+#' @param n_traits Number of traits to be simulated. By default, \code{n_traits = 1}.
 #' @param n_reps A vector specifying the number of complete replicates in each environment. If only
 #'   one value is provided and \code{n_envs > 1}, all environments will be assigned the same
-#'   number of replicates. By default \code{n_reps = 2}.
+#'   number of replicates. By default, \code{n_reps = 2}.
 #' @param n_cols A vector specifying the total number of columns in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-#'   of columns. By default \code{n_cols = 10}.
+#'   of columns. By default, \code{n_cols = 10}.
 #' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of rows. By default \code{n_rows = 20}.
@@ -37,11 +37,11 @@
 #'   is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
 #'    will be assigned the same error variance.
 #' @param S_cor_R A matrix of spatial error correlations between more than one trait. If not
-#'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
+#'   specified and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
-#'   defined and \code{n_traits > 1}, a diagonal matrix is constructed.
+#'   specified and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param E_cor_R A matrix of extraneous error correlations between more than one trait. If not
-#'   defined and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation between
+#'   specified and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation between
 #'   traits is used for the column and row errors (where applicable).
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
 #'   spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
@@ -53,16 +53,20 @@
 #'   This generally provides good results. See \link[interp]{interp} for further details.
 #' @param plot_length A vector of plot lengths (column direction, usually longer side) for
 #'   each environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-#'   assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}. 10
+#'   assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}. By default,
+#'   \code{plot_length = 10}.
 #' @param plot_width A vector of plot widths (row direction, usually shorter side) for
 #'   each environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-#'   assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}. 2
+#'   assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}. By default,
+#'   \code{plot_width = 2}.
 #' @param col_cor A vector of column autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
-#'   same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}. 0.4
+#'   same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  By default,
+#'   \code{col_cor = 0.4}.
 #' @param row_cor A vector of row autocorrelations for each environment used in the AR1:AR1
 #'   spatial error model. If only one value is provided, all environments will be assigned the
-#'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  0.6
+#'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  By default,
+#'   \code{row_cor = 0.6}.
 #' @param prop_spatial A vector specifying the proportion of spatial error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. If the
 #'   length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be assigned the same
