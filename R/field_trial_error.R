@@ -28,9 +28,9 @@
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of rows. By default \code{n_rows = 20}.
 #' @param rep_dir A vector specifying the direction of replicate blocks in each environment, with 
-#'   elements being one of "column" (side-by-side, the default), "row" (above-and-below) or NA (when 
-#'   that environment has one rep). If only one value is provided and \code{n_envs > 1}, all 
-#'   environments will be assigned the same replicate block direction. 
+#'   elements being one of "col" (side-by-side, the default), "row" (above-and-below) or NA (if 
+#'   that environment only has one replicate block). If only one value is provided and \code{n_envs > 1}, 
+#'   all environments will be assigned the same replicate block direction. 
 #' @param var_R A vector of error variances for each trait by environment combination (ordered
 #'   as environments within traits). 
 #'   If the length of \code{var_R} is equal to \code{n_traits}, <- possibly delete
@@ -42,8 +42,8 @@
 #' @param R_cor_R A matrix of random error correlations between more than one trait. If not
 #'   specified and \code{n_traits > 1}, a diagonal matrix is constructed.
 #' @param E_cor_R A matrix of extraneous error correlations between more than one trait. If not
-#'   specified and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation between
-#'   traits is used for the column and row errors (where applicable).
+#'   specified and \code{n_traits > 1}, a diagonal matrix is constructed. Note that the same correlation 
+#'   between traits is used for the column and row errors (where applicable).
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
 #'   spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
 #'   (separable first-order autoregressive process).
@@ -61,13 +61,13 @@
 #'   assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}. By default,
 #'   \code{plot_width = 2}.
 #' @param col_cor A vector of column autocorrelations for each environment used in the AR1:AR1
-#'   spatial error model. If only one value is provided, all environments will be assigned the
-#'   same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  By default,
-#'   \code{col_cor = 0.4}.
+#'   spatial error model. If only one value is provided and \code{n_envs > 1}, all environments will 
+#'   be assigned the same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  
+#'   By default, \code{col_cor = 0.4}.
 #' @param row_cor A vector of row autocorrelations for each environment used in the AR1:AR1
-#'   spatial error model. If only one value is provided, all environments will be assigned the
-#'   same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  By default,
-#'   \code{row_cor = 0.6}.
+#'   spatial error model. If only one value is provided and \code{n_envs > 1}, all environments will 
+#'   be assigned the same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.  
+#'   By default, \code{row_cor = 0.6}.
 #' @param prop_spatial A vector specifying the proportion of spatial error variance to total error
 #'   variance (spatial + random + extraneous) for each trait by environment combination. 
 #'   If the length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be  <- possibly delete
@@ -80,15 +80,16 @@
 #'   same proportion for each trait.  <- possibly delete 
 #'   If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations 
 #'   will be assigned the proportion of extraneous error variance. By default, \code{prop_ext = 0}.
-#' @param ext_dir A vector specifying the direction of extraneous variation for each environment,
-#'   with elements being one of "col", "row" (the default), "both" or NA (). 
-#'   When "both", half the variance is assigned to the columns and half is assigned to the rows.
 #' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned 
 #'   the same column autocorrelation. By default, \code{ext_col_cor = 0}.
 #' @param ext_row_cor A vector of row autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned 
 #'   the same row autocorrelation. By default, \code{ext_row_cor = 0}.
+#' @param ext_dir A vector specifying the direction of extraneous variation for each environment,
+#'   with elements being one of "col", "row" (the default), "both" or NA (if that environment has zero
+#'   extraneous variation specified). When "both", half the variance is assigned to the columns and 
+#'   half is assigned to the rows.
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial, random and extraneous errors. By default, return_effects = FALSE.
 #'
@@ -147,12 +148,12 @@
 #'   return_effects = TRUE
 #' )
 #' @export
-field_trial_error <- function(n_envs = 3,
-                              n_traits = 2,
+field_trial_error <- function(n_envs = 1,
+                              n_traits = 1,
                               n_reps = 2,
                               n_cols = 10,
                               n_rows = 20,
-                              rep_dir = "column",
+                              rep_dir = "col",
                               var_R = 1,
                               S_cor_R = NULL,
                               R_cor_R = NULL,
