@@ -33,8 +33,7 @@ error_df <- df_error_bivar[df_error_bivar$env == 2, ]
 qq <- qq_plot(
   df = error_df,
   effect = "e.Trait.2",
-  labels = TRUE,
-  plot = TRUE
+  labels = TRUE
 )
 
 # Q-Q plot

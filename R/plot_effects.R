@@ -154,8 +154,7 @@ plot_effects <- function(df,
 #' qq <- qq_plot(
 #'   df = error_df,
 #'   effect = "e.Trait.2",
-#'   labels = TRUE,
-#'   plot = TRUE
+#'   labels = TRUE
 #' )
 #'
 #' # Q-Q plot
