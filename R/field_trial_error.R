@@ -27,10 +27,10 @@
 #' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 #'   of rows. By default \code{n_rows = 20}.
-#' @param rep_dir A vector specifying the direction of replicate blocks in each environment, with
-#'   elements being one of "col" (side-by-side, the default), "row" (above-and-below) or NA (if
-#'   that environment only has one replicate block). If only one value is provided and \code{n_envs > 1},
-#'   all environments will be assigned the same replicate block direction.
+#' @param rep_dir A vector specifying the direction of replicate blocks in each environment. Use
+#'   "col" for a side-by-side arrangement (the default), "row" for an above-and-below arrangement,
+#'   or "NA" if only one replicate block is simulated. If only one value is provided and
+#'   \code{n_envs > 1}, all environments will be assigned the same replicate block direction.
 #' @param var_R A vector of error variances for each trait by environment combination (ordered
 #'   as environments within traits).
 #'   If the length of \code{var_R} is equal to \code{n_traits}, <- possibly delete
@@ -86,10 +86,11 @@
 #' @param ext_row_cor A vector of row autocorrelations for each environment used in the extraneous
 #'   error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned
 #'   the same row autocorrelation. By default, \code{ext_row_cor = 0}.
-#' @param ext_dir A vector specifying the direction of extraneous variation for each environment,
-#'   with elements being one of "col", "row" (the default), "both" or NA (if that environment has zero
-#'   extraneous variation specified). When "both", half the variance is assigned to the columns and
-#'   half is assigned to the rows.
+#' @param ext_dir A vector specifying the direction of extraneous variation for each environment.
+#'   Use "col" to simulate column-wise variation, "row" (the default) for row-wise variation,
+#'   "both" for column- and row-wise variation, or "NA" if zero extraneous variation is specified.
+#'   When \code{ext_dir = "both"}, half the variance is assigned to the columns and half is
+#'   assigned to the rows.
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial, random and extraneous errors. By default, return_effects = FALSE.
 #'

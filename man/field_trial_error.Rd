@@ -47,10 +47,10 @@ of columns. By default, \code{n_cols = 10}.}
 value is provided and \code{n_envs > 1}, all environments will be assigned the same number
 of rows. By default \code{n_rows = 20}.}
 
-\item{rep_dir}{A vector specifying the direction of replicate blocks in each environment, with
-elements being one of "col" (side-by-side, the default), "row" (above-and-below) or NA (if
-that environment only has one replicate block). If only one value is provided and \code{n_envs > 1},
-all environments will be assigned the same replicate block direction.}
+\item{rep_dir}{A vector specifying the direction of replicate blocks in each environment. Use
+"col" for a side-by-side arrangement (the default), "row" for an above-and-below arrangement,
+or "NA" if only one replicate block is simulated. If only one value is provided and
+\code{n_envs > 1}, all environments will be assigned the same replicate block direction.}
 
 \item{var_R}{A vector of error variances for each trait by environment combination (ordered
 as environments within traits).
@@ -113,10 +113,11 @@ same proportion for each trait.  <- possibly delete
 If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations
 will be assigned the proportion of extraneous error variance. By default, \code{prop_ext = 0}.}
 
-\item{ext_dir}{A vector specifying the direction of extraneous variation for each environment,
-with elements being one of "col", "row" (the default), "both" or NA (if that environment has zero
-extraneous variation specified). When "both", half the variance is assigned to the columns and
-half is assigned to the rows.}
+\item{ext_dir}{A vector specifying the direction of extraneous variation for each environment.
+Use "col" to simulate column-wise variation, "row" (the default) for row-wise variation,
+"both" for column- and row-wise variation, or "NA" if zero extraneous variation is specified.
+When \code{ext_dir = "both"}, half the variance is assigned to the columns and half is
+assigned to the rows.}
 
 \item{ext_col_cor}{A vector of column autocorrelations for each environment used in the extraneous
 error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned
