@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_effects.R
 \name{theoretical_variogram}
 \alias{theoretical_variogram}
-\title{Construct a theoretical variogram}
+\title{Theoretical variogram}
 \usage{
 theoretical_variogram(
   n_cols,
@@ -15,34 +15,35 @@ theoretical_variogram(
 )
 }
 \arguments{
-\item{n_cols}{The total number of columns.}
+\item{n_cols}{A scalar defining the number of columns.}
 
-\item{n_rows}{The total number of rows.}
+\item{n_rows}{A scalar defining the number of rows.}
 
-\item{var_R}{The total error variance. By default, \code{var_R = 1}.}
+\item{var_R}{A scalar defining the total error variance. By default, \code{var_R = 1}.}
 
-\item{prop_spatial}{The proportion of spatial error variance to total error
+\item{prop_spatial}{A scalar defining the proportion of spatial error variance to total error
 variance (spatial + random). By default, \code{prop_spatial = 0.5}.}
 
-\item{col_cor}{The column autocorrelation value.}
+\item{col_cor}{A scalar defining the column autocorrelation value.}
 
-\item{row_cor}{The row autocorrelation value.}
+\item{row_cor}{A scalar defining the row autocorrelation value.}
 
 \item{plot}{When TRUE (default), the theoretical variogram is displayed graphically.
-Otherwise, a data frame is returned.}
+When FALSE, a data frame is returned.}
 }
 \value{
 Graphic of the theoretical variogram, where the x- and y- axes display the row and
   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-  When \code{plot = FALSE}, a data frame is returned with the column and row displacements
-  as well as the theoretical semi-variances.
+  When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
+  "semi_var".
 }
 \description{
-Construct a theoretical variogram
+Creates a theoretical variogram. The x- and y-axes display the row and column displacements,
+respectively. The z-axis displays the semi-variance (variogram ordinates).
 }
 \examples{
-# Plot a theoretical variogram for a field with 10 columns and 20 rows,
-# using column and row autocorrelations of 0.4 and 0.8.
+# Theoretical variogram for a field with 10 columns and 20 rows, using column and row
+# autocorrelations of 0.4 and 0.8.
 
 theoretical_variogram(
   n_cols = 10,

@@ -2,36 +2,41 @@
 % Please edit documentation in R/plot_effects.R
 \name{sample_variogram}
 \alias{sample_variogram}
-\title{Construct a sample variogram}
+\title{Sample variogram}
 \usage{
 sample_variogram(df, effect, plot = TRUE, min_np = 30)
 }
 \arguments{
-\item{df}{A data frame containing the columns "col", "row", and the effect to be plotted.}
+\item{df}{A data frame containing the columns "col", "row", and the effect to be used in the
+sample variogram.}
 
-\item{effect}{The name of the effect to be plotted.}
+\item{effect}{The name of the effect to used in the sample variogram.}
 
 \item{plot}{When TRUE (default), the sample variogram is displayed graphically.
-Otherwise, a data frame is returned.}
+When FALSE, a data frame is returned.}
 
-\item{min_np}{The minimum number of pairs that semi-variances will be displayed for.
-By default, \code{min_np = 30}.}
+\item{min_np}{Only semi variances based on at least \code{min_np} pairs of plots will be
+displayed. By default, \code{min_np = 30}.}
 }
 \value{
 Graphic of the sample variogram, where the x- and y- axes display the row and
   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-  When \code{plot = FALSE}, a data frame is returned with the column and row displacements
-  as well as the estimated semi-variances.
+  When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
+  "semi_var".
 }
 \description{
-Construct a sample variogram
+Creates a sample variogram. The x- and y-axes display the row and column displacements,
+respectively. The z-axis displays the semi-variance (variogram ordinates).
 }
 \examples{
-# Plot the sample variogram for the spatial error component in the data frame error_df.
+# Sample variogram fo the simulated total error for trait 2 in environment 2 provided in the
+# example data frame 'df_error_bivar'.
 
-sample_variogram(
-  error_df,
-  effect = "e_spat",
-  plot = TRUE,
+error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+
+vario <- sample_variogram(
+  df = error_df,
+  effect = "e.Trait.2",
+  plot = TRUE
 )
 }

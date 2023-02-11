@@ -5,25 +5,25 @@
 \title{Simulate plot errors in plant breeding trials}
 \usage{
 field_trial_error(
-  n_envs,
-  n_traits,
-  n_reps,
-  n_cols,
-  n_rows,
-  rep_dir = "column",
-  var_R,
+  n_envs = 1,
+  n_traits = 1,
+  n_reps = 2,
+  n_cols = 10,
+  n_rows = 20,
+  rep_dir = "col",
+  var_R = 1,
   S_cor_R = NULL,
   R_cor_R = NULL,
   E_cor_R = NULL,
   spatial_model = "bivariate",
   complexity = NULL,
-  plot_length,
-  plot_width,
-  col_cor = NULL,
-  row_cor = NULL,
+  plot_length = 10,
+  plot_width = 2,
+  col_cor = 0.4,
+  row_cor = 0.6,
   prop_spatial = 0.5,
   prop_ext = 0,
-  ext_dir = NULL,
+  ext_dir = "row",
   ext_col_cor = 0,
   ext_row_cor = 0,
   return_effects = FALSE
@@ -31,39 +31,43 @@ field_trial_error(
 }
 \arguments{
 \item{n_envs}{Number of environments to be simulated (same as for \code{compsym_asr_input}
-or \code{unstr_asr_output}, where applicable).}
+or \code{unstr_asr_output}, where applicable). By default \code{n_envs = 1}.}
 
-\item{n_traits}{Number of traits to be simulated.}
+\item{n_traits}{Number of traits to be simulated. By default, \code{n_traits = 1}.}
 
 \item{n_reps}{A vector specifying the number of complete replicates in each environment. If only
 one value is provided and \code{n_envs > 1}, all environments will be assigned the same
-number of replicates.}
+number of replicates. By default, \code{n_reps = 2}.}
 
 \item{n_cols}{A vector specifying the total number of columns in each environment. If only one
 value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-of columns.}
+of columns. By default, \code{n_cols = 10}.}
 
 \item{n_rows}{A vector specifying the total number of rows in each environment. If only one
 value is provided and \code{n_envs > 1}, all environments will be assigned the same number
-of rows.}
+of rows. By default \code{n_rows = 20}.}
 
-\item{rep_dir}{A character string specifying the direction of replicate blocks. One of either
-"column" (side-by-side, the default) or "row" (above-and-below). \code{rep_dir} is ignored
-when \code{n_reps = 1}.}
+\item{rep_dir}{A vector specifying the direction of replicate blocks in each environment, with
+elements being one of "col" (side-by-side, the default), "row" (above-and-below) or NA (if
+that environment only has one replicate block). If only one value is provided and \code{n_envs > 1},
+all environments will be assigned the same replicate block direction.}
 
 \item{var_R}{A vector of error variances for each trait by environment combination (ordered
-as environments within traits). If the length of \code{var_R} is equal to \code{n_traits},
-all environments will be assigned the same error variance for each trait.}
+as environments within traits).
+If the length of \code{var_R} is equal to \code{n_traits}, <- possibly delete
+all environments will be assigned the same error variance for each trait.  <- possibly delete
+If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations
+will be assigned the same error variance.}
 
 \item{S_cor_R}{A matrix of spatial error correlations between more than one trait. If not
-defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
+specified and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
 \item{R_cor_R}{A matrix of random error correlations between more than one trait. If not
-defined and \code{n_traits > 1}, a diagonal matrix is constructed.}
+specified and \code{n_traits > 1}, a diagonal matrix is constructed.}
 
 \item{E_cor_R}{A matrix of extraneous error correlations between more than one trait. If not
-defined and \code{n_traits > 1}, a diagonal matrix is constructed. The same correlation between
-traits is used for the column and row errors (where applicable).}
+specified and \code{n_traits > 1}, a diagonal matrix is constructed. Note that the same correlation
+between traits is used for the column and row errors (where applicable).}
 
 \item{spatial_model}{A character string specifying the model used to simulate the two-dimensional
 spatial error term. One of either "Bivariate" (bivariate interpolation, the default) or "AR1:AR1"
@@ -72,46 +76,55 @@ spatial error term. One of either "Bivariate" (bivariate interpolation, the defa
 \item{complexity}{A vector specifying the complexity of the bivariate interpolation in each
 environment. If only one value is provided and \code{n_envs > 1}, all environments will be
 assigned the same complexity. If not specified and \code{spatial_model = "Bivariate"}, the
-complexity is set to the maximum number of columns and rows for each environment.
+complexity is set to the maximum number of columns and rows in each environment.
 This generally provides good results. See \link[interp]{interp} for further details.}
 
 \item{plot_length}{A vector of plot lengths (column direction, usually longer side) for
 each environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}.}
+assigned the same plot length. Only required when \code{spatial_model = "Bivariate"}. By default,
+\code{plot_length = 10}.}
 
 \item{plot_width}{A vector of plot widths (row direction, usually shorter side) for
 each environment. If only one value is provided and \code{n_envs > 1}, all environments will be
-assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}.}
+assigned the same plot width. Only required when \code{spatial_model = "Bivariate"}. By default,
+\code{plot_width = 2}.}
 
 \item{col_cor}{A vector of column autocorrelations for each environment used in the AR1:AR1
-spatial error model. If only one value is provided, all environments will be assigned the
-same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.}
+spatial error model. If only one value is provided and \code{n_envs > 1}, all environments will
+be assigned the same column autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
+By default, \code{col_cor = 0.4}.}
 
 \item{row_cor}{A vector of row autocorrelations for each environment used in the AR1:AR1
-spatial error model. If only one value is provided, all environments will be assigned the
-same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.}
+spatial error model. If only one value is provided and \code{n_envs > 1}, all environments will
+be assigned the same row autocorrelation. Only required when \code{spatial_model = "AR1:AR1"}.
+By default, \code{row_cor = 0.6}.}
 
 \item{prop_spatial}{A vector specifying the proportion of spatial error variance to total error
-variance (spatial + random + extraneous) for each trait by environment combination. If the
-length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be assigned the same
-proportion for each trait By default, \code{prop_spatial = 0.5}.}
+variance (spatial + random + extraneous) for each trait by environment combination.
+If the length of \code{prop_spatial} is equal to \code{n_traits}, all environments will be  <- possibly delete
+assigned the same proportion for each trait  <- possibly delete
+If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations
+will be assigned the proportion of spatial error variance. By default, \code{prop_spatial = 0.5}.}
 
 \item{prop_ext}{A vector specifying the proportion of extraneous error variance to total error
-variance (spatial + random + extraneous) for each trait by environment combination. If the
-length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same
-same proportion for each trait. By default, \code{prop_ext = 0}.}
+variance (spatial + random + extraneous) for each trait by environment combination.
+If the length of \code{prop_ext} is equal to \code{n_traits}, all environments will be assigned the same  <- possibly delete
+same proportion for each trait.  <- possibly delete
+If only one value is provided and \code{n_traits > 1} and \code{n_envs > 1}, all trait by environment combinations
+will be assigned the proportion of extraneous error variance. By default, \code{prop_ext = 0}.}
 
-\item{ext_dir}{A vector specifying the direction of extraneous variation for each trait by environment
-combination. One of either "column", "row" or "both". When "both" (the default), half the variance is
-assigned to the columns and half is assigned to the rows.}
+\item{ext_dir}{A vector specifying the direction of extraneous variation for each environment,
+with elements being one of "col", "row" (the default), "both" or NA (if that environment has zero
+extraneous variation specified). When "both", half the variance is assigned to the columns and
+half is assigned to the rows.}
 
 \item{ext_col_cor}{A vector of column autocorrelations for each environment used in the extraneous
-error model. If only one value is provided, all environments will be assigned the same column
-autocorrelation. By default, \code{ext_col_cor = 0}.}
+error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned
+the same column autocorrelation. By default, \code{ext_col_cor = 0}.}
 
 \item{ext_row_cor}{A vector of row autocorrelations for each environment used in the extraneous
-error model. If only one value is provided, all environments will be assigned the same row
-autocorrelation. By default, \code{ext_row_cor = 0}.}
+error model. If only one value is provided and \code{n_envs > 1}, all environments will be assigned
+the same row autocorrelation. By default, \code{ext_row_cor = 0}.}
 
 \item{return_effects}{When TRUE, a list is returned with additional entries for each trait
 containing the spatial, random and extraneous errors. By default, return_effects = FALSE.}
@@ -128,13 +141,14 @@ a random error term and an extraneous error term. The spatial error term is cons
 according to either 1) bivariate interpolation using the \link[interp]{interp} function of
 the package 'interp', or 2) a separable first-order autoregressive process (AR1:AR1). The
 random error term is constructed using an independent process. The extraneous error term is
-constructed as the sum of column and/or row terms.
-The spatial, random and extraneous error terms are combined according to a user-defined ratio.
+constructed as the sum of column and/or row terms, where the user can choose from independent
+or correlated processes. The spatial, random and extraneous error terms are combined according
+to a user-defined ratio.
 \cr
 For multiple traits, correlated error terms can be generated assuming 1) correlated spatial
 error between traits, 2) correlated random error between traits, 3) correlated extraneous
 error between traits, or 4) some combination of 1-3. \cr
-A separable covariance structure is assumed between traits and environments.
+A separable covariance structure is assumed between traits and environments. <--- fix.
 }
 \examples{
 # Simulation of plot errors for two traits in three environments using a bivariate
@@ -145,10 +159,10 @@ n_traits <- 2 # Number of simulated traits.
 
 # Field layout
 n_cols <- 10 # Total number of columns in each environment.
-n_rows <- c(30, 30, 20) # Total number of rows in each environment.
-plot_length <- 5 # Plot length set to 5 meters in each environment.
+n_rows <- c(20, 30, 30) # Total number of rows in each environment.
+plot_length <- 10 # Plot length set to 10 meters in each environment.
 plot_width <- 2 # Plot width set to 2 meters in each environment.
-n_reps <- c(3, 3, 2) # Number of complete replicates (blocks) per environment.
+n_reps <- c(2, 3, 3) # Number of complete replicates (blocks) per environment.
 
 # Error variances for traits 1 and 2.
 var_R <- c(0.4, 15)
@@ -164,9 +178,9 @@ S_cor_R <- matrix(
 
 # Structure of simulated error.
 prop_spatial <- 0.4
-ext_row_cor <- -0.6
 prop_ext <- 0.2
 ext_dir <- "row"
+ext_row_cor <- -0.6
 
 error_df <- field_trial_error(
   n_envs = n_envs,

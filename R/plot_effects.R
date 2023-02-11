@@ -3,12 +3,11 @@
 #' Graphically displays plot effects (e.g., phenotypic values, genetic values, error terms) onto a
 #' field array, in which the colour gradient ranges from red (low value) to green (high value).
 #' The function requires a data frame generated with field_trial_error as an input, or any data
-#' frame with columns “env”, “col”, “row”, and the effect to be displayed. If the data frame
-#' contains a “block” column, the field array is split into blocks if \code{blocks = TRUE}.
+#' frame with columns “col”, “row”, and the effect to be displayed. If the data frame contains a
+#' “block” column, the field array is split into blocks if \code{blocks = TRUE}.
 #'
-#' @param df A data frame with columns "env", "col", "row", and the effect to be plotted.
-#'   If \code{df} contains a “block” column, the field array is split into blocks if
-#'   \code{blocks = TRUE}. \cr
+#' @param df A data frame with columns "col", "row", and the effect to be plotted. If \code{df}
+#'   also contains a “block” column, the field array is split into blocks if \code{blocks = TRUE}. \cr
 #'   \strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
 #'   otherwise.
 #' @param effect The effect to be plotted.
@@ -21,7 +20,7 @@
 #' # Plot the simulated total error term for trait 2 in environment 2 provided in the example data
 #' # frame 'df_error_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2,]
+#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
 #'
 #' plot_effects(
 #'   df = error_df,
@@ -37,7 +36,7 @@ plot_effects <- function(df,
   if (any(!c("col", "row") %in% colnames(df))) {
     stop("'df' must contain columns 'col', 'row', and the effect to be plotted.")
   }
-  
+
   effect <- tolower(effect)
   colnames(df)[colnames(df) %in% effect] <- "eff"
 
@@ -131,44 +130,52 @@ plot_effects <- function(df,
   return(p)
 }
 
-#' Construct a qqplot
+#' Q-Q plot
 #'
-#' @param df A data frame containing the effect to be plotted.
-#' @param effect The name of the effect to be plotted.
-#' @param labels When FALSE (default) data points without labels are plotted. When TRUE, 
-#'   column and row labels are inserted onto the qqplot. This requires the additional columns 
-#'   "col" and "row" in the data frame.
-#' @param plot When TRUE (default), the qqplot is displayed graphically. When FALSE, a 
-#'   data frame is returned.
+#' Creates a Q-Q plot (quantile-quantile plot) for graphical comparison of a normal theoretical
+#' quantile and the quantile of the effect to be used.
 #'
-#' @return Graphic of the qqplot, where the x- and y- axes display the theoretical and
-#'   sample quantiles. When \code{plot = FALSE}, a data frame is returned with the columns 
-#'   "theoretical" and "sample", as well as "col and "row" when \code{labels=TRUE}.
+#' @param df A data frame containing the effect to be compared to a normal distribution using a
+#'   Q-Q plot.
+#' @param effect The name of the effect to be compared to a normal distribution using a Q-Q plot.
+#' @param labels When FALSE (default), data points without labels are plotted. When TRUE, column
+#'   and row labels are shown in the Q-Q plot. This requires additional columns "col" and "row" in
+#'   the data frame.
+#'
+#' @return A Q-Q plot with the x- and y-axes displaying the theoretical quantile and the sample
+#'   quantile of the effect to be used, respectively.
 #'
 #' @examples
-#' # Plot the simulated total error for trait 2 in environment 2 provided in the example data
-#' # frame 'df_error_bivar'.
+#' # Q-Q plot of the simulated total error for trait 2 in environment 2 provided in the example
+#' # data frame 'df_error_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2,]
-#' 
-#' qq_plot(
+#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#'
+#' qq <- qq_plot(
 #'   df = error_df,
-#'   effect = "e.Trait.2"
+#'   effect = "e.Trait.2",
 #'   labels = TRUE,
-#'   plot = TRUE,
+#'   plot = TRUE
 #' )
+#'
+#' # Q-Q plot
+#' qq
+#'
+#' # Extraction of a data frame containing the theoretical quantile and the sample quantile of
+#' # the effect.
+#' qq_df <- qq$data
+#'
 #' @export
 #'
 #'
 
 qq_plot <- function(df,
                     effect,
-                    labels = FALSE,
-                    plot = TRUE) {
-   colnames(df) <- tolower(colnames(df))
-   effect <- tolower(effect)
-   colnames(df)[colnames(df) %in% effect] <- "eff"
-  
+                    labels = FALSE) {
+  colnames(df) <- tolower(colnames(df))
+  effect <- tolower(effect)
+  colnames(df)[colnames(df) %in% effect] <- "eff"
+
   if (!labels) {
     qq_df <- data.frame(effect = df[["eff"]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
@@ -177,23 +184,18 @@ qq_plot <- function(df,
       ggplot2::ggplot_build(p)$data[[1]]["sample"],
       ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
     )
-    if (!plot) {
-      return(qq_df)
-    }
-    if (plot) {
-      p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample)) +
-        ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
-        ggplot2::geom_point(size = 2) +
-        ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
-        ggplot2::theme(
-          title = ggplot2::element_text(size = 10),
-          axis.title.x = ggplot2::element_text(size = 12),
-          axis.text.x = ggplot2::element_text(size = 9),
-          axis.title.y = ggplot2::element_text(size = 12),
-          axis.text.y = ggplot2::element_text(size = 9)
-        )
-      return(p)
-    }
+    p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample)) +
+      ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
+      ggplot2::geom_point(size = 2) +
+      ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
+      ggplot2::theme(
+        title = ggplot2::element_text(size = 10),
+        axis.title.x = ggplot2::element_text(size = 12),
+        axis.text.x = ggplot2::element_text(size = 9),
+        axis.title.y = ggplot2::element_text(size = 12),
+        axis.text.y = ggplot2::element_text(size = 9)
+      )
+    return(p)
   }
 
   if (labels) {
@@ -217,53 +219,53 @@ qq_plot <- function(df,
     )
     qq_df <- qq_df[order(qq_df$col, qq_df$row), ]
     rownames(qq_df) <- NULL
-    if (!plot) {
-      return(qq_df)
-    }
-    if (plot) {
-      qq_df$ColRowLabel <- paste0(qq_df$col, ":", qq_df$row)
-      theoretical <- ColRowLabel <- NULL
-      p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = ColRowLabel)) +
-        ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
-        ggplot2::geom_text(size = 4) +
-        ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
-        ggplot2::ggtitle(label = "Residuals indexed as Col:Row") +
-        ggplot2::theme(
-          title = ggplot2::element_text(size = 10),
-          axis.title.x = ggplot2::element_text(size = 12),
-          axis.text.x = ggplot2::element_text(size = 9),
-          axis.title.y = ggplot2::element_text(size = 12),
-          axis.text.y = ggplot2::element_text(size = 9)
-        )
-      return(p)
-    }
+
+    qq_df$ColRowLabel <- paste0(qq_df$col, ":", qq_df$row)
+    theoretical <- ColRowLabel <- NULL
+    p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = ColRowLabel)) +
+      ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
+      ggplot2::geom_text(size = 4) +
+      ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
+      ggplot2::ggtitle(label = "Residuals indexed as Col:Row") +
+      ggplot2::theme(
+        title = ggplot2::element_text(size = 10),
+        axis.title.x = ggplot2::element_text(size = 12),
+        axis.text.x = ggplot2::element_text(size = 9),
+        axis.title.y = ggplot2::element_text(size = 12),
+        axis.text.y = ggplot2::element_text(size = 9)
+      )
+    return(p)
   }
 }
 
-#' Construct a sample variogram
+#' Sample variogram
 #'
-#' @param df A data frame containing the columns "col", "row", and the effect to be plotted.
-#' @param effect The name of the effect to be plotted.
+#' Creates a sample variogram. The x- and y-axes display the row and column displacements,
+#' respectively. The z-axis displays the semi-variance (variogram ordinates).
+#'
+#' @param df A data frame containing the columns "col", "row", and the effect to be used in the
+#'   sample variogram.
+#' @param effect The name of the effect to used in the sample variogram.
 #' @param plot When TRUE (default), the sample variogram is displayed graphically.
 #'   When FALSE, a data frame is returned.
-#' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be displayed.
-#'   By default, \code{min_np = 30}.
+#' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be
+#'   displayed. By default, \code{min_np = 30}.
 #'
 #' @return Graphic of the sample variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and 
+#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
 #'   "semi_var".
 #'
 #' @examples
-#' # Plot the simulated total error for trait 2 in environment 2 provided in the example data
-#' # frame 'df_error_bivar'.
+#' # Sample variogram fo the simulated total error for trait 2 in environment 2 provided in the
+#' # example data frame 'df_error_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2,]
+#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
 #'
-#' sample_variogram(
+#' vario <- sample_variogram(
 #'   df = error_df,
 #'   effect = "e.Trait.2",
-#'   plot = TRUE,
+#'   plot = TRUE
 #' )
 #' @export
 #'
@@ -271,10 +273,10 @@ sample_variogram <- function(df,
                              effect,
                              plot = TRUE,
                              min_np = 30) {
-  colnames(df) <- tolower(colnames(df)) 
+  colnames(df) <- tolower(colnames(df))
   effect <- tolower(effect)
   colnames(df)[colnames(df) %in% effect] <- "eff"
-  
+
   if (any(!c("col", "row") %in% colnames(df))) {
     stop("'df' must contain columns 'col' and 'row', and the effect to be plotted.")
   }
@@ -328,26 +330,29 @@ sample_variogram <- function(df,
   }
 }
 
-#' Construct a theoretical variogram
+#' Theoretical variogram
 #'
-#' @param n_cols The total number of columns.
-#' @param n_rows The total number of rows.
-#' @param var_R The total error variance. By default, \code{var_R = 1}.
-#' @param prop_spatial The proportion of spatial error variance to total error
+#' Creates a theoretical variogram. The x- and y-axes display the row and column displacements,
+#' respectively. The z-axis displays the semi-variance (variogram ordinates).
+#'
+#' @param n_cols A scalar defining the number of columns.
+#' @param n_rows A scalar defining the number of rows.
+#' @param var_R A scalar defining the total error variance. By default, \code{var_R = 1}.
+#' @param prop_spatial A scalar defining the proportion of spatial error variance to total error
 #'   variance (spatial + random). By default, \code{prop_spatial = 0.5}.
-#' @param col_cor The column autocorrelation value.
-#' @param row_cor The row autocorrelation value.
+#' @param col_cor A scalar defining the column autocorrelation value.
+#' @param row_cor A scalar defining the row autocorrelation value.
 #' @param plot When TRUE (default), the theoretical variogram is displayed graphically.
 #'   When FALSE, a data frame is returned.
 #'
 #' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and 
+#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
 #'   "semi_var".
 #'
 #' @examples
-#' # Plot a theoretical variogram for a field with 10 columns and 20 rows,
-#' # using column and row autocorrelations of 0.4 and 0.8.
+#' # Theoretical variogram for a field with 10 columns and 20 rows, using column and row
+#' # autocorrelations of 0.4 and 0.8.
 #'
 #' theoretical_variogram(
 #'   n_cols = 10,
