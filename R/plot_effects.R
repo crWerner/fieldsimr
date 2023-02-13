@@ -1,3 +1,5 @@
+
+
 #' Graphics for plot effects
 #'
 #' Graphically displays plot effects (e.g., phenotypic values, genetic values, error terms) onto a
@@ -245,15 +247,11 @@ qq_plot <- function(df,
 #' @param df A data frame containing the columns "col", "row", and the effect to be used in the
 #'   sample variogram.
 #' @param effect The name of the effect to used in the sample variogram.
-#' @param plot When TRUE (default), the sample variogram is displayed graphically.
-#'   When FALSE, a data frame is returned.
 #' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be
 #'   displayed. By default, \code{min_np = 30}.
 #'
 #' @return Graphic of the sample variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
-#'   "semi_var".
 #'
 #' @examples
 #' # Sample variogram fo the simulated total error for trait 2 in environment 2 provided in the
@@ -264,13 +262,20 @@ qq_plot <- function(df,
 #' vario <- sample_variogram(
 #'   df = error_df,
 #'   effect = "e.Trait.2",
-#'   plot = TRUE
 #' )
+#'
+#' # Sample variogram
+#' vario
+#'
+#' # Extraction of a data frame containing the column and row displacements as well as the
+#' semi-variances (sample variogram ordinates).
+#'
+#' sample_df <- vario$data
+#'
 #' @export
 #'
 sample_variogram <- function(df,
                              effect,
-                             plot = TRUE,
                              min_np = 30) {
   colnames(df) <- tolower(colnames(df))
   effect <- tolower(effect)
@@ -304,29 +309,24 @@ sample_variogram <- function(df,
     np = c(with(sample_df, tapply(semi_var, list(row_dis, col_dis), function(x) length(x[!is.na(x)]))))
   )
 
-  if (!plot) {
-    sample_df$col_dis <- factor(sample_df$col_dis)
-    sample_df$row_dis <- factor(sample_df$row_dis)
-    return(sample_df)
-  }
-
-  if (plot) {
     lattice::lattice.options(
       layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
       layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
     )
     graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
     p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
-      data = sample_df[sample_df$np >= min_np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
-      screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
-      scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-      zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
-      xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
-      ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
-      par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
+                            data = sample_df[sample_df$np >= min_np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+                            screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
+                            scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
+                            zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+                            xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
+                            ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
+                            par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
     )
+    sample_df$col_dis <- factor(sample_df$col_dis)
+    sample_df$row_dis <- factor(sample_df$row_dis)
+    p$data <- sample_df
     return(p)
-  }
 }
 
 #' Theoretical variogram
@@ -341,27 +341,31 @@ sample_variogram <- function(df,
 #'   variance (spatial + random). By default, \code{prop_spatial = 0.5}.
 #' @param col_cor A scalar defining the column autocorrelation value.
 #' @param row_cor A scalar defining the row autocorrelation value.
-#' @param plot When TRUE (default), the theoretical variogram is displayed graphically.
-#'   When FALSE, a data frame is returned.
 #'
 #' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-#'   When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
-#'   "semi_var".
 #'
 #' @examples
 #' # Theoretical variogram for a field with 10 columns and 20 rows, using column and row
 #' # autocorrelations of 0.4 and 0.8.
 #'
-#' theoretical_variogram(
+#' vario <- theoretical_variogram(
 #'   n_cols = 10,
 #'   n_rows = 20,
 #'   var_R = 1,
 #'   prop_spatial = 0.5,
 #'   col_cor = 0.4,
-#'   row_cor = 0.8,
-#'   plot = TRUE
+#'   row_cor = 0.8
 #' )
+#'
+#' # Theoretical variogram
+#' vario
+#'
+#' # Extraction of a data frame containing the column and row displacements as well as the
+#' semi-variances (theoretical variogram ordinates).
+#'
+#' theoretical_df <- vario$data
+#'
 #' @export
 #'
 theoretical_variogram <- function(n_cols,
@@ -369,8 +373,7 @@ theoretical_variogram <- function(n_cols,
                                   var_R = 1,
                                   prop_spatial = 0.5,
                                   col_cor,
-                                  row_cor,
-                                  plot = TRUE) {
+                                  row_cor) {
   prop_rand <- 1 - prop_spatial
   col_displacement <- rep(0:(n_cols - 1), each = n_rows)
   row_displacement <- rep(0:(n_rows - 1), times = n_cols)
@@ -383,27 +386,22 @@ theoretical_variogram <- function(n_cols,
   theoretical_df$col_dis <- as.numeric(trimws(theoretical_df$col_dis))
   theoretical_df$row_dis <- as.numeric(trimws(theoretical_df$row_dis))
 
-  if (!plot) {
-    theoretical_df$col_dis <- factor(theoretical_df$col_dis)
-    theoretical_df$row_dis <- factor(theoretical_df$row_dis)
-    return(theoretical_df)
-  }
-
-  if (plot) {
     lattice::lattice.options(
       layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
       layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
     )
     graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
     p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
-      data = theoretical_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
-      screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
-      scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-      zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
-      xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
-      ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
-      par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
+                            data = theoretical_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+                            screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
+                            scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
+                            zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+                            xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
+                            ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
+                            par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
     )
+    theoretical_df$col_dis <- factor(theoretical_df$col_dis)
+    theoretical_df$row_dis <- factor(theoretical_df$row_dis)
+    p$data <- theoretical_df
     return(p)
-  }
 }
