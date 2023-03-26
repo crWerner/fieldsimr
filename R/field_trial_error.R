@@ -196,7 +196,7 @@ field_trial_error <- function(n_envs = 1,
     stop("'n_reps' must contain integers > 0")
   }
 
-  rep_dir[is.na(rep_dir)] <- "col"
+  rep_dir[is.na(rep_dir)] <- rep_dir[tolower(rep_dir) == "column"] <- "col"
   rep_dir <- tolower(rep_dir)
   if (length(rep_dir) == 1) rep_dir <- rep(rep_dir, n_envs)
   if (any(rep_dir == "col")) {
@@ -230,13 +230,13 @@ field_trial_error <- function(n_envs = 1,
   if (is.null(R_cor_R)) R_cor_R <- diag(n_traits)
   if (is.null(E_cor_R)) E_cor_R <- diag(n_traits)
 
-  if (any(eigen(S_cor_R)$values < 1e-7)) {
+  if (any(eigen(S_cor_R)$values < 1e-8)) {
     stop("'S_cor_R' is not postiive definite")
   }
-  if (any(eigen(R_cor_R)$values < 1e-7)) {
+  if (any(eigen(R_cor_R)$values < 1e-8)) {
     stop("'R_cor_R' is not postiive definite")
   }
-  if (any(eigen(E_cor_R)$values < 1e-7)) {
+  if (any(eigen(E_cor_R)$values < 1e-8)) {
     stop("'E_cor_R' is not postiive definite")
   }
 
