@@ -4,7 +4,7 @@
 \alias{sample_variogram}
 \title{Sample variogram}
 \usage{
-sample_variogram(df, effect, plot = TRUE, min_np = 30)
+sample_variogram(df, effect, min_np = 30)
 }
 \arguments{
 \item{df}{A data frame containing the columns "col", "row", and the effect to be used in the
@@ -12,17 +12,12 @@ sample variogram.}
 
 \item{effect}{The name of the effect to used in the sample variogram.}
 
-\item{plot}{When TRUE (default), the sample variogram is displayed graphically.
-When FALSE, a data frame is returned.}
-
 \item{min_np}{Only semi variances based on at least \code{min_np} pairs of plots will be
 displayed. By default, \code{min_np = 30}.}
 }
 \value{
 Graphic of the sample variogram, where the x- and y- axes display the row and
   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-  When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
-  "semi_var".
 }
 \description{
 Creates a sample variogram. The x- and y-axes display the row and column displacements,
@@ -37,6 +32,14 @@ error_df <- df_error_bivar[df_error_bivar$env == 2, ]
 vario <- sample_variogram(
   df = error_df,
   effect = "e.Trait.2",
-  plot = TRUE
 )
+
+# Sample variogram
+vario
+
+# Extraction of a data frame containing the column and row displacements as well as the
+# semi-variances (sample variogram ordinates).
+
+sample_df <- vario$data
+
 }

@@ -99,7 +99,7 @@
 #' # Field layout
 #' n_cols <- 10
 #' n_rows <- c(20, 30, 30)
-#' rep_dir = c("col","row","row")
+#' rep_dir <- c("col", "row", "row")
 #' plot_length <- 10
 #' plot_width <- 2
 #' n_reps <- c(2, 3, 3)
@@ -200,18 +200,18 @@ field_trial_error <- function(n_envs = 1,
   rep_dir <- tolower(rep_dir)
   if (length(rep_dir) == 1) rep_dir <- rep(rep_dir, n_envs)
   if (any(rep_dir == "col")) {
-    if(any(((n_cols / n_reps) %% 1 != 0)[rep_dir == "col"])){
-    stop("Number of columns not divisible by number of reps. Review your trial design!")
+    if (any(((n_cols / n_reps) %% 1 != 0)[rep_dir == "col"])) {
+      stop("Number of columns not divisible by number of reps. Review your trial design!")
     }
   }
   if (any(rep_dir == "row")) {
-    if(any(((n_rows / n_reps) %% 1 != 0)[rep_dir == "row"])){
-    stop("Number of rows not divisible by number of reps. Review your trial design!")
+    if (any(((n_rows / n_reps) %% 1 != 0)[rep_dir == "row"])) {
+      stop("Number of rows not divisible by number of reps. Review your trial design!")
     }
   }
-  if (!all(rep_dir %in% c("col", "row"))) {
-    stop("'rep_dir' must be either 'col' or 'row'")
-  }
+  # if (!all(rep_dir %in% c("column", "row", NA))) {
+  #   stop("'rep_dir' must be either 'column', 'row', or 'NA")
+  # }
 
   if (length(n_reps) == 1) n_reps <- rep(n_reps, n_envs)
   if (length(n_reps) != n_envs) {
@@ -301,7 +301,7 @@ field_trial_error <- function(n_envs = 1,
   rows2 <- c(unlist(mapply(function(x, y) rep(1:x, each = y), y = n_cols, x = n_rows)))
 
   n_plots <- n_cols * n_rows
-  n_plots1 <- rep(as.numeric(factor(rep_dir, levels = c("row","col"))) - 1, times = n_plots)
+  n_plots1 <- rep(as.numeric(factor(rep_dir, levels = c("row", "col"))) - 1, times = n_plots)
   n_plots2 <- 1 - n_plots1
   cols <- n_plots1 * cols1 + n_plots2 * cols2
   rows <- n_plots1 * rows1 + n_plots2 * rows2
@@ -350,7 +350,7 @@ field_trial_error <- function(n_envs = 1,
     while (x | y == 100) {
       y <- y + 1
       plot_error_lst1 <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                                x = n_cols * n_rows * n_traits, y = cor_mat_lst, SIMPLIFY = FALSE
+        x = n_cols * n_rows * n_traits, y = cor_mat_lst, SIMPLIFY = FALSE
       )
 
       x <- any(unlist(lapply(plot_error_lst1, function(x) eigen(stats::var(x))$values < 1e-7)))
@@ -360,12 +360,12 @@ field_trial_error <- function(n_envs = 1,
     }
     if (n_traits > 1) {
       plot_error_lst1 <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(S_cor_R)),
-                                x = plot_error_lst1, SIMPLIFY = FALSE
+        x = plot_error_lst1, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1) {
       plot_error_lst1 <- mapply(function(x) scale(x),
-                                x = plot_error_lst1, SIMPLIFY = FALSE
+        x = plot_error_lst1, SIMPLIFY = FALSE
       )
     }
   }
@@ -383,11 +383,11 @@ field_trial_error <- function(n_envs = 1,
     max_lst <- mapply(function(x, y) 1:max(x, y), x = cols_lst, y = rows_lst, SIMPLIFY = FALSE)
 
     col_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
-                              x = max_lst, y = plot_length, SIMPLIFY = FALSE
+      x = max_lst, y = plot_length, SIMPLIFY = FALSE
     )
 
     row_centres_lst <- mapply(function(x, y) round(y * (x - 0.5), 8),
-                              x = max_lst, y = plot_width, SIMPLIFY = FALSE
+      x = max_lst, y = plot_width, SIMPLIFY = FALSE
     )
 
     col_gap <- plot_length / 4
@@ -398,17 +398,17 @@ field_trial_error <- function(n_envs = 1,
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
       y <- y + 1
       xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
-                             w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+        w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
       )
       yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
-                             w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+        w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
       )
       x <- T
       w <- 0
       while (x | w == 100) {
         w <- w + 1
         zInterp_list <- mapply(function(w) scale(matrix(stats::rnorm((4 + w) * n_traits), ncol = n_traits)),
-                               w = complexity, SIMPLIFY = FALSE
+          w = complexity, SIMPLIFY = FALSE
         )
 
         x <- any(unlist(lapply(zInterp_list, function(x) eigen(stats::var(x))$values < 1e-7)))
@@ -418,13 +418,13 @@ field_trial_error <- function(n_envs = 1,
       }
       if (n_traits > 1) {
         zInterp_list <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(S_cor_R)),
-                               x = zInterp_list, SIMPLIFY = FALSE
+          x = zInterp_list, SIMPLIFY = FALSE
         )
       }
 
       if (n_traits == 1) {
         zInterp_list <- mapply(function(x) scale(x),
-                               x = zInterp_list, SIMPLIFY = FALSE
+          x = zInterp_list, SIMPLIFY = FALSE
         )
       }
 
@@ -453,7 +453,7 @@ field_trial_error <- function(n_envs = 1,
   while (x | y == 100) {
     y <- y + 1
     plot_error_lst2 <- mapply(function(x) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                              x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
+      x = n_cols * n_rows * n_traits, SIMPLIFY = FALSE
     )
     x <- any(unlist(lapply(plot_error_lst2, function(x) eigen(stats::var(x))$values < 1e-7)))
     if (y == 100) {
@@ -463,12 +463,12 @@ field_trial_error <- function(n_envs = 1,
 
   if (n_traits > 1) {
     plot_error_lst2 <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(R_cor_R)),
-                              x = plot_error_lst2, SIMPLIFY = FALSE
+      x = plot_error_lst2, SIMPLIFY = FALSE
     )
   }
   if (n_traits == 1) {
     plot_error_lst2 <- mapply(function(x) scale(x),
-                              x = plot_error_lst2, SIMPLIFY = FALSE
+      x = plot_error_lst2, SIMPLIFY = FALSE
     )
   }
 
@@ -491,13 +491,13 @@ field_trial_error <- function(n_envs = 1,
     ext_col_cor_mat_lst <- mapply(function(x) t(chol(x)), x = ext_col_ar1, SIMPLIFY = FALSE)
 
     plot_error_lst3c <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                               x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
+      x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
     )
     x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_cols > n_traits) | y == 100 & all(n_cols > n_traits)) {
       plot_error_lst3c <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                                 x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
+        x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
@@ -507,12 +507,12 @@ field_trial_error <- function(n_envs = 1,
     }
     if (n_traits > 1 & all(n_cols > n_traits)) {
       plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
-                                 x = plot_error_lst3c, SIMPLIFY = FALSE
+        x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1 | any(n_cols <= n_traits)) {
       plot_error_lst3c <- mapply(function(x) scale(x),
-                                 x = plot_error_lst3c, SIMPLIFY = FALSE
+        x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     Zc <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ col - 1, droplevels(plot_df[plot_df$env == i, ])))
@@ -537,13 +537,13 @@ field_trial_error <- function(n_envs = 1,
     ext_row_cor_mat_lst <- mapply(function(x) t(chol(x)), x = ext_row_ar1, SIMPLIFY = FALSE)
 
     plot_error_lst3r <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                               x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
+      x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
     )
     x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_rows > n_traits) | y == 100 & all(n_rows > n_traits)) {
       plot_error_lst3r <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-                                 x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
+        x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
@@ -553,12 +553,12 @@ field_trial_error <- function(n_envs = 1,
     }
     if (n_traits > 1 & all(n_rows > n_traits)) {
       plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
-                                 x = plot_error_lst3r, SIMPLIFY = FALSE
+        x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1 | any(n_rows <= n_traits)) {
       plot_error_lst3r <- mapply(function(x) scale(x),
-                                 x = plot_error_lst3r, SIMPLIFY = FALSE
+        x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     Zr <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ row - 1, droplevels(plot_df[plot_df$env == i, ])))
@@ -570,12 +570,16 @@ field_trial_error <- function(n_envs = 1,
   prop_spatial <- as.data.frame(t(matrix(prop_spatial, ncol = n_traits)))
   prop_ext_col <- as.data.frame(t(matrix(prop_ext_col, ncol = n_traits)))
   prop_ext_row <- as.data.frame(t(matrix(prop_ext_row, ncol = n_traits)))
-  if (n_traits > 1){prop_spatial <- lapply(X = prop_spatial, FUN = diag)
-                    prop_ext_col <- lapply(X = prop_ext_col, FUN = diag)
-                    prop_ext_row <- lapply(X = prop_ext_row, FUN = diag)}
-  if (n_traits == 1){prop_spatial <- lapply(X = prop_spatial, FUN = diag, nrow = 1)
-                     prop_ext_col <- lapply(X = prop_ext_col, FUN = diag, nrow = 1)
-                     prop_ext_row <- lapply(X = prop_ext_row, FUN = diag, nrow = 1)}
+  if (n_traits > 1) {
+    prop_spatial <- lapply(X = prop_spatial, FUN = diag)
+    prop_ext_col <- lapply(X = prop_ext_col, FUN = diag)
+    prop_ext_row <- lapply(X = prop_ext_row, FUN = diag)
+  }
+  if (n_traits == 1) {
+    prop_spatial <- lapply(X = prop_spatial, FUN = diag, nrow = 1)
+    prop_ext_col <- lapply(X = prop_ext_col, FUN = diag, nrow = 1)
+    prop_ext_row <- lapply(X = prop_ext_row, FUN = diag, nrow = 1)
+  }
   e_spat <- mapply(function(x, y) (scale(x) %*% sqrt(y)), x = plot_error_lst1, y = prop_spatial, SIMPLIFY = FALSE)
   e_rand <- mapply(function(w, x, y, z) (w %*% sqrt(diag(1, nrow = n_traits) - x - y - z)), w = plot_error_lst2, x = prop_spatial, y = prop_ext_col, z = prop_ext_row, SIMPLIFY = FALSE)
   e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext_col, SIMPLIFY = FALSE)
@@ -610,10 +614,10 @@ field_trial_error <- function(n_envs = 1,
     e_all <- lapply(seq_len(ncol(e_spat)), function(i) cbind(e_spat[, i], e_rand[, i], e_ext_c[, i], e_ext_r[, i]))
     resids <- lapply(e_all, function(x) {
       data.frame(plot_df[, 1:4],
-                 e_spat = x[, 1],
-                 e_rand = x[, 2],
-                 e_ext_col = x[, 3],
-                 e_ext_row = x[, 4]
+        e_spat = x[, 1],
+        e_rand = x[, 2],
+        e_ext_col = x[, 3],
+        e_ext_row = x[, 4]
       )
     })
 

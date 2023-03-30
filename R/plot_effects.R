@@ -1,5 +1,3 @@
-
-
 #' Graphics for plot effects
 #'
 #' Graphically displays plot effects (e.g., phenotypic values, genetic values, error terms) onto a
@@ -268,7 +266,7 @@ qq_plot <- function(df,
 #' vario
 #'
 #' # Extraction of a data frame containing the column and row displacements as well as the
-#' semi-variances (sample variogram ordinates).
+#' # semi-variances (sample variogram ordinates).
 #'
 #' sample_df <- vario$data
 #'
@@ -309,24 +307,24 @@ sample_variogram <- function(df,
     np = c(with(sample_df, tapply(semi_var, list(row_dis, col_dis), function(x) length(x[!is.na(x)]))))
   )
 
-    lattice::lattice.options(
-      layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
-      layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
-    )
-    graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-    p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
-                            data = sample_df[sample_df$np >= min_np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
-                            screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
-                            scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-                            zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
-                            xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
-                            ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
-                            par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
-    )
-    sample_df$col_dis <- factor(sample_df$col_dis)
-    sample_df$row_dis <- factor(sample_df$row_dis)
-    p$data <- sample_df
-    return(p)
+  lattice::lattice.options(
+    layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
+    layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
+  )
+  graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
+  p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
+    data = sample_df[sample_df$np >= min_np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+    screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
+    scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
+    zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+    xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
+    ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
+    par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
+  )
+  sample_df$col_dis <- factor(sample_df$col_dis)
+  sample_df$row_dis <- factor(sample_df$row_dis)
+  p$data <- sample_df
+  return(p)
 }
 
 #' Theoretical variogram
@@ -362,7 +360,7 @@ sample_variogram <- function(df,
 #' vario
 #'
 #' # Extraction of a data frame containing the column and row displacements as well as the
-#' semi-variances (theoretical variogram ordinates).
+#' # semi-variances (theoretical variogram ordinates).
 #'
 #' theoretical_df <- vario$data
 #'
@@ -386,22 +384,22 @@ theoretical_variogram <- function(n_cols,
   theoretical_df$col_dis <- as.numeric(trimws(theoretical_df$col_dis))
   theoretical_df$row_dis <- as.numeric(trimws(theoretical_df$row_dis))
 
-    lattice::lattice.options(
-      layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
-      layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
-    )
-    graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-    p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
-                            data = theoretical_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
-                            screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
-                            scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-                            zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
-                            xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
-                            ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
-                            par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
-    )
-    theoretical_df$col_dis <- factor(theoretical_df$col_dis)
-    theoretical_df$row_dis <- factor(theoretical_df$row_dis)
-    p$data <- theoretical_df
-    return(p)
+  lattice::lattice.options(
+    layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
+    layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
+  )
+  graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
+  p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
+    data = theoretical_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+    screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
+    scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
+    zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+    xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
+    ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
+    par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
+  )
+  theoretical_df$col_dis <- factor(theoretical_df$col_dis)
+  theoretical_df$row_dis <- factor(theoretical_df$row_dis)
+  p$data <- theoretical_df
+  return(p)
 }

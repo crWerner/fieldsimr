@@ -10,8 +10,7 @@ theoretical_variogram(
   var_R = 1,
   prop_spatial = 0.5,
   col_cor,
-  row_cor,
-  plot = TRUE
+  row_cor
 )
 }
 \arguments{
@@ -27,15 +26,10 @@ variance (spatial + random). By default, \code{prop_spatial = 0.5}.}
 \item{col_cor}{A scalar defining the column autocorrelation value.}
 
 \item{row_cor}{A scalar defining the row autocorrelation value.}
-
-\item{plot}{When TRUE (default), the theoretical variogram is displayed graphically.
-When FALSE, a data frame is returned.}
 }
 \value{
 Graphic of the theoretical variogram, where the x- and y- axes display the row and
   column displacements and the z-axis displays the semi-variance (variogram ordinates).
-  When \code{plot = FALSE}, a data frame is returned with the columns "col_dis", "row_dis", and
-  "semi_var".
 }
 \description{
 Creates a theoretical variogram. The x- and y-axes display the row and column displacements,
@@ -45,13 +39,21 @@ respectively. The z-axis displays the semi-variance (variogram ordinates).
 # Theoretical variogram for a field with 10 columns and 20 rows, using column and row
 # autocorrelations of 0.4 and 0.8.
 
-theoretical_variogram(
+vario <- theoretical_variogram(
   n_cols = 10,
   n_rows = 20,
   var_R = 1,
   prop_spatial = 0.5,
   col_cor = 0.4,
-  row_cor = 0.8,
-  plot = TRUE
+  row_cor = 0.8
 )
+
+# Theoretical variogram
+vario
+
+# Extraction of a data frame containing the column and row displacements as well as the
+# semi-variances (theoretical variogram ordinates).
+
+theoretical_df <- vario$data
+
 }

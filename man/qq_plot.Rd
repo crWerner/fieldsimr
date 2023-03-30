@@ -39,7 +39,7 @@ qq <- qq_plot(
 # Q-Q plot
 qq
 
-# Extraction of a data frame containing the theoretical quantile and the sample quantile of
+# Extraction of a data frame containing the theoretical and sample quantiles of
 # the effect.
 qq_df <- qq$data
 
