@@ -2,42 +2,42 @@
 % Please edit documentation in R/compound_symmetry_gxe.R
 \name{compsym_asr_output}
 \alias{compsym_asr_output}
-\title{Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' -
+\title{Genetic values based on a compound symmetry model for GxE interaction using `AlphaSimR' -
 Simulation of genetic values}
 \usage{
 compsym_asr_output(pop, n_envs, n_reps, n_traits, effects = FALSE)
 }
 \arguments{
-\item{pop}{An 'AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
+\item{pop}{An `AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
 \code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{compsym_asr_input}.}
 
-\item{n_envs}{Number of simulated environments (same as used in
+\item{n_envs}{Number of simulated environments (same number used in
 \link[FieldSimR]{compsym_asr_input}).}
 
 \item{n_reps}{A vector defining the number of complete replicates in each environment. If only
 one value is provided and \code{n_traits > 1}, all environments will be assigned the same
 number of replicates.}
 
-\item{n_traits}{Number of simulated traits (same as used in \link[FieldSimR]{compsym_asr_input}).}
+\item{n_traits}{Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).}
 
 \item{effects}{When TRUE, a list is returned with additional entries containing the total
 (additive + dominance + epistatic) main effects and GxE interaction effects for each
-trait-by-environment combination. By default, effects = FALSE.}
+environment-within-trait combination. By default, effects = FALSE.}
 }
 \value{
-A data-frame containing the environment id, replicate number, genotype id, and
+A data frame with columns `env', `rep', `id', and
   simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
   additional entries containing the total (additive + dominance + epistatic) main effects and
-  GxE interaction effects for each trait-by-environment combination.
+  GxE interaction effects for each environment-within-trait combination.
 }
 \description{
-Creates a data frame of correlated genetic values for multiple traits in multiple environments
+Creates a data frame of correlated genetic values for multiple traits across multiple environments
 based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
-requires an 'AlphaSimR' population object generated using the
-\link[FieldSimR]{compsym_asr_input} function.
+requires an `AlphaSimR' population object generated using the function
+\link[FieldSimR]{compsym_asr_input}.
 }
 \examples{
-# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+# Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits across
 # three environments based on a compound symmetry model for GxE interaction.
 
 # 1. Define the genetic architecture of the simulated traits.
@@ -50,13 +50,13 @@ mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in 3 environments for ea
 var <- c(0.2, 10)
 var_DD <- c(0.1, 0.2)
 
-# Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
+# Relative magnitude of additive and dominance degree main effect variances for traits 1 and 2.
 rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
 rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
 
 # Additive and dominance degree correlations between traits 1 and 2.
 cor_A <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2) # Additive correlation matrix.
-cor_DD <- diag(2) # Assuming independence between traits.
+cor_DD <- diag(2) # Dominance correlation matrix - assume independence.
 
 input_asr <- compsym_asr_input(
   n_envs = 3,

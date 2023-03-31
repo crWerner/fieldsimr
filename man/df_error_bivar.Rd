@@ -3,14 +3,14 @@
 \docType{data}
 \name{df_error_bivar}
 \alias{df_error_bivar}
-\title{Field trial error example data frame}
+\title{Plot errors - example data frame}
 \format{
-A data frame with 800 rows and 6 columns:
+A data frame with 800 rows of data and the following 6 columns:
 \describe{
-  \item{env}{Environment id}
-  \item{block}{Block id}
-  \item{col}{Column id}
-  \item{row}{Row id}
+  \item{env}{Environment number}
+  \item{block}{Block number}
+  \item{col}{Column number}
+  \item{row}{Row number}
   \item{e.Trait.1}{Simulated plot error for trait 1}
   \item{e.Trait.2}{Simulated plot error for trait 2}
 }
@@ -19,8 +19,8 @@ A data frame with 800 rows and 6 columns:
 df_error_bivar
 }
 \description{
-An example data frame of simulated field trial plot errors for two traits
-tested in three environments. The data frame was generated using the function
+An example data frame of simulated plot errors for two traits
+across three environments. The data frame was generated using the function
 \link[FieldSimR]{field_trial_error} with bivariate interpolation.
 }
 \keyword{datasets}

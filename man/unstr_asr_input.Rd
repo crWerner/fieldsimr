@@ -3,7 +3,7 @@
 \name{unstr_asr_input}
 \alias{unstr_asr_input}
 \title{Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Input
-parameters}
+simulation parameters}
 \usage{
 unstr_asr_input(
   n_envs,

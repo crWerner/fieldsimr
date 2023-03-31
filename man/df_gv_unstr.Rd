@@ -3,11 +3,11 @@
 \docType{data}
 \name{df_gv_unstr}
 \alias{df_gv_unstr}
-\title{Genetic values example data frame}
+\title{Genetic values - example data frame}
 \format{
-A data frame with 800 rows and 5 columns:
+A data frame with 800 rows of data and the following 5 columns:
 \describe{
-  \item{env}{Environment id}
+  \item{env}{Environment number}
   \item{rep}{Replicate number}
   \item{id}{Genotype id}
   \item{gv.Trait.1}{Simulated genetic values for trait 1}
@@ -18,10 +18,10 @@ A data frame with 800 rows and 5 columns:
 df_gv_unstr
 }
 \description{
-An example data frame of simulated genetic values for 100 genotypes with two traits, tested in
+An example data frame of simulated genetic values for 100 genotypes with two traits across
 three environments. The data frame was generated using the wrapper functions
 \link[FieldSimR]{unstr_asr_input} and \link[FieldSimR]{unstr_asr_output} to simulate correlated
 genetic values based on an unstructured model for genotype-by-environment (GxE) interaction
-with \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'}.
+with \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR'}.
 }
 \keyword{datasets}

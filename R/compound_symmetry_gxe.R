@@ -26,7 +26,7 @@
 #'
 #' @param n_envs Number of environments to be simulated. A minimum of two environments is required.
 #' @param n_traits Number of traits to be simulated.
-#' @param mean A vector of mean genetic values for each environment-within-trait combination. 
+#' @param mean A vector of mean genetic values for each environment-within-trait combination.
 #'   If only one value is provided, all environment-within-trait combinations will be assigned the same mean.
 #' @param var A vector of genetic variances for each trait. Simulated traits are restricted by the
 #'   compound symmetry model to having the same variance for each environment (i.e., main
@@ -41,7 +41,7 @@
 #'   \strong{Note:} \code{0 < rel_main_eff_A < 1}.
 #' @param cor_A A matrix of additive genetic correlations between traits. If not
 #'   defined, a diagonal matrix is constructed.
-#' @param mean_DD A vector of mean dominance degrees for each environment-within-trait combination 
+#' @param mean_DD A vector of mean dominance degrees for each environment-within-trait combination
 #'   (similar to \code{mean}). By default, \code{mean_DD = NULL} and dominance is not simulated.
 #' @param var_DD A vector of dominance degree variances for each trait. Simulated traits have the
 #'   same dominance degree variance for each environment and the same dominance degree covariance
