@@ -1,5 +1,5 @@
 #' Genetic values based on an unstructured model for GxE interaction using 'AlphaSimR' - Input
-#' parameters
+#' simulation parameters
 #'
 #' Creates a list of simulation parameters for
 #' \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} to simulate
