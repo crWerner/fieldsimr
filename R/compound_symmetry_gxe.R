@@ -11,7 +11,7 @@
 #' construct the variance structures required to simulate GxE interaction in `AlphaSimR' based on
 #' a multi-trait compound symmetry model. This function assumes a separable structure between traits and
 #' environments. After simulating the genetic values, the wrapper function
-#' \link[FieldSimR]{compsym_asr_output} can be used to obtain useable dataframes.
+#' \link[FieldSimR]{compsym_asr_output} can be used to obtain data-frames of the values.
 #'
 #' \strong{Note:} `AlphaSimR' can simulate different biological effects (see:
 #' \code{\link[AlphaSimR]{SimParam}}).
@@ -70,7 +70,7 @@
 #'   correlated genetic effects based on a compound symmetry model.
 #'
 #' @examples
-#' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested across
+#' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits across
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -304,33 +304,33 @@ compsym_asr_input <- function(n_envs,
   return(input_asr)
 }
 
-#' Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' -
+#' Genetic values based on a compound symmetry model for GxE interaction using `AlphaSimR' -
 #' Simulation of genetic values
 #'
-#' Creates a data frame of correlated genetic values for multiple traits in multiple environments
+#' Creates a data frame of correlated genetic values for multiple traits across multiple environments
 #' based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
-#' requires an 'AlphaSimR' population object generated using the
-#' \link[FieldSimR]{compsym_asr_input} function.
+#' requires an `AlphaSimR' population object generated using the function
+#' \link[FieldSimR]{compsym_asr_input}.
 #'
-#' @param pop An 'AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
+#' @param pop An `AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
 #'   \code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{compsym_asr_input}.
-#' @param n_envs Number of simulated environments (same as used in
+#' @param n_envs Number of simulated environments (same number used in
 #'   \link[FieldSimR]{compsym_asr_input}).
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
 #'   one value is provided and \code{n_traits > 1}, all environments will be assigned the same
 #'   number of replicates.
-#' @param n_traits Number of simulated traits (same as used in \link[FieldSimR]{compsym_asr_input}).
+#' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).
 #' @param effects When TRUE, a list is returned with additional entries containing the total
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
-#'   trait-by-environment combination. By default, effects = FALSE.
+#'   environment-within-trait combination. By default, effects = FALSE.
 #'
-#' @return A data-frame containing the environment id, replicate number, genotype id, and
+#' @return A data-frame with columns `env', `rep', `id', and
 #'   simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
 #'   additional entries containing the total (additive + dominance + epistatic) main effects and
-#'   GxE interaction effects for each trait-by-environment combination.
+#'   GxE interaction effects for each environment-within-trait combination.
 #'
 #' @examples
-#' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits tested in
+#' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits across
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -343,13 +343,13 @@ compsym_asr_input <- function(n_envs,
 #' var <- c(0.2, 10)
 #' var_DD <- c(0.1, 0.2)
 #'
-#' # Relative magnitude of additive and dominance degree main effect variance for traits 1 and 2.
+#' # Relative magnitude of additive and dominance degree main effect variances for traits 1 and 2.
 #' rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
 #' rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
 #'
 #' # Additive and dominance degree correlations between traits 1 and 2.
 #' cor_A <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2) # Additive correlation matrix.
-#' cor_DD <- diag(2) # Assuming independence between traits.
+#' cor_DD <- diag(2) # Dominance correlation matrix - assume independence.
 #'
 #' input_asr <- compsym_asr_input(
 #'   n_envs = 3,
@@ -394,7 +394,7 @@ compsym_asr_input <- function(n_envs,
 #' pop <- newPop(FOUNDERPOP)
 #'
 #'
-#' # 3. Create a data frame containing the simulated genetic values for the two traits in the
+#' # 3. Create a data-frame containing the simulated genetic values for the two traits in the
 #' # three environments.
 #'
 #' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
