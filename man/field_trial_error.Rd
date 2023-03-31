@@ -15,7 +15,7 @@ field_trial_error(
   S_cor_R = NULL,
   R_cor_R = NULL,
   E_cor_R = NULL,
-  spatial_model = "bivariate",
+  spatial_model = "Bivariate",
   complexity = NULL,
   plot_length = 10,
   plot_width = 2,

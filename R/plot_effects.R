@@ -30,14 +30,19 @@
 plot_effects <- function(df,
                          effect,
                          blocks = TRUE) {
-  if (inherits(df, "list")) df <- data.frame(df[[1]])
-
   colnames(df) <- tolower(colnames(df))
-  if (any(!c("col", "row") %in% colnames(df))) {
+  effect <- tolower(effect)
+
+  if (any(!c("col", "row", effect) %in% colnames(df))) {
     stop("'df' must contain columns 'col', 'row', and the effect to be plotted.")
   }
 
-  effect <- tolower(effect)
+  if (blocks) {
+    if (!"block" %in% colnames(df)) {
+      stop("'df' must contain column 'block' if blocks = TRUE.")
+    }
+  }
+
   colnames(df)[colnames(df) %in% effect] <- "eff"
 
   n_cols <- length(unique(df$col))
@@ -86,10 +91,14 @@ plot_effects <- function(df,
   }
 
   col <- row <- eff <- NULL
+  mid_pt <- round(mean(df$eff), 1)
 
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
     ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
-    ggplot2::scale_fill_gradient2(low = "#A51122", mid = "#FEFDBE", high = "#006228") +
+    ggplot2::scale_fill_gradient2(
+      low = "#A51122", mid = "#FEFDBE", high = "#006228",
+      midpoint = mid_pt
+    ) +
     ggplot2::xlab("Column") +
     ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
@@ -108,21 +117,21 @@ plot_effects <- function(df,
       fill = "transparent", col = "black", lwd = 0.5
     )
 
-  if (blocks == TRUE & length(unique(df$BLOCK)) > 1) {
+  if (blocks == TRUE & length(unique(df$block)) > 1) {
     for (i in 1:(n_blocks - 1)) {
       p <- p + ggplot2::geom_segment(
         x = block_x_min[i],
         y = block_y_min[i],
         xend = block_x_max[i],
         yend = block_y_max[i],
-        size = 1.5
+        linewidth = 1.5
       ) +
         ggplot2::geom_segment(
           x = block_x_min_2[i],
           y = block_y_min_2[i],
           xend = block_x_max_2[i],
           yend = block_y_max_2[i],
-          size = 1,
+          linewidth = 1,
           col = "white"
         )
     }

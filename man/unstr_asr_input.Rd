@@ -13,21 +13,21 @@ unstr_asr_input(
   T_var = NULL,
   E_var = NULL,
   cor_A = NULL,
-  E_cor_A = NULL,
   T_cor_A = NULL,
+  E_cor_A = NULL,
   mean_DD = NULL,
   var_DD = NULL,
-  E_var_DD = NULL,
   T_var_DD = NULL,
+  E_var_DD = NULL,
   cor_DD = NULL,
-  E_cor_DD = NULL,
   T_cor_DD = NULL,
+  E_cor_DD = NULL,
   rel_AA = NULL,
-  E_rel_AA = NULL,
   T_rel_AA = NULL,
+  E_rel_AA = NULL,
   cor_AA = NULL,
-  E_cor_AA = NULL,
-  T_cor_AA = NULL
+  T_cor_AA = NULL,
+  E_cor_AA = NULL
 )
 }
 \arguments{
@@ -58,13 +58,13 @@ Alternatively, \code{var} can be provided. By default, \code{E_var = NULL}.}
 combinations. If not defined and \code{n_traits > 1}, a diagonal matrix is constructed. \cr
 Alternatively, \code{T_cor_A} and \code{E_cor_A} can be provided.}
 
-\item{E_cor_A}{A matrix of additive genetic correlations between more than one environment.
-Must be provided in combination with \code{T_cor_A}. \cr
-Alternatively, \code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.}
-
 \item{T_cor_A}{A matrix of additive genetic correlations between more than one trait. Must be
 provided in combination with \code{E_cor_A}. \cr
 Alternatively, \code{cor_A} can be provided. By default, \code{T_cor_A = NULL}.}
+
+\item{E_cor_A}{A matrix of additive genetic correlations between more than one environment.
+Must be provided in combination with \code{T_cor_A}. \cr
+Alternatively, \code{cor_A} can be provided. By default, \code{E_cor_A = NULL}.}
 
 \item{mean_DD}{A vector of mean dominance degrees for each trait-by-environment combination
 (ordered as environments within traits), similar to \code{mean}. If the length of
@@ -78,13 +78,13 @@ each environment.\cr
 Alternatively, if a separable structure between traits and environments is desired,
 \code{T_var_DD} and \code{E_var_DD} can be provided. By default, \code{var_DD = NULL}.}
 
-\item{E_var_DD}{A vector of dominance degree genetic variances for each environment, similar to
-\code{E_var}. Must be provided in combination with \code{T_var_DD}. \cr
-Alternatively, \code{var_DD} can be provided. By default, \code{E_var_DD = NULL}.}
-
 \item{T_var_DD}{A vector of dominance degree variances for each trait, similar to \code{T_var}.
 Must be provided in combination with \code{E_var_DD}. \cr
 Alternatively, \code{var_DD} can be provided. By default, \code{T_var_DD = NULL}.}
+
+\item{E_var_DD}{A vector of dominance degree genetic variances for each environment, similar to
+\code{E_var}. Must be provided in combination with \code{T_var_DD}. \cr
+Alternatively, \code{var_DD} can be provided. By default, \code{E_var_DD = NULL}.}
 
 \item{cor_DD}{A matrix of dominance degree correlations between all trait-by-environment
 combinations, similar to \code{cor_A}. If not defined and \code{n_traits > 1}, a diagonal
@@ -92,13 +92,13 @@ matrix is constructed. \cr
 Alternatively, \code{T_cor_DD} and \code{E_cor_DD} can be provided. By default,
 \code{cor_DD = NULL}.}
 
-\item{E_cor_DD}{A matrix of dominance degree correlations between more than one environment,
-similar to \code{E_cor_A}. Must be provided in combination with \code{T_cor_DD}. \cr
-Alternatively, \code{cor_DD} can be provided. By default, \code{E_cor_DD = NULL}.}
-
 \item{T_cor_DD}{A matrix of dominance degree correlations between more than one trait, similar
 to \code{T_cor_A}. Must be provided in combination with \code{E_cor_DD}. \cr
 Alternatively, \code{cor_DD} can be provided. By default, \code{T_cor_DD = NULL}.}
+
+\item{E_cor_DD}{A matrix of dominance degree correlations between more than one environment,
+similar to \code{E_cor_A}. Must be provided in combination with \code{T_cor_DD}. \cr
+Alternatively, \code{cor_DD} can be provided. By default, \code{E_cor_DD = NULL}.}
 
 \item{rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to additive genetic variance for each trait-by-environment combination (ordered as
@@ -109,15 +109,15 @@ Alternatively, if a separable structure between traits and environments is desir
 \code{T_rel_AA} and \code{E_rel_AA} can be provided. By default, \code{rel_AA = NULL} and
 epistasis is not simulated.}
 
-\item{E_rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
-relative to the additive genetic variance for each environment, that is in a diploid organism
-with allele frequency 0.5. Must be provided in combination with \code{T_rel_AA}. \cr
-Alternatively, \code{rel_AA} can be provided. By default, \code{E_rel_AA = NULL}.}
-
 \item{T_rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to the additive genetic variance for each trait, that is in a diploid organism with
 allele frequency 0.5. Must be provided in combination with \code{E_rel_AA}. \cr
 Alternatively, \code{rel_AA} can be provided. By default, \code{T_rel_AA = NULL}.}
+
+\item{E_rel_AA}{A vector defining the magnitude of additive-by-additive (epistatic) variance
+relative to the additive genetic variance for each environment, that is in a diploid organism
+with allele frequency 0.5. Must be provided in combination with \code{T_rel_AA}. \cr
+Alternatively, \code{rel_AA} can be provided. By default, \code{E_rel_AA = NULL}.}
 
 \item{cor_AA}{A matrix of epistatic correlations between all trait-by-environment
 combinations, similar to \code{cor_A}. If not defined and \code{n_traits > 1},
@@ -125,13 +125,13 @@ a diagonal matrix is constructed. \cr
 Alternatively, \code{T_cor_AA} and \code{E_cor_AA} can be provided. By default,
 \code{cor_AA = NULL}.}
 
-\item{E_cor_AA}{A matrix of epistatic correlations between more than one environment, similar
-to \code{E_cor_A}. Must be provided in combination with \code{T_cor_AA}. \cr
-Alternatively, \code{cor_AA} can be provided. By default, \code{E_cor_AA = NULL}.}
-
 \item{T_cor_AA}{A matrix of epistatic correlations between more than one trait, similar to
 \code{T_cor_A}. Must be provided in combination with \code{E_cor_AA}. \cr
 Alternatively, \code{cor_AA} can be provided. By default, \code{T_cor_AA = NULL}.}
+
+\item{E_cor_AA}{A matrix of epistatic correlations between more than one environment, similar
+to \code{E_cor_A}. Must be provided in combination with \code{T_cor_AA}. \cr
+Alternatively, \code{cor_AA} can be provided. By default, \code{E_cor_AA = NULL}.}
 }
 \value{
 A list containing input parameters for 'AlphaSimR', which is used to simulate

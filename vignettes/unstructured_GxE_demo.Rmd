@@ -1,0 +1,290 @@
+---
+title: "Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include = FALSE}
+library(AlphaSimR)
+library(FieldSimR)
+library(ggplot2)
+```
+
+<br/>
+
+### **Background**
+This document demonstrates how to simulate genetic values for multiple traits in multiple environments using an **unstructured model for genotype-by-environment (GxE) interaction**. While the simulation of genetic values is not directly implemented in ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR), the package provides wrapper functions to facilitate the simulation of genetic values for multi-environment field trial settings employing the R package ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR). The two wrapper functions to simulate genetic values based on an unstructured model for GxE interaction are:
+
+* `unstr_asr_input()`
+* `unstr_asr_output()` 
+
+<br/>
+
+**Note:** ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR) also provides wrapper functions to enable simulation of genetic values using a compound symmetry model for GxE interaction. This is demonstrated in FieldSimR::compound_symmetry_GxE_demo.
+
+The **core function of ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR)** generates plot errors comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1). Through the combination of the plot errors with (simulated) genetic values, ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR) enables simulation of multi-environment plant breeding trials at the plot. This is demonstrated in FieldSimR::spatial_error_bivar_demo.
+
+<br/>
+
+
+### **Simulation of genetic values**
+We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first two locations include three replicates, and the third location includes two replicates (i.e., we lost one replicate).
+
+**The simulation process comprises three steps:**
+
+1. Definition of the genetic architecture and the simulation parameters for the two traits.
+2. Simulation of a population of 100 hybrid genotypes.
+3. Generation of a data frame containing the simulated genetic values for grain yield and plant height in the three environments.
+
+
+To provide a comprehensive overview of the unstructured modelling approach for GxE interaction, we assume additive and dominance gene action for both grain yield and plant height. Details on how ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) simulates additive and non-additive biological effects can be found in the ["Traits in AlphaSimR"](https://cran.r-project.org/web/packages/AlphaSimR/vignettes/traits.pdf) vignette.
+
+It should be noted, however, that a simple additive genetic model will be sufficient to answer most experimental questions and may be preferred to more complex models, especially if data to tune the simulation model is not available and the parameters are unknown. 
+
+
+
+<br/>
+
+### **1. Genetic architecture and simulation parameters of the two traits**
+
+First, we set the number of traits, the number of environments (e.g., locations), and the number of replicates within environments. We also define the number of genotypes in our founder population to be simulated, the number of chromosomes, and the number of segregating sites (biallelic QTN) per chromosome. Then, we set the additive genetic parameters, the dominance parameters, and the genetic correlation structures required to simulate the two traits in three environments based on an unstructured model for GxE interaction. 
+
+We create a founder population of 20 heterozygous genotypes. These founder genotypes will then be split into two heterotic pools, and one doubled haploid (DH) line will be produced from each founder. To generate hybrids, the two pools will be crossed using a factorial design.
+
+```{r}
+n_traits <- 2 # Number of traits.
+n_envs <- 3 # Number of environments (locations).
+n_reps <- c(3, 3, 2) # Number of full replicates within environments 1, 2 and 3.
+
+
+n_ind <- 20 # Number of founder genotypes in the population.
+n_chr <- 10 # Number of chromosomes.
+n_seg_sites <- 300 # Number of QTN per chromosome.
+```
+
+<br/>
+
+#### **Additive genetic parameters**
+
+We define mean additive genetic values for all ***trait x environment*** combinations. The additive mean values are provided in a single vector with environments nested within traits. Grain yield is measured in tons per hectare (t/ha) and plant height is measured in centimetres (cm).
+
+```{r}
+mean <- c(4.9, 5.4, 5.1, 235.2, 228.5, 239.1) # c(Yld:E1, Yld:E2, Yld:E3, Prt:E1, Prt:E2, Prt:E3)
+```
+
+<br/>
+
+The additive variances for the six ***trait x environment*** combinations can be set in two different ways.
+
+1. By providing a single vector with environments nested within traits (similar to vector `mean`).
+2. By providing a vector of genetic variances for the two traits (`T_var`) and a second vector of genetic variances for the three environments (`E_var`), assuming a separable structure.
+
+We choose the first option and provide a single vector of variances.
+
+```{r}
+var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
+```
+
+<br/>
+
+#### **Dominance genetic parameters**
+
+We assume similar dominance degrees and dominance degree variances in all three environments for the two traits, respectively. We can achieve that by providing a vector with only two values. The two traits will receive the same value in each environment if the length of the two vectors is equal to `n_traits.` 
+
+```{r}
+mean_DD <- c(0.4, 0.1) # == c(0.1, 0.1, 0.1, 0.4, 0.4, 0.4)
+var_DD <- c(0.1, 0.1) # == c(0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
+```
+
+<br/>
+
+#### **Genetic correlation structures**
+
+Additive and non-additive genetic correlations between all ***trait x environment*** combinations can be defined in two ways:
+
+1. By providing a single correlation structure (`cor_A`).
+2. By providing a matrix of genetic correlations between traits (`T_cor_A`) and a matrix of genetic correlations between environments (`E_cor_A`), assuming a separable correlation structure.
+
+We choose the second option and assume a **separable additive genetic correlation structure**. This simplifies the generation of the additive correlation matrix, especially when the number of environments and/or traits is high.
+
+```{r}
+T_cor_A <- matrix(
+  c( # Matrix of additive genetic correlations between the two traits.
+    1.0, 0.6,
+    0.6, 1.0
+  ),
+  ncol = 2
+)
+```
+
+```{r echo=FALSE}
+T_cor_A
+```
+
+```{r}
+E_cor_A <- matrix(
+  c( # Matrix of additive genetic correlations between the three environments.
+    1.0, 0.4, 0.6,
+    0.4, 1.0, 0.5,
+    0.6, 0.5, 1.0
+  ),
+  ncol = 3
+)
+```
+
+```{r echo=FALSE}
+E_cor_A
+```
+
+<br/>
+
+Alternatively, the function `rand_cor_mat()` provides a quick means to generate random correlation matrices. The correlations are sampled within a defined range of values. 
+
+```{r message=FALSE}
+cor_A <- rand_cor_mat( # Additive genetic correlation structure.
+  (n_traits * n_envs), # Could be used instead of T_cor_A and E_cor_A.
+  min_cor = 0.1,
+  max_cor = 0.9,
+  pos_def = TRUE
+)
+
+round(cor_A, 2)
+```
+
+<br/>
+
+Furthermore, we assume **independence between the dominance degrees** of the six ***trait-by-environment*** combinations. Therefore, we generate a 6x6 diagonal matrix (although this is not strictly necessary. A diagonal matrix is constructed by default if no correlation matrix is provided). 
+
+```{r}
+cor_DD <- diag(6)
+```
+
+```{r echo=FALSE}
+cor_DD
+```
+
+
+<br/>
+
+#### **Input parameter list**
+
+Once we have defined all simulation parameters, we use the function `unstr_asr_input()` to prepare them into a list that is used with ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) to simulate correlated genetic values based on an unstructured model for GxE interaction.
+
+```{r}
+input_asr <- unstr_asr_input(
+  n_envs = n_envs,
+  n_traits = n_traits,
+  mean = mean,
+  var = var,
+  T_cor_A = T_cor_A,
+  E_cor_A = E_cor_A,
+  mean_DD = mean_DD,
+  var_DD = var_DD,
+  cor_DD = cor_DD
+)
+```
+
+**Note:** The output object `input_asr` should not be modified and must be used directly with ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) as demonstrated below.
+
+<br/>
+
+
+### **2. Simulation of a population of genotypes**
+
+Our list of simulation parameters `input_asr` is now used with ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) to simulate correlated genetic values for 100 maize hybrid genotypes tested for two traits in three locations based on an unstructured model for GxE interaction. 
+
+First, we **simulate a population of 20 heterozygous maize founder genotypes** using the function `runMacs` in ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR).
+
+```{r}
+founders <- runMacs( # Simulation of founder genotypes using AlphaSimR's "MAIZE" presets
+  nInd = n_ind, # to mimic the species' evolutionary history.
+  nChr = n_chr,
+  segSites = n_seg_sites,
+  inbred = FALSE,
+  species = "MAIZE"
+)
+
+SP <- SimParam$new(founders)
+```
+
+<br/>
+
+Then, we use the simulation parameters stored in `input_asr` to simulate **correlated genetic values for grain yield and plant height in three testing environments**.
+
+```{r}
+SP$addTraitAD( # Additive + dominance trait simulation.
+  nQtlPerChr = n_seg_sites,
+  mean = input_asr$mean,
+  var = input_asr$var,
+  meanDD = input_asr$mean_DD,
+  varDD = input_asr$var_DD,
+  corA = input_asr$cor_A,
+  corDD = input_asr$cor_DD,
+  useVarA = FALSE
+)
+
+founders <- newPop(founders)
+```
+
+<br/>
+
+We now **split the simulated founders into two heterotic pools A and B**. We create one DH line per founder, which gives us 10 DH lines per heterotic pool. Hybrids are then generated by crossing pool A and pool B in a factorial manner (all pairwise combinations), resulting in 100 hybrid genotypes
+
+```{r}
+pool_A <- makeDH(founders[1:10], nDH = 1) # Pool A: 1 DH line from founders 1 to 10, respectively.
+pool_B <- makeDH(founders[11:20], nDH = 1) # Pool B: 1 DH line from founders 11 to 20, respectively.
+
+dh_lines <- mergePops(list(pool_A, pool_B))
+
+factorial_plan <- as.matrix(expand.grid(A = pool_A@id, B = pool_B@id)) # Factorial crossing plan.
+
+hybrid_pop <- makeCross(pop = dh_lines, crossPlan = factorial_plan, nProgeny = 1) # Hybrid genotypes.
+```
+
+<br/>
+
+
+### **3. Generation of a data frame with simulated genetic values**
+
+In the last step, we use the function `unstr_asr_output()` to extract the simulated genetic values from the ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) population object `hybrid_pop` and store them in a data frame.
+
+```{r}
+gv_df <- unstr_asr_output(
+  pop = hybrid_pop,
+  n_envs = n_envs,
+  n_reps = n_reps,
+  n_traits = n_traits
+)
+```
+
+```{r echo=FALSE}
+head(gv_df)
+```
+
+<br/>
+
+**Histogram showing the genetic values of the 100 maize hybrids for grain yield in the three environments** 
+
+```{r echo=TRUE, fig.height = 4, fig.width = 9, fig.align = "center"}
+ggplot(gv_df, aes(x = gv.Trait.1, fill = factor(env))) +
+  geom_histogram(color = "#e9ecef", alpha = 0.8, position = "identity", bins = 50) +
+  scale_fill_manual(values = c("violetred3", "goldenrod3", "skyblue2")) +
+  labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Environment")
+```
+
+<br/>
+
+
+The simulated genetic values for grain yield and plant height measured at three locations can now be combined with plot errors to generate plant breeding trial phenotype plot data. We provide an example on how to do that in RMARKDOWN(LINK).
+
+
