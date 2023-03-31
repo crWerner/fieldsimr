@@ -1,5 +1,5 @@
-#' Genetic values based on a compound symmetry model for GxE interaction using 'AlphaSimR' - input
-#' parameters
+#' Genetic values based on a compound symmetry model for GxE interaction using `AlphaSimR' - Input
+#' simulation parameters
 #'
 #' Creates a list of input parameters for
 #' \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR'} to simulate
