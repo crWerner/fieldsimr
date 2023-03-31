@@ -11,7 +11,7 @@
 #' construct the variance structures required to simulate GxE interaction in `AlphaSimR' based on
 #' a multi-trait compound symmetry model. This function assumes a separable structure between traits and
 #' environments. After simulating the genetic values, the wrapper function
-#' \link[FieldSimR]{compsym_asr_output} can be used to obtain data-frames of the values.
+#' \link[FieldSimR]{compsym_asr_output} can be used to obtain data frames with the values.
 #'
 #' \strong{Note:} `AlphaSimR' can simulate different biological effects (see:
 #' \code{\link[AlphaSimR]{SimParam}}).
@@ -324,7 +324,7 @@ compsym_asr_input <- function(n_envs,
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   environment-within-trait combination. By default, effects = FALSE.
 #'
-#' @return A data-frame with columns `env', `rep', `id', and
+#' @return A data frame with columns `env', `rep', `id', and
 #'   simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
 #'   additional entries containing the total (additive + dominance + epistatic) main effects and
 #'   GxE interaction effects for each environment-within-trait combination.
@@ -394,7 +394,7 @@ compsym_asr_input <- function(n_envs,
 #' pop <- newPop(FOUNDERPOP)
 #'
 #'
-#' # 3. Create a data-frame containing the simulated genetic values for the two traits in the
+#' # 3. Create a data frame containing the simulated genetic values for the two traits in the
 #' # three environments.
 #'
 #' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
