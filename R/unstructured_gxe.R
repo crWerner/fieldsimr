@@ -176,21 +176,21 @@ unstr_asr_input <- function(n_envs,
                             T_var = NULL,
                             E_var = NULL,
                             cor_A = NULL,
-                            E_cor_A = NULL,
                             T_cor_A = NULL,
+                            E_cor_A = NULL,
                             mean_DD = NULL,
                             var_DD = NULL,
-                            E_var_DD = NULL,
                             T_var_DD = NULL,
+                            E_var_DD = NULL,
                             cor_DD = NULL,
-                            E_cor_DD = NULL,
                             T_cor_DD = NULL,
+                            E_cor_DD = NULL,
                             rel_AA = NULL,
-                            E_rel_AA = NULL,
                             T_rel_AA = NULL,
+                            E_rel_AA = NULL,
                             cor_AA = NULL,
-                            E_cor_AA = NULL,
-                            T_cor_AA = NULL) {
+                            T_cor_AA = NULL,
+                            E_cor_AA = NULL) {
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
