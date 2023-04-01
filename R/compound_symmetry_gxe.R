@@ -28,7 +28,7 @@
 #'   By default, \code{n_envs = 3}.
 #' @param n_traits Number of traits to be simulated. By default, \code{n_traits = 2}.
 #' @param mean A vector of mean genetic values for each environment-within-trait combination.
-#'   If only one value is provided, all environment-within-trait combinations will be assigned the same mean.
+#'   If only one value is specified, all environment-within-trait combinations will be assigned the same mean.
 #'   By default, \code{mean = 0}.
 #' @param var A vector of genetic variances for each trait. Simulated traits are restricted by the
 #'   compound symmetry model to having the same variance for each environment (i.e., main
@@ -39,11 +39,11 @@
 #'   \code{total} (additive + non-additive) genetic variances.
 #' @param rel_main_eff_A  A vector defining the magnitude of the additive main effect variance
 #'   relative to the additive main effect + GxE interaction variance for each trait. If only one
-#'   value is provided, all traits will be assigned the same value. By default, \code{rel_main_eff_A = 0.5}. \cr
+#'   value is specified, all traits will be assigned the same relative magnitude. By default, \code{rel_main_eff_A = 0.5}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_A < 1}.
 #' @param cor_A A matrix of additive genetic correlations between traits. By default, a diagonal matrix is constructed.
 #' @param mean_DD A vector of mean dominance degrees for each environment-within-trait combination
-#'   (similar to \code{mean}). If only one value is provided, all environment-within-trait combinations 
+#'   (similar to \code{mean}). If only one value is specified, all environment-within-trait combinations 
 #'   will be assigned the same mean. By default, \code{mean_DD = NULL} and dominance is not simulated.
 #' @param var_DD A vector of dominance degree variances for each trait. Simulated traits have the
 #'   same dominance degree variance for each environment and the same dominance degree covariance
@@ -59,10 +59,12 @@
 #'   relative to the additive genetic variance for each trait, that is in a diploid organism with
 #'   allele frequency 0.5. Simulated traits have the same epistatic variance for each environment
 #'   and the same epistatic covariance between each pair of environments (similar to \code{var}).
+#'   If only one value is specified, all traits will be assigned the same relative magnitude.
 #'   By default, \code{rel_AA = NULL} and epistasis is not simulated.
 #' @param rel_main_eff_AA A vector defining the magnitude of the epistatic main effect variance
 #'   relative to the main effect + GxE interaction variance for each trait (similar to
-#'   \code{rel_main_eff_A}). By default, \code{rel_main_eff_AA = NULL}. \cr
+#'   \code{rel_main_eff_A}). If only one value is specified, all traits will be assigned the 
+#'   same relative magnitude.By default, \code{rel_main_eff_AA = NULL}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_AA < 1}.
 #' @param cor_AA A matrix of epistatic correlations between traits (similar to
 #'   \code{cor_A}). If not specified and epistasis is simulated, a diagonal matrix is constructed. By
@@ -134,25 +136,26 @@ compsym_asr_input <- function(n_envs = 3,
 
   for (i in labels) {
     if (i == "A") {
-      if (length(mean) == n_traits) {
-        mean_vals <- rep(mean, each = n_envs)
+      if (length(mean) == 1) {
+        mean_vals <- rep(mean, each = n_traits * n_envs)
       } else if (length(mean) == (n_traits * n_envs)) {
         mean_vals <- mean
       } else {
-        stop("Number of values in argument 'mean' must match either number of
-               traits or number of environment-within-trait combinations")
+        stop("Number of values in 'mean' must be 1 or match number of environment-within-trait combinations")
       }
-
-      if (length(var) != n_traits) {
-        stop("Number of values in argument 'var' does not match number of traits")
+      
+      if (length(var) == 1) { 
+        var <- rep(var, each = n_traits)
+        } else if (length(var) != n_traits) {
+        stop("Number of values in 'var' must be 1 or match number of traits")
       }
 
       if (length(rel_main_eff_A) == n_traits) {
         rel_main_eff <- rel_main_eff_A
-      } else if (length(rel_main_eff_A) == 1 & n_traits > 1) {
+      } else if (length(rel_main_eff_A) == 1) {
         rel_main_eff <- rep(rel_main_eff_A, n_traits)
       } else {
-        stop("Number of values in 'rel_main_eff_A' must either be 1 or 
+        stop("Number of values in 'rel_main_eff_A' must be 1 or 
                match number of traits")
       }
 
@@ -178,27 +181,29 @@ compsym_asr_input <- function(n_envs = 3,
     }
 
     if (i == "DD") {
-      if (length(mean_DD) == n_traits) {
-        mean_vals <- rep(mean_DD, each = n_envs)
+      if (length(mean_DD) == 1) {
+        mean_vals <- rep(mean_DD, each = n_traits * n_envs)
       } else if (length(mean_DD) == (n_traits * n_envs)) {
         mean_vals <- mean_DD
       } else {
-        stop("Number of values in argument 'mean_DD' must match either number
-            of traits or number of environment-within-trait combinations")
+        stop("Number of values in 'mean_DD' must be 1 or match 
+              number of environment-within-trait combinations")
       }
 
-      if (length(var_DD) != n_traits) {
-        stop("Number of values in argument 'var_DD' does not match number of traits")
+      if (length(var_DD) == 1) { 
+        var_DD <- rep(var_DD, each = n_traits)
+        } else if (length(var_DD) != n_traits) {
+        stop("Number of values in 'var_DD' must be 1 or match number of traits")
       }
 
       if (is.null(rel_main_eff_DD)) stop("'rel_main_eff_DD' is not specified")
 
       if (length(rel_main_eff_DD) == n_traits) {
         rel_main_eff <- rel_main_eff_DD
-      } else if (length(rel_main_eff_DD) == 1 & n_traits > 1) {
+      } else if (length(rel_main_eff_DD) == 1) {
         rel_main_eff <- rep(rel_main_eff_DD, n_traits)
       } else {
-        stop("Number of values in 'rel_main_eff_DD' must either be 1 or 
+        stop("Number of values in 'rel_main_eff_DD' must be 1 or 
                match number of traits")
       }
 
@@ -224,18 +229,20 @@ compsym_asr_input <- function(n_envs = 3,
     }
 
     if (i == "AA") {
-      if (length(rel_AA) != n_traits) {
-        stop("Number of values in argument 'rel_AA' does not match number of traits")
+      if (length(rel_AA) == 1) {
+          rel_AA <- rep(rel_AA, n_traits)
+      } else if (length(rel_AA) != n_traits) {
+        stop("Number of values in 'rel_AA' must be 1 or match number of traits")
       }
 
       if (is.null(rel_main_eff_AA)) stop("'rel_main_eff_AA' is not specified")
 
       if (length(rel_main_eff_AA) == n_traits) {
         rel_main_eff <- rel_main_eff_AA
-      } else if (length(rel_main_eff_AA) == 1 & n_traits > 1) {
+      } else if (length(rel_main_eff_AA) == 1) {
         rel_main_eff <- rep(rel_main_eff_AA, n_traits)
       } else {
-        stop("Number of values in 'rel_main_eff_AA' must either be 1 or 
+        stop("Number of values in 'rel_main_eff_AA' must be 1 or 
                match number of traits")
       }
 
@@ -319,7 +326,7 @@ compsym_asr_input <- function(n_envs = 3,
 #'   \link[FieldSimR]{compsym_asr_input}).
 #' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
-#'   one value is provided, all environments will be assigned the same number.
+#'   one value is specified, all environments will be assigned the same number.
 #' @param effects When TRUE, a list is returned with additional entries containing the total
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   environment-within-trait combination. By default, effects = FALSE.
