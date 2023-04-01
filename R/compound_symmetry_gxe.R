@@ -1,5 +1,5 @@
-#' Genetic values based on a compound symmetry model for GxE interaction using `AlphaSimR' - Input
-#' simulation parameters
+#' Simulate genetic values based on a compound symmetry model for GxE interaction - `AlphaSimR' input
+#' parameters
 #'
 #' Creates a list of input parameters for
 #' \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR'} to simulate
@@ -304,10 +304,10 @@ compsym_asr_input <- function(n_envs,
   return(input_asr)
 }
 
-#' Genetic values based on a compound symmetry model for GxE interaction using `AlphaSimR' -
-#' Simulation of genetic values
+#' Simulate genetic values based on a compound symmetry model for GxE interaction -
+#' Simulation using `AlphaSimR'
 #'
-#' Creates a data frame of correlated genetic values for multiple traits across multiple environments
+#' Creates a data frame of simulated genetic values for multiple traits across multiple environments
 #' based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
 #' requires an `AlphaSimR' population object generated using the function
 #' \link[FieldSimR]{compsym_asr_input}.
