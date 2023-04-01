@@ -72,7 +72,7 @@ When spatially correlated errors are simulated based on a **two-dimensional auto
 
 #### **1.2 Total error**
 
-To obtain predefined target heritabilities at the plot-level, we need to define the total error variances for the two simulated traits relative to their genetic variances. We assume broad-sense heritabilities at the plot level of ***H<sup>2</sup> = 0.1 for grain yield*** and ***H<sup>2</sup> = 0.3 for plant height*** at all three locations. The heritabilities for the six trait x environment combinations are stored in a single vector.
+To obtain predefined target heritabilities at the plot-level, we need to define the total error variances for the two simulated traits relative to their genetic variances. We assume broad-sense heritabilities at the plot level of ***H<sup>2</sup>*** **= 0.1 for grain yield** and ***H<sup>2</sup>*** **= 0.3 for plant height** at all three locations. The heritabilities for the six trait x environment combinations are stored in a single vector.
 
 ```{r}
 H2 <- c(0.1, 0.1, 0.1, 0.3, 0.3, 0.3) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
