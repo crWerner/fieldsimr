@@ -139,8 +139,8 @@ compsym_asr_input <- function(n_envs = 3,
       } else if (length(mean) == (n_traits * n_envs)) {
         mean_vals <- mean
       } else {
-        stop("Number of values in argument 'mean' must either match number of
-               traits or number of trait x environment combinations")
+        stop("Number of values in argument 'mean' must match either number of
+               traits or number of environment-within-trait combinations")
       }
 
       if (length(var) != n_traits) {
@@ -183,8 +183,8 @@ compsym_asr_input <- function(n_envs = 3,
       } else if (length(mean_DD) == (n_traits * n_envs)) {
         mean_vals <- mean_DD
       } else {
-        stop("Number of values in argument 'mean_DD' must either match number
-            of traits or number of trait x environment combinations")
+        stop("Number of values in argument 'mean_DD' must match either number
+            of traits or number of environment-within-trait combinations")
       }
 
       if (length(var_DD) != n_traits) {
