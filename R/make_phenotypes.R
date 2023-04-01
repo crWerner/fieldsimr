@@ -1,4 +1,4 @@
-#' Simulation of phenotypes - combining simulated genetic values and plot errors
+#' Simulation of phenotypes - Combine simulated genetic values and plot errors
 #'
 #' Creates a data frame of simulated phenotypes for one or more traits by
 #' combining simulated plot errors with genetic values (e.g. true, simulated or predicted).
