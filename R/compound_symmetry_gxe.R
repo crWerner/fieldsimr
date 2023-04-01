@@ -42,7 +42,8 @@
 #' @param cor_A A matrix of additive genetic correlations between traits. If not
 #'   defined, a diagonal matrix is constructed.
 #' @param mean_DD A vector of mean dominance degrees for each environment-within-trait combination
-#'   (similar to \code{mean}). By default, \code{mean_DD = NULL} and dominance is not simulated.
+#'   (similar to \code{mean}). If only one value is provided, all environment-within-trait combinations 
+#'   will be assigned the same mean. By default, \code{mean_DD = NULL} and dominance is not simulated.
 #' @param var_DD A vector of dominance degree variances for each trait. Simulated traits have the
 #'   same dominance degree variance for each environment and the same dominance degree covariance
 #'   between each pair of environments (similar to \code{var}). By default, \code{var_DD = NULL}.
@@ -74,10 +75,9 @@
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
-#' # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
-#' # in all 3 environments.
+#' # Mean genetic values and mean dominance degrees for two traits across three environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
-#' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all 3 environments for each trait.
+#' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all three environments.
 #'
 #' # Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2.
 #' var <- c(0.2, 10)
@@ -317,14 +317,13 @@ compsym_asr_input <- function(n_envs,
 #' @param n_envs Number of simulated environments (same number used in
 #'   \link[FieldSimR]{compsym_asr_input}).
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
-#'   one value is provided and \code{n_traits > 1}, all environments will be assigned the same
-#'   number of replicates.
+#'   one value is provided, all environments will be assigned the same number.
 #' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).
 #' @param effects When TRUE, a list is returned with additional entries containing the total
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   environment-within-trait combination. By default, effects = FALSE.
 #'
-#' @return A data frame with columns `env', `rep', `id', and
+#' @return A data frame with columns `env', `rep', genotype `id', and the
 #'   simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
 #'   additional entries containing the total (additive + dominance + epistatic) main effects and
 #'   GxE interaction effects for each environment-within-trait combination.
@@ -334,10 +333,9 @@ compsym_asr_input <- function(n_envs,
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
-#' # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
-#' # in all 3 environments.
+#' # Mean genetic values and mean dominance degrees for two traits across three environments.
 #' mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
-#' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in 3 environments for each trait.
+#' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all three environments.
 #'
 #' # Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2.
 #' var <- c(0.2, 10)
@@ -394,7 +392,7 @@ compsym_asr_input <- function(n_envs,
 #' pop <- newPop(FOUNDERPOP)
 #'
 #'
-#' # 3. Create a data frame containing the simulated genetic values for the two traits in the
+#' # 3. Create a data frame containing the simulated genetic values for the two traits across the
 #' # three environments.
 #'
 #' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
