@@ -41,8 +41,7 @@
 #'   relative to the additive main effect + GxE interaction variance for each trait. If only one
 #'   value is provided, all traits will be assigned the same value. By default, \code{rel_main_eff_A = 0.5}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_A < 1}.
-#' @param cor_A A matrix of additive genetic correlations between traits. If not
-#'   defined, a diagonal matrix is constructed.
+#' @param cor_A A matrix of additive genetic correlations between traits. By default, a diagonal matrix is constructed.
 #' @param mean_DD A vector of mean dominance degrees for each environment-within-trait combination
 #'   (similar to \code{mean}). If only one value is provided, all environment-within-trait combinations 
 #'   will be assigned the same mean. By default, \code{mean_DD = NULL} and dominance is not simulated.
@@ -54,7 +53,7 @@
 #'   \code{rel_main_eff_A}). By default, \code{rel_main_eff_DD = NULL}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_DD < 1}.
 #' @param cor_DD A matrix of dominance degree correlations between traits (similar
-#'   to \code{cor_A}). If not defined and dominance is simulated, a diagonal matrix is constructed. 
+#'   to \code{cor_A}). If not specified and dominance is simulated, a diagonal matrix is constructed. 
 #'   By default, \code{cor_DD = NULL}.
 #' @param rel_AA A vector defining the magnitude of additive-by-additive (epistatic) variance
 #'   relative to the additive genetic variance for each trait, that is in a diploid organism with
@@ -66,7 +65,7 @@
 #'   \code{rel_main_eff_A}). By default, \code{rel_main_eff_AA = NULL}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_AA < 1}.
 #' @param cor_AA A matrix of epistatic correlations between traits (similar to
-#'   \code{cor_A}). If not defined and epistasis is simulated, a diagonal matrix is constructed. By
+#'   \code{cor_A}). If not specified and epistasis is simulated, a diagonal matrix is constructed. By
 #'   default, \code{cor_AA = NULL}.
 #'
 #' @return A list containing input parameters for `AlphaSimR', which is used to simulate
@@ -192,7 +191,7 @@ compsym_asr_input <- function(n_envs = 3,
         stop("Number of values in argument 'var_DD' must match number of traits")
       }
 
-      if (is.null(rel_main_eff_DD)) stop("'rel_main_eff_DD' is not defined")
+      if (is.null(rel_main_eff_DD)) stop("'rel_main_eff_DD' is not specified")
 
       if (length(rel_main_eff_DD) == n_traits) {
         rel_main_eff <- rel_main_eff_DD
@@ -229,7 +228,7 @@ compsym_asr_input <- function(n_envs = 3,
         stop("Number of values in argument 'rel_AA' must match number of traits")
       }
 
-      if (is.null(rel_main_eff_AA)) stop("'rel_main_eff_AA' is not defined")
+      if (is.null(rel_main_eff_AA)) stop("'rel_main_eff_AA' is not specified")
 
       if (length(rel_main_eff_AA) == n_traits) {
         rel_main_eff <- rel_main_eff_AA
