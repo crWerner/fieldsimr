@@ -50,7 +50,7 @@
 #'   combination with \code{T_var}. \cr
 #'   Alternatively, \code{var} can be provided. By default, \code{E_var = NULL}.
 #' @param cor_A A matrix of additive genetic correlations between all environment-within-trait
-#'   combinations. If not specified, a diagonal matrix is constructed. \cr
+#'   combinations. By default, a diagonal matrix is constructed. \cr
 #'   Alternatively, \code{T_cor_A} and \code{E_cor_A} can be provided.
 #' @param T_cor_A A matrix of additive genetic correlations between traits. Must be
 #'   provided in combination with \code{E_cor_A}. \cr
