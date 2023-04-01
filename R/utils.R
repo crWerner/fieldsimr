@@ -19,7 +19,7 @@ spline_interp <- function(y) {
 #'
 #' Interpolate and extrapolate missing values in a matrix. First, missing values in each
 #' column and row of the matrix are interpolated and extrapolated individually. Then, missing
-#' matrix values are replaced using the mean of the column-wise and row-wise interpolation and/or
+#' values in each matrix element are replaced using the mean of the intersecting column-wise and row-wise interpolation and/or
 #' extrapolation values.
 #' @noRd
 fill_matrix <- function(mat) {
