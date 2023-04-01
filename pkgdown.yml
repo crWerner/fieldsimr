@@ -1,0 +1,12 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  compound_symmetry_GxE_demo: compound_symmetry_GxE_demo.html
+  spatial_error_demo: spatial_error_demo.html
+  unstructured_GxE_demo: unstructured_GxE_demo.html
+last_built: 2023-04-01T21:29Z
+urls:
+  reference: https://crwerner.github.io/fieldsimr/reference
+  article: https://crwerner.github.io/fieldsimr/articles
+
