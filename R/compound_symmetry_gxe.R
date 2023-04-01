@@ -75,19 +75,19 @@
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
-#' # Mean genetic values and mean dominance degrees for two traits across three environments.
+#' # Mean genetic values and mean dominance degrees.
 #' mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
 #' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all three environments.
 #'
-#' # Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2.
-#' var <- c(0.2, 10)
-#' var_DD <- c(0.1, 0.2)
+#' # Additive genetic variances (useVarA = TRUE) and dominance degree variances.
+#' var <- c(0.2, 10) # Different values set for traits 1 and 2.
+#' var_DD <- c(0.1, 0.2) # Different values set for traits 1 and 2.
 #'
-#' # Relative magnitude of the additive and dominance degree main effect variances for traits 1 and 2.
+#' # Relative magnitude of the additive and dominance degree main effect variances.
 #' rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
 #' rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
 #'
-#' # Additive and dominance degree correlations between traits 1 and 2.
+#' # Additive and dominance degree correlations between the two simulated traits.
 #' cor_A <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2) # Additive correlation matrix.
 #' cor_DD <- diag(2) # Dominance correlation matrix - assume independence.
 #'
@@ -333,19 +333,19 @@ compsym_asr_input <- function(n_envs,
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
-#' # Mean genetic values and mean dominance degrees for two traits across three environments.
+#' # Mean genetic values and mean dominance degrees.
 #' mean <- c(1, 3, 2, 80, 70, 100) # Trait 1 x 3 environments, trait 2 x 3 environments.
 #' mean_DD <- c(0.1, 0.4) # Trait 1 and 2, same values set in all three environments.
 #'
-#' # Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2.
-#' var <- c(0.2, 10)
-#' var_DD <- c(0.1, 0.2)
+#' # Additive genetic variances (useVarA = TRUE) and dominance degree variances.
+#' var <- c(0.2, 10) # Different values set for traits 1 and 2.
+#' var_DD <- c(0.1, 0.2) # Different values set for traits 1 and 2.
 #'
-#' # Relative magnitude of additive and dominance degree main effect variances for traits 1 and 2.
+#' # Relative magnitude of additive and dominance degree main effect variances.
 #' rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
 #' rel_main_eff_DD <- 0.8 # Same value set for traits 1 and 2.
 #'
-#' # Additive and dominance degree correlations between traits 1 and 2.
+#' # Additive and dominance degree correlations between the two simulated traits.
 #' cor_A <- matrix(c(1.0, 0.3, 0.3, 1.0), ncol = 2) # Additive correlation matrix.
 #' cor_DD <- diag(2) # Dominance correlation matrix - assume independence.
 #'
