@@ -208,8 +208,8 @@ unstr_asr_input <- function(n_envs = 3,
       } else if (length(mean) == (n_traits * n_envs)) {
         mean_pseudo <- mean
       } else {
-        stop("Number of values in argument 'mean' must either match number of
-               traits or number of trait x environment combinations")
+        stop("Number of values in argument 'mean' must match either number of
+               traits or number of environment-within-trait combinations")
       }
 
 
@@ -224,17 +224,17 @@ unstr_asr_input <- function(n_envs = 3,
         } else if (length(var) == (n_traits * n_envs)) {
           var_pseudo <- var
         } else {
-          stop("Number of values in argument 'var' must match number of
-                 trait x environment combinations")
+          stop("Number of values in argument 'var' does not match number of
+                 environment-within-trait combinations")
         }
       } else if (!is.null(E_var)) {
         if (length(E_var) != n_envs) {
-          stop("Number of values in argument 'E_var' must match number of
+          stop("Number of values in argument 'E_var' does not match number of
                  environments (n_envs)")
         }
         if (is.null(T_var)) stop("Argument 'T_var' is not provided")
         if (length(T_var) != n_traits) {
-          stop("Number of values in argument 'T_var' must match number of
+          stop("Number of values in argument 'T_var' does not match number of
                  traits (n_traits)")
         }
         var_pseudo <- rep(T_var, each = n_envs) * rep(E_var, n_traits)
@@ -250,8 +250,8 @@ unstr_asr_input <- function(n_envs = 3,
           stop("Argument 'T_cor_A' must be NULL if 'cor_A' is provided")
         }
         if (nrow(cor_A) != length(mean_pseudo) | ncol(cor_A) != length(mean_pseudo)) {
-          stop("Dimension of 'cor_A' does not match number of trait x
-               environment combinations")
+          stop("Dimension of 'cor_A' does not match number of environment-within-trait
+               combinations")
         }
         if (any(unique(diag(cor_A)) != 1) | any(cor_A > 1) | any(cor_A < (-1))) {
           stop("'cor_A' is not a correlation matrix")
@@ -274,7 +274,7 @@ unstr_asr_input <- function(n_envs = 3,
         }
         if ((nrow(E_cor_A) * nrow(T_cor_A)) != length(mean_pseudo) | (ncol(E_cor_A) * ncol(T_cor_A)) != length(mean_pseudo)) {
           stop("Dimension of the 'E_cor_A' x 'T_cor_A' Kronecker product does not
-                 match number of trait x environment combinations")
+                 match number of environment-within-trait combinations")
         }
         if (any(unique(diag(E_cor_A)) != 1) | any(E_cor_A > 1) | any(E_cor_A < (-1))) {
           stop("'E_cor_A' is not a correlation matrix")
@@ -299,8 +299,8 @@ unstr_asr_input <- function(n_envs = 3,
       } else if (length(mean_DD) == (n_traits * n_envs)) {
         mean_pseudo <- mean_DD
       } else {
-        stop("Number of values in argument 'mean_DD' must either match number
-               of traits or number of trait x environment combinations")
+        stop("Number of values in argument 'mean_DD' must match either number
+               of traits or number of environment-within-trait combinations")
       }
 
 
@@ -315,17 +315,17 @@ unstr_asr_input <- function(n_envs = 3,
         } else if (length(var_DD) == (n_traits * n_envs)) {
           var_pseudo <- var_DD
         } else {
-          stop("Number of values in argument 'var_DD' must match number of
-                 trait x environment combinations")
+          stop("Number of values in argument 'var_DD' does not match number of
+                environment-within-trait combinations")
         }
       } else if (!is.null(E_var_DD)) {
         if (length(E_var) != n_envs) {
-          stop("Number of values in argument 'E_var_DD' must match number of
+          stop("Number of values in argument 'E_var_DD' does not match number of
                  environments (n_envs)")
         }
         if (is.null(T_var_DD)) stop("Argument 'T_var_DD' is not provided")
         if (length(T_var_DD) != n_traits) {
-          stop("Number of values in argument 'T_var_DD' must match number of
+          stop("Number of values in argument 'T_var_DD' does not must match number of
                  traits (n_traits)")
         }
         var_pseudo <- rep(T_var_DD, each = n_envs) * rep(E_var_DD, n_traits)
@@ -341,8 +341,8 @@ unstr_asr_input <- function(n_envs = 3,
           stop("Argument 'T_cor_DD' must be NULL if 'cor_DD' is provided")
         }
         if (nrow(cor_DD) != length(mean_pseudo) | ncol(cor_DD) != length(mean_pseudo)) {
-          stop("Dimension of 'cor_DD' does not match number of trait x
-               environment combinations")
+          stop("Dimension of 'cor_DD' does not match number of environment-within-trait
+               combinations")
         }
         if (any(unique(diag(cor_DD)) != 1) | any(cor_DD > 1) | any(cor_DD < (-1))) {
           stop("'cor_DD' is not a correlation matrix")
@@ -365,7 +365,7 @@ unstr_asr_input <- function(n_envs = 3,
         }
         if ((nrow(E_cor_DD) * nrow(T_cor_DD)) != length(mean_pseudo) | (ncol(E_cor_DD) * ncol(T_cor_DD)) != length(mean_pseudo)) {
           stop("Dimension of the 'E_cor_DD' x 'T_cor_DD' Kronecker product does
-                 not match number of trait x environment combinations")
+                 not match number of environment-within-trait combinations")
         }
         if (any(unique(diag(E_cor_DD)) != 1) | any(E_cor_DD > 1) | any(E_cor_DD < (-1))) {
           stop("'E_cor_DD' is not a correlation matrix")
@@ -400,7 +400,7 @@ unstr_asr_input <- function(n_envs = 3,
           var_pseudo <- rel_AA
         } else {
           stop("Number of values in argument 'rel_AA' must match number of
-               trait x environment combinations")
+               environment-within-trait combinations")
         }
       } else if (!is.null(E_rel_AA)) {
         if (length(E_rel_AA) != n_envs) {
@@ -425,8 +425,8 @@ unstr_asr_input <- function(n_envs = 3,
           stop("Argument 'T_cor_AA' must be NULL if 'cor_AA' is provided")
         }
         if (nrow(cor_AA) != length(mean_pseudo) | ncol(cor_AA) != length(mean_pseudo)) {
-          stop("Dimension of 'cor_AA' does not match number of trait x
-               environment combinations")
+          stop("Dimension of 'cor_AA' does not match number of environment-within-trait
+               combinations")
         }
         if (any(unique(diag(cor_AA)) != 1) | any(cor_AA > 1) | any(cor_AA < (-1))) {
           stop("'cor_AA' is not a correlation matrix")
@@ -449,7 +449,7 @@ unstr_asr_input <- function(n_envs = 3,
         }
         if ((nrow(E_cor_AA) * nrow(T_cor_AA)) != length(mean_pseudo) | (ncol(E_cor_AA) * ncol(T_cor_AA)) != length(mean_pseudo)) {
           stop("Dimension of the 'E_cor_AA' x 'T_cor_AA' Kronecker product does not
-                 match number of trait x environment combinations")
+                 match number of environment-within-trait combinations")
         }
         if (any(unique(diag(E_cor_AA)) != 1) | any(E_cor_AA > 1) | any(E_cor_AA < (-1))) {
           stop("'E_cor_AA' is not a correlation matrix")
