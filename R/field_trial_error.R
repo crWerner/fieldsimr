@@ -35,11 +35,11 @@
 #'   one value is provided, all environment-within-trait combinations will be assigned the same
 #'   error variance.
 #' @param S_cor_R A matrix of spatial error correlations between traits. If not
-#'   specified, a diagonal matrix is constructed.
+#'   specified and spatial error is simulated, a diagonal matrix is constructed.
 #' @param R_cor_R A matrix of random error correlations between traits. If not
-#'   specified, a diagonal matrix is constructed.
+#'   specified and random error is simulated, a diagonal matrix is constructed.
 #' @param E_cor_R A matrix of extraneous error correlations between traits. If not
-#'   specified, a diagonal matrix is constructed. Note that the same correlation between traits
+#'   specified and extraneous error is simulated, a diagonal matrix is constructed. Note that the same correlation between traits
 #'   is used for the column and row errors (where applicable).
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
 #'   spatial error term. One of either `Bivariate' (bivariate interpolation, the default) or `AR1:AR1'
