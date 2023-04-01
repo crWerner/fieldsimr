@@ -203,13 +203,13 @@ unstr_asr_input <- function(n_envs = 3,
 
   for (i in labels) {
     if (i == "A") {
-      if (length(mean) == n_traits) {
-        mean_pseudo <- rep(mean, each = n_envs)
+      if (length(mean) == 1) {
+        mean_pseudo <- rep(mean, each = n_traits * n_envs)
       } else if (length(mean) == (n_traits * n_envs)) {
         mean_pseudo <- mean
       } else {
-        stop("Number of values in argument 'mean' must match either number of
-               traits or number of environment-within-trait combinations")
+        stop("Number of values in 'mean' must be 1 or match 
+              number of environment-within-trait combinations")
       }
 
 
@@ -217,37 +217,37 @@ unstr_asr_input <- function(n_envs = 3,
         stop("Either argument 'var' or 'E_var' must be specified")
       } else if (!is.null(var)) {
         if (!is.null(T_var)) {
-          stop("Argument 'T_var' must be NULL if 'var' is specified")
+          stop("'T_var' must be NULL if 'var' is specified")
         }
-        if (length(var) == n_traits) {
-          var_pseudo <- rep(var, each = n_envs)
+        if (length(var) == 1) {
+          var_pseudo <- rep(var, each = n_traits * n_envs)
         } else if (length(var) == (n_traits * n_envs)) {
           var_pseudo <- var
         } else {
-          stop("Number of values in argument 'var' does not match number of
+          stop("Number of values in 'var' must be 1 or match number of
                  environment-within-trait combinations")
         }
       } else if (!is.null(E_var)) {
         if (length(E_var) != n_envs) {
-          stop("Number of values in argument 'E_var' does not match number of
+          stop("Number of values in 'E_var' does not match number of
                  environments (n_envs)")
         }
-        if (is.null(T_var)) stop("Argument 'T_var' must be specified")
+        if (is.null(T_var)) stop("'T_var' must be specified")
         if (length(T_var) != n_traits) {
-          stop("Number of values in argument 'T_var' does not match number of
+          stop("Number of values in 'T_var' does not match number of
                  traits (n_traits)")
         }
         var_pseudo <- rep(T_var, each = n_envs) * rep(E_var, n_traits)
       } else {
-        stop("Either argument 'var' or 'E_var' must be specified")
+        stop("Either 'var' or 'E_var' must be specified")
       }
 
 
       if (!is.null(cor_A) & !is.null(E_cor_A)) {
-        stop("Either argument 'cor_A' or 'E_cor_A' must be specified")
+        stop("Either 'cor_A' or 'E_cor_A' must be specified")
       } else if (!is.null(cor_A)) {
         if (!is.null(T_cor_A)) {
-          stop("Argument 'T_cor_A' must be NULL if 'cor_A' is specified")
+          stop("'T_cor_A' must be NULL if 'cor_A' is specified")
         }
         if (nrow(cor_A) != length(mean_pseudo) | ncol(cor_A) != length(mean_pseudo)) {
           stop("Dimension of 'cor_A' does not match number of environment-within-trait
@@ -262,8 +262,8 @@ unstr_asr_input <- function(n_envs = 3,
         if (is.null(T_cor_A) & n_traits == 1) {
           T_cor_A <- matrix(1)
         } else if (is.null(T_cor_A) & n_traits > 1) {
-          stop("Argument 'T_cor_A' must be specified in combination with
-                   'E_cor_A' if n_traits > 1")
+          stop("'T_cor_A' must be specified in combination with
+                   'E_cor_A' if 'n_traits' > 1")
         } else if (length(T_cor_A) == 1) {
           T_cor_A <- matrix(1)
         } else {
@@ -282,7 +282,7 @@ unstr_asr_input <- function(n_envs = 3,
         if (!isSymmetric(E_cor_A)) stop("'E_cor_A' is not symmetric")
         cor_pseudo <- kronecker(T_cor_A, E_cor_A)
       } else {
-        stop("Either argument 'cor_A' or 'E_cor_A' must be specified")
+        stop("Either 'cor_A' or 'E_cor_A' must be specified")
       }
 
 
@@ -294,51 +294,51 @@ unstr_asr_input <- function(n_envs = 3,
     }
 
     if (i == "DD") {
-      if (length(mean_DD) == n_traits) {
-        mean_pseudo <- rep(mean_DD, each = n_envs)
+      if (length(mean_DD) == 1) {
+        mean_pseudo <- rep(mean_DD, each = n_traits * n_envs)
       } else if (length(mean_DD) == (n_traits * n_envs)) {
         mean_pseudo <- mean_DD
       } else {
-        stop("Number of values in argument 'mean_DD' must match either number
-               of traits or number of environment-within-trait combinations")
+        stop("Number of values in 'mean_DD' must be 1 or match number of 
+              environment-within-trait combinations")
       }
 
 
       if (!is.null(var_DD) & !is.null(E_var_DD)) {
-        stop("Either argument 'var_DD' or 'E_var_DD' must be specified")
+        stop("Either 'var_DD' or 'E_var_DD' must be specified")
       } else if (!is.null(var_DD)) {
         if (!is.null(T_var_DD)) {
-          stop("Argument 'T_var_DD' must be NULL if 'var_DD' is specified")
+          stop("'T_var_DD' must be NULL if 'var_DD' is specified")
         }
-        if (length(var_DD) == n_traits) {
-          var_pseudo <- rep(var_DD, each = n_envs)
+        if (length(var_DD) == 1) {
+          var_pseudo <- rep(var_DD, each = n_traits * n_envs)
         } else if (length(var_DD) == (n_traits * n_envs)) {
           var_pseudo <- var_DD
         } else {
-          stop("Number of values in argument 'var_DD' does not match number of
+          stop("Number of values in 'var_DD' must be 1 or match number of
                 environment-within-trait combinations")
         }
       } else if (!is.null(E_var_DD)) {
         if (length(E_var) != n_envs) {
-          stop("Number of values in argument 'E_var_DD' does not match number of
+          stop("Number of values in 'E_var_DD' does not match number of
                  environments (n_envs)")
         }
-        if (is.null(T_var_DD)) stop("Argument 'T_var_DD' must be specified")
+        if (is.null(T_var_DD)) stop("'T_var_DD' must be specified")
         if (length(T_var_DD) != n_traits) {
-          stop("Number of values in argument 'T_var_DD' does not must match number of
+          stop("Number of values in 'T_var_DD' does not must match number of
                  traits (n_traits)")
         }
         var_pseudo <- rep(T_var_DD, each = n_envs) * rep(E_var_DD, n_traits)
       } else {
-        stop("Either argument 'var_DD' or 'E_var_DD' must be specified")
+        stop("Either 'var_DD' or 'E_var_DD' must be specified")
       }
 
 
       if (!is.null(cor_DD) & !is.null(E_cor_DD)) {
-        stop("Either argument 'cor_DD' or 'E_cor_DD' must be specified")
+        stop("Either 'cor_DD' or 'E_cor_DD' must be specified")
       } else if (!is.null(cor_DD)) {
         if (!is.null(T_cor_DD)) {
-          stop("Argument 'T_cor_DD' must be NULL if 'cor_DD' is specified")
+          stop("'T_cor_DD' must be NULL if 'cor_DD' is specified")
         }
         if (nrow(cor_DD) != length(mean_pseudo) | ncol(cor_DD) != length(mean_pseudo)) {
           stop("Dimension of 'cor_DD' does not match number of environment-within-trait
@@ -353,8 +353,8 @@ unstr_asr_input <- function(n_envs = 3,
         if (is.null(T_cor_DD) & n_traits == 1) {
           T_cor_DD <- matrix(1)
         } else if (is.null(T_cor_DD) & n_traits > 1) {
-          stop("Argument 'T_cor_DD' must be specified in combination with
-                   'E_cor_DD' if n_traits > 1")
+          stop("'T_cor_DD' must be specified in combination with
+                   'E_cor_DD'  if 'n_traits' > 1")
         } else if (length(T_cor_DD) == 1) {
           T_cor_DD <- matrix(1)
         } else {
@@ -373,7 +373,7 @@ unstr_asr_input <- function(n_envs = 3,
         if (!isSymmetric(E_cor_DD)) stop("'E_cor_DD' is not symmetric")
         cor_pseudo <- kronecker(T_cor_DD, E_cor_DD)
       } else {
-        stop("Either argument 'cor_DD' or 'E_cor_DD' must be specified")
+        stop("Either 'cor_DD' or 'E_cor_DD' must be specified")
       }
 
 
