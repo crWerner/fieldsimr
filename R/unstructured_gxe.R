@@ -120,8 +120,8 @@
 #'
 #' # Additive genetic variances (useVarA = TRUE) and dominance degree variances,
 #' # assuming a separable structure between traits and environments.
-#' T_var <- c(0.2, 10) # Genetic variances of the two traits.
-#' E_var <- c(0.5, 1, 1.5) # Genetic variances of the three environments.
+#' T_var <- c(0.2, 10) # Different values set for traits 1 and 2.
+#' E_var <- c(0.5, 1, 1.5) # Different values set for environments 1, 2 and 3.
 #'
 #' # Dominance degree variances, assuming a non-separable structure between traits and environments.
 #' var_DD <- c(0.1, 0.15, 0.2, 0.2, 0.3, 0.2) # Trait 1 x 3 environments, trait 2 x 3 environments.
@@ -502,8 +502,8 @@ unstr_asr_input <- function(n_envs,
 #'
 #' # Additive genetic variances (useVarA = TRUE) and dominance degree variances,
 #' # assuming a separable structure between traits and environments.
-#' T_var <- c(0.2, 10) # Genetic variances of the two traits.
-#' E_var <- c(0.5, 1, 1.5) # Genetic variances of the three environments.
+#' T_var <- c(0.2, 10) # Different values set for traits 1 and 2.
+#' E_var <- c(0.5, 1, 1.5) # Different values set for environments 1, 2 and 3.
 #'
 #' # Dominance degree variances, assuming a non-separable structure between 
 #' # traits and environments.
