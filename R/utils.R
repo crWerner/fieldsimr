@@ -1,6 +1,6 @@
 #' Spline interpolation
 #'
-#' Interpolation of missing values in a vector using natural splines. Linear extrapolation of
+#' Interpolate missing values in a vector using natural splines. Linear extrapolation of
 #' missing values is also executed.
 #' @noRd
 spline_interp <- function(y) {
@@ -17,9 +17,9 @@ spline_interp <- function(y) {
 
 #' Matrix interpolation
 #'
-#' Interpolation and extrapolation of missing values in a matrix. First, missing values of each
-#' row and column of the matrix are interpolated and extrapolated individually. Then, missing
-#' matrix values are replaced using the mean of the row-wise and column-wise interpolation and/or
+#' Interpolate and extrapolate missing values in a matrix. First, missing values in each
+#' column and row of the matrix are interpolated and extrapolated individually. Then, missing
+#' matrix values are replaced using the mean of the column-wise and row-wise interpolation and/or
 #' extrapolation values.
 #' @noRd
 fill_matrix <- function(mat) {
