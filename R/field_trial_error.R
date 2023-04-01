@@ -223,7 +223,7 @@ field_trial_error <- function(n_envs = 1,
     stop("'var_R' must contain values greater than 0")
   }
   if (length(var_R) != (n_envs * n_traits)) {
-    stop("Length of 'var_R' does not match the number of environment within trait combinations")
+    stop("Length of 'var_R' does not match the number of environment-within-trait combinations")
   }
 
   if (is.null(S_cor_R)) S_cor_R <- diag(n_traits)
@@ -250,7 +250,7 @@ field_trial_error <- function(n_envs = 1,
   }
   if (length(prop_spatial) == 1) prop_spatial <- rep(prop_spatial, n_traits * n_envs)
   if (length(prop_spatial) != n_traits * n_envs) {
-    stop("Length of 'prop_spatial' does not match the number of environment within trait combinations")
+    stop("Length of 'prop_spatial' does not match the number of environment-within-trait combinations")
   }
 
   if (any(prop_ext < 0) | any(prop_ext > 1)) {
@@ -258,7 +258,7 @@ field_trial_error <- function(n_envs = 1,
   }
   if (length(prop_ext) == 1) prop_ext <- rep(prop_ext, n_traits * n_envs)
   if (length(prop_ext) != n_traits * n_envs) {
-    stop("Length of 'prop_ext' does not match the number of environment within trait combinations")
+    stop("Length of 'prop_ext' does not match the number of environment-within-trait combinations")
   }
 
   rep_dir[is.na(rep_dir)] <- "neither"
