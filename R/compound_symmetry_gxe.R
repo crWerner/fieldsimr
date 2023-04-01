@@ -70,7 +70,7 @@
 #'   correlated genetic effects based on a compound symmetry model.
 #'
 #' @examples
-#' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits across
+#' # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -330,7 +330,7 @@ compsym_asr_input <- function(n_envs,
 #'   GxE interaction effects for each environment-within-trait combination.
 #'
 #' @examples
-#' # Simulation of genetic values in 'AlphaSimR' for two additive + dominance traits across
+#' # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
 #' # three environments based on a compound symmetry model for GxE interaction.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
