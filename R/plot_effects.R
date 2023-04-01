@@ -1,13 +1,13 @@
 #' Graphics for plot effects
 #'
-#' Graphically displays plot effects (e.g., phenotypic values, genetic values, error terms) onto a
+#' Graphically displays plot effects (e.g., phenotypes, genetic values, plot errors) onto a
 #' field array, in which the colour gradient ranges from red (low value) to green (high value).
 #' The function requires a data frame generated with field_trial_error as an input, or any data
-#' frame with columns “col”, “row”, and the effect to be displayed. If the data frame contains a
-#' “block” column, the field array is split into blocks if \code{blocks = TRUE}.
+#' frame with columns `col', `row', and the effect to be displayed. When the data frame contains a
+#' `block' column, the field array is split into blocks if \code{blocks = TRUE}.
 #'
-#' @param df A data frame with columns "col", "row", and the effect to be plotted. If \code{df}
-#'   also contains a “block” column, the field array is split into blocks if \code{blocks = TRUE}. \cr
+#' @param df A data frame with columns `col', `row', and the effect to be plotted. When \code{df}
+#'   also contains a `block' column, the field array is split into blocks if \code{blocks = TRUE}. \cr
 #'   \strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
 #'   otherwise.
 #' @param effect The effect to be plotted.
@@ -17,7 +17,7 @@
 #' to green (high value).
 #'
 #' @examples
-#' # Plot the simulated total error term for trait 2 in environment 2 provided in the example data
+#' # Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
 #' # frame 'df_error_bivar'.
 #'
 #' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
@@ -141,21 +141,20 @@ plot_effects <- function(df,
 
 #' Q-Q plot
 #'
-#' Creates a Q-Q plot (quantile-quantile plot) for graphical comparison of a normal theoretical
-#' quantile and the quantile of the effect to be used.
+#' Creates a quantile-quantile (Q-Q) plot which compares the theoretical
+#' quantiles of a normal distribution with the sample quantiles of the distribution of user effects.
 #'
-#' @param df A data frame containing the effect to be compared to a normal distribution using a
-#'   Q-Q plot.
-#' @param effect The name of the effect to be compared to a normal distribution using a Q-Q plot.
+#' @param df A data frame containing the effect of interest.
+#' @param effect The name of the effect of interest.
 #' @param labels When FALSE (default), data points without labels are plotted. When TRUE, column
-#'   and row labels are shown in the Q-Q plot. This requires additional columns "col" and "row" in
+#'   and row labels are shown in the Q-Q plot. This requires additional columns `col' and `row' in
 #'   the data frame.
 #'
-#' @return A Q-Q plot with the x- and y-axes displaying the theoretical quantile and the sample
-#'   quantile of the effect to be used, respectively.
+#' @return A Q-Q plot with the x- and y-axes displaying the theoretical and sample
+#'   quantiles of the effect of interest, respectively.
 #'
 #' @examples
-#' # Q-Q plot of the simulated total error for trait 2 in environment 2 provided in the example
+#' # Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
 #' # data frame 'df_error_bivar'.
 #'
 #' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
@@ -170,7 +169,7 @@ plot_effects <- function(df,
 #' qq
 #'
 #' # Extraction of a data frame containing the theoretical and sample quantiles of
-#' # the effect.
+#' # the effect of interest.
 #' qq_df <- qq$data
 #'
 #' @export
@@ -251,17 +250,16 @@ qq_plot <- function(df,
 #' Creates a sample variogram. The x- and y-axes display the row and column displacements,
 #' respectively. The z-axis displays the semi-variance (variogram ordinates).
 #'
-#' @param df A data frame containing the columns "col", "row", and the effect to be used in the
-#'   sample variogram.
-#' @param effect The name of the effect to used in the sample variogram.
+#' @param df A data frame containing the columns `col', `row', and the effect of interest.
+#' @param effect The name of the effect of interest.
 #' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be
 #'   displayed. By default, \code{min_np = 30}.
 #'
-#' @return Graphic of the sample variogram, where the x- and y- axes display the row and
+#' @return Graphic of the sample variogram, where the x- and y-axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
 #'
 #' @examples
-#' # Sample variogram fo the simulated total error for trait 2 in environment 2 provided in the
+#' # Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the
 #' # example data frame 'df_error_bivar'.
 #'
 #' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
