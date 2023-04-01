@@ -144,7 +144,7 @@ compsym_asr_input <- function(n_envs = 3,
       }
 
       if (length(var) != n_traits) {
-        stop("Number of values in argument 'var' must match number of traits")
+        stop("Number of values in argument 'var' does not match number of traits")
       }
 
       if (length(rel_main_eff_A) == n_traits) {
@@ -152,8 +152,8 @@ compsym_asr_input <- function(n_envs = 3,
       } else if (length(rel_main_eff_A) == 1 & n_traits > 1) {
         rel_main_eff <- rep(rel_main_eff_A, n_traits)
       } else {
-        stop("Number of values in 'rel_main_eff_A' has must either be 1 or must
-                 match number of traits")
+        stop("Number of values in 'rel_main_eff_A' must either be 1 or 
+               match number of traits")
       }
 
       if (any(rel_main_eff_A <= 0) | any(rel_main_eff_A >= 1)) {
@@ -188,7 +188,7 @@ compsym_asr_input <- function(n_envs = 3,
       }
 
       if (length(var_DD) != n_traits) {
-        stop("Number of values in argument 'var_DD' must match number of traits")
+        stop("Number of values in argument 'var_DD' does not match number of traits")
       }
 
       if (is.null(rel_main_eff_DD)) stop("'rel_main_eff_DD' is not specified")
@@ -198,7 +198,7 @@ compsym_asr_input <- function(n_envs = 3,
       } else if (length(rel_main_eff_DD) == 1 & n_traits > 1) {
         rel_main_eff <- rep(rel_main_eff_DD, n_traits)
       } else {
-        stop("Number of values in 'rel_main_eff_DD' has must either be 1 or must
+        stop("Number of values in 'rel_main_eff_DD' must either be 1 or 
                match number of traits")
       }
 
@@ -225,7 +225,7 @@ compsym_asr_input <- function(n_envs = 3,
 
     if (i == "AA") {
       if (length(rel_AA) != n_traits) {
-        stop("Number of values in argument 'rel_AA' must match number of traits")
+        stop("Number of values in argument 'rel_AA' does not match number of traits")
       }
 
       if (is.null(rel_main_eff_AA)) stop("'rel_main_eff_AA' is not specified")
@@ -235,7 +235,7 @@ compsym_asr_input <- function(n_envs = 3,
       } else if (length(rel_main_eff_AA) == 1 & n_traits > 1) {
         rel_main_eff <- rep(rel_main_eff_AA, n_traits)
       } else {
-        stop("Number of values in 'rel_main_eff_AA' has must either be 1 or must
+        stop("Number of values in 'rel_main_eff_AA' must either be 1 or 
                match number of traits")
       }
 
