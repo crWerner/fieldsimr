@@ -24,20 +24,22 @@
 #' If non-additive effects are to be simulated, check the \code{useVarA} argument of these
 #' functions.
 #'
-#' @param n_envs Number of environments to be simulated. A minimum of two environments is required.
-#' @param n_traits Number of traits to be simulated.
+#' @param n_envs Number of environments to be simulated. A minimum of two environments is required. 
+#'   By default, \code{n_envs = 3}.
+#' @param n_traits Number of traits to be simulated. By default, \code{n_traits = 2}.
 #' @param mean A vector of mean genetic values for each environment-within-trait combination.
 #'   If only one value is provided, all environment-within-trait combinations will be assigned the same mean.
+#'   By default, \code{mean = 0}.
 #' @param var A vector of genetic variances for each trait. Simulated traits are restricted by the
 #'   compound symmetry model to having the same variance for each environment (i.e., main
 #'   effect variance + GxE interaction variance) and the same covariance between each pair of
-#'   environments (main effect variance). \cr
-#'   \strong{Note:} When \code{useVarA = TRUE} is specified in 'AlphaSimR' (default) the values in
+#'   environments (main effect variance). By default, \code{var = 1}. \cr
+#'   \strong{Note:} When \code{useVarA = TRUE} is specified in `AlphaSimR' (default) the values in
 #'   \code{var} represent the \code{additive} genetic variances, otherwise they will represent the
 #'   \code{total} (additive + non-additive) genetic variances.
 #' @param rel_main_eff_A  A vector defining the magnitude of the additive main effect variance
 #'   relative to the additive main effect + GxE interaction variance for each trait. If only one
-#'   value is provided, all traits will be assigned the same value. \cr
+#'   value is provided, all traits will be assigned the same value. By default, \code{rel_main_eff_A = 0.5}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_A < 1}.
 #' @param cor_A A matrix of additive genetic correlations between traits. If not
 #'   defined, a diagonal matrix is constructed.
@@ -49,10 +51,10 @@
 #'   between each pair of environments (similar to \code{var}). By default, \code{var_DD = NULL}.
 #' @param rel_main_eff_DD A vector defining the magnitude of the dominance degree main effect
 #'   variance relative to the main effect + GxE interaction variance for each trait (similar to
-#'   \code{rel_main_eff_A}) \cr
-#'   \strong{Note:} \code{0 < rel_main_eff_DD < 1}. By default, \code{rel_main_eff_DD = NULL}.
+#'   \code{rel_main_eff_A}). By default, \code{rel_main_eff_DD = NULL}. \cr
+#'   \strong{Note:} \code{0 < rel_main_eff_DD < 1}.
 #' @param cor_DD A matrix of dominance degree correlations between traits (similar
-#'   to \code{cor_A}). If not defined, a diagonal matrix is constructed.
+#'   to \code{cor_A}). If not defined and dominance is simulated, a diagonal matrix is constructed. 
 #'   By default, \code{cor_DD = NULL}.
 #' @param rel_AA A vector defining the magnitude of additive-by-additive (epistatic) variance
 #'   relative to the additive genetic variance for each trait, that is in a diploid organism with
@@ -61,8 +63,8 @@
 #'   By default, \code{rel_AA = NULL} and epistasis is not simulated.
 #' @param rel_main_eff_AA A vector defining the magnitude of the epistatic main effect variance
 #'   relative to the main effect + GxE interaction variance for each trait (similar to
-#'   \code{rel_main_eff_A}). \cr
-#'   \strong{Note:} \code{0 < rel_main_eff_AA < 1}. By default, \code{rel_main_eff_AA = NULL}.
+#'   \code{rel_main_eff_A}). By default, \code{rel_main_eff_AA = NULL}. \cr
+#'   \strong{Note:} \code{0 < rel_main_eff_AA < 1}.
 #' @param cor_AA A matrix of epistatic correlations between traits (similar to
 #'   \code{cor_A}). If not defined and epistasis is simulated, a diagonal matrix is constructed. By
 #'   default, \code{cor_AA = NULL}.
@@ -104,11 +106,11 @@
 #'   cor_DD = cor_DD
 #' )
 #' @export
-compsym_asr_input <- function(n_envs,
-                              n_traits,
-                              mean,
-                              var,
-                              rel_main_eff_A,
+compsym_asr_input <- function(n_envs = 3,
+                              n_traits = 2,
+                              mean = 0,
+                              var = 1,
+                              rel_main_eff_A = 0.5,
                               cor_A = NULL,
                               mean_DD = NULL,
                               var_DD = NULL,
@@ -316,9 +318,9 @@ compsym_asr_input <- function(n_envs,
 #'   \code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{compsym_asr_input}.
 #' @param n_envs Number of simulated environments (same number used in
 #'   \link[FieldSimR]{compsym_asr_input}).
+#' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
 #'   one value is provided, all environments will be assigned the same number.
-#' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).
 #' @param effects When TRUE, a list is returned with additional entries containing the total
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   environment-within-trait combination. By default, effects = FALSE.
@@ -400,15 +402,15 @@ compsym_asr_input <- function(n_envs,
 #' gv_df <- compsym_asr_output(
 #'   pop = pop,
 #'   n_envs = 3,
-#'   n_reps = n_reps,
 #'   n_traits = 2,
+#'   n_reps = n_reps,
 #'   effects = TRUE
 #' )
 #' @export
 compsym_asr_output <- function(pop,
                                n_envs,
-                               n_reps,
                                n_traits,
+                               n_reps,
                                effects = FALSE) {
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
