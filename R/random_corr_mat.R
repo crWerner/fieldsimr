@@ -1,6 +1,6 @@
 #' Random correlation matrix
 #'
-#' Creates a general \code{p x p} correlation matrix with user-defined minimum and maximum
+#' Creates a symmetric \code{p x p} correlation matrix with user-defined minimum and maximum
 #' correlation values.
 #'
 #' @param p A scalar defining the dimensions of the correlation matrix.
@@ -10,7 +10,7 @@
 #'   default arguments to bend a non-positive-definite correlation matrix to a
 #'   positive-definite matrix (when appropriate). By default, pos_def = FALSE.
 #'
-#' @return A \code{p x p} correlation matrix.
+#' @return A symmetric \code{p x p} correlation matrix.
 #'
 #' @examples
 #' cor_A <- rand_cor_mat(10, min_cor = -0.2, max_cor = 0.8, pos_def = TRUE)
