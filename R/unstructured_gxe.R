@@ -50,7 +50,7 @@
 #'   combination with \code{T_var}. \cr
 #'   Alternatively, \code{var} can be provided. By default, \code{E_var = NULL}.
 #' @param cor_A A matrix of additive genetic correlations between all environment-within-trait
-#'   combinations. If not defined, a diagonal matrix is constructed. \cr
+#'   combinations. If not specified, a diagonal matrix is constructed. \cr
 #'   Alternatively, \code{T_cor_A} and \code{E_cor_A} can be provided.
 #' @param T_cor_A A matrix of additive genetic correlations between traits. Must be
 #'   provided in combination with \code{E_cor_A}. \cr
@@ -73,7 +73,7 @@
 #'   \code{E_var}). Must be provided in combination with \code{T_var_DD}. By default, \code{E_var_DD = NULL}. \cr
 #'   Alternatively, \code{var_DD} can be provided. 
 #' @param cor_DD A matrix of dominance degree correlations between all environment-within-trait
-#'   combinations (similar to \code{cor_A}). If not defined and dominance is simulated, a diagonal
+#'   combinations (similar to \code{cor_A}). If not specified and dominance is simulated, a diagonal
 #'   matrix is constructed. By default, \code{cor_DD = NULL}. \cr
 #'   Alternatively, \code{T_cor_DD} and \code{E_cor_DD} can be provided. 
 #' @param T_cor_DD A matrix of dominance degree correlations between traits (similar
@@ -84,7 +84,7 @@
 #'   Alternatively, \code{cor_DD} can be provided. 
 #' @param rel_AA A vector defining the magnitude of additive-by-additive (epistatic) variance
 #'   relative to additive genetic variance for each environment-within-trait combination, 
-#'   that is in a diploid organism with allele frequency 0.5.  If only one value is provided, 
+#'   that is in a diploid organism with allele frequency 0.5. If only one value is provided, 
 #'   all environment-within-trait combinations will be assigned the same value. By default, \code{rel_AA = NULL} and
 #'   epistasis is not simulated. \cr
 #'   Alternatively, if a separable structure between traits and environments is desired,
@@ -98,7 +98,7 @@
 #'   combination with \code{T_rel_AA}. By default, \code{E_rel_AA = NULL}. \cr
 #'   Alternatively, \code{rel_AA} can be provided. 
 #' @param cor_AA A matrix of epistatic correlations between all environment-within-trait
-#'   combinations (similar to \code{cor_A}). If not defined, a diagonal matrix is constructed. 
+#'   combinations (similar to \code{cor_A}). If not specified and epistasis is simulated, a diagonal matrix is constructed. 
 #'   By default, \code{cor_AA = NULL}.\cr
 #'   Alternatively, \code{T_cor_AA} and \code{E_cor_AA} can be provided. 
 #' @param T_cor_AA A matrix of epistatic correlations between traits (similar to
@@ -486,9 +486,9 @@ unstr_asr_input <- function(n_envs = 3,
 #' @param pop An `AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
 #'   \code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{unstr_asr_input}.
 #' @param n_envs Number of simulated environments (same number used in \link[FieldSimR]{unstr_asr_input}).
+#' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{unstr_asr_input}).
 #' @param n_reps A vector defining the number of complete replicates in each environment. If only
 #'   one value is provided, all environments will be assigned the same number.
-#' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{unstr_asr_input}).
 #'
 #' @return  A data frame with columns `env', `rep', genotype `id', and the
 #'   simulated genetic values for each trait.
@@ -584,14 +584,14 @@ unstr_asr_input <- function(n_envs = 3,
 #' gv_df <- unstr_asr_output(
 #'   pop = pop,
 #'   n_envs = 3,
-#'   n_reps = n_reps,
-#'   n_traits = 2
+#'   n_traits = 2,
+#'   n_reps = n_reps
 #' )
 #' @export
 unstr_asr_output <- function(pop,
                              n_envs,
-                             n_reps,
-                             n_traits) {
+                             n_traits,
+                             n_reps) {
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
 
