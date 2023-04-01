@@ -50,7 +50,8 @@
 #'   between each pair of environments (similar to \code{var}). By default, \code{var_DD = NULL}.
 #' @param rel_main_eff_DD A vector defining the magnitude of the dominance degree main effect
 #'   variance relative to the main effect + GxE interaction variance for each trait (similar to
-#'   \code{rel_main_eff_A}). By default, \code{rel_main_eff_DD = NULL}. \cr
+#'   \code{rel_main_eff_A}). If only one value is specified, all traits will be assigned the same 
+#'   relative magnitude. By default, \code{rel_main_eff_DD = NULL}. \cr
 #'   \strong{Note:} \code{0 < rel_main_eff_DD < 1}.
 #' @param cor_DD A matrix of dominance degree correlations between traits (similar
 #'   to \code{cor_A}). If not specified and dominance is simulated, a diagonal matrix is constructed. 
