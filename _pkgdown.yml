@@ -1,4 +1,5 @@
 url: https://crwerner.github.io/fieldsimr/
 template:
   bootstrap: 5
+  bootswatch: cerulean
 
