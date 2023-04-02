@@ -198,8 +198,8 @@ environments</strong> in the compound symmetry model.</p>
 <p><strong>Additive genetic correlations between the two traits</strong>
 are set in a 2x2 correlation matrix.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cor_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="co"># Matrix of additive genetic correlations grain yield and plant height.</span></span>
+<code class="sourceCode R"><span><span class="va">cor_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span> <span class="co"># Matrix of additive genetic correlations grain yield and plant height.</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="fl">1.0</span>, <span class="fl">0.5</span>,</span>
 <span>    <span class="fl">0.5</span>, <span class="fl">1.0</span></span>
 <span>  <span class="op">)</span>,</span>
@@ -221,9 +221,9 @@ yield and plant height. Therefore, we generate a 2x2 diagonal matrix
 (although this is not strictly necessary. A diagonal matrix is
 constructed by default if no correlation matrix is provided).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mean_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.1</span><span class="op">)</span> <span class="co"># c(grain yield, plant height)</span></span>
+<code class="sourceCode R"><span><span class="va">mean_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span> <span class="co"># c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)</span></span>
 <span></span>
-<span><span class="va">var_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span> <span class="co"># c(grain yield, plant height)</span></span>
+<span><span class="va">var_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span> <span class="co"># c(grain yield, plant height)</span></span>
 <span></span>
 <span><span class="va">rel_main_eff_DD</span> <span class="op">&lt;-</span> <span class="fl">0.4</span> <span class="co"># Same value set for traits 1 and 2.</span></span>
 <span></span>
@@ -333,12 +333,12 @@ frame.</p>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;   env rep  id gv.Trait.1 gv.Trait.2</span></span>
-<span><span class="co">#&gt; 1   1   1 121   5.177453   239.9881</span></span>
-<span><span class="co">#&gt; 2   1   1 122   5.015879   240.0719</span></span>
-<span><span class="co">#&gt; 3   1   1 123   4.927318   238.4514</span></span>
-<span><span class="co">#&gt; 4   1   1 124   4.934194   240.1010</span></span>
-<span><span class="co">#&gt; 5   1   1 125   4.847502   236.1667</span></span>
-<span><span class="co">#&gt; 6   1   1 126   5.304330   238.4236</span></span></code></pre>
+<span><span class="co">#&gt; 1   1   1 121   4.822801   231.6692</span></span>
+<span><span class="co">#&gt; 2   1   1 122   5.004657   233.0104</span></span>
+<span><span class="co">#&gt; 3   1   1 123   4.898446   231.7594</span></span>
+<span><span class="co">#&gt; 4   1   1 124   4.995471   235.1120</span></span>
+<span><span class="co">#&gt; 5   1   1 125   5.173619   235.8367</span></span>
+<span><span class="co">#&gt; 6   1   1 126   4.943129   229.6916</span></span></code></pre>
 <p><br></p>
 <p><strong>Histogram showing the genetic values of the 100 maize hybrids
 for grain yield in the three environments</strong></p>

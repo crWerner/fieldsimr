@@ -65,12 +65,11 @@ respectively. The z-axis displays the semi-variance (variogram ordinates).</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>df</dt>
-<dd><p>A data frame containing the columns "col", "row", and the effect to be used in the
-sample variogram.</p></dd>
+<dd><p>A data frame containing the columns 'col', 'row', and the effect of interest.</p></dd>
 
 
 <dt>effect</dt>
-<dd><p>The name of the effect to used in the sample variogram.</p></dd>
+<dd><p>The name of the effect of interest.</p></dd>
 
 
 <dt>min_np</dt>
@@ -82,13 +81,13 @@ displayed. By default, <code>min_np = 30</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Graphic of the sample variogram, where the x- and y- axes display the row and
+<p>Graphic of the sample variogram, where the x- and y-axes display the row and
   column displacements and the z-axis displays the semi-variance (variogram ordinates).</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sample variogram fo the simulated total error for trait 2 in environment 2 provided in the</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the</span></span></span>
 <span class="r-in"><span><span class="co"># example data frame 'df_error_bivar'.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="va">df_error_bivar</span><span class="op">[</span><span class="va">df_error_bivar</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span></span>
