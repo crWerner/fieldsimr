@@ -3,12 +3,11 @@
 #' Creates a data frame of simulated plot errors for one or more traits in field trials
 #' across one or more environments. The plot errors consist of spatial error, random
 #' error and extraneous error. The spatial error is simulated according to either 1) bivariate
-#' interpolation using the \link[interp]{interp} function of the package `interp', or 2) a
+#' interpolation using the \link[interp]{interp} function of the package 'interp', or 2) a
 #' separable first-order autoregressive process (AR1:AR1). The random error is simulated using
 #' an independent process. The extraneous error is simulated as the sum of column and/or row terms,
 #' where the user can choose from independent or correlated processes. The spatial, random and
-#' extraneous errors are combined according to a user-defined ratio.
-#' \cr
+#' extraneous errors are combined according to a user-defined ratio. \cr
 #' For multiple traits, correlated errors can be simulated assuming 1) correlated spatial
 #' error between traits, 2) correlated random error between traits, 3) correlated extraneous
 #' error between traits, or 4) some combination of 1-3. \cr
@@ -28,7 +27,7 @@
 #'   value is provided, all environments will be assigned the same number. By default
 #'   \code{n_rows = 20}.
 #' @param rep_dir A vector specifying the direction of replicate blocks in each environment. Use
-#'   `col' for a side-by-side arrangement (default), `row' for an above-and-below arrangement, or
+#'   'col' for a side-by-side arrangement (default), 'row' for an above-and-below arrangement, or
 #'   NA if only one replicate block is simulated. If only one value is provided, all environments
 #'   will be assigned the same replicate block direction (where applicable).
 #' @param var_R A vector of error variances for each environment-within-trait combination. If only
@@ -42,7 +41,7 @@
 #'   specified and extraneous error is simulated, a diagonal matrix is constructed. Note that the same correlation between traits
 #'   is used for the column and row errors (where applicable).
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
-#'   spatial error term. One of either `Bivariate' (bivariate interpolation, the default) or `AR1:AR1'
+#'   spatial error term. One of either 'Bivariate' (bivariate interpolation, the default) or 'AR1:AR1'
 #'   (separable first-order autoregressive process).
 #' @param complexity A vector specifying the complexity of the bivariate interpolation in each
 #'   environment. If only one value is provided, all environments will be assigned the same complexity.
@@ -77,15 +76,15 @@
 #'   error model. If only one value is provided, all environments will be assigned the same row
 #'   autocorrelation. By default, \code{ext_row_cor = 0}.
 #' @param ext_dir A vector specifying the direction of extraneous variation for each environment.
-#'   Use `col' to simulate variation in the column direction, `row' (default) for variation in the
-#'   row direction, `both' for variation in both directions, or NA if zero extraneous variation is
-#'   simulated. When \code{ext_dir = `both'}, half the variance is assigned to the columns and
+#'   Use "col" to simulate variation in the column direction, "row"'" (default) for variation in the
+#'   row direction, 'both' for variation in both directions, or NA if zero extraneous variation is
+#'   simulated. When \code{ext_dir = "both"}, half the variance is assigned to the columns and
 #'   half is assigned to the rows. If only one value is provided, all environments will be
 #'   assigned the same direction (where applicable).
 #' @param return_effects When TRUE, a list is returned with additional entries for each trait
 #'   containing the spatial, random and extraneous errors. By default, return_effects = FALSE.
 #'
-#' @return A data frame with columns `env', `block', `col' and `row', as well as the
+#' @return A data frame with columns 'env', 'block', 'col' and 'row', as well as the
 #'   simulated error for each trait. When \code{return_effects = TRUE}, a list is returned with
 #'   additional columns for each trait providing the spatial, random and extraneous errors.
 #'

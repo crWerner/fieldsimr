@@ -6,7 +6,7 @@
 #' @param p A scalar defining the dimensions of the correlation matrix.
 #' @param min_cor A scalar defining the minimum potential value. By default, min_cor = -1.
 #' @param max_cor A scalar defining the maximum potential value. By default, max_cor = 1.
-#' @param pos_def When TRUE, the function \link[mbend]{bend} of the package `mbend' is used with
+#' @param pos_def When TRUE, the function \link[mbend]{bend} of the package 'mbend' is used with
 #'   default arguments to bend a non-positive-definite correlation matrix to a
 #'   positive-definite matrix (when appropriate). By default, pos_def = FALSE.
 #'

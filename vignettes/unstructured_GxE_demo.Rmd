@@ -99,11 +99,11 @@ var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1,
 
 #### **Dominance genetic parameters**
 
-We assume similar dominance degrees and dominance degree variances in all three environments for the two traits, respectively. We can achieve that by providing a vector with only two values. The two traits will receive the same value in each environment if the length of the two vectors is equal to `n_traits.` 
+We assume mean dominance degrees of 0.4 for grain yield and 0.1 for plant height in all three environments, respectively. The dominance degree variance is set to 0.2 for both traits in the three environments.
 
 ```{r}
-mean_DD <- c(0.4, 0.1) # == c(0.1, 0.1, 0.1, 0.4, 0.4, 0.4)
-var_DD <- c(0.1, 0.1) # == c(0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
+mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
+var_DD <- rep(0.2, 6)
 ```
 
 <br/>
@@ -118,8 +118,8 @@ Additive and non-additive genetic correlations between all ***trait x environmen
 We choose the second option and assume a **separable additive genetic correlation structure**. This simplifies the generation of the additive correlation matrix, especially when the number of environments and/or traits is high.
 
 ```{r}
-T_cor_A <- matrix(
-  c( # Matrix of additive genetic correlations between the two traits.
+T_cor_A <- matrix( # Matrix of additive genetic correlations between the two traits.
+  c(
     1.0, 0.6,
     0.6, 1.0
   ),

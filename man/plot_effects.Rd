@@ -7,8 +7,8 @@
 plot_effects(df, effect, blocks = TRUE)
 }
 \arguments{
-\item{df}{A data frame with columns "col", "row", and the effect to be plotted. If \code{df}
-also contains a “block” column, the field array is split into blocks if \code{blocks = TRUE}. \cr
+\item{df}{A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
+also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}. \cr
 \strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
 otherwise.}
 
@@ -21,14 +21,14 @@ A graphical field array, in which the colour gradient ranges from red (low value
 to green (high value).
 }
 \description{
-Graphically displays plot effects (e.g., phenotypic values, genetic values, error terms) onto a
+Graphically displays plot effects (e.g., phenotypes, genetic values, plot errors) onto a
 field array, in which the colour gradient ranges from red (low value) to green (high value).
 The function requires a data frame generated with field_trial_error as an input, or any data
-frame with columns “col”, “row”, and the effect to be displayed. If the data frame contains a
-“block” column, the field array is split into blocks if \code{blocks = TRUE}.
+frame with columns 'col', 'row', and the effect to be displayed. When the data frame contains a
+'block' column, the field array is split into blocks if \code{blocks = TRUE}.
 }
 \examples{
-# Plot the simulated total error term for trait 2 in environment 2 provided in the example data
+# Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
 # frame 'df_error_bivar'.
 
 error_df <- df_error_bivar[df_error_bivar$env == 2, ]

@@ -7,25 +7,24 @@
 qq_plot(df, effect, labels = FALSE)
 }
 \arguments{
-\item{df}{A data frame containing the effect to be compared to a normal distribution using a
-Q-Q plot.}
+\item{df}{A data frame containing the effect of interest.}
 
-\item{effect}{The name of the effect to be compared to a normal distribution using a Q-Q plot.}
+\item{effect}{The name of the effect of interest.}
 
 \item{labels}{When FALSE (default), data points without labels are plotted. When TRUE, column
-and row labels are shown in the Q-Q plot. This requires additional columns "col" and "row" in
+and row labels are shown in the Q-Q plot. This requires additional columns 'col' and 'row' in
 the data frame.}
 }
 \value{
-A Q-Q plot with the x- and y-axes displaying the theoretical quantile and the sample
-  quantile of the effect to be used, respectively.
+A Q-Q plot with the x- and y-axes displaying the theoretical and sample
+  quantiles of the effect of interest, respectively.
 }
 \description{
-Creates a Q-Q plot (quantile-quantile plot) for graphical comparison of a normal theoretical
-quantile and the quantile of the effect to be used.
+Creates a quantile-quantile (Q-Q) plot which compares the theoretical
+quantiles of a normal distribution with the sample quantiles of the distribution of user effects.
 }
 \examples{
-# Q-Q plot of the simulated total error for trait 2 in environment 2 provided in the example
+# Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
 # data frame 'df_error_bivar'.
 
 error_df <- df_error_bivar[df_error_bivar$env == 2, ]
@@ -40,7 +39,7 @@ qq <- qq_plot(
 qq
 
 # Extraction of a data frame containing the theoretical and sample quantiles of
-# the effect.
+# the effect of interest.
 qq_df <- qq$data
 
 }

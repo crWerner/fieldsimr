@@ -5,15 +5,15 @@
 #' The genetic values can be generated externally, but note that they must be stored in a
 #' data frame as described below.
 #'
-#' @param gv_df A data frame of genetic values. Must contain the columns `env', `rep', and `id',
+#' @param gv_df A data frame of genetic values. Must contain the columns 'env', 'rep', and 'id',
 #'   followed by the genetic values for each trait.
-#' @param error_df A data frame of plot errors. Must contain the columns `env', `block',
-#'   `col', and `row', followed by the plot errors for each trait.
+#' @param error_df A data frame of plot errors. Must contain the columns 'env', 'block',
+#'   'col', and 'row', followed by the plot errors for each trait.
 #' @param randomise When TRUE, genotypes are randomly allocated to plots within blocks to generate
 #'   a randomized complete block design (RCBD).\cr
 #'   \strong{Note:} Other experimental designs must be generated externally.
 #'
-#' @return A data frame with columns `env', `block', `column', `row' and `genotype', followed by
+#' @return A data frame with columns 'env', 'block', 'column', 'row' and 'genotype', followed by
 #'   the phenotypes for each trait.
 #'
 #' @examples

@@ -102,8 +102,8 @@ rel_main_eff_A <- c(0.4, 0.6) # c(grain yield, plant height)
 
 **Additive genetic correlations between the two traits** are set in a 2x2 correlation matrix.
 ```{r}
-cor_A <- matrix(
-  c( # Matrix of additive genetic correlations grain yield and plant height.
+cor_A <- matrix( # Matrix of additive genetic correlations grain yield and plant height.
+  c(
     1.0, 0.5,
     0.5, 1.0
   ),
@@ -122,9 +122,9 @@ cor_A
 **Dominance degrees and dominance degree variances** for the two traits are defined in the same way. We assume **independence between the dominance degrees** of grain yield and plant height. Therefore, we generate a 2x2 diagonal matrix (although this is not strictly necessary. A diagonal matrix is constructed by default if no correlation matrix is provided).
 
 ```{r}
-mean_DD <- c(0.4, 0.1) # c(grain yield, plant height)
+mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
 
-var_DD <- c(0.1, 0.1) # c(grain yield, plant height)
+var_DD <- c(0.2, 0.2) # c(grain yield, plant height)
 
 rel_main_eff_DD <- 0.4 # Same value set for traits 1 and 2.
 

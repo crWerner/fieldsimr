@@ -13,15 +13,15 @@ rand_cor_mat(p, min_cor = -1, max_cor = 1, pos_def = FALSE)
 
 \item{max_cor}{A scalar defining the maximum potential value. By default, max_cor = 1.}
 
-\item{pos_def}{When TRUE, the function \link[mbend]{bend} of the package `mbend' is used with
+\item{pos_def}{When TRUE, the function \link[mbend]{bend} of the package 'mbend' is used with
 default arguments to bend a non-positive-definite correlation matrix to a
 positive-definite matrix (when appropriate). By default, pos_def = FALSE.}
 }
 \value{
-A \code{p x p} correlation matrix.
+A symmetric \code{p x p} correlation matrix.
 }
 \description{
-Creates a general \code{p x p} correlation matrix with user-defined minimum and maximum
+Creates a symmetric \code{p x p} correlation matrix with user-defined minimum and maximum
 correlation values.
 }
 \examples{

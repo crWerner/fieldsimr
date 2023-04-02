@@ -7,16 +7,15 @@
 sample_variogram(df, effect, min_np = 30)
 }
 \arguments{
-\item{df}{A data frame containing the columns "col", "row", and the effect to be used in the
-sample variogram.}
+\item{df}{A data frame containing the columns 'col', 'row', and the effect of interest.}
 
-\item{effect}{The name of the effect to used in the sample variogram.}
+\item{effect}{The name of the effect of interest.}
 
 \item{min_np}{Only semi variances based on at least \code{min_np} pairs of plots will be
 displayed. By default, \code{min_np = 30}.}
 }
 \value{
-Graphic of the sample variogram, where the x- and y- axes display the row and
+Graphic of the sample variogram, where the x- and y-axes display the row and
   column displacements and the z-axis displays the semi-variance (variogram ordinates).
 }
 \description{
@@ -24,7 +23,7 @@ Creates a sample variogram. The x- and y-axes display the row and column displac
 respectively. The z-axis displays the semi-variance (variogram ordinates).
 }
 \examples{
-# Sample variogram fo the simulated total error for trait 2 in environment 2 provided in the
+# Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the
 # example data frame 'df_error_bivar'.
 
 error_df <- df_error_bivar[df_error_bivar$env == 2, ]

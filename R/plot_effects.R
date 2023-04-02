@@ -3,11 +3,11 @@
 #' Graphically displays plot effects (e.g., phenotypes, genetic values, plot errors) onto a
 #' field array, in which the colour gradient ranges from red (low value) to green (high value).
 #' The function requires a data frame generated with field_trial_error as an input, or any data
-#' frame with columns `col', `row', and the effect to be displayed. When the data frame contains a
-#' `block' column, the field array is split into blocks if \code{blocks = TRUE}.
+#' frame with columns 'col', 'row', and the effect to be displayed. When the data frame contains a
+#' 'block' column, the field array is split into blocks if \code{blocks = TRUE}.
 #'
-#' @param df A data frame with columns `col', `row', and the effect to be plotted. When \code{df}
-#'   also contains a `block' column, the field array is split into blocks if \code{blocks = TRUE}. \cr
+#' @param df A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
+#'   also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}. \cr
 #'   \strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
 #'   otherwise.
 #' @param effect The effect to be plotted.
@@ -147,7 +147,7 @@ plot_effects <- function(df,
 #' @param df A data frame containing the effect of interest.
 #' @param effect The name of the effect of interest.
 #' @param labels When FALSE (default), data points without labels are plotted. When TRUE, column
-#'   and row labels are shown in the Q-Q plot. This requires additional columns `col' and `row' in
+#'   and row labels are shown in the Q-Q plot. This requires additional columns 'col' and 'row' in
 #'   the data frame.
 #'
 #' @return A Q-Q plot with the x- and y-axes displaying the theoretical and sample
@@ -250,7 +250,7 @@ qq_plot <- function(df,
 #' Creates a sample variogram. The x- and y-axes display the row and column displacements,
 #' respectively. The z-axis displays the semi-variance (variogram ordinates).
 #'
-#' @param df A data frame containing the columns `col', `row', and the effect of interest.
+#' @param df A data frame containing the columns 'col', 'row', and the effect of interest.
 #' @param effect The name of the effect of interest.
 #' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be
 #'   displayed. By default, \code{min_np = 30}.
