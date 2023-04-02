@@ -1,6 +1,6 @@
 # FieldSimR
 
-**FieldSimR** is an R package to enable simulation plot data in field trials for multiple traits across multiple environments. Its core function generates plot errors comprising 
+**FieldSimR** is an R package to enable simulation of plot data in field trials for multiple traits across multiple environments. Its core function generates plot errors comprising 
 1) a spatially correlated error term,
 2) a random error term, and 
 3) an extraneous error term. 
