@@ -118,8 +118,10 @@ combination of the plot errors with the genetic values stored in the
 package’s example data frame <code>df_gv_unstr</code>. The data frame
 contains simulated genetic values for two traits in three environments
 based on an unstructured model for genotype-by-environment (GxE)
-interaction. The simulation of the genetic values is shown in
-<strong><em>FieldSimR::unstructured_GxE_demo</em></strong>.</p>
+interaction. The simulation of the genetic values is shown in the
+vignette on the <a href="https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html">Simulation
+of genetic values using an unstructured model for
+genotype-by-environment (GxE) interaction</a>.</p>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -216,9 +218,9 @@ sample a value between 0 and 0.5.</p>
 <span></span>
 <span><span class="va">S_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">S_cor_R</span></span>
-<span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.4593252</span></span>
-<span><span class="co">#&gt; [2,] 0.4593252 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt;            [,1]       [,2]</span></span>
+<span><span class="co">#&gt; [1,] 1.00000000 0.09348443</span></span>
+<span><span class="co">#&gt; [2,] 0.09348443 1.00000000</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -242,8 +244,8 @@ between 0 and 0.5.</p>
 <span><span class="va">E_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">E_cor_R</span></span>
 <span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.3798467</span></span>
-<span><span class="co">#&gt; [2,] 0.3798467 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.0000000 0.1488088</span></span>
+<span><span class="co">#&gt; [2,] 0.1488088 1.0000000</span></span></code></pre></div>
 <p><strong>Note:</strong> the <strong>proportion of the random error
 variance to total error variance</strong> is defined as 1 -
 (prop_spatial + prop_ext). Hence, <code>prop_spatial</code> and

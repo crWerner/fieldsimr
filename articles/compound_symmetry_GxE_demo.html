@@ -102,7 +102,9 @@ symmetry GxE interaction model are:</p>
 <p><strong>Note:</strong> <a href="https://CRAN.R-project.org/package=fieldSimR" class="external-link">‘FieldSimR’</a> also
 provides wrapper functions to enable simulation of genetic values using
 unstructured model for genotype-by-environment (GxE) interaction. This
-is demonstrated in FieldSimR::unstructured_GxE_demo.</p>
+is demonstrated in the vignette on the <a href="https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html">Simulation
+of genetic values using an unstructured model for
+genotype-by-environment (GxE) interaction</a>.</p>
 <p>The <strong>core function of <a href="https://CRAN.R-project.org/package=fieldSimR" class="external-link">‘FieldSimR’</a></strong>
 generates plot errors comprising 1) a spatially correlated error term,
 2) a random error term, and 3) an extraneous error term. Spatially
@@ -110,7 +112,9 @@ correlated errors are simulated using either bivariate interpolation, or
 a two-dimensional autoregressive process of order one (AR1:AR1). Through
 the combination of the plot errors with (simulated) genetic values, <a href="https://CRAN.R-project.org/package=fieldSimR" class="external-link">‘FieldSimR’</a>
 enables simulation of multi-environment plant breeding trials at the
-plot. This is demonstrated in FieldSimR::spatial_error_bivar_demo.</p>
+plot. This is demonstrated in the vignette on the <a href="https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html">Simulation
+of plot errors and phenotypes for a multi-environment plant breeding
+trial</a>.</p>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -333,12 +337,12 @@ frame.</p>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;   env rep  id gv.Trait.1 gv.Trait.2</span></span>
-<span><span class="co">#&gt; 1   1   1 121   4.697300   238.0375</span></span>
-<span><span class="co">#&gt; 2   1   1 122   4.529464   234.9028</span></span>
-<span><span class="co">#&gt; 3   1   1 123   4.803336   235.1486</span></span>
-<span><span class="co">#&gt; 4   1   1 124   4.902987   230.7088</span></span>
-<span><span class="co">#&gt; 5   1   1 125   5.033973   239.7611</span></span>
-<span><span class="co">#&gt; 6   1   1 126   4.507112   233.9659</span></span></code></pre>
+<span><span class="co">#&gt; 1   1   1 121   4.955134   236.8295</span></span>
+<span><span class="co">#&gt; 2   1   1 122   5.093148   239.6118</span></span>
+<span><span class="co">#&gt; 3   1   1 123   5.261093   238.0460</span></span>
+<span><span class="co">#&gt; 4   1   1 124   5.083923   238.0405</span></span>
+<span><span class="co">#&gt; 5   1   1 125   4.927327   232.9835</span></span>
+<span><span class="co">#&gt; 6   1   1 126   4.922720   237.2735</span></span></code></pre>
 <p><br></p>
 <p><strong>Histogram showing the genetic values of the 100 maize hybrids
 for grain yield in the three environments</strong></p>

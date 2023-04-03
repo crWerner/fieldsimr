@@ -101,7 +101,9 @@ unstructured model for GxE interaction are:</p>
 <p><strong>Note:</strong> <a href="https://CRAN.R-project.org/package=fieldSimR" class="external-link">‘FieldSimR’</a> also
 provides wrapper functions to enable simulation of genetic values using
 a compound symmetry model for GxE interaction. This is demonstrated in
-FieldSimR::compound_symmetry_GxE_demo.</p>
+the vignette on the <a href="https://crwerner.github.io/fieldsimr/articles/compound_symmetry_GxE_demo.html">Simulation
+of genetic values using a compound symmetry model for
+genotype-by-environment (GxE) interaction</a>.</p>
 <p>The <strong>core function of <a href="https://CRAN.R-project.org/package=fieldSimR" class="external-link">‘FieldSimR’</a></strong>
 generates plot errors comprising 1) a spatially correlated error term,
 2) a random error term, and 3) an extraneous error term. Spatially
@@ -109,7 +111,9 @@ correlated errors are simulated using either bivariate interpolation, or
 a two-dimensional autoregressive process of order one (AR1:AR1). Through
 the combination of the plot errors with (simulated) genetic values, <a href="https://CRAN.R-project.org/package=fieldSimR" class="external-link">‘FieldSimR’</a>
 enables simulation of multi-environment plant breeding trials at the
-plot. This is demonstrated in FieldSimR::spatial_error_bivar_demo.</p>
+plot. This is demonstrated in the vignette on the <a href="https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html">Simulation
+of plot errors and phenotypes for a multi-environment plant breeding
+trial</a>.</p>
 <p><br></p>
 </div>
 <div class="section level3">
@@ -267,12 +271,12 @@ are sampled within a defined range of values.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">cor_A</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
-<span><span class="co">#&gt; [1,] 1.00 0.18 0.39 0.51 0.82 0.38</span></span>
-<span><span class="co">#&gt; [2,] 0.18 1.00 0.54 0.27 0.22 0.10</span></span>
-<span><span class="co">#&gt; [3,] 0.39 0.54 1.00 0.80 0.67 0.71</span></span>
-<span><span class="co">#&gt; [4,] 0.51 0.27 0.80 1.00 0.86 0.50</span></span>
-<span><span class="co">#&gt; [5,] 0.82 0.22 0.67 0.86 1.00 0.63</span></span>
-<span><span class="co">#&gt; [6,] 0.38 0.10 0.71 0.50 0.63 1.00</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.00 0.56 0.72 0.19 0.76 0.61</span></span>
+<span><span class="co">#&gt; [2,] 0.56 1.00 0.41 0.08 0.18 0.31</span></span>
+<span><span class="co">#&gt; [3,] 0.72 0.41 1.00 0.26 0.42 0.51</span></span>
+<span><span class="co">#&gt; [4,] 0.19 0.08 0.26 1.00 0.63 0.31</span></span>
+<span><span class="co">#&gt; [5,] 0.76 0.18 0.42 0.63 1.00 0.63</span></span>
+<span><span class="co">#&gt; [6,] 0.61 0.31 0.51 0.31 0.63 1.00</span></span></code></pre></div>
 <p><br></p>
 <p>Furthermore, we assume <strong>independence between the dominance
 degrees</strong> of the six
@@ -390,12 +394,12 @@ frame.</p>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;   env rep id gv.Trait.1 gv.Trait.2</span></span>
-<span><span class="co">#&gt; 1   1   1 41   5.041075   237.2119</span></span>
-<span><span class="co">#&gt; 2   1   1 42   5.619864   237.9128</span></span>
-<span><span class="co">#&gt; 3   1   1 43   5.276667   239.4196</span></span>
-<span><span class="co">#&gt; 4   1   1 44   4.802655   228.5979</span></span>
-<span><span class="co">#&gt; 5   1   1 45   4.846062   237.2196</span></span>
-<span><span class="co">#&gt; 6   1   1 46   5.385192   238.9754</span></span></code></pre>
+<span><span class="co">#&gt; 1   1   1 41   4.704435   237.2519</span></span>
+<span><span class="co">#&gt; 2   1   1 42   4.953725   234.6115</span></span>
+<span><span class="co">#&gt; 3   1   1 43   4.624659   235.5109</span></span>
+<span><span class="co">#&gt; 4   1   1 44   4.884677   230.3414</span></span>
+<span><span class="co">#&gt; 5   1   1 45   4.967201   236.4287</span></span>
+<span><span class="co">#&gt; 6   1   1 46   4.725818   231.9203</span></span></code></pre>
 <p><br></p>
 <p><strong>Histogram showing the genetic values of the 100 maize hybrids
 for grain yield in the three environments</strong></p>
