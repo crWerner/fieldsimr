@@ -1,7 +1,7 @@
 Package: FieldSimR
 Title: Simulation of Plot Errors and Phenotypes in Plant Breeding Field Trials
 Version: 1.1.0
-Date: 2023-02-02
+Date: 2023-04-01
 Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me", 
 	  role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9400-5061")),
     person("Daniel", "Tolhurst", role = "aut",

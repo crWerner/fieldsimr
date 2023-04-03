@@ -42,7 +42,7 @@ The **simulation of plot errors** requires specification of various simulation p
 
 <br/>
 
-**Phenotypes** are then simulated through the combination of the plot errors with the genetic values stored in the package's example data frame `df_gv_unstr`. The data frame contains simulated genetic values for two traits in three environments based on an unstructured model for genotype-by-environment (GxE) interaction. The simulation of the genetic values is shown in ***FieldSimR::unstructured_GxE_demo***.
+**Phenotypes** are then simulated through the combination of the plot errors with the genetic values stored in the package's example data frame `df_gv_unstr`. The data frame contains simulated genetic values for two traits in three environments based on an unstructured model for genotype-by-environment (GxE) interaction. The simulation of the genetic values is shown in the vignette on the [Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html).
 
 <br/>
 

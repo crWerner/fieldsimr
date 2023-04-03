@@ -30,9 +30,10 @@ This document demonstrates how to simulate genetic values for multiple traits in
 
 <br/>
 
-**Note:** ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR) also provides wrapper functions to enable simulation of genetic values using a compound symmetry model for GxE interaction. This is demonstrated in FieldSimR::compound_symmetry_GxE_demo.
+**Note:** ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR) also provides wrapper functions to enable simulation of genetic values using a compound symmetry model for GxE interaction. This is demonstrated in the vignette on the [Simulation of genetic values using a compound symmetry model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/compound_symmetry_GxE_demo.html).
 
-The **core function of ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR)** generates plot errors comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1). Through the combination of the plot errors with (simulated) genetic values, ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR) enables simulation of multi-environment plant breeding trials at the plot. This is demonstrated in FieldSimR::spatial_error_bivar_demo.
+The **core function of ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR)** generates plot errors comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1). Through the combination of the plot errors with (simulated) genetic values, ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR) enables simulation of multi-environment plant breeding trials at the plot. This is demonstrated in the vignette on the [Simulation of plot errors and phenotypes for a multi-environment plant breeding trial](https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html).
+
 
 <br/>
 
