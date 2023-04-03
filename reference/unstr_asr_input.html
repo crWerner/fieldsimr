@@ -118,144 +118,126 @@ environments (see below). After simulating the genetic values, the wrapper funct
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>n_envs</dt>
-<dd><p>Number of environments to be simulated. A minimum of two environments is required.
-By default, <code>n_envs = 3</code>.</p></dd>
+<dd><p>Number of environments to be simulated. A minimum of two environments is required.</p></dd>
 
 
 <dt>n_traits</dt>
-<dd><p>Number of traits to be simulated. By default, <code>n_envs = 2</code>.</p></dd>
+<dd><p>Number of traits to be simulated.</p></dd>
 
 
 <dt>mean</dt>
 <dd><p>A vector of mean genetic values for each environment-within-trait combination.
-If only one value is specified, all environment-within-trait combinations will be assigned the same mean.
-By default, <code>mean = 0</code>.</p></dd>
+If only one value is specified, all environment-within-trait combinations will be assigned
+the same mean.</p></dd>
 
 
 <dt>var</dt>
 <dd><p>A vector of genetic variances for each environment-within-trait combination.
-If only one value is specified, all environment-within-trait combinations will be assigned the same mean.
-By default, <code>var = 1</code>. <br>
-Alternatively, if a separable structure between traits and environments is desired,
-<code>T_var</code> and <code>E_var</code> can be specified. By default, <code>var = 1</code>.</p></dd>
+If only one value is specified, all environment-within-trait combinations will be assigned
+the same mean. <br><strong>Alternatively</strong>, if a separable structure between traits and environments is desired,
+<code>T_var</code> and <code>E_var</code> can be specified.</p></dd>
 
 
 <dt>T_var</dt>
 <dd><p>A vector of genetic variances for each trait. Must be provided in combination with
-<code>E_var</code>. <br>
-Alternatively, <code>var</code> can be specified. By default, <code>T_var = NULL</code>.</p></dd>
+<code>E_var</code>. <br><strong>Alternatively</strong>, <code>var</code> can be specified.</p></dd>
 
 
 <dt>E_var</dt>
 <dd><p>A vector of genetic variances for each environment. Must be provided in
-combination with <code>T_var</code>. <br>
-Alternatively, <code>var</code> can be specified. By default, <code>E_var = NULL</code>.</p></dd>
+combination with <code>T_var</code>. <br><strong>Alternatively</strong>, <code>var</code> can be specified.</p></dd>
 
 
 <dt>cor_A</dt>
 <dd><p>A matrix of additive genetic correlations between all environment-within-trait
-combinations. By default, a diagonal matrix is constructed. <br>
-Alternatively, <code>T_cor_A</code> and <code>E_cor_A</code> can be specified.</p></dd>
+combinations. By default, a diagonal matrix is constructed. <br><strong>Alternatively</strong>, <code>T_cor_A</code> and <code>E_cor_A</code> can be specified.</p></dd>
 
 
 <dt>T_cor_A</dt>
-<dd><p>A matrix of additive genetic correlations between traits. Must be
-provided in combination with <code>E_cor_A</code>. <br>
-Alternatively, <code>cor_A</code> can be specified. By default, <code>T_cor_A = NULL</code>.</p></dd>
+<dd><p>A matrix of additive genetic correlations between traits. Must be provided in
+combination with <code>E_cor_A</code>. <br><strong>Alternatively</strong>, <code>cor_A</code> can be specified.</p></dd>
 
 
 <dt>E_cor_A</dt>
 <dd><p>A matrix of additive genetic correlations between environments.
-Must be provided in combination with <code>T_cor_A</code>. <br>
-Alternatively, <code>cor_A</code> can be specified. By default, <code>E_cor_A = NULL</code>.</p></dd>
+Must be provided in combination with <code>T_cor_A</code>. <br><strong>Alternatively</strong>, <code>cor_A</code> can be specified.</p></dd>
 
 
 <dt>mean_DD</dt>
 <dd><p>A vector of mean dominance degrees for each environment-within-trait combination
-(similar to <code>mean</code>). If only one value is specified, all environment-within-trait combinations
-will be assigned the same mean. By default, <code>mean_DD = NULL</code> and dominance is not simulated.</p></dd>
+(similar to <code>mean</code>). If only one value is specified, all environment-within-trait
+combinations will be assigned the same mean. By default, <code>mean_DD = NULL</code> and dominance
+is not simulated.</p></dd>
 
 
 <dt>var_DD</dt>
-<dd><p>A vector of dominance degree variances for each environment-within-trait combination
-(similar to <code>var</code>). If only one value is specified, all environment-within-trait combinations
-will be assigned the same variance. By default, <code>var_DD = NULL</code>. <br>
-Alternatively, if a separable structure between traits and environments is desired,
+<dd><p>A vector of dominance degree variances for each environment-within-trait
+combination (similar to <code>var</code>). If only one value is specified, all environment-within-trait
+combinations will be assigned the same variance. <br><strong>Alternatively</strong>, if a separable structure between traits and environments is desired,
 <code>T_var_DD</code> and <code>E_var_DD</code> can be specified.</p></dd>
 
 
 <dt>T_var_DD</dt>
 <dd><p>A vector of dominance degree variances for each trait (similar to <code>T_var</code>).
-Must be provided in combination with <code>E_var_DD</code>. By default, <code>T_var_DD = NULL</code>. <br>
-Alternatively, <code>var_DD</code> can be specified.</p></dd>
+Must be provided in combination with <code>E_var_DD</code>. <br><strong>Alternatively</strong>, <code>var_DD</code> can be specified.</p></dd>
 
 
 <dt>E_var_DD</dt>
 <dd><p>A vector of dominance degree genetic variances for each environment (similar to
-<code>E_var</code>). Must be provided in combination with <code>T_var_DD</code>. By default, <code>E_var_DD = NULL</code>. <br>
-Alternatively, <code>var_DD</code> can be specified.</p></dd>
+<code>E_var</code>). Must be provided in combination with <code>T_var_DD</code>. <br><strong>Alternatively</strong>, <code>var_DD</code> can be specified.</p></dd>
 
 
 <dt>cor_DD</dt>
 <dd><p>A matrix of dominance degree correlations between all environment-within-trait
-combinations (similar to <code>cor_A</code>). If not specified and dominance is simulated, a diagonal
-matrix is constructed. By default, <code>cor_DD = NULL</code>. <br>
-Alternatively, <code>T_cor_DD</code> and <code>E_cor_DD</code> can be specified.</p></dd>
+combinations (similar to <code>cor_A</code>). If not specified and dominance is simulated, a
+diagonal matrix is constructed. <br><strong>Alternatively</strong>, <code>T_cor_DD</code> and <code>E_cor_DD</code> can be specified.</p></dd>
 
 
 <dt>T_cor_DD</dt>
-<dd><p>A matrix of dominance degree correlations between traits (similar
-to <code>T_cor_A</code>). Must be provided in combination with <code>E_cor_DD</code>. By default, <code>T_cor_DD = NULL</code>. <br>
-Alternatively, <code>cor_DD</code> can be specified.</p></dd>
+<dd><p>A matrix of dominance degree correlations between traits (similar to
+<code>T_cor_A</code>). Must be provided in combination with <code>E_cor_DD</code>. <br><strong>Alternatively</strong>, <code>cor_DD</code> can be specified.</p></dd>
 
 
 <dt>E_cor_DD</dt>
-<dd><p>A matrix of dominance degree correlations between environments (similar to <code>E_cor_A</code>).
-Must be provided in combination with <code>T_cor_DD</code>. By default, <code>E_cor_DD = NULL</code>. <br>
-Alternatively, <code>cor_DD</code> can be specified.</p></dd>
+<dd><p>A matrix of dominance degree correlations between environments (similar to
+<code>E_cor_A</code>). Must be provided in combination with <code>T_cor_DD</code>. <br><strong>Alternatively</strong>, <code>cor_DD</code> can be specified.</p></dd>
 
 
 <dt>rel_AA</dt>
 <dd><p>A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to additive genetic variance for each environment-within-trait combination,
 that is in a diploid organism with allele frequency 0.5. If only one value is specified,
-all environment-within-trait combinations will be assigned the same value. By default, <code>rel_AA = NULL</code> and
-epistasis is not simulated. <br>
-Alternatively, if a separable structure between traits and environments is desired,
+all environment-within-trait combinations will be assigned the same value. By default,
+<code>rel_AA = NULL</code> and epistasis is not simulated. <br><strong>Alternatively</strong>, if a separable structure between traits and environments is desired,
 <code>T_rel_AA</code> and <code>E_rel_AA</code> can be specified.</p></dd>
 
 
 <dt>T_rel_AA</dt>
 <dd><p>A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to the additive genetic variance for each trait. Must be provided in combination
-with <code>E_rel_AA</code>. By default, <code>T_rel_AA = NULL</code>. <br>
-Alternatively, <code>rel_AA</code> can be specified.</p></dd>
+with <code>E_rel_AA</code>. <br><strong>Alternatively</strong>, <code>rel_AA</code> can be specified.</p></dd>
 
 
 <dt>E_rel_AA</dt>
 <dd><p>A vector defining the magnitude of additive-by-additive (epistatic) variance
 relative to the additive genetic variance for each environment. Must be provided in
-combination with <code>T_rel_AA</code>. By default, <code>E_rel_AA = NULL</code>. <br>
-Alternatively, <code>rel_AA</code> can be specified.</p></dd>
+combination with <code>T_rel_AA</code>. <br><strong>Alternatively</strong>, <code>rel_AA</code> can be specified.</p></dd>
 
 
 <dt>cor_AA</dt>
 <dd><p>A matrix of epistatic correlations between all environment-within-trait
-combinations (similar to <code>cor_A</code>). If not specified and epistasis is simulated, a diagonal matrix is constructed.
-By default, <code>cor_AA = NULL</code>.<br>
-Alternatively, <code>T_cor_AA</code> and <code>E_cor_AA</code> can be specified.</p></dd>
+combinations (similar to <code>cor_A</code>). If not specified and epistasis is simulated, a
+diagonal matrix is constructed. <br><strong>Alternatively</strong>, <code>T_cor_AA</code> and <code>E_cor_AA</code> can be specified.</p></dd>
 
 
 <dt>T_cor_AA</dt>
-<dd><p>A matrix of epistatic correlations between traits (similar to
-<code>T_cor_A</code>). Must be provided in combination with <code>E_cor_AA</code>. By default, <code>T_cor_AA = NULL</code>. <br>
-Alternatively, <code>cor_AA</code> can be specified.</p></dd>
+<dd><p>A matrix of epistatic correlations between traits (similar to <code>T_cor_A</code>).
+Must be provided in combination with <code>E_cor_AA</code>. <br><strong>Alternatively</strong>, <code>cor_AA</code> can be specified.</p></dd>
 
 
 <dt>E_cor_AA</dt>
-<dd><p>A matrix of epistatic correlations between environments (similar
-to <code>E_cor_A</code>). Must be provided in combination with <code>T_cor_AA</code>. By default, <code>E_cor_AA = NULL</code>. <br>
-Alternatively, <code>cor_AA</code> can be specified.</p></dd>
+<dd><p>A matrix of epistatic correlations between environments (similar to
+<code>E_cor_A</code>). Must be provided in combination with <code>T_cor_AA</code>. <br><strong>Alternatively</strong>, <code>cor_AA</code> can be specified.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -272,7 +254,7 @@ environments.</p><ul><li><p>For separable structures, provide (1) <code>T_var</c
   <code>T_cor_A</code> &amp; <code>E_cor_A</code>.</p></li>
 <li><p>For non-separable structures, provide (1) <code>var</code>, and (2) <code>cor_A</code>. <br></p></li>
 </ul><p><strong>Note:</strong> 'AlphaSimR' can simulate different biological effects (see:
-<code><a href="https://gaynorr.github.io/AlphaSimR/reference/SimParam.html" class="external-link">SimParam</a></code>).</p><ul><li><p>For additive traits use <code>addTraitA()</code>.</p></li>
+<a href="https://gaynorr.github.io/AlphaSimR/reference/SimParam.html" class="external-link">SimParam</a>).</p><ul><li><p>For additive traits use <code>addTraitA()</code>.</p></li>
 <li><p>For additive + dominance traits use <code>addTraitAD()</code>.</p></li>
 <li><p>For additive + epistatic traits use <code>addTraitAE()</code>.</p></li>
 <li><p>For additive + dominance + epistatic traits use <code>addTraitADE()</code>.</p></li>
@@ -291,8 +273,8 @@ functions.</p>
 <span class="r-in"><span><span class="va">mean_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span> <span class="co"># Trait 1 and 2, same values in the three environments.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Additive genetic variances and dominance degree variances.</span></span></span>
-<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.085</span>, <span class="fl">0.12</span>, <span class="fl">0.06</span>, <span class="fl">15.1</span>, <span class="fl">8.5</span>, <span class="fl">11.7</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">var_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.085</span>, <span class="fl">0.12</span>, <span class="fl">0.06</span>, <span class="fl">15.1</span>, <span class="fl">8.5</span>, <span class="fl">11.7</span><span class="op">)</span> <span class="co"># Trait 1 x 3 environments, trait 2 x 3 environments.</span></span></span>
+<span class="r-in"><span><span class="va">var_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">6</span><span class="op">)</span> <span class="co"># The same value set for traits 1 and 2.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Additive genetic correlations between the two simulated traits.</span></span></span>
 <span class="r-in"><span><span class="va">T_cor_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>

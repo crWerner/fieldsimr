@@ -168,8 +168,8 @@ instead.</p>
 <h4 id="total-error">
 <strong>1.2 Total error</strong><a class="anchor" aria-label="anchor" href="#total-error"></a>
 </h4>
-<p>To obtain predefined target heritabilities at the plot-level, we need
-to define the total error variances for the two simulated traits
+<p>To obtain pre-defined target heritabilities at the plot-level, we
+need to define the total error variances for the two simulated traits
 relative to their genetic variances. We assume broad-sense
 heritabilities at the plot level of
 <strong><em>H<sup>2</sup></em></strong> <strong>= 0.1 for grain
@@ -188,7 +188,7 @@ FieldSimR::unstructured_GxE_demo.</p>
 <code class="sourceCode R"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.085</span>, <span class="fl">0.12</span>, <span class="fl">0.06</span>, <span class="fl">15.1</span>, <span class="fl">8.5</span>, <span class="fl">11.7</span><span class="op">)</span> <span class="co"># c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)</span></span></code></pre></div>
 <p><br></p>
 <p>We now create a simple function to calculate the total error
-variances based on our predefined target heritabilities in vector
+variances based on our pre-defined target heritabilities in vector
 <code>H2</code>and the total genetic variances in <code>var</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculation of error variances based on the genetic variance and target heritability vectors.</span></span>
@@ -210,7 +210,7 @@ variances based on our predefined target heritabilities in vector
 assume the proportion of spatial error variance to total error variance
 to be 0.4 in all three environments. Additionally, we assume a
 correlation between the spatial error of the two traits. However, since
-we have no information on the magniture of the correlation, we randomly
+we have no information on the magnitude of the correlation, we randomly
 sample a value between 0 and 0.5.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spatial_model</span> <span class="op">&lt;-</span> <span class="st">"Bivariate"</span> <span class="co"># Spatial error model.</span></span>
@@ -218,9 +218,9 @@ sample a value between 0 and 0.5.</p>
 <span></span>
 <span><span class="va">S_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">S_cor_R</span></span>
-<span><span class="co">#&gt;            [,1]       [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.00000000 0.09348443</span></span>
-<span><span class="co">#&gt; [2,] 0.09348443 1.00000000</span></span></code></pre></div>
+<span><span class="co">#&gt;           [,1]      [,2]</span></span>
+<span><span class="co">#&gt; [1,] 1.0000000 0.2355895</span></span>
+<span><span class="co">#&gt; [2,] 0.2355895 1.0000000</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -244,8 +244,8 @@ between 0 and 0.5.</p>
 <span><span class="va">E_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">E_cor_R</span></span>
 <span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.1488088</span></span>
-<span><span class="co">#&gt; [2,] 0.1488088 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.0000000 0.2767222</span></span>
+<span><span class="co">#&gt; [2,] 0.2767222 1.0000000</span></span></code></pre></div>
 <p><strong>Note:</strong> the <strong>proportion of the random error
 variance to total error variance</strong> is defined as 1 -
 (prop_spatial + prop_ext). Hence, <code>prop_spatial</code> and
