@@ -18,10 +18,10 @@ theoretical_variogram(
 
 \item{n_rows}{A scalar defining the number of rows.}
 
-\item{var_R}{A scalar defining the total error variance. By default, \code{var_R = 1}.}
+\item{var_R}{A scalar defining the total error variance.}
 
 \item{prop_spatial}{A scalar defining the proportion of spatial error variance to total error
-variance (spatial + random). By default, \code{prop_spatial = 0.5}.}
+variance (spatial + random).}
 
 \item{col_cor}{A scalar defining the column autocorrelation value.}
 

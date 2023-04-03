@@ -7,9 +7,9 @@
 sample_variogram(df, effect, min_np = 30)
 }
 \arguments{
-\item{df}{A data frame containing the columns 'col', 'row', and the effect of interest.}
+\item{df}{A data frame containing the columns 'col', 'row', and the effect to be plotted.}
 
-\item{effect}{The name of the effect of interest.}
+\item{effect}{The name of the effect to be plotted.}
 
 \item{min_np}{Only semi variances based on at least \code{min_np} pairs of plots will be
 displayed. By default, \code{min_np = 30}.}

@@ -8,13 +8,11 @@ plot_effects(df, effect, blocks = TRUE)
 }
 \arguments{
 \item{df}{A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
-also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}. \cr
-\strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
-otherwise.}
+also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}.}
 
 \item{effect}{The effect to be plotted.}
 
-\item{blocks}{When TRUE (default), the field array is split into blocks.}
+\item{blocks}{When \code{TRUE} (default), the field array is split into blocks.}
 }
 \value{
 A graphical field array, in which the colour gradient ranges from red (low value)

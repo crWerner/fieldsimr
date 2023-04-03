@@ -4,11 +4,12 @@
 #' correlation values.
 #'
 #' @param p A scalar defining the dimensions of the correlation matrix.
-#' @param min_cor A scalar defining the minimum potential value. By default, min_cor = -1.
-#' @param max_cor A scalar defining the maximum potential value. By default, max_cor = 1.
-#' @param pos_def When TRUE, the function \link[mbend]{bend} of the package 'mbend' is used with
-#'   default arguments to bend a non-positive-definite correlation matrix to a
-#'   positive-definite matrix (when appropriate). By default, pos_def = FALSE.
+#' @param min_cor A scalar defining the minimum potential value.
+#' @param max_cor A scalar defining the maximum potential value.
+#' @param pos_def When \code{TRUE}, the function 'bend' of the package
+#'   \href{https://cran.r-project.org/package=mbend}{`mbend'} is used with default arguments to
+#'   bend a non-positive-definite correlation matrix to a positive-definite matrix (when
+#'   appropriate). By default, \code{pos_def = FALSE}.
 #'
 #' @return A symmetric \code{p x p} correlation matrix.
 #'

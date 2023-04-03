@@ -72,7 +72,7 @@ When spatially correlated errors are simulated based on a **two-dimensional auto
 
 #### **1.2 Total error**
 
-To obtain predefined target heritabilities at the plot-level, we need to define the total error variances for the two simulated traits relative to their genetic variances. We assume broad-sense heritabilities at the plot level of ***H<sup>2</sup>*** **= 0.1 for grain yield** and ***H<sup>2</sup>*** **= 0.3 for plant height** at all three locations. The heritabilities for the six trait x environment combinations are stored in a single vector.
+To obtain pre-defined target heritabilities at the plot-level, we need to define the total error variances for the two simulated traits relative to their genetic variances. We assume broad-sense heritabilities at the plot level of ***H<sup>2</sup>*** **= 0.1 for grain yield** and ***H<sup>2</sup>*** **= 0.3 for plant height** at all three locations. The heritabilities for the six trait x environment combinations are stored in a single vector.
 
 ```{r}
 H2 <- c(0.1, 0.1, 0.1, 0.3, 0.3, 0.3) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
@@ -88,7 +88,7 @@ var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1,
 
 <br/>
 
-We now create a simple function to calculate the total error variances based on our predefined target heritabilities in vector `H2`and the total genetic variances in `var`. 
+We now create a simple function to calculate the total error variances based on our pre-defined target heritabilities in vector `H2`and the total genetic variances in `var`. 
 
 ```{r}
 # Calculation of error variances based on the genetic variance and target heritability vectors.
@@ -105,7 +105,7 @@ var_R # Vector of error variances: c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht
 
 #### **1.3 Spatial error**
 
-We simulate a spatial error term using bivariate interpolation and assume the proportion of spatial error variance to total error variance to be 0.4 in all three environments. Additionally, we assume a correlation between the spatial error of the two traits. However, since we have no information on the magniture of the correlation, we randomly sample a value between 0 and 0.5.
+We simulate a spatial error term using bivariate interpolation and assume the proportion of spatial error variance to total error variance to be 0.4 in all three environments. Additionally, we assume a correlation between the spatial error of the two traits. However, since we have no information on the magnitude of the correlation, we randomly sample a value between 0 and 0.5.
 
 ```{r}
 spatial_model <- "Bivariate" # Spatial error model.

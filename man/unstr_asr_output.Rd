@@ -8,15 +8,17 @@ Simulation using 'AlphaSimR'}
 unstr_asr_output(pop, n_envs, n_traits, n_reps)
 }
 \arguments{
-\item{pop}{An 'AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
-\code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{unstr_asr_input}.}
+\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
+(\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
+\href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
+generated using \link[FieldSimR]{unstr_asr_input}.}
 
 \item{n_envs}{Number of simulated environments (same number used in \link[FieldSimR]{unstr_asr_input}).}
 
 \item{n_traits}{Number of simulated traits (same number used in \link[FieldSimR]{unstr_asr_input}).}
 
-\item{n_reps}{A vector defining the number of complete replicates in each environment. If only
-one value is specified, all environments will be assigned the same number.}
+\item{n_reps}{A vector defining the number of complete replicates (blocks) in each environment.
+If only one value is specified, all environments will be assigned the same number.}
 }
 \value{
 A data frame with columns 'env', 'rep', genotype 'id', and the
@@ -25,8 +27,8 @@ A data frame with columns 'env', 'rep', genotype 'id', and the
 \description{
 Creates a data frame of simulated genetic values for multiple traits across multiple environments
 based on an unstructured model for genotype-by-environment (GxE) interaction. This function
-requires an 'AlphaSimR' population object generated using the \link[FieldSimR]{unstr_asr_input}
-function.
+requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
+generated using the \link[FieldSimR]{unstr_asr_input} function.
 }
 \examples{
 # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
@@ -38,8 +40,8 @@ mean <- c(4.9, 5.4, 5.1, 235.2, 228.5, 239.1) # Trait 1 x 3 environments, trait 
 mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # Trait 1 and 2, same values in the three environments.
 
 # Additive genetic variances and dominance degree variances.
-var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7)
-var_DD <- rep(0.2, 6)
+var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7) # Trait 1 x 3 environments, trait 2 x 3 environments.
+var_DD <- rep(0.2, 6) # The same value set for traits 1 and 2.
 
 # Additive genetic correlations between the two simulated traits.
 T_cor_A <- matrix(

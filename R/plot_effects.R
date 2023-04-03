@@ -7,11 +7,9 @@
 #' 'block' column, the field array is split into blocks if \code{blocks = TRUE}.
 #'
 #' @param df A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
-#'   also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}. \cr
-#'   \strong{Note:} If \code{df} is a list, only the first entry will be used unless specified
-#'   otherwise.
+#'   also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}.
 #' @param effect The effect to be plotted.
-#' @param blocks When TRUE (default), the field array is split into blocks.
+#' @param blocks When \code{TRUE} (default), the field array is split into blocks.
 #'
 #' @return A graphical field array, in which the colour gradient ranges from red (low value)
 #' to green (high value).
@@ -141,17 +139,17 @@ plot_effects <- function(df,
 
 #' Q-Q plot
 #'
-#' Creates a quantile-quantile (Q-Q) plot which compares the theoretical
-#' quantiles of a normal distribution with the sample quantiles of the distribution of user effects.
+#' Creates a quantile-quantile (Q-Q) plot which compares the theoretical quantiles of a normal
+#' distribution with the sample quantiles of the distribution of user effects.
 #'
-#' @param df A data frame containing the effect of interest.
-#' @param effect The name of the effect of interest.
-#' @param labels When FALSE (default), data points without labels are plotted. When TRUE, column
-#'   and row labels are shown in the Q-Q plot. This requires additional columns 'col' and 'row' in
-#'   the data frame.
+#' @param df A data frame containing the effect to be plotted.
+#' @param effect The name of the effect to be plotted.
+#' @param labels When \code{FALSE} (default), data points without labels are plotted. When
+#'   \code{TRUE}, column and row labels are shown in the Q-Q plot. This requires additional
+#'   columns 'col' and 'row' in the data frame.
 #'
-#' @return A Q-Q plot with the x- and y-axes displaying the theoretical and sample
-#'   quantiles of the effect of interest, respectively.
+#' @return A Q-Q plot with the x- and y-axes displaying the theoretical and sample quantiles of
+#'   the effect to be plotted, respectively.
 #'
 #' @examples
 #' # Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
@@ -169,7 +167,7 @@ plot_effects <- function(df,
 #' qq
 #'
 #' # Extraction of a data frame containing the theoretical and sample quantiles of
-#' # the effect of interest.
+#' # the effect to be plotted.
 #' qq_df <- qq$data
 #'
 #' @export
@@ -250,8 +248,8 @@ qq_plot <- function(df,
 #' Creates a sample variogram. The x- and y-axes display the row and column displacements,
 #' respectively. The z-axis displays the semi-variance (variogram ordinates).
 #'
-#' @param df A data frame containing the columns 'col', 'row', and the effect of interest.
-#' @param effect The name of the effect of interest.
+#' @param df A data frame containing the columns 'col', 'row', and the effect to be plotted.
+#' @param effect The name of the effect to be plotted.
 #' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be
 #'   displayed. By default, \code{min_np = 30}.
 #'
@@ -341,9 +339,9 @@ sample_variogram <- function(df,
 #'
 #' @param n_cols A scalar defining the number of columns.
 #' @param n_rows A scalar defining the number of rows.
-#' @param var_R A scalar defining the total error variance. By default, \code{var_R = 1}.
+#' @param var_R A scalar defining the total error variance.
 #' @param prop_spatial A scalar defining the proportion of spatial error variance to total error
-#'   variance (spatial + random). By default, \code{prop_spatial = 0.5}.
+#'   variance (spatial + random).
 #' @param col_cor A scalar defining the column autocorrelation value.
 #' @param row_cor A scalar defining the row autocorrelation value.
 #'

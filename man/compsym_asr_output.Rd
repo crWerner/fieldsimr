@@ -8,16 +8,18 @@ Simulation using 'AlphaSimR'}
 compsym_asr_output(pop, n_envs, n_traits, n_reps, effects = FALSE)
 }
 \arguments{
-\item{pop}{An 'AlphaSimR' population object (\code{\link[AlphaSimR]{Pop-class}} or
-\code{\link[AlphaSimR]{HybridPop-class}}) generated using \link[FieldSimR]{compsym_asr_input}.}
+\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
+(\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
+\href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
+generated using \link[FieldSimR]{compsym_asr_input}.}
 
 \item{n_envs}{Number of simulated environments (same number used in
 \link[FieldSimR]{compsym_asr_input}).}
 
 \item{n_traits}{Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).}
 
-\item{n_reps}{A vector defining the number of complete replicates in each environment. If only
-one value is specified, all environments will be assigned the same number.}
+\item{n_reps}{A vector defining the number of complete replicates (blocks) in each environment.
+If only one value is specified, all environments will be assigned the same number.}
 
 \item{effects}{When TRUE, a list is returned with additional entries containing the total
 (additive + dominance + epistatic) main effects and GxE interaction effects for each
@@ -32,8 +34,8 @@ A data frame with columns 'env', 'rep', genotype 'id', and the
 \description{
 Creates a data frame of simulated genetic values for multiple traits across multiple environments
 based on a compound symmetry model for genotype-by-environment (GxE) interaction. This function
-requires an 'AlphaSimR' population object generated using the function
-\link[FieldSimR]{compsym_asr_input}.
+requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
+generated using the function \link[FieldSimR]{compsym_asr_input}.
 }
 \examples{
 # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
@@ -46,11 +48,11 @@ mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # Trait 1 and 2, same values in the t
 
 # Additive genetic variances and dominance degree variances.
 var <- c(0.08, 13) # Different values set for traits 1 and 2.
-var_DD <- c(0.2, 0.2) # Different values set for traits 1 and 2.
+var_DD <- c(0.2, 0.2) # The same value set for traits 1 and 2.
 
 # Relative magnitude of the additive and dominance degree main effect variances.
 rel_main_eff_A <- c(0.4, 0.6) # Different values set for traits 1 and 2.
-rel_main_eff_DD <- 0.4 # Same value set for traits 1 and 2.
+rel_main_eff_DD <- 0.4 # The same value set for traits 1 and 2.
 
 # Additive and dominance degree correlations between the two simulated traits.
 cor_A <- matrix( # Additive correlation matrix.
@@ -100,7 +102,7 @@ SP$addTraitAD(
 )
 
 # By default, the value provided in 'var' represents the additive variance.
-# If useVarA=FALSE, 'var' represents the total genetic variance.
+# If useVarA = FALSE, 'var' represents the total genetic variance.
 
 pop <- newPop(FOUNDERPOP)
 

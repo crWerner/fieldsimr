@@ -16,7 +16,7 @@ n_seg_sites <- 300 # Number of QTN per chromosome.
 # Mean genetic values and mean dominance degrees for trait 1 in all 3 environments and trait 2
 # in all 3 environments.
 mean <- c(4.9, 5.4, 5.1, 235.2, 228.5, 239.1) # Trait 1 x 3 environments, trait 2 x 3 environments.
-mean_DD <- c(0.4, 0.1) # == c(0.1, 0.1, 0.1, 0.4, 0.4, 0.4)
+mean_DD <- mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1)
 
 # Additive genetic variances (useVarA = TRUE) and dominance degree variances for traits 1 and 2,
 # assuming a separable structure between traits and environments.
@@ -24,7 +24,7 @@ var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7)
 
 # Dominance degree variances for trait 1 in 3 environments and for trait 2 in 3 environments,
 # assuming a non-separable structure between traits and environments.
-var_DD <- c(0.1, 0.1) # == c(0.1, 0.1, 0.1, 0.1, 0.1, 0.1)
+var_DD <- rep(0.2, 6)
 
 # Additive genetic correlations between the two simulated traits.
 T_cor_A <- matrix(
