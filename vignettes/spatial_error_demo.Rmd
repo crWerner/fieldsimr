@@ -27,9 +27,8 @@ The **R package ['FieldSimR’](https://CRAN.R-project.org/package=fieldSimR)** 
 
 **This document demonstrates how to:** 
 
-1. Simulate plot errors for multiple traits tested in multiple environments,
-2. Simulate phenotypes through the combination of the plot errors with simulated genetic values, and
-3. Analyse the simulated phenotype data  -->  ***change as desired...***
+1. Simulate plot errors for multiple traits tested in multiple environments, and
+2. Simulate phenotypes through the combination of the plot errors with simulated genetic values. 
 
 <br/>
 
@@ -240,9 +239,4 @@ ggplot(pheno_env1, aes(x = phe.Trait.1, fill = factor(block))) +
   labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Block (Replicate)")
 ```
 
-<br/>
 
-
-### **3. Analysis of the simulated phenotype data**  ---> ***change as desired...***
-
-<br/>
