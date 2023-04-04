@@ -21,9 +21,9 @@ generated using \link[FieldSimR]{compsym_asr_input}.}
 \item{n_reps}{A vector defining the number of complete replicates (blocks) in each environment.
 If only one value is specified, all environments will be assigned the same number.}
 
-\item{effects}{When TRUE, a list is returned with additional entries containing the total
+\item{effects}{When \code{TRUE}, a list is returned with additional entries containing the total
 (additive + dominance + epistatic) main effects and GxE interaction effects for each
-environment-within-trait combination. By default, effects = FALSE.}
+environment-within-trait combination. By default, \code{effects = FALSE}.}
 }
 \value{
 A data frame with columns 'env', 'rep', genotype 'id', and the

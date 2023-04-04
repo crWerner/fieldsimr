@@ -125,6 +125,7 @@ Extraneous effects can, for example, result from trial management procedures in 
 prop_ext <- 0.2
 ext_dir <- "row"
 ext_row_cor <- runif(1, min = -0.9, max = -0.6)
+ext_row_cor
 
 E_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
 E_cor_R
