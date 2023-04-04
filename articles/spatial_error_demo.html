@@ -96,12 +96,9 @@ three error terms are combined at a user-deﬁned ratio.</p>
 <p><strong>This document demonstrates how to:</strong></p>
 <ol style="list-style-type: decimal">
 <li>Simulate plot errors for multiple traits tested in multiple
-environments,</li>
+environments, and</li>
 <li>Simulate phenotypes through the combination of the plot errors with
-simulated genetic values, and</li>
-<li>Analyse the simulated phenotype data –&gt; <strong><em>change as
-desired…</em></strong>
-</li>
+simulated genetic values.</li>
 </ol>
 <p><br></p>
 <p>The <strong>simulation of plot errors</strong> requires specification
@@ -219,8 +216,8 @@ sample a value between 0 and 0.5.</p>
 <span><span class="va">S_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">S_cor_R</span></span>
 <span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.2355895</span></span>
-<span><span class="co">#&gt; [2,] 0.2355895 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.0000000 0.2258064</span></span>
+<span><span class="co">#&gt; [2,] 0.2258064 1.0000000</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -244,8 +241,8 @@ between 0 and 0.5.</p>
 <span><span class="va">E_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">E_cor_R</span></span>
 <span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.2767222</span></span>
-<span><span class="co">#&gt; [2,] 0.2767222 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.0000000 0.4513975</span></span>
+<span><span class="co">#&gt; [2,] 0.4513975 1.0000000</span></span></code></pre></div>
 <p><strong>Note:</strong> the <strong>proportion of the random error
 variance to total error variance</strong> is defined as 1 -
 (prop_spatial + prop_ext). Hence, <code>prop_spatial</code> and
@@ -362,14 +359,6 @@ hybrids for grain yield in the three replicates in environment
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"violetred3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"skyblue2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Genetic values for grain yield (t/ha)"</span>, y <span class="op">=</span> <span class="st">"Count"</span>, fill <span class="op">=</span> <span class="st">"Block (Replicate)"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_error_demo_files/figure-html/unnamed-chunk-16-1.png" width="864" style="display: block; margin: auto;"></p>
-<p><br></p>
-</div>
-<div class="section level3">
-<h3 id="analysis-of-the-simulated-phenotype-data-change-as-desired">
-<strong>3. Analysis of the simulated phenotype data</strong> —&gt;
-<strong><em>change as desired…</em></strong><a class="anchor" aria-label="anchor" href="#analysis-of-the-simulated-phenotype-data-change-as-desired"></a>
-</h3>
-<p><br></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
