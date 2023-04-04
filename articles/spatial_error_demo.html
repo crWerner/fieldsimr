@@ -46,6 +46,9 @@
     <a class="dropdown-item" href="../articles/unstructured_GxE_demo.html">Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction</a>
   </div>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -216,8 +219,8 @@ sample a value between 0 and 0.5.</p>
 <span><span class="va">S_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">S_cor_R</span></span>
 <span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.2258064</span></span>
-<span><span class="co">#&gt; [2,] 0.2258064 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.0000000 0.2932579</span></span>
+<span><span class="co">#&gt; [2,] 0.2932579 1.0000000</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -237,12 +240,14 @@ between 0 and 0.5.</p>
 <code class="sourceCode R"><span><span class="va">prop_ext</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span>
 <span><span class="va">ext_dir</span> <span class="op">&lt;-</span> <span class="st">"row"</span></span>
 <span><span class="va">ext_row_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">0.9</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">ext_row_cor</span></span>
+<span><span class="co">#&gt; [1] -0.8023624</span></span>
 <span></span>
 <span><span class="va">E_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">E_cor_R</span></span>
-<span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.4513975</span></span>
-<span><span class="co">#&gt; [2,] 0.4513975 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt;            [,1]       [,2]</span></span>
+<span><span class="co">#&gt; [1,] 1.00000000 0.04360609</span></span>
+<span><span class="co">#&gt; [2,] 0.04360609 1.00000000</span></span></code></pre></div>
 <p><strong>Note:</strong> the <strong>proportion of the random error
 variance to total error variance</strong> is defined as 1 -
 (prop_spatial + prop_ext). Hence, <code>prop_spatial</code> and
