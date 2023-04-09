@@ -208,11 +208,11 @@ unstr_asr_input <- function(n_envs = 3,
       }
 
 
-      if (!is.null(var) & !is.null(E_var)) {
-        stop("Either argument 'var' or 'E_var' must be specified")
+      if (is.null(var) & !(!is.null(E_var_A) & !is.null(T_var_A))) {
+        stop("Either 'var' or 'E_var' and 'T_var' must be specified")
       } else if (!is.null(var)) {
-        if (!is.null(T_var)) {
-          stop("'T_var' must be NULL if 'var' is specified")
+        if (!is.null(E_var) | !is.null(T_var)) {
+          stop("'E_var' and 'T_var' must be NULL if 'var' is specified")
         }
         if (length(var) == 1) {
           var_pseudo <- rep(var, each = n_traits * n_envs)
@@ -237,12 +237,11 @@ unstr_asr_input <- function(n_envs = 3,
         stop("Either 'var' or 'E_var' must be specified")
       }
 
-
-      if (!is.null(cor_A) & !is.null(E_cor_A)) {
-        stop("Either 'cor_A' or 'E_cor_A' must be specified")
+      if (is.null(cor_A) & !(!is.null(E_cor_A) & !is.null(T_cor_A))) {
+        stop("Either 'cor_A' or 'E_cor_A' and 'T_cor_A' must be specified")
       } else if (!is.null(cor_A)) {
-        if (!is.null(T_cor_A)) {
-          stop("'T_cor_A' must be NULL if 'cor_A' is specified")
+        if (!is.null(E_cor_A) | !is.null(T_cor_A)) {
+          stop("'E_cor_A' and 'T_cor_A' must be NULL if 'cor_A' is specified")
         }
         if (nrow(cor_A) != length(mean_pseudo) | ncol(cor_A) != length(mean_pseudo)) {
           stop("Dimension of 'cor_A' does not match number of environment-within-trait
@@ -298,12 +297,11 @@ unstr_asr_input <- function(n_envs = 3,
               environment-within-trait combinations")
       }
 
-
-      if (!is.null(var_DD) & !is.null(E_var_DD)) {
-        stop("Either 'var_DD' or 'E_var_DD' must be specified")
+      if (is.null(var_DD) & !(!is.null(E_var_DD) & !is.null(T_var_DD))) {
+        stop("Either 'var_DD' or 'E_var_DD' and 'T_var_DD' must be specified")
       } else if (!is.null(var_DD)) {
-        if (!is.null(T_var_DD)) {
-          stop("'T_var_DD' must be NULL if 'var_DD' is specified")
+        if (!is.null(E_var_DD) | !is.null(T_var_DD)) {
+          stop("'E_var_DD' and 'T_var_DD' must be NULL if 'var_DD' is specified")
         }
         if (length(var_DD) == 1) {
           var_pseudo <- rep(var_DD, each = n_traits * n_envs)
@@ -329,11 +327,11 @@ unstr_asr_input <- function(n_envs = 3,
       }
 
 
-      if (!is.null(cor_DD) & !is.null(E_cor_DD)) {
-        stop("Either 'cor_DD' or 'E_cor_DD' must be specified")
+      if (is.null(cor_DD) & !(!is.null(E_cor_DD) & !is.null(T_cor_DD))) {
+        stop("Either 'cor_DD' or 'E_cor_DD' and 'T_cor_DD' must be specified")
       } else if (!is.null(cor_DD)) {
-        if (!is.null(T_cor_DD)) {
-          stop("'T_cor_DD' must be NULL if 'cor_DD' is specified")
+        if (!is.null(E_cor_DD) | !is.null(T_cor_DD)) {
+          stop("'E_cor_DD' and 'T_cor_DD' must be NULL if 'cor_DD' is specified")
         }
         if (nrow(cor_DD) != length(mean_pseudo) | ncol(cor_DD) != length(mean_pseudo)) {
           stop("Dimension of 'cor_DD' does not match number of environment-within-trait
@@ -383,11 +381,11 @@ unstr_asr_input <- function(n_envs = 3,
     }
 
     if (i == "AA") {
-      if (!is.null(rel_AA) & !is.null(E_rel_AA)) {
-        stop("Either argument 'rel_AA' or 'E_rel_AA' must be specified")
+      if (is.null(rel_AA) & !(!is.null(E_rel_AA) & !is.null(T_rel_AA))) {
+        stop("Either 'rel_AA' or 'E_rel_AA' and 'T_rel_AA' must be specified")
       } else if (!is.null(rel_AA)) {
-        if (!is.null(T_rel_AA)) {
-          stop("Argument 'T_rel_AA' must be NULL if 'rel_AA' is specified")
+        if (!is.null(E_rel_AA) | !is.null(T_rel_AA)) {
+          stop("'E_rel_AA' and 'T_rel_AA' must be NULL if 'rel_AA' is specified")
         }
         if (length(rel_AA) == n_traits) {
           var_pseudo <- rep(rel_AA, each = n_envs)
@@ -412,12 +410,11 @@ unstr_asr_input <- function(n_envs = 3,
         stop("Either argument 'rel_AA' or 'E_rel_AA' must be specified")
       }
 
-
-      if (!is.null(cor_AA) & !is.null(E_cor_AA)) {
-        stop("Either argument 'cor_AA' or 'E_cor_AA' must be specified")
+      if (is.null(cor_AA) & !(!is.null(E_cor_AA) & !is.null(T_cor_AA))) {
+        stop("Either 'cor_AA' or 'E_cor_AA' and 'T_cor_AA' must be specified")
       } else if (!is.null(cor_AA)) {
-        if (!is.null(T_cor_AA)) {
-          stop("Argument 'T_cor_AA' must be NULL if 'cor_AA' is specified")
+        if (!is.null(E_cor_AA) | !is.null(T_cor_AA)) {
+          stop("'E_cor_AA' and 'T_cor_AA' must be NULL if 'cor_AA' is specified")
         }
         if (nrow(cor_AA) != length(mean_pseudo) | ncol(cor_AA) != length(mean_pseudo)) {
           stop("Dimension of 'cor_AA' does not match number of environment-within-trait
