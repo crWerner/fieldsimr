@@ -1,19 +1,19 @@
-ℹ Check <werner.christian@proton.me> for the results in
-  15-30 mins (~04:38 PM).
 > devtools::check_rhub()
-✔  checking for file 'C:\Users\CWERNER\OneDrive - CIMMYT\Desktop\fsr\fieldsimr/DESCRIPTION' (488ms)
-─  preparing 'FieldSimR': (6.3s)
+── R CMD build ────────────────────────────────────────────────────────────────────────
+✔  checking for file 'C:\Users\CWERNER\OneDrive - CIMMYT\Desktop\EiB\projects\FieldSimR\fieldsimr/DESCRIPTION' ...
+─  preparing 'FieldSimR': (10.5s)
 ✔  checking DESCRIPTION meta-information ... 
-─  checking for LF line-endings in source and make files and shell scripts (15.2s)
+─  installing the package to build vignettes
+✔  creating vignettes (44.2s)
+─  checking for LF line-endings in source and make files and shell scripts (21.1s)
 ─  checking for empty or unneeded directories
-   Omitted 'LazyData' from DESCRIPTION
-─  building 'FieldSimR_1.0.0.tar.gz'
+─  building 'FieldSimR_1.1.0.tar.gz'
    
 ─  Uploading package
 ─  Preparing build, see status at
-   https://builder.r-hub.io/status/FieldSimR_1.0.0.tar.gz-4d47c544430d4dd59a2dde54cc50948d
-   https://builder.r-hub.io/status/FieldSimR_1.0.0.tar.gz-2cbfd6ae76c6480f9f8055910a785562
-   https://builder.r-hub.io/status/FieldSimR_1.0.0.tar.gz-14f269db7ec54f09a7890b6520e0bc77
+   https://builder.r-hub.io/status/FieldSimR_1.1.0.tar.gz-90d5e28af40b438dbc4871ab0792bd9f
+   https://builder.r-hub.io/status/FieldSimR_1.1.0.tar.gz-95316becb5d24589b5bd54b998db7e91
+   https://builder.r-hub.io/status/FieldSimR_1.1.0.tar.gz-696f0583f14d41308a0178a7d4f4cc3d
 ─  Build started
 ─  Creating new user
 ─  Downloading and unpacking package file
@@ -26,89 +26,106 @@
    setting R_REMOTES_NO_ERRORS_FROM_WARNINGS to true
    setting _R_CHECK_FORCE_SUGGESTS_ to true
    setting _R_CHECK_CRAN_INCOMING_USE_ASPELL_ to true
-   Error : Bioconductor does not yet build and check packages for R version 4.3; see
-     https://bioconductor.org/install
-─  using log directory 'C:/Users/USERYbMpzmFPgc/FieldSimR.Rcheck' (813ms)
-─  using R Under development (unstable) (2022-08-15 r82721 ucrt) (976ms)
-─  using platform: x86_64-w64-mingw32 (64-bit)
-─  using session charset: UTF-8 (850ms)
+   'getOption("repos")' replaces Bioconductor standard repositories, see
+   'help("repositories", package = "BiocManager")' for details.
+   Replacement repositories:
+       CRAN: https://cloud.r-project.org
+─  using log directory 'C:/Users/USERcSMqIYnlhN/FieldSimR.Rcheck'
+─  using R Under development (unstable) (2023-01-14 r83615 ucrt)
+─  using platform: x86_64-w64-mingw32 (64-bit) (4.1s)
+─  R was compiled by
+       gcc.exe (GCC) 12.2.0
+       GNU Fortran (GCC) 12.2.0
+─  running under: Windows Server x64 (build 20348)
+─  using session charset: UTF-8
 ─  using option '--as-cran'
-✔  checking for file 'FieldSimR/DESCRIPTION' (1.7s)
-─  this is package 'FieldSimR' version '1.0.0'
-─  package encoding: UTF-8 (838ms)
-─  checking CRAN incoming feasibility ... [14s] NOTE
+✔  checking for file 'FieldSimR/DESCRIPTION'
+─  this is package 'FieldSimR' version '1.1.0'
+─  package encoding: UTF-8
+   Warning in strsplit(lines[ind], ": ", fixed = TRUE) :
+     input string 3 is invalid in this locale
+   Warning in strsplit(lines[ind], ": ", fixed = TRUE) :
+     input string 4 is invalid in this locale
+   Warning in strsplit(lines[ind], ": ", fixed = TRUE) :
+     input string 5 is invalid in this locale
+─  checking CRAN incoming feasibility ... [16s] NOTE (4.4s)
    Maintainer: 'Christian Werner <werner.christian@proton.me>'
    
-   New submission
-   
    Possibly misspelled words in DESCRIPTION:
-     phenotypes (21:39)
+     Phenotypes (2:38)
 ✔  checking package namespace information
-✔  checking package dependencies (832ms)
-✔  checking if this is a source package (2.5s)
-✔  checking if there is a namespace (1.7s)
-✔  checking for executable files (836ms)
+✔  checking package dependencies
+✔  checking if this is a source package
+✔  checking if there is a namespace
+✔  checking for executable files
 ✔  checking for hidden files and directories
-✔  checking for portable file names (1.8s)
+✔  checking for portable file names
 ✔  checking serialization versions
-✔  checking whether package 'FieldSimR' can be installed (852ms)
+✔  checking whether package 'FieldSimR' can be installed
 ✔  checking installed package size
-✔  checking package directory (860ms)
-✔  checking for future file timestamps
-✔  checking DESCRIPTION meta-information (1.1s)
+✔  checking package directory
+✔  checking for future file timestamps (4.7s)
+✔  checking 'build' directory
+✔  checking DESCRIPTION meta-information
 ✔  checking top-level files
-✔  checking for left-over files (2.5s)
-✔  checking index information (836ms)
-✔  checking package subdirectories (1.2s)
+✔  checking for left-over files
+✔  checking index information
+✔  checking package subdirectories
 ✔  checking R files for non-ASCII characters
-✔  checking whether the package can be loaded (850ms)
 ✔  checking R files for syntax errors
+✔  checking whether the package can be loaded
 ✔  checking whether the package can be loaded with stated dependencies
-✔  checking whether the package can be unloaded cleanly (846ms)
-✔  checking whether the namespace can be loaded with stated dependencies (900ms)
+✔  checking whether the package can be unloaded cleanly
+✔  checking whether the namespace can be loaded with stated dependencies
 ✔  checking whether the namespace can be unloaded cleanly
 ✔  checking loading without being on the library search path
 ✔  checking use of S3 registration
-✔  checking dependencies in R code (1.7s)
+✔  checking dependencies in R code
 ✔  checking S3 generic/method consistency
 ✔  checking replacement functions
 ✔  checking foreign function calls
-✔  checking R code for possible problems (844ms)
-✔  checking Rd files (829ms)
+✔  checking R code for possible problems (8.5s)
+✔  checking Rd files
 ✔  checking Rd metadata
 ✔  checking Rd line widths
-✔  checking Rd cross-references (839ms)
-✔  checking for missing documentation entries (869ms)
+✔  checking Rd cross-references
+✔  checking for missing documentation entries
 ✔  checking for code/documentation mismatches
 ✔  checking Rd \usage sections
-✔  checking Rd contents
+✔  checking Rd contents (6.1s)
 ✔  checking for unstated dependencies in examples
-✔  checking examples
-─  checking PDF version of manual ... [26s] OK
-✔  checking HTML version of manual (930ms)
+✔  checking contents of 'data' directory
+✔  checking data for non-ASCII characters
+✔  checking LazyData
+✔  checking data for ASCII and uncompressed saves
+✔  checking installed files from 'inst/doc'
+✔  checking files in 'vignettes'
+✔  checking examples (4.4s)
+✔  checking for unstated dependencies in vignettes
+✔  checking package vignettes in 'inst/doc'
+─  checking re-building of vignette outputs ... [89s] OK (1m 26.7s)
+─  checking PDF version of manual ... [14s] OK (14.3s)
+✔  checking HTML version of manual (4.4s)
 ✔  checking for non-standard things in the check directory
 N  checking for detritus in the temp directory
    Found the following files/directories:
      'lastMiKTeXException'
-   
 ─  Done with R CMD check
 ─  Cleaning up files and user
     
 
-── FieldSimR 1.0.0: NOTE
+── FieldSimR 1.1.0: NOTE
 
-  Build ID:   FieldSimR_1.0.0.tar.gz-4d47c544430d4dd59a2dde54cc50948d
+  Build ID:   FieldSimR_1.1.0.tar.gz-90d5e28af40b438dbc4871ab0792bd9f
   Platform:   Windows Server 2022, R-devel, 64 bit
-  Submitted:  4m 57.1s ago
-  Build time: 4m 52.6s
+  Submitted:  7m 5.8s ago
+  Build time: 6m 52.9s
 
-❯ checking CRAN incoming feasibility ... [14s] NOTE
+❯ checking CRAN incoming feasibility ... [16s] NOTE
   Maintainer: 'Christian Werner <werner.christian@proton.me>'
   
-  New submission
-  
   Possibly misspelled words in DESCRIPTION:
-    phenotypes (21:39)
+    Phenotypes (2:38)
 
 ❯ checking for detritus in the temp directory ... NOTE
   Found the following files/directories:
@@ -116,31 +133,20 @@ N  checking for detritus in the temp directory
 
 0 errors ✔ | 0 warnings ✔ | 2 notes ✖
 
-── FieldSimR 1.0.0: IN-PROGRESS
+── FieldSimR 1.1.0: CREATED
 
-  Build ID:   FieldSimR_1.0.0.tar.gz-2cbfd6ae76c6480f9f8055910a785562
+  Build ID:   FieldSimR_1.1.0.tar.gz-95316becb5d24589b5bd54b998db7e91
   Platform:   Ubuntu Linux 20.04.1 LTS, R-release, GCC
-  Submitted:  4m 57.2s ago
+  Submitted:  7m 5.9s ago
 
 
-── FieldSimR 1.0.0: IN-PROGRESS
+── FieldSimR 1.1.0: CREATED
 
-  Build ID:   FieldSimR_1.0.0.tar.gz-14f269db7ec54f09a7890b6520e0bc77
+  Build ID:   FieldSimR_1.1.0.tar.gz-696f0583f14d41308a0178a7d4f4cc3d
   Platform:   Fedora Linux, R-devel, clang, gfortran
-  Submitted:  4m 57.2s ago
+  Submitted:  7m 5.9s ago
 
 
+*** COMMENTS
 
-### Resubmission
-This is a resubmission. As requested, I have:
-
-* Put package and software names in single quotes in title and description.
-
-* Corrected one typo as kindly noted by the reviewer.
-
-* Uncommented the example in rand_cor_mat.Rd which was accidently commented out.
-
-
-
-
-
+2 notes are noted. Phenotypes is spelled correctly.
