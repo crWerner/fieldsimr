@@ -208,7 +208,7 @@ unstr_asr_input <- function(n_envs = 3,
       }
 
 
-      if (is.null(var) & !(!is.null(E_var_A) & !is.null(T_var_A))) {
+      if (is.null(var) & !(!is.null(E_var) & !is.null(T_var))) {
         stop("Either 'var' or 'E_var' and 'T_var' must be specified")
       } else if (!is.null(var)) {
         if (!is.null(E_var) | !is.null(T_var)) {
