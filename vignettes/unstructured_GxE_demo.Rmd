@@ -23,16 +23,16 @@ library(ggplot2)
 <br/>
 
 ### **Background**
-This document demonstrates how to simulate genetic values for multiple traits in multiple environments using an **unstructured model for genotype-by-environment (GxE) interaction**. While the simulation of genetic values is not directly implemented in ['FieldSimR’](https://cran.r-project.org/package=FieldSimR), the package provides wrapper functions to facilitate the simulation of genetic values for multi-environment field trial settings employing the R package ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR). The two wrapper functions to simulate genetic values based on an unstructured model for GxE interaction are:
+This document demonstrates how to simulate genetic values for multiple traits in multiple environments using an **unstructured model for genotype-by-environment (GxE) interaction**. While the simulation of genetic values is not directly implemented in ['FieldSimR'](https://cran.r-project.org/package=FieldSimR), the package provides wrapper functions to facilitate the simulation of genetic values for multi-environment field trial settings employing the R package ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR). The two wrapper functions to simulate genetic values based on an unstructured model for GxE interaction are:
 
 * `unstr_asr_input()`
 * `unstr_asr_output()` 
 
 <br/>
 
-**Note:** ['FieldSimR’](https://cran.r-project.org/package=FieldSimR) also provides wrapper functions to enable simulation of genetic values using a compound symmetry model for GxE interaction. This is demonstrated in the vignette on the [Simulation of genetic values using a compound symmetry model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/compound_symmetry_GxE_demo.html).
+**Note:** ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) also provides wrapper functions to enable simulation of genetic values using a compound symmetry model for GxE interaction. This is demonstrated in the vignette on the [Simulation of genetic values using a compound symmetry model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/compound_symmetry_GxE_demo.html).
 
-The **core function of ['FieldSimR’](https://cran.r-project.org/package=FieldSimR)** generates plot errors comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1). Through the combination of the plot errors with (simulated) genetic values, ['FieldSimR’](https://cran.r-project.org/package=FieldSimR) enables simulation of multi-environment plant breeding trials at the plot. This is demonstrated in the vignette on the [Simulation of plot errors and phenotypes for a multi-environment plant breeding trial](https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html).
+The **core function of ['FieldSimR'](https://cran.r-project.org/package=FieldSimR)** generates plot errors comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1). Through the combination of the plot errors with (simulated) genetic values, ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) enables simulation of multi-environment plant breeding trials at the plot. This is demonstrated in the vignette on the [Simulation of plot errors and phenotypes for a multi-environment plant breeding trial](https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html).
 
 
 <br/>
@@ -48,7 +48,7 @@ We conceive a scenario in which 100 maize hybrids are measured for grain yield (
 3. Generation of a data frame containing the simulated genetic values for grain yield and plant height in the three environments.
 
 
-To provide a comprehensive overview of the unstructured modelling approach for GxE interaction, we assume additive and dominance gene action for both grain yield and plant height. Details on how ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) simulates additive and non-additive biological effects can be found in the ["Traits in AlphaSimR"](https://cran.r-project.org/package=AlphaSimR/vignettes/traits.pdf) vignette.
+To provide a comprehensive overview of the unstructured modelling approach for GxE interaction, we assume additive and dominance gene action for both grain yield and plant height. Details on how ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR) simulates additive and non-additive biological effects can be found in the ["Traits in AlphaSimR"](https://cran.r-project.org/package=AlphaSimR/vignettes/traits.pdf) vignette.
 
 It should be noted, however, that a simple additive genetic model will be sufficient to answer most experimental questions and may be preferred to more complex models, especially if data to tune the simulation model is not available and the parameters are unknown. 
 
@@ -179,7 +179,7 @@ cor_DD
 
 #### **Input parameter list**
 
-Once we have defined all simulation parameters, we use the function `unstr_asr_input()` to prepare them into a list that is used with ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) to simulate correlated genetic values based on an unstructured model for GxE interaction.
+Once we have defined all simulation parameters, we use the function `unstr_asr_input()` to prepare them into a list that is used with ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR) to simulate correlated genetic values based on an unstructured model for GxE interaction.
 
 ```{r}
 input_asr <- unstr_asr_input(
@@ -195,16 +195,16 @@ input_asr <- unstr_asr_input(
 )
 ```
 
-**Note:** The output object `input_asr` should not be modified and must be used directly with ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) as demonstrated below.
+**Note:** The output object `input_asr` should not be modified and must be used directly with ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR) as demonstrated below.
 
 <br/>
 
 
 ### **2. Simulation of a population of genotypes**
 
-Our list of simulation parameters `input_asr` is now used with ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) to simulate correlated genetic values for 100 maize hybrid genotypes tested for two traits in three locations based on an unstructured model for GxE interaction. 
+Our list of simulation parameters `input_asr` is now used with ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR) to simulate correlated genetic values for 100 maize hybrid genotypes tested for two traits in three locations based on an unstructured model for GxE interaction. 
 
-First, we **simulate a population of 20 heterozygous maize founder genotypes** using the function `runMacs` in ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR).
+First, we **simulate a population of 20 heterozygous maize founder genotypes** using the function `runMacs` in ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR).
 
 ```{r}
 founders <- runMacs( # Simulation of founder genotypes using AlphaSimR's "MAIZE" presets
@@ -257,7 +257,7 @@ hybrid_pop <- makeCross(pop = dh_lines, crossPlan = factorial_plan, nProgeny = 1
 
 ### **3. Generation of a data frame with simulated genetic values**
 
-In the last step, we use the function `unstr_asr_output()` to extract the simulated genetic values from the ['AlphaSimR’](https://CRAN.R-project.org/package=AlphaSimR) population object `hybrid_pop` and store them in a data frame.
+In the last step, we use the function `unstr_asr_output()` to extract the simulated genetic values from the ['AlphaSimR'](https://CRAN.R-project.org/package=AlphaSimR) population object `hybrid_pop` and store them in a data frame.
 
 ```{r}
 gv_df <- unstr_asr_output(

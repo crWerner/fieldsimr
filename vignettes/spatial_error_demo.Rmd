@@ -23,7 +23,7 @@ library(ggplot2)
 <br/>
 
 ### **Background**
-The **R package ['FieldSimR’](https://cran.r-project.org/package=FieldSimR)** enables simulation of multi-environment plant breeding trial phenotypes through the simulation of plot errors and their subsequent combination with (simulated) genetic values. Its **core function generates plot errors** comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1).The three error terms are combined at a user-deﬁned ratio.
+The **R package ['FieldSimR'](https://cran.r-project.org/package=FieldSimR)** enables simulation of multi-environment plant breeding trial phenotypes through the simulation of plot errors and their subsequent combination with (simulated) genetic values. Its **core function generates plot errors** comprising 1) a spatially correlated error term, 2) a random error term, and 3) an extraneous error term. Spatially correlated errors are simulated using either bivariate interpolation, or a two-dimensional autoregressive process of order one (AR1:AR1).The three error terms are combined at a user-deﬁned ratio.
 
 **This document demonstrates how to:** 
 
@@ -164,7 +164,7 @@ error_df <- field_trial_error(
 ```
 
 
-**Note:** by default, the function `field_trial_error()` generates a data frame with the following columns: ***environment id*** (location), ***replicate id*** (block), ***column id***, ***row id***, and the ***total plot error for each trait***. When `return_effects = TRUE`, ['FieldSimR’](https://cran.r-project.org/package=FieldSimR) returns a list with an additional entry for each trait containing the spatial error, the extraneous effect and the random error. 
+**Note:** by default, the function `field_trial_error()` generates a data frame with the following columns: ***environment id*** (location), ***replicate id*** (block), ***column id***, ***row id***, and the ***total plot error for each trait***. When `return_effects = TRUE`, ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) returns a list with an additional entry for each trait containing the spatial error, the extraneous effect and the random error. 
 
 <br/>
 
