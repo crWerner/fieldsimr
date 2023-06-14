@@ -590,8 +590,9 @@ unstr_asr_output <- function(pop,
 
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
 
-  envs <- rep(1:n_envs, times = length(pop@id) * n_reps)
-  reps <- unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id))))
+  envs <- factor(rep(1:n_envs, times = length(pop@id) * n_reps))
+  reps <- factor(unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id)))))
+  ids <- factor(as.numeric(pop@id))
 
   index <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), ncol = n_traits))))
   gv <- lapply(index, function(x) pop@gv[, x])
@@ -601,9 +602,10 @@ unstr_asr_output <- function(pop,
   unstr_asr <- data.frame(
     env = envs,
     rep = reps,
-    id = pop@id,
+    id = ids,
     gv = gv
   )
+  unstr_asr <- unstr_asr[order(unstr_asr$env, env$rep, env$id),]
 
   return(unstr_asr)
 }
