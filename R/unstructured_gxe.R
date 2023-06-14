@@ -592,7 +592,7 @@ unstr_asr_output <- function(pop,
 
   envs <- factor(rep(1:n_envs, times = length(pop@id) * n_reps))
   reps <- factor(unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id)))))
-  ids <- factor(as.numeric(pop@id))
+  ids <- factor(as.numeric(as.character(pop@id)))
 
   index <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), ncol = n_traits))))
   gv <- lapply(index, function(x) pop@gv[, x])
