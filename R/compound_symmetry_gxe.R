@@ -441,8 +441,9 @@ compsym_asr_output <- function(pop,
 
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
 
-  envs <- rep(1:n_envs, times = length(pop@id) * n_reps)
-  reps <- unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id))))
+  envs <- factor(rep(1:n_envs, times = length(pop@id) * n_reps))
+  reps <- factor(unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id)))))
+  ids <- factor(as.numeric(as.character(pop@id)))
 
   g_main <- as.list(as.data.frame(pop@gv[, seq(1, (n_traits + n_traits * n_envs), (n_envs + 1))]))
   gxe_env <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
@@ -456,10 +457,11 @@ compsym_asr_output <- function(pop,
   compsym_asr <- data.frame(
     env = envs,
     rep = reps,
-    id = pop@id,
+    id = ids,
     gv = gv
   )
-
+  compsym_asr <- compsym_asr[order(compsym_asr$env, compsym_asr$rep, compsym_asr$id),]
+                              
   if (effects) {
     g_main <- mapply(cbind, list(data.frame(id = pop@id)), g_main = g_main, SIMPLIFY = F)
 
@@ -468,6 +470,8 @@ compsym_asr_output <- function(pop,
     gxe_env <- lapply(index_eff, function(x) gxe_env[, x])
 
     eff_comps <- mapply(cbind, g_main, gxe_env = gxe_env, SIMPLIFY = F)
+    eff_comps$id <- factor(as.numeric(as.character(eff_comps$id)))
+    eff_comps <- eff_comps[order(eff_comps$id),]
 
     listNames <- c("Trial.df", paste0("Trait.", 1:n_traits))
     compsym_asr <- list(compsym_asr)

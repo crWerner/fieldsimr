@@ -54,35 +54,27 @@ make_phenotypes <- function(gv_df,
 
   error_df <- error_df[order(error_df$ENV, error_df$BLOCK), ]
   gv_df <- gv_df[order(gv_df$ENV, gv_df$REP), ]
-
-  phe <- error_df[, !(colnames(error_df) %in% c("ENV", "BLOCK", "COL", "ROW"))] +
-    gv_df[, !(colnames(gv_df) %in% c("ENV", "REP", "ID"))]
-
-  error_df <- error_df[, (colnames(error_df) %in% c("ENV", "BLOCK", "COL", "ROW"))]
-  error_df <- error_df[, c("ENV", "BLOCK", "COL", "ROW")]
-
+  
   if (randomise) {
-    id <- unique(gv_df$ID)
-    n_blocks_total <- nrow(gv_df) / length(id)
+      id <- unique(gv_df$ID)
+      n_blocks_total <- nrow(gv_df) / length(id)
 
-    id_rand <- sample(id)
-    for (i in 2:n_blocks_total) {
-      id_rand <- c(id_rand, sample(id))
-    }
-
-    pheno_df <- cbind(
-      error_df,
-      id_rand,
-      phe
-    )
-  } else {
-    pheno_df <- cbind(
-      error_df,
-      gv_df$ID,
-      phe
-    )
+      gv_df$ORD <- unlist((lapply(seq_len(n_blocks_total), function(x) sample(id))))
+      gv_df <- gv_df[order(gv_df$ENV, gv_df$REP, gv_df$ORD), ]
   }
-
+  
+  phe <- error_df[, !(colnames(error_df) %in% c("ENV", "BLOCK", "COL", "ROW"))] +
+         gv_df[, !(colnames(gv_df) %in% c("ENV", "REP", "ID", "ORD"))]
+  error_df <- error_df[, c("ENV", "BLOCK", "COL", "ROW")]
+  ids <- factor(as.numeric(as.character(gv_df$ID)))
+    
+  pheno_df <- cbind(
+      error_df,
+      id = ids,
+      phe
+  )
+  
+  pheno_df <- pheno_df[order(pheno_df$ENV, pheno_df$COL, pheno_df$ROW), ]
   colnames(pheno_df) <- c("env", "block", "col", "row", "id", paste0("phe.Trait.", 1:n_traits))
   return(pheno_df)
 }
