@@ -574,7 +574,7 @@ field_trial_error <- function(n_envs = 1,
     prop_ext_row <- lapply(X = prop_ext_row, FUN = diag, nrow = 1)
   }
   e_spat <- mapply(function(x, y) (scale(x) %*% sqrt(y)), x = plot_error_lst1, y = prop_spatial, SIMPLIFY = FALSE)
-  e_rand <- mapply(function(w, x, y, z) (w %*% sqrt(diag(1, nrow = n_traits) - x - y - z)), w = plot_error_lst2, x = prop_spatial, y = prop_ext_col, z = prop_ext_row, SIMPLIFY = FALSE)
+  e_rand <- mapply(function(w, x, y, z) (w %*% sqrt(round(diag(1, nrow = n_traits) - x - y - z, 8))), w = plot_error_lst2, x = prop_spatial, y = prop_ext_col, z = prop_ext_row, SIMPLIFY = FALSE)
   e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext_col, SIMPLIFY = FALSE)
   e_ext_r <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3r, y = prop_ext_row, SIMPLIFY = FALSE)
 
