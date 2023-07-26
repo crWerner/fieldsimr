@@ -370,7 +370,7 @@ field_trial_error <- function(n_envs = 1,
     if (length(complexity) != n_envs) {
       stop("Length of 'complexity' does not match the number of environments")
     }
-    if (any(complexity <= 0)) stop("'complexity' values must be integers > 0")
+    if (any(complexity < 0)) stop("'complexity' values must be integers >= 0")
 
     cols_lst <- with(plot_df, tapply(col, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
     rows_lst <- with(plot_df, tapply(row, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
@@ -391,10 +391,10 @@ field_trial_error <- function(n_envs = 1,
     y <- 0
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
       y <- y + 1
-      xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
+      xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w + 2, min = 0, max = (x * y)), size = w)),
         w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
       )
-      yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
+      yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w + 2, min = 0, max = (x * y)), size = w)),
         w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
       )
       x <- T
