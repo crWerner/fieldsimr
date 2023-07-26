@@ -44,7 +44,7 @@
 #'   (separable first-order autoregressive process).
 #' @param complexity A vector specifying the complexity of the bivariate interpolation in each
 #'   environment. If only one value is provided, all environments will be assigned the same complexity.
-#'   If not specified and \code{spatial_model = "Bivariate"}, the complexity is set to the maximum
+#'   If not specified and \code{spatial_model = "Bivariate"}, the complexity is set to half the maximum
 #'   number of columns and rows in each environment. This generally provides good results. See
 #'   \href{https://CRAN.R-project.org/package=interp}{`interp'} for further details.
 #' @param plot_length A vector of plot lengths (column direction, usually longer side) for each
@@ -365,7 +365,7 @@ field_trial_error <- function(n_envs = 1,
   }
 
   if (spatial_model == "bivariate") {
-    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, max)
+    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x)  max(x)/2)
     if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
     if (length(complexity) != n_envs) {
       stop("Length of 'complexity' does not match the number of environments")
