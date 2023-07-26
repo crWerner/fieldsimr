@@ -384,18 +384,17 @@ field_trial_error <- function(n_envs = 1,
       x = max_lst, y = plot_width, SIMPLIFY = FALSE
     )
 
-    col_gap <- plot_length / 4
-    row_gap <- plot_width / 4
-
+    gap <- min(plot_length, plot_width) / 2
+    
     plot_error_lst1 <- NA
     y <- 0
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
       y <- y + 1
       xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w + 2, min = 0, max = (x * y)), size = w)),
-        w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+        w = complexity, x = n_cols, y = plot_length, z = gap, SIMPLIFY = FALSE
       )
       yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w + 2, min = 0, max = (x * y)), size = w)),
-        w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+        w = complexity, x = n_rows, y = plot_width, z = gap, SIMPLIFY = FALSE
       )
       x <- T
       w <- 0
