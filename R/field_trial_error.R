@@ -18,22 +18,22 @@
 #' @param n_envs Number of environments to be simulated (same number used for \code{compsym_asr_input}
 #'   or \code{unstr_asr_output}, where applicable).
 #' @param n_traits Number of traits to be simulated.
-#' @param n_reps A vector specifying the number of complete replicates (blocks) in each environment.
+#' @param n_blocks A vector specifying the number of blocks in each environment.
 #'   If only one value is provided, all environments will be assigned the same number.
 #' @param n_cols A vector specifying the total number of columns in each environment. If only one
 #'   value is provided, all environments will be assigned the same number.
 #' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided, all environments will be assigned the same number.
-#' @param rep_dir A vector specifying the direction of replicates (blocks) in each environment. Use
+#' @param block_dir A vector specifying the block direction in each environment. Use
 #'   'col' for a side-by-side arrangement (default), 'row' for an above-and-below arrangement, or
-#'   NA if only one replicate block is simulated. If only one value is provided, all environments
-#'   will be assigned the same replicate block direction (where applicable).
+#'   NA if only one block is simulated. If only one value is provided, all environments
+#'   will be assigned the same block direction (where applicable).
 #' @param var_R A vector of error variances for each environment-within-trait combination. If only
 #'   one value is provided, all environment-within-trait combinations will be assigned the same
 #'   error variance.
-#' @param S_cor_R A matrix of spatial error correlations between traits. If not specified and a
+#' @param S_cor_R A matrix of spatial error correlations between traits. If not specified and
 #'   spatial error is simulated, a diagonal matrix is constructed.
-#' @param R_cor_R A matrix of random error correlations between traits. If not specified and a
+#' @param R_cor_R A matrix of random error correlations between traits. If not specified and
 #'   random error is simulated, a diagonal matrix is constructed.
 #' @param E_cor_R A matrix of extraneous error correlations between traits. If not specified and
 #'   an extraneous error is simulated, a diagonal matrix is constructed. \cr
@@ -96,10 +96,10 @@
 #' # Field layout
 #' n_cols <- 10
 #' n_rows <- c(30, 30, 20)
-#' rep_dir <- "col"
+#' block_dir <- "col"
 #' plot_length <- 5
 #' plot_width <- 2
-#' n_reps <- c(3, 3, 2)
+#' n_blocks <- c(3, 3, 2)
 #'
 #' # Error variances for all six environment-within-trait combinations.
 #' var_R <- c(0.2, 0.4, 0.6, 10, 15, 20) # Trait 1 x 3 environments, trait 2 x 3 environments.
@@ -122,10 +122,10 @@
 #' error_df <- field_trial_error(
 #'   n_envs = n_envs,
 #'   n_traits = n_traits,
-#'   n_reps = n_reps,
+#'   n_blocks = n_blocks,
 #'   n_cols = n_cols,
 #'   n_rows = n_rows,
-#'   rep_dir = "row",
+#'   block_dir = "row",
 #'   var_R = var_R,
 #'   S_cor_R = S_cor_R,
 #'   spatial_model = "Bivariate",
@@ -140,10 +140,10 @@
 #' @export
 field_trial_error <- function(n_envs = 1,
                               n_traits = 1,
-                              n_reps = 2,
+                              n_blocks = 2,
                               n_cols = 10,
                               n_rows = 20,
-                              rep_dir = "col",
+                              block_dir = "col",
                               var_R = 1,
                               S_cor_R = NULL,
                               R_cor_R = NULL,
@@ -189,27 +189,27 @@ field_trial_error <- function(n_envs = 1,
     stop("Length of 'plot_width' does not match the number of environments")
   }
 
-  if (min(n_reps) < 1 | any(n_reps %% 1 != 0)) {
-    stop("'n_reps' must contain integers > 0")
+  if (min(n_blocks) < 1 | any(n_blocks %% 1 != 0)) {
+    stop("'n_blocks' must contain integers > 0")
   }
 
-  rep_dir[is.na(rep_dir)] <- rep_dir[tolower(rep_dir) == "column"] <- "col"
-  rep_dir <- tolower(rep_dir)
-  if (length(rep_dir) == 1) rep_dir <- rep(rep_dir, n_envs)
-  if (any(rep_dir == "col")) {
-    if (any(((n_cols / n_reps) %% 1 != 0)[rep_dir == "col"])) {
-      stop("Number of columns not divisible by number of reps. Review your trial design!")
+  block_dir[is.na(block_dir)] <- block_dir[tolower(block_dir) == "column"] <- "col"
+  block_dir <- tolower(block_dir)
+  if (length(block_dir) == 1) block_dir <- rep(block_dir, n_envs)
+  if (any(block_dir == "col")) {
+    if (any(((n_cols / n_blocks) %% 1 != 0)[block_dir == "col"])) {
+      stop("Number of columns not divisible by number of blocks. Review your trial design!")
     }
   }
-  if (any(rep_dir == "row")) {
-    if (any(((n_rows / n_reps) %% 1 != 0)[rep_dir == "row"])) {
-      stop("Number of rows not divisible by number of reps. Review your trial design!")
+  if (any(block_dir == "row")) {
+    if (any(((n_rows / n_blocks) %% 1 != 0)[block_dir == "row"])) {
+      stop("Number of rows not divisible by number of blocks. Review your trial design!")
     }
   }
 
-  if (length(n_reps) == 1) n_reps <- rep(n_reps, n_envs)
-  if (length(n_reps) != n_envs) {
-    stop("Length of 'n_reps' does not match the number of environments")
+  if (length(n_blocks) == 1) n_blocks <- rep(n_blocks, n_envs)
+  if (length(n_blocks) != n_envs) {
+    stop("Length of 'n_blocks' does not match the number of environments")
   }
 
   if (length(var_R) == 1) var_R <- rep(var_R, n_traits * n_envs)
@@ -255,7 +255,7 @@ field_trial_error <- function(n_envs = 1,
     stop("Length of 'prop_ext' does not match the number of environment-within-trait combinations")
   }
 
-  rep_dir[is.na(rep_dir)] <- "neither"
+  block_dir[is.na(block_dir)] <- "neither"
   if (length(ext_dir) == 1) ext_dir <- rep(ext_dir, n_envs)
   if (length(ext_dir) != n_envs) {
     stop("Length of 'ext_dir' does not match the number of environments")
@@ -287,7 +287,7 @@ field_trial_error <- function(n_envs = 1,
   prop_ext_col[rep(ext_dir, times = n_traits) == "both"] <- prop_ext_row[rep(ext_dir, times = n_traits) == "both"] <- prop_ext[rep(ext_dir, times = n_traits) == "both"] / 2
 
   envs <- rep(1:n_envs, times = n_cols * n_rows)
-  reps <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_reps)))
+  blocks <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_blocks)))
 
   cols1 <- c(unlist(mapply(function(x, y) rep(1:x, each = y), x = n_cols, y = n_rows)))
   rows1 <- c(unlist(mapply(function(x, y) rep(1:x, times = y), y = n_cols, x = n_rows)))
@@ -295,14 +295,14 @@ field_trial_error <- function(n_envs = 1,
   rows2 <- c(unlist(mapply(function(x, y) rep(1:x, each = y), y = n_cols, x = n_rows)))
 
   n_plots <- n_cols * n_rows
-  n_plots1 <- rep(as.numeric(factor(rep_dir, levels = c("row", "col"))) - 1, times = n_plots)
+  n_plots1 <- rep(as.numeric(factor(block_dir, levels = c("row", "col"))) - 1, times = n_plots)
   n_plots2 <- 1 - n_plots1
   cols <- n_plots1 * cols1 + n_plots2 * cols2
   rows <- n_plots1 * rows1 + n_plots2 * rows2
 
   plot_df <- data.frame(
     env = factor(envs),
-    block = factor(reps),
+    block = factor(blocks),
     col = factor(cols),
     row = factor(rows)
   )
