@@ -1,14 +1,14 @@
-#' Simulate plot errors in plant breeding field trials
+#' Simulate plot errors in multi-environment field trials
 #'
-#' Creates a data frame of simulated field trial plot errors for one or more traits across one or
-#' more environments. The plot errors can consist of a spatial error, a random error and extraneous
-#' error component. The spatial error is simulated according to either 1) bivariate interpolation
-#' using the \code{interp} function of the package
+#' Creates a data frame of simulated plot errors for multi-environment field trials with one or 
+#' more traits. The plot errors comprise spatially correlated error (trend), random error (noise)
+#' and extraneous error. The spatially correlated error is simulated according to either 
+#' 1) bivariate interpolation using the \code{interp} function of the package
 #' \href{https://CRAN.R-project.org/package=interp}{`interp'}, or 2) a separable first-order
 #' autoregressive process (AR1:AR1). The random error is simulated using an independent process.
 #' The extraneous error is simulated as the sum of column and/or row terms, where the user can
-#' choose from an independent or a correlated processes. The spatial, random and extraneous errors
-#' are combined according to a user-defined ratio. \cr
+#' choose from an independent or a correlated process. The spatially correlated, random, and extraneous 
+#' errors are combined according to a user-defined ratio. \cr
 #' For multiple traits, correlated errors can be simulated assuming 1) correlated spatial error
 #' between traits, 2) correlated random error between traits, 3) correlated extraneous error
 #' between traits, or 4) some combination of 1-3. \cr
