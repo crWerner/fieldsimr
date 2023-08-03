@@ -97,6 +97,7 @@ plot_effects <- function(df,
       low = "#A51122", mid = "#FEFDBE", high = "#006228",
       midpoint = mid_pt
     ) +
+    ggplot2::scale_y_discrete(limits = rev) +
     ggplot2::xlab("Column") +
     ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
