@@ -605,7 +605,7 @@ unstr_asr_output <- function(pop,
     id = ids,
     gv = gv
   )
-  unstr_asr <- unstr_asr[order(unstr_asr$env, env$rep, env$id), ]
+  unstr_asr <- unstr_asr[order(unstr_asr$env, unstr_asr$rep, unstr_asr$id), ]
 
   return(unstr_asr)
 }
