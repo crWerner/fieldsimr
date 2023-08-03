@@ -460,8 +460,8 @@ compsym_asr_output <- function(pop,
     id = ids,
     gv = gv
   )
-  compsym_asr <- compsym_asr[order(compsym_asr$env, compsym_asr$rep, compsym_asr$id),]
-                              
+  compsym_asr <- compsym_asr[order(compsym_asr$env, compsym_asr$rep, compsym_asr$id), ]
+
   if (effects) {
     g_main <- mapply(cbind, list(data.frame(id = pop@id)), g_main = g_main, SIMPLIFY = F)
 
@@ -471,8 +471,8 @@ compsym_asr_output <- function(pop,
 
     eff_comps <- mapply(cbind, g_main, gxe_env = gxe_env, SIMPLIFY = F)
     eff_comps <- lapply(eff_comps, function(x) {
-                        x[[1]] <- factor(as.numeric(as.character(x[[1]])))
-                        x <- x[order(x[[1]]),]
+      x[[1]] <- factor(as.numeric(as.character(x[[1]])))
+      x <- x[order(x[[1]]), ]
     })
 
     listNames <- c("Trial.df", paste0("Trait.", 1:n_traits))

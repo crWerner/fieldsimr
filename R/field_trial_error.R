@@ -1,13 +1,13 @@
 #' Simulate plot errors in multi-environment field trials
 #'
-#' Creates a data frame of simulated plot errors for multi-environment field trials with one or 
+#' Creates a data frame of simulated plot errors for multi-environment field trials with one or
 #' more traits. The plot errors comprise spatially correlated error (trend), random error (noise)
-#' and extraneous error. The spatially correlated error is simulated according to either 
+#' and extraneous error. The spatially correlated error is simulated according to either
 #' 1) bivariate interpolation using the \code{interp} function of the package
 #' \href{https://CRAN.R-project.org/package=interp}{`interp'}, or 2) a separable first-order
 #' autoregressive process (AR1:AR1). The random error is simulated using an independent process.
 #' The extraneous error is simulated as the sum of column and/or row terms, where the user can
-#' choose from an independent or a correlated process. The spatially correlated, random, and extraneous 
+#' choose from an independent or a correlated process. The spatially correlated, random, and extraneous
 #' errors are combined according to a user-defined ratio. \cr
 #' For multiple traits, correlated errors can be simulated assuming 1) correlated spatial error
 #' between traits, 2) correlated random error between traits, 3) correlated extraneous error
@@ -365,7 +365,7 @@ field_trial_error <- function(n_envs = 1,
   }
 
   if (spatial_model == "bivariate") {
-    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x)  max(x)/2)
+    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x) max(x) / 2)
     if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
     if (length(complexity) != n_envs) {
       stop("Length of 'complexity' does not match the number of environments")
@@ -385,7 +385,7 @@ field_trial_error <- function(n_envs = 1,
     )
 
     gap <- min(plot_length, plot_width) / 2
-    
+
     plot_error_lst1 <- NA
     y <- 0
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
