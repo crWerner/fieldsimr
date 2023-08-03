@@ -7,7 +7,7 @@ library(FieldSimR)
 ### simulation Parameters
 n_traits <- 2 # Number of traits.
 n_envs <- 3 # Number of environments (locations).
-n_reps <- c(3, 3, 2) # Number of full replicates within environments 1, 2 and 3.
+n_blocks <- c(2, 3, 2) # Number of full replicates within environments 1, 2 and 3.
 n_ind <- 20 # Number of founder genotypes in the population.
 n_chr <- 10 # Number of chromosomes.
 n_seg_sites <- 300 # Number of QTN per chromosome.
@@ -102,7 +102,7 @@ hybrid_pop <- makeCross(pop = dh_lines, crossPlan = factorial_plan, nProgeny = 1
 df_gv_unstr <- unstr_asr_output(
   pop = hybrid_pop,
   n_envs = n_envs,
-  n_reps = n_reps,
+  n_reps = n_blocks,
   n_traits = n_traits
 )
 
@@ -111,10 +111,10 @@ df_gv_unstr <- unstr_asr_output(
 # Simulation of plot-level errors for two traits in three environments using a bivariate
 # interpolation model for spatial variation.
 
-rep_dir <- "row" # Layout of replicates (“above-and-below”).
-n_cols <- 10 # Total umber of columns per location.
-n_rows <- c(30, 30, 20) # Total number of rows per location.
-plot_length <- 5 # Plot length; here in meters (column direction).
+block_dir <- "col" # Layout of replicates (“side-by-side”).
+n_cols <- c(10, 15, 10) # Total umber of columns per location.
+n_rows <- 20 # Total number of rows per location.
+plot_length <- 8 # Plot length; here in meters (column direction).
 plot_width <- 2 # Plot width; here in meters (row direction).
 
 
@@ -130,6 +130,7 @@ var_R <- calc_var_R(var, H2)
 
 # Spatial error correlations between traits 1 and 2.
 spatial_model <- "Bivariate" # Spatial error model.
+complexity <- 10
 prop_spatial <- 0.4 # Proportion of spatial to total error variance.
 S_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
 
@@ -140,11 +141,11 @@ E_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
 
 
 # Simulate field error using bivariate interpolation.
-error_df <- field_trial_error(
+df_error_bivar <- field_trial_error(
   n_envs = n_envs,
   n_traits = n_traits,
-  n_reps = n_reps,
-  rep_dir = rep_dir,
+  n_blocks = n_blocks,
+  block_dir = block_dir,
   n_cols = n_cols,
   n_rows = n_rows,
   plot_length = plot_length,
@@ -152,13 +153,14 @@ error_df <- field_trial_error(
   var_R = var_R,
   R_cor_R = NULL,
   spatial_model = spatial_model,
+  complexity = complexity,
   prop_spatial = prop_spatial,
   S_cor_R = S_cor_R,
   prop_ext = prop_ext,
   ext_dir = ext_dir,
   ext_row_cor = ext_row_cor,
   E_cor_R = E_cor_R,
-  return_effects = TRUE
+  return_effects = FALSE
 )
 
 # Combine genetic values and field error to obtain phenotypes.

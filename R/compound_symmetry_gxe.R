@@ -332,8 +332,8 @@ compsym_asr_input <- function(n_envs = 3,
 #' @param n_envs Number of simulated environments (same number used in
 #'   \link[FieldSimR]{compsym_asr_input}).
 #' @param n_traits Number of simulated traits (same number used in \link[FieldSimR]{compsym_asr_input}).
-#' @param n_reps A vector defining the number of complete replicates (blocks) in each environment.
-#'   If only one value is specified, all environments will be assigned the same number.
+#' @param n_reps A vector defining the number of replicates in each environment. If only one value
+#'   is specified, all environments will be assigned the same number.
 #' @param effects When \code{TRUE}, a list is returned with additional entries containing the total
 #'   (additive + dominance + epistatic) main effects and GxE interaction effects for each
 #'   environment-within-trait combination. By default, \code{effects = FALSE}.
@@ -416,7 +416,7 @@ compsym_asr_input <- function(n_envs = 3,
 #' # 3. Create a data frame containing the simulated genetic values for the two traits across the
 #' # three environments.
 #'
-#' n_reps <- c(3, 3, 2) # Vector containing the number of complete replicates in each environment.
+#' n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
 #'
 #' gv_df <- compsym_asr_output(
 #'   pop = pop,

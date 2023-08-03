@@ -39,7 +39,7 @@ The **core function of ['FieldSimR'](https://cran.r-project.org/package=FieldSim
 
 
 ### **Simulation of genetic values**
-We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first two locations include three replicates, and the third location includes two replicates (i.e., we lost one replicate).
+We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first and the third location include two replicated, and the second location includes three replicates
 
 **The simulation process comprises three steps:**
 
@@ -58,14 +58,14 @@ It should be noted, however, that a simple additive genetic model will be suffic
 
 ### **1. Genetic architecture and simulation parameters of the two traits**
 
-First, we set the number of traits, the number of environments (e.g., locations), and the number of replicates within environments. We also define the number of genotypes in our founder population to be simulated, the number of chromosomes, and the number of segregating sites (biallelic QTN) per chromosome. Then, we set the additive genetic parameters, the dominance parameters, and the genetic correlation structures required to simulate the two traits in three environments based on a compound symmetry model for GxE interaction.
+First, we set the number of traits, the number of environments (e.g., locations), and the number of replicates tested within environments. We also define the number of genotypes in our founder population to be simulated, the number of chromosomes, and the number of segregating sites (biallelic QTN) per chromosome. Then, we set the additive genetic parameters, the dominance parameters, and the genetic correlation structures required to simulate the two traits in three environments based on a compound symmetry model for GxE interaction.
 
 We create a founder population of 20 heterozygous genotypes. These founder genotypes will then be split into two heterotic pools, and one doubled haploid (DH) line will be produced from each founder. To generate hybrids, the two pools will be crossed using a factorial design.
 
 ```{r}
 n_traits <- 2 # Number of traits.
 n_envs <- 3 # Number of environments (locations).
-n_reps <- c(3, 3, 2) # Number of full replicates within environments 1, 2 and 3.
+n_reps <- c(2, 3, 2) # Number of replicates tested within environments 1, 2 and 3.
 
 
 n_ind <- 100 # Number of founder genotypes in the population.

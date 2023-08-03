@@ -5,12 +5,12 @@
 \alias{df_error_bivar}
 \title{Plot errors - example data frame}
 \format{
-A data frame with 800 rows and 6 columns:
+A data frame with 700 rows and 6 columns:
 \describe{
-  \item{env}{Environment number}
-  \item{block}{Block (replicate) number}
-  \item{col}{Column number}
-  \item{row}{Row number}
+  \item{env}{Environment id}
+  \item{block}{Block id}
+  \item{col}{Column id}
+  \item{row}{Row id}
   \item{e.Trait.1}{Simulated plot error for trait 1}
   \item{e.Trait.2}{Simulated plot error for trait 2}
 }
@@ -20,8 +20,8 @@ df_error_bivar
 }
 \description{
 An example data frame of simulated plot errors for two traits across three locations. The first
-two locations include three replicates (blocks), and the third location includes two replicates.
-Each replicate comprises 10 rows and 10 columns. The data frame was generated using the
+and the third location include two blocks, and the second location includes three blocks.
+Each block comprises 20 rows and 5 columns. The data frame was generated using the
 function \link[FieldSimR]{field_trial_error} with bivariate interpolation. The simulation of
 the plot errors is shown in the vignette on the
 \href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes for a multi-environment plant breeding trial}.

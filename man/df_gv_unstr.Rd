@@ -5,10 +5,10 @@
 \alias{df_gv_unstr}
 \title{Genetic values - example data frame}
 \format{
-A data frame with 800 rows and 5 columns:
+A data frame with 700 rows and 5 columns:
 \describe{
-  \item{env}{Environment number}
-  \item{rep}{Replicate number}
+  \item{env}{Environment id}
+  \item{rep}{Replicate id}
   \item{id}{Genotype id}
   \item{gv.Trait.1}{Simulated genetic values for trait 1}
   \item{gv.Trait.2}{Simulated genetic values for trait 2}

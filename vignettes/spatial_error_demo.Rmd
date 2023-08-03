@@ -50,16 +50,16 @@ The **simulation of plot errors** requires specification of various simulation p
 
 #### **1.1 Field trial layout**
 
-We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first two locations include three blocks, and the third location includes two blocks (i.e., we lost one replicate). Each replicate comprises 10 rows and 10 columns. The blocks are arranged in row direction (“above-and-below”). The plot length (column direction) is 4 meters, and the plot width (row direction) is 2 meters. 
+We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first and the third location include two blocks, and the second location includes three blocks. Each block comprises 20 rows and 5 columns. The blocks are arranged in column direction (“side-by-side”). The plot length (column direction) is 8 meters, and the plot width (row direction) is 2 meters. 
 
 ```{r}
 n_envs <- 3 # Number of environments.
 n_traits <- 2 # Number of traits.
-n_blocks <- c(3, 3, 2) # Number of blocks in the three environments, respectively.
-block_dir <- "row" # Layout of blocks (“above-and-below”).
-n_cols <- 10 # Total umber of columns per location.
-n_rows <- c(30, 30, 20) # Total number of rows per location.
-plot_length <- 5 # Plot length; here in meters (column direction).
+n_blocks <- c(2, 3, 2) # Number of blocks in the three environments, respectively.
+block_dir <- "col" # Layout of blocks (“side-by-side”).
+n_cols <- c(10, 15, 10) # Total umber of columns per location.
+n_rows <- 20 # Total number of rows per location.
+plot_length <- 8 # Plot length; here in meters (column direction).
 plot_width <- 2 # Plot width; here in meters (row direction).
 ```
 
@@ -164,43 +164,43 @@ error_df <- field_trial_error(
 ```
 
 
-**Note:** by default, the function `field_trial_error()` generates a data frame with the following columns: ***environment id*** (location), ***replicate id*** (block), ***column id***, ***row id***, and the ***total plot error for each trait***. When `return_effects = TRUE`, ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) returns a list with an additional entry for each trait containing the spatial error, the extraneous effect and the random error. 
+**Note:** by default, the function `field_trial_error()` generates a data frame with the following columns: ***environment id*** (location), ***block id***, ***column id***, ***row id***, and the ***total plot error for each trait***. When `return_effects = TRUE`, ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) returns a list with an additional entry for each trait containing the spatial error, the extraneous effect and the random error. 
 
 <br/>
 
-We will now plot the **total error for grain yield ("e.Trait.1") in environment 1**, as well as the **spatial error component**, the **random error component**, and the **extraneous variation**. Therefore, we first extract the required data from `error_df` and then create an individual plot for each of the four simulated error terms.
+We will now plot the **total error for grain yield ("e.Trait.1") in environment 2**, as well as the **spatial error component**, the **random error component**, and the **extraneous variation**. Therefore, we first extract the required data from `error_df` and then create an individual plot for each of the four simulated error terms.
 
 ```{r}
-error_env1 <- error_df$plot_df[error_df$plot_df$env == 1, ]
-e_comp_env1 <- error_df$Trait.1[error_df$Trait.1$env == 1, ]
+error_env2 <- error_df$plot_df[error_df$plot_df$env == 2, ]
+e_comp_env2 <- error_df$Trait.1[error_df$Trait.1$env == 2, ]
 ```
 
 <br/>
 
 **Total plot error**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(error_env1, effect = "e.Trait.1")
+plot_effects(error_env2, effect = "e.Trait.1")
 ```
 
 <br/>
 
 **Spatial error** simulated using bivariate interpolation
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env1, effect = "e_spat")
+plot_effects(e_comp_env2, effect = "e_spat")
 ```
 
 <br/>
 
 **Random error**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env1, effect = "e_rand")
+plot_effects(e_comp_env2, effect = "e_rand")
 ```
 
 <br/>
 
 **Extraneous variation **in the row direction
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env1, effect = "e_ext_row")
+plot_effects(e_comp_env2, effect = "e_ext_row")
 ```
 
 <br/>
@@ -219,25 +219,25 @@ pheno_df <- make_phenotypes(
   randomise = TRUE
 )
 
-pheno_env1 <- pheno_df[pheno_df$env == 1, ]
+pheno_env2 <- pheno_df[pheno_df$env == 2, ] # Extract phenotypes in environment 2.
 ```
 
 <br/>
 
 **Simulated phenotypes**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(pheno_env1, effect = "phe.Trait.1")
+plot_effects(pheno_env2, effect = "phe.Trait.1")
 ```
 
 <br/>
 
-**Histogram showing the genetic phenotypes of the 100 maize hybrids for grain yield in the three replicates in environment 1** 
+**Histogram showing the genetic phenotypes of the 100 maize hybrids for grain yield in the three blocks in environment 2** 
 
 ```{r echo=TRUE, fig.height = 4, fig.width = 9, fig.align = "center"}
-ggplot(pheno_env1, aes(x = phe.Trait.1, fill = factor(block))) +
+ggplot(pheno_env2, aes(x = phe.Trait.1, fill = factor(block))) +
   geom_histogram(color = "#e9ecef", alpha = 0.8, position = "identity", bins = 50) +
   scale_fill_manual(values = c("violetred3", "goldenrod3", "skyblue2")) +
-  labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Block (Replicate)")
+  labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Block")
 ```
 
 
