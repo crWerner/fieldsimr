@@ -50,13 +50,13 @@ The **simulation of plot errors** requires specification of various simulation p
 
 #### **1.1 Field trial layout**
 
-We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first two locations include three replicates, and the third location includes two replicates (i.e., we lost one replicate). Each replicate comprises 10 rows and 10 columns. The replicates are arranged in row direction (“above-and-below”). The plot length (column direction) is 4 meters, and the plot width (row direction) is 2 meters. 
+We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first two locations include three blocks, and the third location includes two blocks (i.e., we lost one replicate). Each replicate comprises 10 rows and 10 columns. The blocks are arranged in row direction (“above-and-below”). The plot length (column direction) is 4 meters, and the plot width (row direction) is 2 meters. 
 
 ```{r}
 n_envs <- 3 # Number of environments.
 n_traits <- 2 # Number of traits.
-n_reps <- c(3, 3, 2) # Number replicates in the three environments, respectively.
-rep_dir <- "row" # Layout of replicates (“above-and-below”).
+n_blocks <- c(3, 3, 2) # Number of blocks in the three environments, respectively.
+block_dir <- "row" # Layout of blocks (“above-and-below”).
 n_cols <- 10 # Total umber of columns per location.
 n_rows <- c(30, 30, 20) # Total number of rows per location.
 plot_length <- 5 # Plot length; here in meters (column direction).
@@ -144,8 +144,8 @@ Finally, we use all the parameters defined above with the function `field_trial_
 error_df <- field_trial_error(
   n_envs = n_envs,
   n_traits = n_traits,
-  n_reps = n_reps,
-  rep_dir = rep_dir,
+  n_blocks = n_blocks,
+  block_dir = block_dir,
   n_cols = n_cols,
   n_rows = n_rows,
   plot_length = plot_length,
