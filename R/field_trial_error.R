@@ -1,14 +1,14 @@
-#' Simulate plot errors in plant breeding field trials
+#' Simulate plot errors in multi-environment field trials
 #'
-#' Creates a data frame of simulated field trial plot errors for one or more traits across one or
-#' more environments. The plot errors can consist of a spatial error, a random error and extraneous
-#' error component. The spatial error is simulated according to either 1) bivariate interpolation
-#' using the \code{interp} function of the package
+#' Creates a data frame of simulated plot errors for multi-environment field trials with one or 
+#' more traits. The plot errors comprise spatially correlated error (trend), random error (noise)
+#' and extraneous error. The spatially correlated error is simulated according to either 
+#' 1) bivariate interpolation using the \code{interp} function of the package
 #' \href{https://CRAN.R-project.org/package=interp}{`interp'}, or 2) a separable first-order
 #' autoregressive process (AR1:AR1). The random error is simulated using an independent process.
 #' The extraneous error is simulated as the sum of column and/or row terms, where the user can
-#' choose from an independent or a correlated processes. The spatial, random and extraneous errors
-#' are combined according to a user-defined ratio. \cr
+#' choose from an independent or a correlated process. The spatially correlated, random, and extraneous 
+#' errors are combined according to a user-defined ratio. \cr
 #' For multiple traits, correlated errors can be simulated assuming 1) correlated spatial error
 #' between traits, 2) correlated random error between traits, 3) correlated extraneous error
 #' between traits, or 4) some combination of 1-3. \cr
@@ -18,22 +18,22 @@
 #' @param n_envs Number of environments to be simulated (same number used for \code{compsym_asr_input}
 #'   or \code{unstr_asr_output}, where applicable).
 #' @param n_traits Number of traits to be simulated.
-#' @param n_reps A vector specifying the number of complete replicates (blocks) in each environment.
+#' @param n_blocks A vector specifying the number of blocks in each environment.
 #'   If only one value is provided, all environments will be assigned the same number.
 #' @param n_cols A vector specifying the total number of columns in each environment. If only one
 #'   value is provided, all environments will be assigned the same number.
 #' @param n_rows A vector specifying the total number of rows in each environment. If only one
 #'   value is provided, all environments will be assigned the same number.
-#' @param rep_dir A vector specifying the direction of replicates (blocks) in each environment. Use
+#' @param block_dir A vector specifying the block direction in each environment. Use
 #'   'col' for a side-by-side arrangement (default), 'row' for an above-and-below arrangement, or
-#'   NA if only one replicate block is simulated. If only one value is provided, all environments
-#'   will be assigned the same replicate block direction (where applicable).
+#'   NA if only one block is simulated. If only one value is provided, all environments
+#'   will be assigned the same block direction (where applicable).
 #' @param var_R A vector of error variances for each environment-within-trait combination. If only
 #'   one value is provided, all environment-within-trait combinations will be assigned the same
 #'   error variance.
-#' @param S_cor_R A matrix of spatial error correlations between traits. If not specified and a
+#' @param S_cor_R A matrix of spatial error correlations between traits. If not specified and
 #'   spatial error is simulated, a diagonal matrix is constructed.
-#' @param R_cor_R A matrix of random error correlations between traits. If not specified and a
+#' @param R_cor_R A matrix of random error correlations between traits. If not specified and
 #'   random error is simulated, a diagonal matrix is constructed.
 #' @param E_cor_R A matrix of extraneous error correlations between traits. If not specified and
 #'   an extraneous error is simulated, a diagonal matrix is constructed. \cr
@@ -44,7 +44,7 @@
 #'   (separable first-order autoregressive process).
 #' @param complexity A vector specifying the complexity of the bivariate interpolation in each
 #'   environment. If only one value is provided, all environments will be assigned the same complexity.
-#'   If not specified and \code{spatial_model = "Bivariate"}, the complexity is set to the maximum
+#'   If not specified and \code{spatial_model = "Bivariate"}, the complexity is set to half the maximum
 #'   number of columns and rows in each environment. This generally provides good results. See
 #'   \href{https://CRAN.R-project.org/package=interp}{`interp'} for further details.
 #' @param plot_length A vector of plot lengths (column direction, usually longer side) for each
@@ -96,10 +96,10 @@
 #' # Field layout
 #' n_cols <- 10
 #' n_rows <- c(30, 30, 20)
-#' rep_dir <- "col"
+#' block_dir <- "col"
 #' plot_length <- 5
 #' plot_width <- 2
-#' n_reps <- c(3, 3, 2)
+#' n_blocks <- c(3, 3, 2)
 #'
 #' # Error variances for all six environment-within-trait combinations.
 #' var_R <- c(0.2, 0.4, 0.6, 10, 15, 20) # Trait 1 x 3 environments, trait 2 x 3 environments.
@@ -122,10 +122,10 @@
 #' error_df <- field_trial_error(
 #'   n_envs = n_envs,
 #'   n_traits = n_traits,
-#'   n_reps = n_reps,
+#'   n_blocks = n_blocks,
 #'   n_cols = n_cols,
 #'   n_rows = n_rows,
-#'   rep_dir = "row",
+#'   block_dir = "row",
 #'   var_R = var_R,
 #'   S_cor_R = S_cor_R,
 #'   spatial_model = "Bivariate",
@@ -140,10 +140,10 @@
 #' @export
 field_trial_error <- function(n_envs = 1,
                               n_traits = 1,
-                              n_reps = 2,
+                              n_blocks = 2,
                               n_cols = 10,
                               n_rows = 20,
-                              rep_dir = "col",
+                              block_dir = "col",
                               var_R = 1,
                               S_cor_R = NULL,
                               R_cor_R = NULL,
@@ -152,9 +152,9 @@ field_trial_error <- function(n_envs = 1,
                               complexity = NULL,
                               plot_length = 5,
                               plot_width = 2,
-                              col_cor = 0.4,
-                              row_cor = 0.6,
-                              prop_spatial = 0.5,
+                              col_cor = 0.5,
+                              row_cor = 0.7,
+                              prop_spatial = 0.4,
                               prop_ext = 0,
                               ext_dir = "row",
                               ext_col_cor = 0,
@@ -189,27 +189,27 @@ field_trial_error <- function(n_envs = 1,
     stop("Length of 'plot_width' does not match the number of environments")
   }
 
-  if (min(n_reps) < 1 | any(n_reps %% 1 != 0)) {
-    stop("'n_reps' must contain integers > 0")
+  if (min(n_blocks) < 1 | any(n_blocks %% 1 != 0)) {
+    stop("'n_blocks' must contain integers > 0")
   }
 
-  rep_dir[is.na(rep_dir)] <- rep_dir[tolower(rep_dir) == "column"] <- "col"
-  rep_dir <- tolower(rep_dir)
-  if (length(rep_dir) == 1) rep_dir <- rep(rep_dir, n_envs)
-  if (any(rep_dir == "col")) {
-    if (any(((n_cols / n_reps) %% 1 != 0)[rep_dir == "col"])) {
-      stop("Number of columns not divisible by number of reps. Review your trial design!")
+  block_dir[is.na(block_dir)] <- block_dir[tolower(block_dir) == "column"] <- "col"
+  block_dir <- tolower(block_dir)
+  if (length(block_dir) == 1) block_dir <- rep(block_dir, n_envs)
+  if (any(block_dir == "col")) {
+    if (any(((n_cols / n_blocks) %% 1 != 0)[block_dir == "col"])) {
+      stop("Number of columns not divisible by number of blocks. Review your trial design!")
     }
   }
-  if (any(rep_dir == "row")) {
-    if (any(((n_rows / n_reps) %% 1 != 0)[rep_dir == "row"])) {
-      stop("Number of rows not divisible by number of reps. Review your trial design!")
+  if (any(block_dir == "row")) {
+    if (any(((n_rows / n_blocks) %% 1 != 0)[block_dir == "row"])) {
+      stop("Number of rows not divisible by number of blocks. Review your trial design!")
     }
   }
 
-  if (length(n_reps) == 1) n_reps <- rep(n_reps, n_envs)
-  if (length(n_reps) != n_envs) {
-    stop("Length of 'n_reps' does not match the number of environments")
+  if (length(n_blocks) == 1) n_blocks <- rep(n_blocks, n_envs)
+  if (length(n_blocks) != n_envs) {
+    stop("Length of 'n_blocks' does not match the number of environments")
   }
 
   if (length(var_R) == 1) var_R <- rep(var_R, n_traits * n_envs)
@@ -255,7 +255,7 @@ field_trial_error <- function(n_envs = 1,
     stop("Length of 'prop_ext' does not match the number of environment-within-trait combinations")
   }
 
-  rep_dir[is.na(rep_dir)] <- "neither"
+  block_dir[is.na(block_dir)] <- "neither"
   if (length(ext_dir) == 1) ext_dir <- rep(ext_dir, n_envs)
   if (length(ext_dir) != n_envs) {
     stop("Length of 'ext_dir' does not match the number of environments")
@@ -287,7 +287,7 @@ field_trial_error <- function(n_envs = 1,
   prop_ext_col[rep(ext_dir, times = n_traits) == "both"] <- prop_ext_row[rep(ext_dir, times = n_traits) == "both"] <- prop_ext[rep(ext_dir, times = n_traits) == "both"] / 2
 
   envs <- rep(1:n_envs, times = n_cols * n_rows)
-  reps <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_reps)))
+  blocks <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_blocks)))
 
   cols1 <- c(unlist(mapply(function(x, y) rep(1:x, each = y), x = n_cols, y = n_rows)))
   rows1 <- c(unlist(mapply(function(x, y) rep(1:x, times = y), y = n_cols, x = n_rows)))
@@ -295,14 +295,14 @@ field_trial_error <- function(n_envs = 1,
   rows2 <- c(unlist(mapply(function(x, y) rep(1:x, each = y), y = n_cols, x = n_rows)))
 
   n_plots <- n_cols * n_rows
-  n_plots1 <- rep(as.numeric(factor(rep_dir, levels = c("row", "col"))) - 1, times = n_plots)
+  n_plots1 <- rep(as.numeric(factor(block_dir, levels = c("row", "col"))) - 1, times = n_plots)
   n_plots2 <- 1 - n_plots1
   cols <- n_plots1 * cols1 + n_plots2 * cols2
   rows <- n_plots1 * rows1 + n_plots2 * rows2
 
   plot_df <- data.frame(
     env = factor(envs),
-    block = factor(reps),
+    block = factor(blocks),
     col = factor(cols),
     row = factor(rows)
   )
@@ -365,12 +365,12 @@ field_trial_error <- function(n_envs = 1,
   }
 
   if (spatial_model == "bivariate") {
-    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, max)
+    if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x)  max(x)/2)
     if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
     if (length(complexity) != n_envs) {
       stop("Length of 'complexity' does not match the number of environments")
     }
-    if (any(complexity <= 0)) stop("'complexity' values must be integers > 0")
+    if (any(complexity < 0)) stop("'complexity' values must be integers >= 0")
 
     cols_lst <- with(plot_df, tapply(col, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
     rows_lst <- with(plot_df, tapply(row, env, function(x) c(1:max(as.numeric(trimws(x))), max(as.numeric(trimws(x))) + 1)))
@@ -384,18 +384,17 @@ field_trial_error <- function(n_envs = 1,
       x = max_lst, y = plot_width, SIMPLIFY = FALSE
     )
 
-    col_gap <- plot_length / 4
-    row_gap <- plot_width / 4
-
+    gap <- min(plot_length, plot_width) / 2
+    
     plot_error_lst1 <- NA
     y <- 0
     while (sum(is.na(unlist(plot_error_lst1))) > 0 | y == 100) {
       y <- y + 1
-      xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
-        w = complexity, x = n_cols, y = plot_length, z = col_gap, SIMPLIFY = FALSE
+      xInterp_list <- mapply(function(w, x, y, z) c(0 - z, x * y + z, 0 - z, x * y + z, sample(stats::runif(n = w + 2, min = 0, max = (x * y)), size = w)),
+        w = complexity, x = n_cols, y = plot_length, z = gap, SIMPLIFY = FALSE
       )
-      yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w, min = 0, max = (x * y)))),
-        w = complexity, x = n_rows, y = plot_width, z = row_gap, SIMPLIFY = FALSE
+      yInterp_list <- mapply(function(w, x, y, z) c(0 - z, 0 - z, x * y + z, x * y + z, sample(stats::runif(n = w + 2, min = 0, max = (x * y)), size = w)),
+        w = complexity, x = n_rows, y = plot_width, z = gap, SIMPLIFY = FALSE
       )
       x <- T
       w <- 0
@@ -575,7 +574,7 @@ field_trial_error <- function(n_envs = 1,
     prop_ext_row <- lapply(X = prop_ext_row, FUN = diag, nrow = 1)
   }
   e_spat <- mapply(function(x, y) (scale(x) %*% sqrt(y)), x = plot_error_lst1, y = prop_spatial, SIMPLIFY = FALSE)
-  e_rand <- mapply(function(w, x, y, z) (w %*% sqrt(diag(1, nrow = n_traits) - x - y - z)), w = plot_error_lst2, x = prop_spatial, y = prop_ext_col, z = prop_ext_row, SIMPLIFY = FALSE)
+  e_rand <- mapply(function(w, x, y, z) (w %*% sqrt(round(diag(1, nrow = n_traits) - x - y - z, 8))), w = plot_error_lst2, x = prop_spatial, y = prop_ext_col, z = prop_ext_row, SIMPLIFY = FALSE)
   e_ext_c <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3c, y = prop_ext_col, SIMPLIFY = FALSE)
   e_ext_r <- mapply(function(x, y) (x %*% sqrt(y)), x = plot_error_lst3r, y = prop_ext_row, SIMPLIFY = FALSE)
 
