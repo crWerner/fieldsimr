@@ -93,8 +93,8 @@ generated using <a href="compsym_asr_input.html">compsym_asr_input</a>.</p></dd>
 
 
 <dt>n_reps</dt>
-<dd><p>A vector defining the number of complete replicates (blocks) in each environment.
-If only one value is specified, all environments will be assigned the same number.</p></dd>
+<dd><p>A vector defining the number of replicates in each environment. If only one value
+is specified, all environments will be assigned the same number.</p></dd>
 
 
 <dt>effects</dt>
@@ -189,7 +189,7 @@ environment-within-trait combination. By default, <code>effects = FALSE</code>.<
 <span class="r-in"><span><span class="co"># 3. Create a data frame containing the simulated genetic values for the two traits across the</span></span></span>
 <span class="r-in"><span><span class="co"># three environments.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Vector containing the number of complete replicates in each environment.</span></span></span>
+<span class="r-in"><span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Vector containing the number of complete replicates in each environment.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">gv_df</span> <span class="op">&lt;-</span> <span class="fu">compsym_asr_output</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  pop <span class="op">=</span> <span class="va">pop</span>,</span></span>

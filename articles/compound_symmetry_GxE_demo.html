@@ -126,8 +126,8 @@ trial</a>.</p>
 </h3>
 <p>We conceive a scenario in which 100 maize hybrids are measured for
 grain yield (t/ha) and plant height (cm) in three locations. The first
-two locations include three replicates, and the third location includes
-two replicates (i.e., we lost one replicate).</p>
+and the third location include two replicated, and the second location
+includes three replicates</p>
 <p><strong>The simulation process comprises three steps:</strong></p>
 <ol style="list-style-type: decimal">
 <li>Definition of the genetic architecture and the simulation parameters
@@ -154,8 +154,8 @@ simulation model is not available and the parameters are unknown.</p>
 traits</strong><a class="anchor" aria-label="anchor" href="#genetic-architecture-and-simulation-parameters-of-the-two-traits"></a>
 </h3>
 <p>First, we set the number of traits, the number of environments (e.g.,
-locations), and the number of replicates within environments. We also
-define the number of genotypes in our founder population to be
+locations), and the number of replicates tested within environments. We
+also define the number of genotypes in our founder population to be
 simulated, the number of chromosomes, and the number of segregating
 sites (biallelic QTN) per chromosome. Then, we set the additive genetic
 parameters, the dominance parameters, and the genetic correlation
@@ -169,7 +169,7 @@ design.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_traits</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="co"># Number of traits.</span></span>
 <span><span class="va">n_envs</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="co"># Number of environments (locations).</span></span>
-<span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Number of full replicates within environments 1, 2 and 3.</span></span>
+<span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Number of replicates tested within environments 1, 2 and 3.</span></span>
 <span></span>
 <span></span>
 <span><span class="va">n_ind</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="co"># Number of founder genotypes in the population.</span></span>
@@ -340,12 +340,12 @@ frame.</p>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;   env rep  id gv.Trait.1 gv.Trait.2</span></span>
-<span><span class="co">#&gt; 1   1   1 121   4.655912   237.3428</span></span>
-<span><span class="co">#&gt; 2   1   1 122   5.020693   238.3267</span></span>
-<span><span class="co">#&gt; 3   1   1 123   5.038033   238.5326</span></span>
-<span><span class="co">#&gt; 4   1   1 124   4.592689   239.0974</span></span>
-<span><span class="co">#&gt; 5   1   1 125   5.411069   240.6779</span></span>
-<span><span class="co">#&gt; 6   1   1 126   4.843313   240.7847</span></span></code></pre>
+<span><span class="co">#&gt; 1   1   1 121   5.055137   233.4854</span></span>
+<span><span class="co">#&gt; 2   1   1 122   4.946596   232.3061</span></span>
+<span><span class="co">#&gt; 3   1   1 123   5.015058   239.2604</span></span>
+<span><span class="co">#&gt; 4   1   1 124   4.698888   237.7284</span></span>
+<span><span class="co">#&gt; 5   1   1 125   4.694062   232.9870</span></span>
+<span><span class="co">#&gt; 6   1   1 126   5.044905   232.8402</span></span></code></pre>
 <p><br></p>
 <p><strong>Histogram showing the genetic values of the 100 maize hybrids
 for grain yield in the three environments</strong></p>
