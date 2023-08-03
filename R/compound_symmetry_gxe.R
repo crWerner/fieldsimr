@@ -470,8 +470,10 @@ compsym_asr_output <- function(pop,
     gxe_env <- lapply(index_eff, function(x) gxe_env[, x])
 
     eff_comps <- mapply(cbind, g_main, gxe_env = gxe_env, SIMPLIFY = F)
-    eff_comps$id <- factor(as.numeric(as.character(eff_comps$id)))
-    eff_comps <- eff_comps[order(eff_comps$id),]
+    eff_comps <- lapply(eff_comps, function(x) {
+                        x[[1]] <- factor(as.numeric(as.character(x[[1]])))
+                        x <- x[order(x[[1]]),]
+    })
 
     listNames <- c("Trial.df", paste0("Trait.", 1:n_traits))
     compsym_asr <- list(compsym_asr)
