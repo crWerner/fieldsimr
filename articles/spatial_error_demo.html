@@ -134,16 +134,16 @@ genotype-by-environment (GxE) interaction</a>.</p>
 </h4>
 <p>We conceive a scenario in which 100 maize hybrids are measured for
 grain yield (t/ha) and plant height (cm) in three locations. The first
-two locations include three replicates, and the third location includes
-two replicates (i.e., we lost one replicate). Each replicate comprises
-10 rows and 10 columns. The replicates are arranged in row direction
+two locations include three blocks, and the third location includes two
+blocks (i.e., we lost one replicate). Each replicate comprises 10 rows
+and 10 columns. The blocks are arranged in row direction
 (“above-and-below”). The plot length (column direction) is 4 meters, and
 the plot width (row direction) is 2 meters.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_envs</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="co"># Number of environments.</span></span>
 <span><span class="va">n_traits</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="co"># Number of traits.</span></span>
-<span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Number replicates in the three environments, respectively.</span></span>
-<span><span class="va">rep_dir</span> <span class="op">&lt;-</span> <span class="st">"row"</span> <span class="co"># Layout of replicates (“above-and-below”).</span></span>
+<span><span class="va">n_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Number of blocks in the three environments, respectively.</span></span>
+<span><span class="va">block_dir</span> <span class="op">&lt;-</span> <span class="st">"row"</span> <span class="co"># Layout of blocks (“above-and-below”).</span></span>
 <span><span class="va">n_cols</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co"># Total umber of columns per location.</span></span>
 <span><span class="va">n_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">20</span><span class="op">)</span> <span class="co"># Total number of rows per location.</span></span>
 <span><span class="va">plot_length</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="co"># Plot length; here in meters (column direction).</span></span>
@@ -218,9 +218,9 @@ sample a value between 0 and 0.5.</p>
 <span></span>
 <span><span class="va">S_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">S_cor_R</span></span>
-<span><span class="co">#&gt;          [,1]     [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.000000 0.447268</span></span>
-<span><span class="co">#&gt; [2,] 0.447268 1.000000</span></span></code></pre></div>
+<span><span class="co">#&gt;           [,1]      [,2]</span></span>
+<span><span class="co">#&gt; [1,] 1.0000000 0.4560707</span></span>
+<span><span class="co">#&gt; [2,] 0.4560707 1.0000000</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -241,13 +241,13 @@ between 0 and 0.5.</p>
 <span><span class="va">ext_dir</span> <span class="op">&lt;-</span> <span class="st">"row"</span></span>
 <span><span class="va">ext_row_cor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">0.9</span>, max <span class="op">=</span> <span class="op">-</span><span class="fl">0.6</span><span class="op">)</span></span>
 <span><span class="va">ext_row_cor</span></span>
-<span><span class="co">#&gt; [1] -0.6524825</span></span>
+<span><span class="co">#&gt; [1] -0.7657219</span></span>
 <span></span>
 <span><span class="va">E_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">n_traits</span>, min_cor <span class="op">=</span> <span class="fl">0</span>, max_cor <span class="op">=</span> <span class="fl">0.5</span>, pos_def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">E_cor_R</span></span>
 <span><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.0000000 0.2066213</span></span>
-<span><span class="co">#&gt; [2,] 0.2066213 1.0000000</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.0000000 0.3278016</span></span>
+<span><span class="co">#&gt; [2,] 0.3278016 1.0000000</span></span></code></pre></div>
 <p><strong>Note:</strong> the <strong>proportion of the random error
 variance to total error variance</strong> is defined as 1 -
 (prop_spatial + prop_ext). Hence, <code>prop_spatial</code> and
@@ -266,8 +266,8 @@ and plant height in the three test locations:</p>
 <code class="sourceCode R"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/field_trial_error.html">field_trial_error</a></span><span class="op">(</span></span>
 <span>  n_envs <span class="op">=</span> <span class="va">n_envs</span>,</span>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span>,</span>
-<span>  n_reps <span class="op">=</span> <span class="va">n_reps</span>,</span>
-<span>  rep_dir <span class="op">=</span> <span class="va">rep_dir</span>,</span>
+<span>  n_blocks <span class="op">=</span> <span class="va">n_blocks</span>,</span>
+<span>  block_dir <span class="op">=</span> <span class="va">block_dir</span>,</span>
 <span>  n_cols <span class="op">=</span> <span class="va">n_cols</span>,</span>
 <span>  n_rows <span class="op">=</span> <span class="va">n_rows</span>,</span>
 <span>  plot_length <span class="op">=</span> <span class="va">plot_length</span>,</span>
