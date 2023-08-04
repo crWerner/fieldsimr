@@ -4,7 +4,7 @@
 \alias{plot_effects}
 \title{Graphics for plot effects}
 \usage{
-plot_effects(df, effect, blocks = TRUE)
+plot_effects(df, effect, blocks = TRUE, labels = FALSE)
 }
 \arguments{
 \item{df}{A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
@@ -13,6 +13,9 @@ also contains a 'block' column, the field array is split into blocks if \code{bl
 \item{effect}{The effect to be plotted.}
 
 \item{blocks}{When \code{TRUE} (default), the field array is split into blocks.}
+
+\item{labels}{When \code{TRUE}, row and column numbers are plotted. By default,
+\code{labels = FALSE}.}
 }
 \value{
 A graphical field array, in which the colour gradient ranges from red (low value)

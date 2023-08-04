@@ -10,6 +10,9 @@
 #'   also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}.
 #' @param effect The effect to be plotted.
 #' @param blocks When \code{TRUE} (default), the field array is split into blocks.
+#' @param labels When \code{TRUE}, row and column numbers are plotted. By default,
+#'   \code{labels = FALSE}.
+#'
 #'
 #' @return A graphical field array, in which the colour gradient ranges from red (low value)
 #' to green (high value).
@@ -27,7 +30,8 @@
 #' @export
 plot_effects <- function(df,
                          effect,
-                         blocks = TRUE) {
+                         blocks = TRUE,
+                         labels = FALSE) {
   colnames(df) <- tolower(colnames(df))
   effect <- tolower(effect)
 
@@ -91,30 +95,59 @@ plot_effects <- function(df,
   col <- row <- eff <- NULL
   mid_pt <- round(mean(df$eff), 1)
 
-  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
-    ggplot2::scale_fill_gradient2(
-      low = "#A51122", mid = "#FEFDBE", high = "#006228",
-      midpoint = mid_pt
-    ) +
-    ggplot2::scale_y_discrete(limits = rev) +
-    ggplot2::xlab("Column") +
-    ggplot2::ylab("Row") +
-    ggplot2::theme_grey(base_size = 10) +
-    ggplot2::ggtitle(effect) +
-    ggplot2::theme(
-      axis.ticks = ggplot2::element_blank(),
-      axis.text = ggplot2::element_blank(),
-      axis.title = ggplot2::element_text(size = 12),
-      legend.title = ggplot2::element_blank(),
-      panel.background = ggplot2::element_blank(),
-      plot.title = ggplot2::element_text(size = 12, colour = "gray40")
-    ) +
-    ggplot2::annotate(
-      geom = "rect", xmin = 0.5, ymin = 0.5,
-      xmax = n_cols + 0.5, ymax = n_rows + 0.5,
-      fill = "transparent", col = "black", lwd = 0.5
-    )
+  if (labels) {
+    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
+      ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
+      ggplot2::scale_fill_gradient2(
+        low = "#A51122", mid = "#FEFDBE", high = "#006228",
+        midpoint = mid_pt
+      ) +
+      ggplot2::scale_y_discrete(limits = rev) +
+      ggplot2::xlab("Column") +
+      ggplot2::ylab("Row") +
+      ggplot2::theme_grey(base_size = 10) +
+      ggplot2::ggtitle(effect) +
+      ggplot2::theme(
+        axis.ticks = ggplot2::element_blank(),
+        axis.text = ggplot2::element_text(size = 11),
+        axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
+        axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 8, b = 0, l = 0)),
+        axis.title = ggplot2::element_text(size = 12),
+        legend.title = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(),
+        plot.title = ggplot2::element_text(size = 12, colour = "gray40")
+      ) +
+      ggplot2::annotate(
+        geom = "rect", xmin = 0.5, ymin = 0.5,
+        xmax = n_cols + 0.5, ymax = n_rows + 0.5,
+        fill = "transparent", col = "black", lwd = 0.5
+      )
+  } else {
+    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
+      ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
+      ggplot2::scale_fill_gradient2(
+        low = "#A51122", mid = "#FEFDBE", high = "#006228",
+        midpoint = mid_pt
+      ) +
+      ggplot2::scale_y_discrete(limits = rev) +
+      ggplot2::xlab("Column") +
+      ggplot2::ylab("Row") +
+      ggplot2::theme_grey(base_size = 10) +
+      ggplot2::ggtitle(effect) +
+      ggplot2::theme(
+        axis.ticks = ggplot2::element_blank(),
+        axis.text = ggplot2::element_blank(),
+        axis.title = ggplot2::element_text(size = 12),
+        legend.title = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(),
+        plot.title = ggplot2::element_text(size = 12, colour = "gray40")
+      ) +
+      ggplot2::annotate(
+        geom = "rect", xmin = 0.5, ymin = 0.5,
+        xmax = n_cols + 0.5, ymax = n_rows + 0.5,
+        fill = "transparent", col = "black", lwd = 0.5
+      )
+  }
 
   if (blocks == TRUE & length(unique(df$block)) > 1) {
     for (i in 1:(n_blocks - 1)) {
