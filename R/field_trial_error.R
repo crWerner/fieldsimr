@@ -67,12 +67,9 @@
 #'   variance (spatial + random + extraneous) for each environment-within-trait combination. If only
 #'   one value is provided, all environment-within-trait combinations will be assigned the proportion
 #'   of extraneous error variance.
-#' @param ext_col_cor A vector of column autocorrelations for each environment used in the extraneous
-#'   error model. If only one value is provided, all environments will be assigned the same column
-#'   autocorrelation.
-#' @param ext_row_cor A vector of row autocorrelations for each environment used in the extraneous
-#'   error model. If only one value is provided, all environments will be assigned the same row
-#'   autocorrelation.
+#' @param ext_ord A character string specifying the method used to simulate the extraneous error term. 
+#'   One of either 'random' (the default) or 'zig-zag'. The zig-zag ordering is achieved by alternating 
+#'   positive and negative values between neighbouring columns and rows.
 #' @param ext_dir A vector specifying the direction of extraneous variation for each environment.
 #'   Use 'col' to simulate variation in the column direction, 'row' (default) for variation in the
 #'   row direction, 'both' for variation in both directions, or NA if zero extraneous variation is
@@ -117,7 +114,7 @@
 #' prop_spatial <- 0.4
 #' prop_ext <- 0.2
 #' ext_dir <- "row"
-#' ext_row_cor <- -0.6
+#' ext_ord <- "random"
 #'
 #' error_df <- field_trial_error(
 #'   n_envs = n_envs,
@@ -134,7 +131,7 @@
 #'   prop_spatial = prop_spatial,
 #'   prop_ext = prop_ext,
 #'   ext_dir = ext_dir,
-#'   ext_row_cor = ext_row_cor,
+#'   ext_ord = ext_ord,
 #'   return_effects = TRUE
 #' )
 #' @export
@@ -157,8 +154,7 @@ field_trial_error <- function(n_envs = 1,
                               prop_spatial = 0.4,
                               prop_ext = 0,
                               ext_dir = "row",
-                              ext_col_cor = 0,
-                              ext_row_cor = 0,
+                              ext_ord = "random",
                               return_effects = FALSE) {
   if (n_envs < 1 | n_envs %% 1 != 0) stop("'n_envs' must be an integer > 0")
   if (n_traits < 1 | n_traits %% 1 != 0) stop("'n_traits' must be an integer > 0")
@@ -225,13 +221,13 @@ field_trial_error <- function(n_envs = 1,
   if (is.null(E_cor_R)) E_cor_R <- diag(n_traits)
 
   if (any(eigen(S_cor_R)$values < 1e-8)) {
-    stop("'S_cor_R' is not postiive definite")
+    stop("'S_cor_R' is not positive definite")
   }
   if (any(eigen(R_cor_R)$values < 1e-8)) {
-    stop("'R_cor_R' is not postiive definite")
+    stop("'R_cor_R' is not positive definite")
   }
   if (any(eigen(E_cor_R)$values < 1e-8)) {
-    stop("'E_cor_R' is not postiive definite")
+    stop("'E_cor_R' is not positive definite")
   }
 
   spatial_model <- tolower(spatial_model)
@@ -267,7 +263,9 @@ field_trial_error <- function(n_envs = 1,
   if (any(prop_spatial + prop_ext > 1)) {
     stop("The sum of 'prop_spatial' and 'prop_ext' must be between 0 and 1")
   }
-  if (any(prop_spatial + prop_ext == 1)) {
+  prop_rand <- 1 - prop_spatial - prop_ext
+  
+  if (any(prop_rand == 0)) {
     warning("The random error is zero for some environments")
   }
   ext_dir <- tolower(ext_dir)
@@ -282,10 +280,16 @@ field_trial_error <- function(n_envs = 1,
   if (any(ext_dir %in% c("row", "both") & n_cols <= 3 & prop_ext > 0)) {
     stop("'n_rows' must be greater than 3 when simulating row extraneous variation")
   }
+  
   prop_ext_col <- prop_ext_row <- prop_ext
-  prop_ext_col[rep(ext_dir, times = n_traits) == "row"] <- prop_ext_row[rep(ext_dir, times = n_traits) == "col"] <- 0
-  prop_ext_col[rep(ext_dir, times = n_traits) == "both"] <- prop_ext_row[rep(ext_dir, times = n_traits) == "both"] <- prop_ext[rep(ext_dir, times = n_traits) == "both"] / 2
-
+  prop_ext_col[ext_dir == "row"] <- prop_ext_row[ext_dir == "col"] <- 0
+  prop_ext_col[ext_dir == "both"] <- prop_ext_row[ext_dir == "both"] <- prop_ext[ext_dir == "both"] / 2
+  
+  ext_order <- tolower(ext_order)
+  if (!all(ext_order %in% c("random", "zig-zag"))) {
+    stop("'ext_order' must be one of 'random' or 'zig-zag'")
+  }
+  
   envs <- rep(1:n_envs, times = n_cols * n_rows)
   blocks <- c(unlist(mapply(function(x, y, z) rep(1:z, each = c(x * y / z)), x = n_cols, y = n_rows, z = n_blocks)))
 
@@ -309,6 +313,9 @@ field_trial_error <- function(n_envs = 1,
   plot_df <- plot_df[order(plot_df$env, plot_df$col, plot_df$row), ]
   rownames(plot_df) <- NULL
 
+  plot_error_lst1 <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
+  if (any(prop_spatial > 0)) {
+    
   if (spatial_model == "ar1:ar1") {
     if (length(col_cor) == 1) col_cor <- rep(col_cor, n_envs)
     if (length(col_cor) != n_envs) {
@@ -440,7 +447,10 @@ field_trial_error <- function(n_envs = 1,
       }
     }
   }
-
+}
+                               
+  plot_error_lst2 <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
+  if (any(prop_rand > 0)) {                              
   x <- T
   y <- 0
   while (x | y == 100) {
@@ -464,33 +474,22 @@ field_trial_error <- function(n_envs = 1,
       x = plot_error_lst2, SIMPLIFY = FALSE
     )
   }
-
+}
+                           
   n_plots <- mapply(function(x, y) x * y, x = n_cols, y = n_rows, SIMPLIFY = FALSE)
   plot_error_lst3c <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
+  plot_error_lst3r <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
+  
   if (any(prop_ext_col > 0)) {
-    if (length(ext_col_cor) == 1) ext_col_cor <- rep(ext_col_cor, n_envs)
-    if (length(ext_col_cor) != n_envs) {
-      stop("Length of 'ext_col_cor' does not match the number of environments")
-    }
-    if (any(ext_col_cor < -1) | any(ext_col_cor > 1)) {
-      stop("'ext_col_cor' must contain values between -1 and 1'")
-    }
-    if (any(abs(ext_col_cor) == 1)) {
-      ext_col_cor[abs(ext_col_cor) == 1] <- sign(ext_col_cor[abs(ext_col_cor) == 1]) * (1 - 1e-7)
-    }
-
-    power_lst <- lapply(n_cols, function(x) abs(outer(1:x, 1:x, "-")))
-    ext_col_ar1 <- mapply(function(x, y) x^y, x = ext_col_cor, y = power_lst, SIMPLIFY = FALSE)
-    ext_col_cor_mat_lst <- mapply(function(x) t(chol(x)), x = ext_col_ar1, SIMPLIFY = FALSE)
-
-    plot_error_lst3c <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-      x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
+    plot_error_lst3c <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                               x = n_cols * n_traits, SIMPLIFY = FALSE
     )
+    
     x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_cols > n_traits) | y == 100 & all(n_cols > n_traits)) {
-      plot_error_lst3c <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-        x = n_cols * n_traits, y = ext_col_cor_mat_lst, SIMPLIFY = FALSE
+      plot_error_lst3c <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                                 x = n_cols * n_traits, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3c, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
@@ -498,45 +497,56 @@ field_trial_error <- function(n_envs = 1,
         stop("Appropriate column extraneous error not obtained in 100 iterations")
       }
     }
+    
+    if(ext_order == "zig-zag"){
+      x <- any(rep(ceiling(n_cols/2), each = n_traits) != unlist(lapply(plot_error_lst3c, function(x) colSums(x <= 0))))
+      y <- 0
+      while(x){
+        plot_error_lst3c <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                                   x = n_cols * n_traits, SIMPLIFY = FALSE
+        )
+        x <- any(rep(ceiling(n_cols/2), each = n_traits) != unlist(lapply(plot_error_lst3c, function(x) colSums(x <= 0))))
+        y <- y + 1
+        if (y == 10000) {
+          stop("Appropriate column extraneous error not obtained in 10,000 iterations")
+        }
+      }
+      for(i in 1:n_traits){# i <- 1
+          tmp <- mapply(function(x,y) c(t(cbind(sort(x[,i]), rev(sort(x[,i])))))[1:y], x = plot_error_lst3c, y = n_cols)
+          if (i == 1) {
+            plot_error_lst3c1 <- tmp
+          }
+          if (i > 1) {
+            plot_error_lst3c1 <- Map("cbind", plot_error_lst3c1, tmp)
+          }
+      }
+      plot_error_lst3c <- plot_error_lst3c1
+    }
+    
     if (n_traits > 1 & all(n_cols > n_traits)) {
       plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
-        x = plot_error_lst3c, SIMPLIFY = FALSE
+                                 x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1 | any(n_cols <= n_traits)) {
       plot_error_lst3c <- mapply(function(x) scale(x),
-        x = plot_error_lst3c, SIMPLIFY = FALSE
+                                 x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     Zc <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ col - 1, droplevels(plot_df[plot_df$env == i, ])))
     plot_error_lst3c <- mapply(function(w, x) scale(w %*% x), w = Zc, x = plot_error_lst3c, SIMPLIFY = F)
   }
 
-  plot_error_lst3r <- lapply(n_plots, function(x) matrix(0, nrow = x, ncol = n_traits))
   if (any(prop_ext_row > 0)) {
-    if (length(ext_row_cor) == 1) ext_row_cor <- rep(ext_row_cor, n_envs)
-    if (length(ext_row_cor) != n_envs) {
-      stop("Length of 'ext_row_cor' does not match the number of environments")
-    }
-    if (any(ext_row_cor < -1) | any(ext_row_cor > 1)) {
-      stop("'ext_row_cor' must contain values between -1 and 1'")
-    }
-    if (any(abs(ext_row_cor) == 1)) {
-      ext_row_cor[abs(ext_row_cor) == 1] <- sign(ext_row_cor[abs(ext_row_cor) == 1]) * (1 - 1e-7)
-    }
-
-    power_lst <- lapply(n_rows, function(x) abs(outer(1:x, 1:x, "-")))
-    ext_row_ar1 <- mapply(function(x, y) x^y, x = ext_row_cor, y = power_lst, SIMPLIFY = FALSE)
-    ext_row_cor_mat_lst <- mapply(function(x) t(chol(x)), x = ext_row_ar1, SIMPLIFY = FALSE)
-
-    plot_error_lst3r <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-      x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
+    plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), nrow = n_traits)),
+                               x = n_rows * n_traits, SIMPLIFY = FALSE
     )
+    
     x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_rows > n_traits) | y == 100 & all(n_rows > n_traits)) {
-      plot_error_lst3r <- mapply(function(x, y) y %*% scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-        x = n_rows * n_traits, y = ext_row_cor_mat_lst, SIMPLIFY = FALSE
+      plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), nrow = n_traits)),
+                                 x = n_rows * n_traits, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
       y <- y + 1
@@ -544,14 +554,40 @@ field_trial_error <- function(n_envs = 1,
         stop("Appropriate row extraneous error not obtained in 100 iterations")
       }
     }
+    
+    if(ext_order == "zig-zag"){
+      x <- any(rep(ceiling(n_rows/2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) rowSums(x <= 0))))
+      y <- 0
+      while(x){
+        plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), nrow = n_traits)),
+                                   x = n_rows * n_traits, SIMPLIFY = FALSE
+        )
+        x <- any(rep(ceiling(n_rows/2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) rowSums(x <= 0))))
+        y <- y + 1
+        if (y == 10000) {
+          stop("Appropriate row extraneous error not obtained in 10,000 iterations")
+        }
+      }
+      for(i in 1:n_traits){# i <- 1
+        tmp <- mapply(function(x,y) c(t(cbind(sort(x[,i]), rev(sort(x[,i])))))[1:y], x = plot_error_lst3r, y = n_rows)
+        if (i == 1) {
+          plot_error_lst3r1 <- tmp
+        }
+        if (i > 1) {
+          plot_error_lst3r1 <- Map("cbind", plot_error_lst3r1, tmp)
+        }
+      }
+      plot_error_lst3r <- plot_error_lst3r1
+    }
+    
     if (n_traits > 1 & all(n_rows > n_traits)) {
       plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
-        x = plot_error_lst3r, SIMPLIFY = FALSE
+                                 x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     if (n_traits == 1 | any(n_rows <= n_traits)) {
       plot_error_lst3r <- mapply(function(x) scale(x),
-        x = plot_error_lst3r, SIMPLIFY = FALSE
+                                 x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     Zr <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ row - 1, droplevels(plot_df[plot_df$env == i, ])))
