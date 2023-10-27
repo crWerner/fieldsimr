@@ -555,13 +555,13 @@ field_trial_error <- function(n_envs = 1,
     }
 
     if (ext_ord == "zig-zag") {
-      x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) rowSums(x <= 0))))
+      x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) colSums(x <= 0))))
       y <- 0
       while (x) {
         plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
           x = n_rows * n_traits, SIMPLIFY = FALSE
         )
-        x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) rowSums(x <= 0))))
+        x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) colSums(x <= 0))))
         y <- y + 1
         if (y == 10000) {
           stop("Appropriate row extraneous error not obtained in 10,000 iterations")
