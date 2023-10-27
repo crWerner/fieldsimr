@@ -7,7 +7,7 @@ library(FieldSimR)
 ### simulation Parameters
 n_traits <- 2 # Number of traits.
 n_envs <- 3 # Number of environments (locations).
-n_blocks <- c(2, 3, 2) # Number of full replicates within environments 1, 2 and 3.
+n_blocks <- c(2, 2, 3) # Number of full replicates within environments 1, 2 and 3.
 n_ind <- 20 # Number of founder genotypes in the population.
 n_chr <- 10 # Number of chromosomes.
 n_seg_sites <- 300 # Number of QTN per chromosome.
@@ -112,13 +112,13 @@ df_gv_unstr <- unstr_asr_output(
 # interpolation model for spatial variation.
 
 block_dir <- "col" # Layout of replicates (“side-by-side”).
-n_cols <- c(10, 15, 10) # Total umber of columns per location.
+n_cols <- c(10, 10, 15) # Total umber of columns per location.
 n_rows <- 20 # Total number of rows per location.
 plot_length <- 8 # Plot length; here in meters (column direction).
 plot_width <- 2 # Plot width; here in meters (row direction).
 
 
-H2 <- c(0.1, 0.1, 0.1, 0.3, 0.3, 0.3) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
+H2 <- c(0.3, 0.3, 0.3, 0.5, 0.5, 0.5) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
 
 # Error variances for traits 1 and 2.
 calc_var_R <- function(var, H2) {
@@ -136,7 +136,7 @@ S_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
 
 prop_ext <- 0.2
 ext_dir <- "row"
-ext_row_cor <- runif(1, min = -0.9, max = -0.6)
+ext_ord <- "zig-zag"
 E_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
 
 
@@ -158,7 +158,7 @@ df_error_bivar <- field_trial_error(
   S_cor_R = S_cor_R,
   prop_ext = prop_ext,
   ext_dir = ext_dir,
-  ext_row_cor = ext_row_cor,
+  ext_ord = ext_ord,
   E_cor_R = E_cor_R,
   return_effects = FALSE
 )
@@ -192,5 +192,5 @@ df_gv_unstr$id <- as.factor(df_gv_unstr$id)
 
 
 
-usethis::use_data(df_gv_unstr, overwrite = TRUE)
+# usethis::use_data(df_gv_unstr, overwrite = TRUE)
 usethis::use_data(df_error_bivar, overwrite = TRUE)

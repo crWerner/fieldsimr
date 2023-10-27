@@ -24,8 +24,7 @@ field_trial_error(
   prop_spatial = 0.4,
   prop_ext = 0,
   ext_dir = "row",
-  ext_col_cor = 0,
-  ext_row_cor = 0,
+  ext_ord = "random",
   return_effects = FALSE
 )
 }
@@ -107,13 +106,9 @@ simulated. When \code{ext_dir = "both"}, half the variance is assigned to the co
 half is assigned to the rows. If only one value is provided, all environments will be
 assigned the same direction (where applicable).}
 
-\item{ext_col_cor}{A vector of column autocorrelations for each environment used in the extraneous
-error model. If only one value is provided, all environments will be assigned the same column
-autocorrelation.}
-
-\item{ext_row_cor}{A vector of row autocorrelations for each environment used in the extraneous
-error model. If only one value is provided, all environments will be assigned the same row
-autocorrelation.}
+\item{ext_ord}{A character string specifying the method used to simulate the extraneous error term.
+One of either 'random' (the default) or 'zig-zag'. The zig-zag ordering is achieved by alternating
+positive and negative values between neighbouring columns and rows.}
 
 \item{return_effects}{When \code{TRUE}, a list is returned with additional entries for each trait
 containing the spatial, random and extraneous errors. By default, \code{return_effects = FALSE}.}
@@ -170,7 +165,7 @@ S_cor_R <- matrix(
 prop_spatial <- 0.4
 prop_ext <- 0.2
 ext_dir <- "row"
-ext_row_cor <- -0.6
+ext_ord <- "random"
 
 error_df <- field_trial_error(
   n_envs = n_envs,
@@ -187,7 +182,7 @@ error_df <- field_trial_error(
   prop_spatial = prop_spatial,
   prop_ext = prop_ext,
   ext_dir = ext_dir,
-  ext_row_cor = ext_row_cor,
+  ext_ord = ext_ord,
   return_effects = TRUE
 )
 }
