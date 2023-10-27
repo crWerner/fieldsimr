@@ -537,14 +537,14 @@ field_trial_error <- function(n_envs = 1,
   }
 
   if (any(prop_ext_row > 0)) {
-    plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), nrow = n_traits)),
+    plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
       x = n_rows * n_traits, SIMPLIFY = FALSE
     )
 
     x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
     y <- 0
     while (x & all(n_rows > n_traits) | y == 100 & all(n_rows > n_traits)) {
-      plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), nrow = n_traits)),
+      plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
         x = n_rows * n_traits, SIMPLIFY = FALSE
       )
       x <- any(unlist(lapply(plot_error_lst3r, function(x) eigen(stats::var(x))$values < 1e-7)))
@@ -558,7 +558,7 @@ field_trial_error <- function(n_envs = 1,
       x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) rowSums(x <= 0))))
       y <- 0
       while (x) {
-        plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), nrow = n_traits)),
+        plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
           x = n_rows * n_traits, SIMPLIFY = FALSE
         )
         x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) rowSums(x <= 0))))
