@@ -38,7 +38,7 @@
 #' @param E_cor_R A matrix of extraneous error correlations between traits. If not specified and
 #'   an extraneous error is simulated, a diagonal matrix is constructed. \cr
 #'   \strong{Note:} the same correlation between traits is used for the column and row errors
-#'   (where applicable).
+#'   (where applicable). Currently only implemented when \code{ext_ord = "random"}.
 #' @param spatial_model A character string specifying the model used to simulate the two-dimensional
 #'   spatial error term. One of either 'Bivariate' (bivariate interpolation, the default) or 'AR1:AR1'
 #'   (separable first-order autoregressive process).
@@ -500,18 +500,24 @@ field_trial_error <- function(n_envs = 1,
     if (ext_ord == "zig-zag") {
       x <- any(rep(ceiling(n_cols / 2), each = n_traits) != unlist(lapply(plot_error_lst3c, function(x) colSums(x <= 0))))
       y <- 0
-      while (x) {
-        plot_error_lst3c <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-          x = n_cols * n_traits, SIMPLIFY = FALSE
+      while(x){
+        tmp1 <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                                   x = n_cols * n_traits, SIMPLIFY = FALSE
         )
-        x <- any(rep(ceiling(n_cols / 2), each = n_traits) != unlist(lapply(plot_error_lst3c, function(x) colSums(x <= 0))))
+        tmp2 <- mapply(function(x,y) x - y, x = lapply(tmp1, function(x) colSums(x <= 0)), y = lapply(tmp1, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)
+        
+        for(i in 1:n_envs){
+           
+        plot_error_lst3c[[i]][,tmp2[[i]] == 0] <- tmp1[[i]][,tmp2[[i]] == 0]
+        }
+        x <- any(unlist(mapply(function(x,y) x - y, x = lapply(plot_error_lst3c, function(x) colSums(x <= 0)), y = lapply(plot_error_lst3c, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)) != 0)
         y <- y + 1
-        if (y == 10000) {
-          stop("Appropriate column extraneous error not obtained in 10,000 iterations")
+        if (y == 100) {
+          stop("Appropriate column extraneous error not obtained in 100 iterations. Try random extraneous ordering")
         }
       }
       for (i in 1:n_traits) { # i <- 1
-        tmp <- mapply(function(x, y) c(t(cbind(sort(x[, i]), rev(sort(x[, i])))))[1:y], x = plot_error_lst3c, y = n_cols)
+        tmp <- mapply(function(x, y) c(t(cbind(sort(x[, i]), rev(sort(x[, i])))))[1:y], x = plot_error_lst3c, y = n_cols, SIMPLIFY = FALSE)
         if (i == 1) {
           plot_error_lst3c1 <- tmp
         }
@@ -522,18 +528,18 @@ field_trial_error <- function(n_envs = 1,
       plot_error_lst3c <- plot_error_lst3c1
     }
 
-    if (n_traits > 1 & all(n_cols > n_traits)) {
+    if (n_traits > 1 & all(n_cols > n_traits) & ext_order == "random") {
       plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
-    if (n_traits == 1 | any(n_cols <= n_traits)) {
+    if (n_traits == 1 | any(n_cols <= n_traits) | ext_order == "zig-zag") {
       plot_error_lst3c <- mapply(function(x) scale(x),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
     Zc <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ col - 1, droplevels(plot_df[plot_df$env == i, ])))
-    plot_error_lst3c <- mapply(function(w, x) scale(w %*% x), w = Zc, x = plot_error_lst3c, SIMPLIFY = F)
+    plot_error_lst3c <- mapply(function(w, x) scale(w %*% x), w = Zc, x = plot_error_lst3c, SIMPLIFY = FALSE)
   }
 
   if (any(prop_ext_row > 0)) {
@@ -557,18 +563,23 @@ field_trial_error <- function(n_envs = 1,
     if (ext_ord == "zig-zag") {
       x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) colSums(x <= 0))))
       y <- 0
-      while (x) {
-        plot_error_lst3r <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
-          x = n_rows * n_traits, SIMPLIFY = FALSE
+      while(x){
+        tmp1 <- mapply(function(x, y) scale(matrix(c(stats::rnorm(x)), ncol = n_traits)),
+                       x = n_rows * n_traits, SIMPLIFY = FALSE
         )
-        x <- any(rep(ceiling(n_rows / 2), each = n_traits) != unlist(lapply(plot_error_lst3r, function(x) colSums(x <= 0))))
+        tmp2 <- mapply(function(x,y) x - y, x = lapply(tmp1, function(x) colSums(x <= 0)), y = lapply(tmp1, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)
+        
+        for(i in 1:n_envs){
+          plot_error_lst3r[[i]][,tmp2[[i]] == 0] <- tmp1[[i]][,tmp2[[i]] == 0]
+        }
+        x <- any(unlist(mapply(function(x,y) x - y, x = lapply(plot_error_lst3r, function(x) colSums(x <= 0)), y = lapply(plot_error_lst3r, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)) != 0)
         y <- y + 1
-        if (y == 10000) {
-          stop("Appropriate row extraneous error not obtained in 10,000 iterations")
+        if (y == 100) {
+          stop("Appropriate row extraneous error not obtained in 100 iterations. Try random extraneous ordering")
         }
       }
-      for (i in 1:n_traits) { # i <- 1
-        tmp <- mapply(function(x, y) c(t(cbind(sort(x[, i]), rev(sort(x[, i])))))[1:y], x = plot_error_lst3r, y = n_rows)
+      for (i in 1:n_traits) {
+        tmp <- mapply(function(x, y) c(t(cbind(sort(x[, i]), rev(sort(x[, i])))))[1:y], x = plot_error_lst3r, y = n_rows, SIMPLIFY = FALSE)
         if (i == 1) {
           plot_error_lst3r1 <- tmp
         }
@@ -579,18 +590,18 @@ field_trial_error <- function(n_envs = 1,
       plot_error_lst3r <- plot_error_lst3r1
     }
 
-    if (n_traits > 1 & all(n_rows > n_traits)) {
+    if (n_traits > 1 & all(n_rows > n_traits) & ext_order == "random") {
       plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
-    if (n_traits == 1 | any(n_rows <= n_traits)) {
+    if (n_traits == 1 | any(n_rows <= n_traits) | ext_order == "zig-zag") {
       plot_error_lst3r <- mapply(function(x) scale(x),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
     Zr <- lapply(seq_len(n_envs), function(i) stats::model.matrix(~ row - 1, droplevels(plot_df[plot_df$env == i, ])))
-    plot_error_lst3r <- mapply(function(w, x) scale(w %*% x), w = Zr, x = plot_error_lst3r, SIMPLIFY = F)
+    plot_error_lst3r <- mapply(function(w, x) scale(w %*% x), w = Zr, x = plot_error_lst3r, SIMPLIFY = FALSE)
   }
 
   var_R <- as.data.frame(t(matrix(var_R, ncol = n_traits)))
