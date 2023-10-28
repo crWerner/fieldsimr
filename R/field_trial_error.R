@@ -512,8 +512,8 @@ field_trial_error <- function(n_envs = 1,
         }
         x <- any(unlist(mapply(function(x,y) x - y, x = lapply(plot_error_lst3c, function(x) colSums(x <= 0)), y = lapply(plot_error_lst3c, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)) != 0)
         y <- y + 1
-        if (y == 100) {
-          stop("Appropriate column extraneous error not obtained in 100 iterations. Try random extraneous ordering")
+        if (y == 1000) {
+          stop("Appropriate column extraneous error not obtained in 1000 iterations. Try random extraneous ordering")
         }
       }
       for (i in 1:n_traits) { # i <- 1
@@ -574,8 +574,8 @@ field_trial_error <- function(n_envs = 1,
         }
         x <- any(unlist(mapply(function(x,y) x - y, x = lapply(plot_error_lst3r, function(x) colSums(x <= 0)), y = lapply(plot_error_lst3r, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)) != 0)
         y <- y + 1
-        if (y == 100) {
-          stop("Appropriate row extraneous error not obtained in 100 iterations. Try random extraneous ordering")
+        if (y == 1000) {
+          stop("Appropriate row extraneous error not obtained in 1000 iterations. Try random extraneous ordering")
         }
       }
       for (i in 1:n_traits) {
