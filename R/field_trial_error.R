@@ -528,12 +528,12 @@ field_trial_error <- function(n_envs = 1,
       plot_error_lst3c <- plot_error_lst3c1
     }
 
-    if (n_traits > 1 & all(n_cols > n_traits) & ext_order == "random") {
+    if (n_traits > 1 & all(n_cols > n_traits) & ext_ord == "random") {
       plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
-    if (n_traits == 1 | any(n_cols <= n_traits) | ext_order == "zig-zag") {
+    if (n_traits == 1 | any(n_cols <= n_traits) | ext_ord == "zig-zag") {
       plot_error_lst3c <- mapply(function(x) scale(x),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
@@ -590,12 +590,12 @@ field_trial_error <- function(n_envs = 1,
       plot_error_lst3r <- plot_error_lst3r1
     }
 
-    if (n_traits > 1 & all(n_rows > n_traits) & ext_order == "random") {
+    if (n_traits > 1 & all(n_rows > n_traits) & ext_ord == "random") {
       plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
-    if (n_traits == 1 | any(n_rows <= n_traits) | ext_order == "zig-zag") {
+    if (n_traits == 1 | any(n_rows <= n_traits) | ext_ord == "zig-zag") {
       plot_error_lst3r <- mapply(function(x) scale(x),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
