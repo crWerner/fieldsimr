@@ -371,7 +371,7 @@ field_trial_error <- function(n_envs = 1,
     }
 
     if (spatial_model == "bivariate") {
-      if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x) max(x) / 2)
+      if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x) ceiling(max(x) / 2))
       if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
       if (length(complexity) != n_envs) {
         stop("Length of 'complexity' does not match the number of environments")
@@ -512,8 +512,8 @@ field_trial_error <- function(n_envs = 1,
         }
         x <- any(unlist(mapply(function(x,y) x - y, x = lapply(plot_error_lst3c, function(x) colSums(x <= 0)), y = lapply(plot_error_lst3c, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)) != 0)
         y <- y + 1
-        if (y == 100) {
-          stop("Appropriate column extraneous error not obtained in 100 iterations. Try random extraneous ordering")
+        if (y == 1000) {
+          stop("Appropriate column extraneous error not obtained in 1000 iterations. Try random extraneous ordering")
         }
       }
       for (i in 1:n_traits) { # i <- 1
@@ -528,12 +528,12 @@ field_trial_error <- function(n_envs = 1,
       plot_error_lst3c <- plot_error_lst3c1
     }
 
-    if (n_traits > 1 & all(n_cols > n_traits) & ext_order == "random") {
+    if (n_traits > 1 & all(n_cols > n_traits) & ext_ord == "random") {
       plot_error_lst3c <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
     }
-    if (n_traits == 1 | any(n_cols <= n_traits) | ext_order == "zig-zag") {
+    if (n_traits == 1 | any(n_cols <= n_traits) | ext_ord == "zig-zag") {
       plot_error_lst3c <- mapply(function(x) scale(x),
         x = plot_error_lst3c, SIMPLIFY = FALSE
       )
@@ -574,8 +574,8 @@ field_trial_error <- function(n_envs = 1,
         }
         x <- any(unlist(mapply(function(x,y) x - y, x = lapply(plot_error_lst3r, function(x) colSums(x <= 0)), y = lapply(plot_error_lst3r, function(x) rep(ceiling(nrow(x)/2), n_traits)), SIMPLIFY = FALSE)) != 0)
         y <- y + 1
-        if (y == 100) {
-          stop("Appropriate row extraneous error not obtained in 100 iterations. Try random extraneous ordering")
+        if (y == 1000) {
+          stop("Appropriate row extraneous error not obtained in 1000 iterations. Try random extraneous ordering")
         }
       }
       for (i in 1:n_traits) {
@@ -590,12 +590,12 @@ field_trial_error <- function(n_envs = 1,
       plot_error_lst3r <- plot_error_lst3r1
     }
 
-    if (n_traits > 1 & all(n_rows > n_traits) & ext_order == "random") {
+    if (n_traits > 1 & all(n_rows > n_traits) & ext_ord == "random") {
       plot_error_lst3r <- mapply(function(x) scale(x %*% solve(chol(stats::var(x))) %*% chol(E_cor_R)),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
     }
-    if (n_traits == 1 | any(n_rows <= n_traits) | ext_order == "zig-zag") {
+    if (n_traits == 1 | any(n_rows <= n_traits) | ext_ord == "zig-zag") {
       plot_error_lst3r <- mapply(function(x) scale(x),
         x = plot_error_lst3r, SIMPLIFY = FALSE
       )
