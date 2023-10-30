@@ -118,8 +118,7 @@ variances can be assigned to different environment-within-trait combinations.</p
 <span>  prop_spatial <span class="op">=</span> <span class="fl">0.4</span>,</span>
 <span>  prop_ext <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  ext_dir <span class="op">=</span> <span class="st">"row"</span>,</span>
-<span>  ext_col_cor <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  ext_row_cor <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ext_ord <span class="op">=</span> <span class="st">"random"</span>,</span>
 <span>  return_effects <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -240,16 +239,10 @@ half is assigned to the rows. If only one value is provided, all environments wi
 assigned the same direction (where applicable).</p></dd>
 
 
-<dt>ext_col_cor</dt>
-<dd><p>A vector of column autocorrelations for each environment used in the extraneous
-error model. If only one value is provided, all environments will be assigned the same column
-autocorrelation.</p></dd>
-
-
-<dt>ext_row_cor</dt>
-<dd><p>A vector of row autocorrelations for each environment used in the extraneous
-error model. If only one value is provided, all environments will be assigned the same row
-autocorrelation.</p></dd>
+<dt>ext_ord</dt>
+<dd><p>A character string specifying the method used to simulate the extraneous error term.
+One of either 'random' (the default) or 'zig-zag'. The zig-zag ordering is achieved by alternating
+positive and negative values between neighbouring columns and rows.</p></dd>
 
 
 <dt>return_effects</dt>
@@ -298,7 +291,7 @@ containing the spatial, random and extraneous errors. By default, <code>return_e
 <span class="r-in"><span><span class="va">prop_spatial</span> <span class="op">&lt;-</span> <span class="fl">0.4</span></span></span>
 <span class="r-in"><span><span class="va">prop_ext</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span></span>
 <span class="r-in"><span><span class="va">ext_dir</span> <span class="op">&lt;-</span> <span class="st">"row"</span></span></span>
-<span class="r-in"><span><span class="va">ext_row_cor</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">0.6</span></span></span>
+<span class="r-in"><span><span class="va">ext_ord</span> <span class="op">&lt;-</span> <span class="st">"random"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="fu">field_trial_error</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  n_envs <span class="op">=</span> <span class="va">n_envs</span>,</span></span>
@@ -315,7 +308,7 @@ containing the spatial, random and extraneous errors. By default, <code>return_e
 <span class="r-in"><span>  prop_spatial <span class="op">=</span> <span class="va">prop_spatial</span>,</span></span>
 <span class="r-in"><span>  prop_ext <span class="op">=</span> <span class="va">prop_ext</span>,</span></span>
 <span class="r-in"><span>  ext_dir <span class="op">=</span> <span class="va">ext_dir</span>,</span></span>
-<span class="r-in"><span>  ext_row_cor <span class="op">=</span> <span class="va">ext_row_cor</span>,</span></span>
+<span class="r-in"><span>  ext_ord <span class="op">=</span> <span class="va">ext_ord</span>,</span></span>
 <span class="r-in"><span>  return_effects <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
