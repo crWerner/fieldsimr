@@ -35,7 +35,7 @@
 * Updated Description in `DESCRIPTION`.
 
 
-# FieldSimR 1.1.1
+# FieldSimR 1.2.1
 
 * Argument `ext_ord` replaced arguments `ext_col_cor` and `ext_row_cor` in function `field_trial_error`.
 

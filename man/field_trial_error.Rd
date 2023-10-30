@@ -61,7 +61,7 @@ random error is simulated, a diagonal matrix is constructed.}
 \item{E_cor_R}{A matrix of extraneous error correlations between traits. If not specified and
 an extraneous error is simulated, a diagonal matrix is constructed. \cr
 \strong{Note:} the same correlation between traits is used for the column and row errors
-(where applicable).}
+(where applicable). Currently only implemented when \code{ext_ord = "random"}.}
 
 \item{spatial_model}{A character string specifying the model used to simulate the two-dimensional
 spatial error term. One of either 'Bivariate' (bivariate interpolation, the default) or 'AR1:AR1'
