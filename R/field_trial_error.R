@@ -371,7 +371,7 @@ field_trial_error <- function(n_envs = 1,
     }
 
     if (spatial_model == "bivariate") {
-      if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x) max(x) / 2)
+      if (is.null(complexity)) complexity <- apply(cbind(n_cols, n_rows), 1, function(x) ceiling(max(x) / 2))
       if (length(complexity) == 1) complexity <- rep(complexity, n_envs)
       if (length(complexity) != n_envs) {
         stop("Length of 'complexity' does not match the number of environments")
