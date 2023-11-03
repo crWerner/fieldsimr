@@ -32,16 +32,16 @@ generated using the \link[FieldSimR]{unstr_asr_input} function.
 }
 \examples{
 # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
-# three environments based on an unstructured model for GxE interaction.
+# two environments based on an unstructured model for GxE interaction.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees.
-mean <- c(4.9, 5.4, 5.1, 235.2, 228.5, 239.1) # Trait 1 x 3 environments, trait 2 x 3 environments.
-mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # Trait 1 and 2, same values in the three environments.
+mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, trait 2 x 2 environments.
+mean_DD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same values in the two environments.
 
 # Additive genetic variances and dominance degree variances.
-var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7) # Trait 1 x 3 environments, trait 2 x 3 environments.
-var_DD <- rep(0.2, 6) # The same value set for traits 1 and 2.
+var <- c(0.085, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, trait 2 x 2 environments.
+var_DD <- rep(0.2, 4) # The same value set for traits 1 and 2.
 
 # Additive genetic correlations between the two simulated traits.
 T_cor_A <- matrix(
@@ -52,21 +52,20 @@ T_cor_A <- matrix(
   ncol = 2
 )
 
-# Additive genetic correlations between the three simulated environments.
+# Additive genetic correlations between the two simulated environments.
 E_cor_A <- matrix(
-  c( # Matrix of additive genetic correlations between the three environments.
-    1.0, 0.4, 0.6,
-    0.4, 1.0, 0.5,
-    0.6, 0.5, 1.0
+  c(
+    1.0, 0.2,
+    0.2, 1.0
   ),
-  ncol = 3
+  ncol = 2
 )
 
-# Dominance degree correlations between all six environment-within-trait combinations.
-cor_DD <- diag(6) # Assuming independence between traits
+# Dominance degree correlations between the four environment-within-trait combinations.
+cor_DD <- diag(4) # Assuming independence between traits
 
 input_asr <- unstr_asr_input(
-  n_envs = 3,
+  n_envs = 2,
   n_traits = 2,
   mean = mean,
   var = var,
@@ -83,15 +82,15 @@ input_asr <- unstr_asr_input(
 
 library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(
-  nInd = 100,
-  nChr = 6,
-  segSites = 100
+  nInd = 10,
+  nChr = 1,
+  segSites = 20
 )
 
 SP <- SimParam$new(FOUNDERPOP)
 
 SP$addTraitAD(
-  nQtlPerChr = 100,
+  nQtlPerChr = 20,
   mean = input_asr$mean,
   var = input_asr$var,
   meanDD = input_asr$mean_DD,
@@ -102,19 +101,19 @@ SP$addTraitAD(
 )
 
 # By default, the value provided in 'var' represents the additive variance.
-# If useVarA=FALSE, 'var' represents the total genetic variance.
+# If useVarA = FALSE, 'var' represents the total genetic variance.
 
 pop <- newPop(FOUNDERPOP)
 
 
 # 3. Create a data frame containing the simulated genetic values for the two traits across the
-# three environments.
+# two environments.
 
-n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
+n_reps <- c(2, 2) # Vector containing the number of complete replicates in each environment.
 
 gv_df <- unstr_asr_output(
   pop = pop,
-  n_envs = 3,
+  n_envs = 2,
   n_traits = 2,
   n_reps = n_reps
 )

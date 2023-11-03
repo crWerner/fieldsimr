@@ -39,12 +39,12 @@ generated using the function \link[FieldSimR]{compsym_asr_input}.
 }
 \examples{
 # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
-# three environments based on a compound symmetry model for GxE interaction.
+# two environments based on a compound symmetry model for GxE interaction.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees.
-mean <- c(4.9, 5.4, 5.1, 235.2, 228.5, 239.1) # Trait 1 x 3 environments, trait 2 x 3 environments.
-mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # Trait 1 and 2, same values in the three environments.
+mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, trait 2 x 2 environments.
+mean_DD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same values in the two environments.
 
 # Additive genetic variances and dominance degree variances.
 var <- c(0.08, 13) # Different values set for traits 1 and 2.
@@ -65,7 +65,7 @@ cor_A <- matrix( # Additive correlation matrix.
 cor_DD <- diag(2) # Dominance correlation matrix - assume independence.
 
 input_asr <- compsym_asr_input(
-  n_envs = 3,
+  n_envs = 2,
   n_traits = 2,
   mean = mean,
   var = var,
@@ -83,15 +83,15 @@ input_asr <- compsym_asr_input(
 
 library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(
-  nInd = 100,
-  nChr = 6,
-  segSites = 100
+  nInd = 10,
+  nChr = 1,
+  segSites = 20
 )
 
 SP <- SimParam$new(FOUNDERPOP)
 
 SP$addTraitAD(
-  nQtlPerChr = 100,
+  nQtlPerChr = 20,
   mean = input_asr$mean,
   var = input_asr$var,
   meanDD = input_asr$mean_DD,
@@ -108,13 +108,13 @@ pop <- newPop(FOUNDERPOP)
 
 
 # 3. Create a data frame containing the simulated genetic values for the two traits across the
-# three environments.
+# two environments.
 
-n_reps <- c(2, 3, 2) # Vector containing the number of complete replicates in each environment.
+n_reps <- c(2, 2) # Vector containing the number of complete replicates in each environment.
 
 gv_df <- compsym_asr_output(
   pop = pop,
-  n_envs = 3,
+  n_envs = 2,
   n_traits = 2,
   n_reps = n_reps,
   effects = TRUE

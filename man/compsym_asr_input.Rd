@@ -110,12 +110,12 @@ functions.
 }
 \examples{
 # Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
-# three environments based on a compound symmetry model for GxE interaction.
+# two environments based on a compound symmetry model for GxE interaction.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees.
-mean <- c(4.9, 5.4, 5.1, 235.2, 228.5, 239.1) # Trait 1 x 3 environments, trait 2 x 3 environments.
-mean_DD <- c(0.4, 0.4, 0.4, 0.1, 0.1, 0.1) # Trait 1 and 2, same values in the three environments.
+mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, trait 2 x 2 environments.
+mean_DD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same values in the two environments.
 
 # Additive genetic variances and dominance degree variances.
 var <- c(0.08, 13) # Different values set for traits 1 and 2.
@@ -136,7 +136,7 @@ cor_A <- matrix( # Additive correlation matrix.
 cor_DD <- diag(2) # Dominance correlation matrix - assume independence.
 
 input_asr <- compsym_asr_input(
-  n_envs = 3,
+  n_envs = 2,
   n_traits = 2,
   mean = mean,
   var = var,

@@ -174,7 +174,8 @@ founders <- runMacs( # Simulation of founder genotypes using AlphaSimR's "MAIZE"
   nInd = n_ind, # to mimic the species' evolutionary history.
   nChr = n_chr,
   segSites = n_seg_sites,
-  species = "MAIZE"
+  species = "MAIZE",
+  nThreads = 2
 )
 
 SP <- SimParam$new(founders)

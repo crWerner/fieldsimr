@@ -47,4 +47,10 @@
 
 * Argument `plot_labels` added to function `plot_effects`.
 
+* Added function `qq_plot to create` quantile-quantile (Q-Q) plots.
+
+* Added function `sample_variogram` to create sample variograms.
+
+* Added function `theoretical_variogram` to create theoretical variograms.
+
 
