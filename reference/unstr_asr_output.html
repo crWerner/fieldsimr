@@ -107,16 +107,16 @@ is specified, all environments will be assigned the same number.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across</span></span></span>
-<span class="r-in"><span><span class="co"># three environments based on an unstructured model for GxE interaction.</span></span></span>
+<span class="r-in"><span><span class="co"># two environments based on an unstructured model for GxE interaction.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 1. Define the genetic architecture of the simulated traits.</span></span></span>
 <span class="r-in"><span><span class="co"># Mean genetic values and mean dominance degrees.</span></span></span>
-<span class="r-in"><span><span class="va">mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.9</span>, <span class="fl">5.4</span>, <span class="fl">5.1</span>, <span class="fl">235.2</span>, <span class="fl">228.5</span>, <span class="fl">239.1</span><span class="op">)</span> <span class="co"># Trait 1 x 3 environments, trait 2 x 3 environments.</span></span></span>
-<span class="r-in"><span><span class="va">mean_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span> <span class="co"># Trait 1 and 2, same values in the three environments.</span></span></span>
+<span class="r-in"><span><span class="va">mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.9</span>, <span class="fl">5.4</span>, <span class="fl">235.2</span>, <span class="fl">228.5</span><span class="op">)</span> <span class="co"># Trait 1 x 2 environments, trait 2 x 2 environments.</span></span></span>
+<span class="r-in"><span><span class="va">mean_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span> <span class="co"># Trait 1 and 2, same values in the two environments.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Additive genetic variances and dominance degree variances.</span></span></span>
-<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.085</span>, <span class="fl">0.12</span>, <span class="fl">0.06</span>, <span class="fl">15.1</span>, <span class="fl">8.5</span>, <span class="fl">11.7</span><span class="op">)</span> <span class="co"># Trait 1 x 3 environments, trait 2 x 3 environments.</span></span></span>
-<span class="r-in"><span><span class="va">var_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">6</span><span class="op">)</span> <span class="co"># The same value set for traits 1 and 2.</span></span></span>
+<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.085</span>, <span class="fl">0.12</span>, <span class="fl">15.1</span>, <span class="fl">8.5</span><span class="op">)</span> <span class="co"># Trait 1 x 2 environments, trait 2 x 2 environments.</span></span></span>
+<span class="r-in"><span><span class="va">var_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">4</span><span class="op">)</span> <span class="co"># The same value set for traits 1 and 2.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Additive genetic correlations between the two simulated traits.</span></span></span>
 <span class="r-in"><span><span class="va">T_cor_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
@@ -127,21 +127,20 @@ is specified, all environments will be assigned the same number.</p></dd>
 <span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Additive genetic correlations between the three simulated environments.</span></span></span>
+<span class="r-in"><span><span class="co"># Additive genetic correlations between the two simulated environments.</span></span></span>
 <span class="r-in"><span><span class="va">E_cor_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="co"># Matrix of additive genetic correlations between the three environments.</span></span></span>
-<span class="r-in"><span>    <span class="fl">1.0</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>,</span></span>
-<span class="r-in"><span>    <span class="fl">0.4</span>, <span class="fl">1.0</span>, <span class="fl">0.5</span>,</span></span>
-<span class="r-in"><span>    <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fl">1.0</span>, <span class="fl">0.2</span>,</span></span>
+<span class="r-in"><span>    <span class="fl">0.2</span>, <span class="fl">1.0</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Dominance degree correlations between all six environment-within-trait combinations.</span></span></span>
-<span class="r-in"><span><span class="va">cor_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span> <span class="co"># Assuming independence between traits</span></span></span>
+<span class="r-in"><span><span class="co"># Dominance degree correlations between the four environment-within-trait combinations.</span></span></span>
+<span class="r-in"><span><span class="va">cor_DD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="co"># Assuming independence between traits</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">input_asr</span> <span class="op">&lt;-</span> <span class="fu"><a href="unstr_asr_input.html">unstr_asr_input</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  n_envs <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  n_envs <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  n_traits <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  mean <span class="op">=</span> <span class="va">mean</span>,</span></span>
 <span class="r-in"><span>  var <span class="op">=</span> <span class="va">var</span>,</span></span>
@@ -158,15 +157,15 @@ is specified, all environments will be assigned the same number.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/gaynorr/AlphaSimR" class="external-link">"AlphaSimR"</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">FOUNDERPOP</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://gaynorr.github.io/AlphaSimR/reference/quickHaplo.html" class="external-link">quickHaplo</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  nInd <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  nChr <span class="op">=</span> <span class="fl">6</span>,</span></span>
-<span class="r-in"><span>  segSites <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span>  nInd <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  nChr <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  segSites <span class="op">=</span> <span class="fl">20</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">SP</span> <span class="op">&lt;-</span> <span class="va"><a href="https://gaynorr.github.io/AlphaSimR/reference/SimParam.html" class="external-link">SimParam</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">FOUNDERPOP</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">SP</span><span class="op">$</span><span class="fu">addTraitAD</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  nQtlPerChr <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  nQtlPerChr <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  mean <span class="op">=</span> <span class="va">input_asr</span><span class="op">$</span><span class="va">mean</span>,</span></span>
 <span class="r-in"><span>  var <span class="op">=</span> <span class="va">input_asr</span><span class="op">$</span><span class="va">var</span>,</span></span>
 <span class="r-in"><span>  meanDD <span class="op">=</span> <span class="va">input_asr</span><span class="op">$</span><span class="va">mean_DD</span>,</span></span>
@@ -177,20 +176,20 @@ is specified, all environments will be assigned the same number.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># By default, the value provided in 'var' represents the additive variance.</span></span></span>
-<span class="r-in"><span><span class="co"># If useVarA=FALSE, 'var' represents the total genetic variance.</span></span></span>
+<span class="r-in"><span><span class="co"># If useVarA = FALSE, 'var' represents the total genetic variance.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://gaynorr.github.io/AlphaSimR/reference/newPop.html" class="external-link">newPop</a></span><span class="op">(</span><span class="va">FOUNDERPOP</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in get("SP", envir = .GlobalEnv):</span> object 'SP' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 3. Create a data frame containing the simulated genetic values for the two traits across the</span></span></span>
-<span class="r-in"><span><span class="co"># three environments.</span></span></span>
+<span class="r-in"><span><span class="co"># two environments.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Vector containing the number of complete replicates in each environment.</span></span></span>
+<span class="r-in"><span><span class="va">n_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Vector containing the number of complete replicates in each environment.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">gv_df</span> <span class="op">&lt;-</span> <span class="fu">unstr_asr_output</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  pop <span class="op">=</span> <span class="va">pop</span>,</span></span>
-<span class="r-in"><span>  n_envs <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  n_envs <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  n_traits <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  n_reps <span class="op">=</span> <span class="va">n_reps</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

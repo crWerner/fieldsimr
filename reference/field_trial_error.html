@@ -261,22 +261,22 @@ containing the spatial, random and extraneous errors. By default, <code>return_e
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate plot errors for two traits across three environments using a bivariate</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate plot errors for two traits across two environments using a bivariate</span></span></span>
 <span class="r-in"><span><span class="co"># interpolation model for spatial variation.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">n_envs</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">n_envs</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="va">n_traits</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Field layout</span></span></span>
 <span class="r-in"><span><span class="va">n_cols</span> <span class="op">&lt;-</span> <span class="fl">10</span></span></span>
-<span class="r-in"><span><span class="va">n_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">30</span>, <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">block_dir</span> <span class="op">&lt;-</span> <span class="st">"col"</span></span></span>
 <span class="r-in"><span><span class="va">plot_length</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
 <span class="r-in"><span><span class="va">plot_width</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
-<span class="r-in"><span><span class="va">n_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Error variances for all six environment-within-trait combinations.</span></span></span>
-<span class="r-in"><span><span class="va">var_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span> <span class="co"># Trait 1 x 3 environments, trait 2 x 3 environments.</span></span></span>
+<span class="r-in"><span><span class="co"># Error variances for the four environment-within-trait combinations.</span></span></span>
+<span class="r-in"><span><span class="va">var_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span> <span class="co"># Trait 1 x 2 environments, trait 2 x 2 environments.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Spatial error correlations between the two simulated traits.</span></span></span>
 <span class="r-in"><span><span class="va">S_cor_R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
@@ -309,7 +309,7 @@ containing the spatial, random and extraneous errors. By default, <code>return_e
 <span class="r-in"><span>  prop_ext <span class="op">=</span> <span class="va">prop_ext</span>,</span></span>
 <span class="r-in"><span>  ext_dir <span class="op">=</span> <span class="va">ext_dir</span>,</span></span>
 <span class="r-in"><span>  ext_ord <span class="op">=</span> <span class="va">ext_ord</span>,</span></span>
-<span class="r-in"><span>  return_effects <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  return_effects <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
