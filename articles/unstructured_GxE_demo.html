@@ -8,8 +8,8 @@
 <meta name="description" content="FieldSimR">
 <title>Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction • FieldSimR</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction">
 <meta property="og:description" content="FieldSimR">
@@ -274,12 +274,12 @@ are sampled within a defined range of values.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">cor_A</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]</span></span>
-<span><span class="co">#&gt; [1,] 1.00 0.80 0.37 0.24 0.51 0.52</span></span>
-<span><span class="co">#&gt; [2,] 0.80 1.00 0.53 0.38 0.37 0.11</span></span>
-<span><span class="co">#&gt; [3,] 0.37 0.53 1.00 0.51 0.54 0.16</span></span>
-<span><span class="co">#&gt; [4,] 0.24 0.38 0.51 1.00 0.49 0.22</span></span>
-<span><span class="co">#&gt; [5,] 0.51 0.37 0.54 0.49 1.00 0.21</span></span>
-<span><span class="co">#&gt; [6,] 0.52 0.11 0.16 0.22 0.21 1.00</span></span></code></pre></div>
+<span><span class="co">#&gt; [1,] 1.00 0.35 0.40 0.79 0.64 0.63</span></span>
+<span><span class="co">#&gt; [2,] 0.35 1.00 0.20 0.32 0.68 0.13</span></span>
+<span><span class="co">#&gt; [3,] 0.40 0.20 1.00 0.55 0.61 0.38</span></span>
+<span><span class="co">#&gt; [4,] 0.79 0.32 0.55 1.00 0.37 0.27</span></span>
+<span><span class="co">#&gt; [5,] 0.64 0.68 0.61 0.37 1.00 0.49</span></span>
+<span><span class="co">#&gt; [6,] 0.63 0.13 0.38 0.27 0.49 1.00</span></span></code></pre></div>
 <p><br></p>
 <p>Furthermore, we assume <strong>independence between the dominance
 degrees</strong> of the six
@@ -398,12 +398,12 @@ frame.</p>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;   env rep id gv.Trait.1 gv.Trait.2</span></span>
-<span><span class="co">#&gt; 1   1   1 41   5.148771   231.5137</span></span>
-<span><span class="co">#&gt; 2   1   1 42   4.774917   232.0451</span></span>
-<span><span class="co">#&gt; 3   1   1 43   4.769688   234.1410</span></span>
-<span><span class="co">#&gt; 4   1   1 44   4.518225   229.8460</span></span>
-<span><span class="co">#&gt; 5   1   1 45   5.054262   232.8203</span></span>
-<span><span class="co">#&gt; 6   1   1 46   4.787026   229.5076</span></span></code></pre>
+<span><span class="co">#&gt; 1   1   1 41   5.168906   230.4291</span></span>
+<span><span class="co">#&gt; 2   1   1 42   4.806585   232.4152</span></span>
+<span><span class="co">#&gt; 3   1   1 43   5.262615   234.5635</span></span>
+<span><span class="co">#&gt; 4   1   1 44   4.610907   230.6593</span></span>
+<span><span class="co">#&gt; 5   1   1 45   4.734827   227.9874</span></span>
+<span><span class="co">#&gt; 6   1   1 46   4.545416   234.9877</span></span></code></pre>
 <p><br></p>
 <p><strong>Histogram showing the genetic values of the 100 maize hybrids
 for grain yield in the three environments</strong></p>
