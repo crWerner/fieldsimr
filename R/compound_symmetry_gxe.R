@@ -430,7 +430,7 @@ compsym_asr_output <- function(pop,
                                n_envs,
                                n_traits,
                                n_reps,
-                               effects = FALSE) {
+                               return_effects = FALSE) {
   if (n_envs < 2) stop("'n_envs' must be > 1")
   if (n_envs %% 1 != 0) stop("'n_envs' must be an integer")
 
@@ -462,7 +462,7 @@ compsym_asr_output <- function(pop,
   )
   compsym_asr <- compsym_asr[order(compsym_asr$env, compsym_asr$rep, compsym_asr$id), ]
 
-  if (effects) {
+  if (return_effects) {
     g_main <- mapply(cbind, list(data.frame(id = pop@id)), g_main = g_main, SIMPLIFY = F)
 
     gxe_env <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
