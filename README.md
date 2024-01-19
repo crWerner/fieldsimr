@@ -26,6 +26,6 @@ To install use:
 
 - [Simulation of genetic values using a compound symmetry model for GxE interaction](https://crwerner.github.io/fieldsimr/articles/compound_symmetry_GxE_demo.html)
 - [Simulation of genetic values using an unstructured model for GxE interaction](https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html)
-- [Simulation of plot errors and phenotypes for a multi-environment plant breeding trial](https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html)
+- [Simulation of plot errors and phenotypes for a multi-environment field trial](https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html)
 
 
