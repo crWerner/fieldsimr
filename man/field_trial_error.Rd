@@ -135,19 +135,8 @@ A separable correlation structure is assumed between traits and environments, bu
 variances can be assigned to different environment-within-trait combinations.
 }
 \examples{
-# Simulate plot errors for two traits across two environments using a bivariate
-# interpolation model for spatial variation.
-
-n_envs <- 2
-n_traits <- 2
-
-# Field layout
-n_cols <- 10
-n_rows <- c(20, 20)
-block_dir <- "col"
-plot_length <- 5
-plot_width <- 2
-n_blocks <- c(2, 2)
+# Simulate plot errors for two traits across two environments using an AR1 model
+# for spatial variation.
 
 # Error variances for the four environment-within-trait combinations.
 var_R <- c(0.2, 0.4, 10, 15) # Trait 1 x 2 environments, trait 2 x 2 environments.
@@ -161,28 +150,22 @@ S_cor_R <- matrix(
   ncol = 2
 )
 
-# Structure of simulated error.
-prop_spatial <- 0.4
-prop_ext <- 0.2
-ext_dir <- "row"
-ext_ord <- "random"
-
 error_df <- field_trial_error(
-  n_envs = n_envs,
-  n_traits = n_traits,
-  n_blocks = n_blocks,
-  n_cols = n_cols,
-  n_rows = n_rows,
+  n_envs = 2,
+  n_traits = 2,
+  n_blocks = c(2, 2),
+  n_cols = 10,
+  n_rows = c(20, 20),
   block_dir = "row",
   var_R = var_R,
   S_cor_R = S_cor_R,
-  spatial_model = "Bivariate",
-  plot_length = plot_length,
-  plot_width = plot_width,
-  prop_spatial = prop_spatial,
-  prop_ext = prop_ext,
-  ext_dir = ext_dir,
-  ext_ord = ext_ord,
+  spatial_model = "AR1:AR1",
+  col_cor = 0.5,
+  row_cor = 0.7,
+  prop_spatial = 0.4,
+  prop_ext = 0.2,
+  ext_dir = "row",
+  ext_ord = "random",
   return_effects = FALSE
 )
 }

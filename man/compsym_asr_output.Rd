@@ -90,6 +90,10 @@ FOUNDERPOP <- quickHaplo(
 
 SP <- SimParam$new(FOUNDERPOP)
 
+\dontshow{
+SP$nThreads <- 1L
+}
+
 SP$addTraitAD(
   nQtlPerChr = 20,
   mean = input_asr$mean,

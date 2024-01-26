@@ -37,6 +37,7 @@ rand_cor_mat <- function(p,
   if (pos_def && !matrixcalc::is.positive.definite(cor_mat)) {
     cor_mat <- mbend::bend(cor_mat)
     cor_mat <- round(cor_mat$bent, 12)
+    cor_mat <- (cor_mat + t(cor_mat)) / 2
   }
   return(cor_mat)
 }

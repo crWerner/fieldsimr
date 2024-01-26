@@ -396,6 +396,10 @@ compsym_asr_input <- function(n_envs = 3,
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
+#' \dontshow{
+#' SP$nThreads <- 1L
+#' }
+#'
 #' SP$addTraitAD(
 #'   nQtlPerChr = 20,
 #'   mean = input_asr$mean,
