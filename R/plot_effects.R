@@ -93,14 +93,15 @@ plot_effects <- function(df,
   }
 
   col <- row <- eff <- NULL
-  mid_pt <- round(mean(df$eff), 1)
+  mid_pt <- mean(df$eff)
+  max_pt <- max(abs(df$eff))
 
   if (labels) {
     p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
       ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
       ggplot2::scale_fill_gradient2(
         low = "#A51122", mid = "#FEFDBE", high = "#006228",
-        midpoint = mid_pt
+        midpoint = mid_pt, limits=c(-max_pt, max_pt)
       ) +
       ggplot2::scale_y_discrete(limits = rev) +
       ggplot2::xlab("Column") +
