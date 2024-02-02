@@ -456,7 +456,7 @@ compsym_asr_output <- function(pop,
 
   gv <- lapply(gxe_int, function(x) x + do.call(cbind, g_main))
   gv <- do.call(rbind, mapply(function(x, y) cbind(x[rep(1:nrow(x), y), ]), x = gv, y = as.list(n_reps), SIMPLIFY = F))
-  colnames(gv) <- paste0("gv.Trait.", 1:n_traits)
+  colnames(gv) <- paste0("gv.Trait", 1:n_traits)
 
   compsym_asr <- data.frame(
     env = envs,
@@ -472,7 +472,7 @@ compsym_asr_output <- function(pop,
     gxe_int <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
     index_eff <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), nrow = n_traits, byrow = TRUE))))
     gxe_int <- lapply(index_eff, function(x) gxe_int[, x])
-    gxe_int <- lapply(gxe_int, function(x){colnames(x)=paste0("Env.", 1:n_envs);x})
+    gxe_int <- lapply(gxe_int, function(x){colnames(x)=paste0("Env", 1:n_envs);x})
                       
     eff_comps <- mapply(cbind, g_main, gxe_int = gxe_int, SIMPLIFY = F)
     eff_comps <- lapply(eff_comps, function(x) {
@@ -480,7 +480,7 @@ compsym_asr_output <- function(pop,
       x <- x[order(x[[1]]), ]
     })
 
-    listNames <- c("Trial.df", paste0("Trait.", 1:n_traits))
+    listNames <- c("Trial.df", paste0("Trait", 1:n_traits))
     compsym_asr <- list(compsym_asr)
     compsym_asr <- c(compsym_asr, eff_comps)
     names(compsym_asr) <- listNames
