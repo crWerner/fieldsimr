@@ -449,12 +449,12 @@ compsym_asr_output <- function(pop,
   reps <- factor(unlist(lapply(n_reps, function(x) rep(1:x, each = length(pop@id)))))
   ids <- factor(as.numeric(as.character(pop@id)))
 
-  g_main <- as.list(as.data.frame(pop@gv[, seq(1, (n_traits + n_traits * n_envs), (n_envs + 1))]))
-  gxe_int <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
+  main <- as.list(as.data.frame(pop@gv[, seq(1, (n_traits + n_traits * n_envs), (n_envs + 1))]))
+  int <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
   index <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), ncol = n_traits))))
-  gxe_int <- lapply(index, function(x) gxe_int[, x])
+  int <- lapply(index, function(x) int[, x])
 
-  gv <- lapply(gxe_int, function(x) x + do.call(cbind, g_main))
+  gv <- lapply(int, function(x) x + do.call(cbind, main))
   gv <- do.call(rbind, mapply(function(x, y) cbind(x[rep(1:nrow(x), y), ]), x = gv, y = as.list(n_reps), SIMPLIFY = F))
   colnames(gv) <- paste0("gv.Trait", 1:n_traits)
 
@@ -467,14 +467,14 @@ compsym_asr_output <- function(pop,
   compsym_asr <- compsym_asr[order(compsym_asr$env, compsym_asr$rep, compsym_asr$id), ]
 
   if (return_effects) {
-    g_main <- mapply(cbind, list(data.frame(id = pop@id)), g_main = g_main, SIMPLIFY = F)
+    main <- mapply(cbind, list(data.frame(id = pop@id)), main = main, SIMPLIFY = F)
 
-    gxe_int <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
+    int <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
     index_eff <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), nrow = n_traits, byrow = TRUE))))
-    gxe_int <- lapply(index_eff, function(x) gxe_int[, x])
-    gxe_int <- lapply(gxe_int, function(x){colnames(x)=paste0("Env", 1:n_envs);x})
+    int <- lapply(index_eff, function(x) int[, x])
+    int <- lapply(int, function(x){colnames(x)=paste0("Env", 1:n_envs);x})
                       
-    eff_comps <- mapply(cbind, g_main, gxe_int = gxe_int, SIMPLIFY = F)
+    eff_comps <- mapply(cbind, main, int = int, SIMPLIFY = F)
     eff_comps <- lapply(eff_comps, function(x) {
       x[[1]] <- factor(as.numeric(as.character(x[[1]])))
       x <- x[order(x[[1]]), ]
