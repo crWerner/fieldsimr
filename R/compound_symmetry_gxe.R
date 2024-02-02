@@ -480,7 +480,7 @@ compsym_asr_output <- function(pop,
       x <- x[order(x[[1]]), ]
     })
 
-    listNames <- c("Trial.df", paste0("Trait", 1:n_traits))
+    listNames <- c("Trial_df", paste0("Trait", 1:n_traits))
     compsym_asr <- list(compsym_asr)
     compsym_asr <- c(compsym_asr, eff_comps)
     names(compsym_asr) <- listNames
