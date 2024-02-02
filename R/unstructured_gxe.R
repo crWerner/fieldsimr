@@ -597,15 +597,15 @@ unstr_asr_output <- function(pop,
   ids <- factor(as.numeric(as.character(pop@id)))
 
   index <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), ncol = n_traits))))
-  gv <- lapply(index, function(x) pop@gv[, x])
-  gv <- do.call(rbind, mapply(function(x, y) x[rep(1:nrow(x), y), ], x = gv, y = as.list(n_reps), SIMPLIFY = F))
+  gv <- lapply(index, function(x) cbind(pop@gv[, x]))
+  gv <- do.call(rbind, mapply(function(x, y) cbind(x[rep(1:nrow(x), y), ]), x = gv, y = as.list(n_reps), SIMPLIFY = F))
   colnames(gv) <- paste0("Trait.", 1:n_traits)
 
   unstr_asr <- data.frame(
     env = envs,
     rep = reps,
     id = ids,
-    gv = gv
+    gv
   )
   unstr_asr <- unstr_asr[order(unstr_asr$env, unstr_asr$rep, unstr_asr$id), ]
 
