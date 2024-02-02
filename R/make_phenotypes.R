@@ -75,6 +75,6 @@ make_phenotypes <- function(gv_df,
   )
 
   pheno_df <- pheno_df[order(pheno_df$ENV, pheno_df$COL, pheno_df$ROW), ]
-  colnames(pheno_df) <- c("env", "block", "col", "row", "id", paste0("phe.Trait.", 1:n_traits))
+  colnames(pheno_df) <- c("env", "block", "col", "row", "id", paste0("phe.Trait", 1:n_traits))
   return(pheno_df)
 }
