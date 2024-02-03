@@ -16,7 +16,7 @@
 #'   \item{e.Trait1}{Simulated plot error for trait 1}
 #'   \item{e.Trait2}{Simulated plot error for trait 2}
 #' }
-"df_error_bivar"
+"error_df_bivar"
 
 #' Genetic values - example data frame
 #'
