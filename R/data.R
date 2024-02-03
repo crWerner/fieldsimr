@@ -13,8 +13,8 @@
 #'   \item{block}{Block id}
 #'   \item{col}{Column id}
 #'   \item{row}{Row id}
-#'   \item{e.Trait.1}{Simulated plot error for trait 1}
-#'   \item{e.Trait.2}{Simulated plot error for trait 2}
+#'   \item{e.Trait1}{Simulated plot error for trait 1}
+#'   \item{e.Trait2}{Simulated plot error for trait 2}
 #' }
 "df_error_bivar"
 
@@ -26,14 +26,14 @@
 #' genetic values based on an unstructured model for genotype-by-environment (GxE) interaction
 #' with \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR'}. The simulation of
 #' the genetic values is shown in the vignette on the
-#' \href{https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html}{Simulation of genetic values using an unstructured GxE interaction model}.
+#' \href{https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html}{Simulation of genetic values using an unstructured model for GxE interaction}.
 #'
 #' @format A data frame with 700 rows and 5 columns:
 #' \describe{
 #'   \item{env}{Environment id}
 #'   \item{rep}{Replicate id}
 #'   \item{id}{Genotype id}
-#'   \item{gv.Trait.1}{Simulated genetic values for trait 1}
-#'   \item{gv.Trait.2}{Simulated genetic values for trait 2}
+#'   \item{gv.Trait1}{Simulated genetic values for trait 1}
+#'   \item{gv.Trait2}{Simulated genetic values for trait 2}
 #' }
-"df_gv_unstr"
+"gv_df_unstr"
