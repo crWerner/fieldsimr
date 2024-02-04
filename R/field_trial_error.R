@@ -499,7 +499,7 @@ field_trial_error <- function(n_envs = 1,
         }
       }
       for (i in 1:n_traits) { # i <- 1
-        tmp <- mapply(function(x, y) c(t(cbind(sort(x[, i]), rev(sort(x[, i])))))[1:y], x = plot_error_lst3c, y = n_cols, SIMPLIFY = FALSE)
+        tmp <- suppressWarnings(mapply(function(x, y) c(t(cbind(sample(sort(x[, i])[1:ceiling(nrow(x) / 2)]), sample(rev(sort(x[, i]))[1:floor(nrow(x) / 2)]))))[1:y], x = plot_error_lst3c, y = n_cols, SIMPLIFY = FALSE))
         if (i == 1) {
           plot_error_lst3c1 <- tmp
         }
@@ -561,7 +561,7 @@ field_trial_error <- function(n_envs = 1,
         }
       }
       for (i in 1:n_traits) {
-        tmp <- mapply(function(x, y) c(t(cbind(sort(x[, i]), rev(sort(x[, i])))))[1:y], x = plot_error_lst3r, y = n_rows, SIMPLIFY = FALSE)
+        tmp <- suppressWarnings(mapply(function(x, y) c(t(cbind(sample(sort(x[, i])[1:ceiling(nrow(x) / 2)]), sample(rev(sort(x[, i]))[1:floor(nrow(x) / 2)]))))[1:y], x = plot_error_lst3r, y = n_rows, SIMPLIFY = FALSE))
         if (i == 1) {
           plot_error_lst3r1 <- tmp
         }
@@ -635,14 +635,14 @@ field_trial_error <- function(n_envs = 1,
     e_all <- lapply(seq_len(ncol(e_spat)), function(i) cbind(e_spat[, i], e_rand[, i], e_ext_c[, i], e_ext_r[, i]))
     resids <- lapply(e_all, function(x) {
       data.frame(plot_df[, 1:4],
-        e_spat = x[, 1],
-        e_rand = x[, 2],
-        e_ext_col = x[, 3],
-        e_ext_row = x[, 4]
+        e.spat = x[, 1],
+        e.rand = x[, 2],
+        e.ext.col = x[, 3],
+        e.ext.row = x[, 4]
       )
     })
 
-    list_names <- c("plot_df", paste0("Trait.", 1:n_traits))
+    list_names <- c("plot_df", paste0("Trait", 1:n_traits))
     plot_df <- list(plot_df)
     plot_df <- c(plot_df, resids)
     names(plot_df) <- list_names
