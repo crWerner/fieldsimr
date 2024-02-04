@@ -115,7 +115,6 @@ plot_effects <- function(df,
         axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
         axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 8, b = 0, l = 0)),
         axis.title = ggplot2::element_text(size = 12),
-        legend.title = ggplot2::element_blank(),
         panel.background = ggplot2::element_blank(),
         plot.title = ggplot2::element_text(size = 12, colour = "gray40")
       ) +
@@ -141,7 +140,6 @@ plot_effects <- function(df,
         axis.ticks = ggplot2::element_blank(),
         axis.text = ggplot2::element_blank(),
         axis.title = ggplot2::element_text(size = 12),
-        legend.title = ggplot2::element_blank(),
         panel.background = ggplot2::element_blank(),
         plot.title = ggplot2::element_text(size = 12, colour = "gray40")
       ) +
