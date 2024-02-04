@@ -108,6 +108,7 @@ plot_effects <- function(df,
       ggplot2::ylab("Row") +
       ggplot2::theme_grey(base_size = 10) +
       ggplot2::ggtitle(effect) +
+      ggplot2::labs(fill = "Effect") +
       ggplot2::theme(
         axis.ticks = ggplot2::element_blank(),
         axis.text = ggplot2::element_text(size = 11),
@@ -128,13 +129,14 @@ plot_effects <- function(df,
       ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
       ggplot2::scale_fill_gradient2(
         low = "#A51122", mid = "#FEFDBE", high = "#006228",
-        midpoint = mid_pt
+        midpoint = mid_pt, limits=c(-max_pt, max_pt)
       ) +
       ggplot2::scale_y_discrete(limits = rev) +
       ggplot2::xlab("Column") +
       ggplot2::ylab("Row") +
       ggplot2::theme_grey(base_size = 10) +
       ggplot2::ggtitle(effect) +
+      ggplot2::labs(fill = "Effect") +
       ggplot2::theme(
         axis.ticks = ggplot2::element_blank(),
         axis.text = ggplot2::element_blank(),
