@@ -624,7 +624,7 @@ field_trial_error <- function(n_envs = 1,
 
   plot_error_lst <- mapply(function(w, x, y, z) w + x + y + z, w = e_spat, x = e_rand, y = e_ext_c, z = e_ext_r, SIMPLIFY = FALSE)
   plot_error <- do.call(what = "rbind", plot_error_lst)
-  colnames(plot_error) <- paste0("e.Trait.", 1:n_traits)
+  colnames(plot_error) <- paste0("e.Trait", 1:n_traits)
   plot_df <- cbind(plot_df, plot_error)
 
   if (return_effects) {
