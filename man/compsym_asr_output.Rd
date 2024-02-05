@@ -5,7 +5,7 @@
 \title{Simulate genetic values based on a compound symmetry model for GxE interaction -
 Simulation using 'AlphaSimR'}
 \usage{
-compsym_asr_output(pop, n_envs, n_traits, n_reps, effects = FALSE)
+compsym_asr_output(pop, n_envs, n_traits, n_reps, return_effects = FALSE)
 }
 \arguments{
 \item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
@@ -21,13 +21,13 @@ generated using \link[FieldSimR]{compsym_asr_input}.}
 \item{n_reps}{A vector defining the number of replicates in each environment. If only one value
 is specified, all environments will be assigned the same number.}
 
-\item{effects}{When \code{TRUE}, a list is returned with additional entries containing the total
+\item{return_effects}{When \code{TRUE}, a list is returned with additional entries containing the total
 (additive + dominance + epistatic) main effects and GxE interaction effects for each
-environment-within-trait combination. By default, \code{effects = FALSE}.}
+environment-within-trait combination. By default, \code{return_effects = FALSE}.}
 }
 \value{
 A data frame with columns 'env', 'rep', genotype 'id', and the
-  simulated genetic values for each trait. When \code{effects = TRUE}, a list is returned with
+  simulated genetic values for each trait. When \code{return_effects = TRUE}, a list is returned with
   additional entries containing the total (additive + dominance + epistatic) main effects and
   GxE interaction effects for each environment-within-trait combination.
 }
@@ -121,6 +121,6 @@ gv_df <- compsym_asr_output(
   n_envs = 2,
   n_traits = 2,
   n_reps = n_reps,
-  effects = TRUE
+  return_effects = TRUE
 )
 }

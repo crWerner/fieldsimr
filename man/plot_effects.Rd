@@ -30,12 +30,12 @@ frame with columns 'col', 'row', and the effect to be displayed. When the data f
 }
 \examples{
 # Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
-# frame 'df_error_bivar'.
+# frame 'error_df_bivar'.
 
-error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 
 plot_effects(
   df = error_df,
-  effect = "e.Trait.2"
+  effect = "e.Trait2"
 )
 }

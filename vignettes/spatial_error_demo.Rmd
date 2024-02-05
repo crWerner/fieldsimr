@@ -41,7 +41,7 @@ The **simulation of plot errors** requires specification of various simulation p
 
 <br/>
 
-**Phenotypes** are then simulated through the combination of the plot errors with the genetic values stored in the package's example data frame `df_gv_unstr`. The data frame contains simulated genetic values for two traits in three environments based on an unstructured model for genotype-by-environment (GxE) interaction. The simulation of the genetic values is shown in the vignette on the [Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html).
+**Phenotypes** are then simulated through the combination of the plot errors with the genetic values stored in the package's example data frame `gv_df_unstr`. The data frame contains simulated genetic values for two traits in three environments based on an unstructured model for genotype-by-environment (GxE) interaction. The simulation of the genetic values is shown in the vignette on the [Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html).
 
 <br/>
 
@@ -205,12 +205,12 @@ plot_effects(e_comp_env2, effect = "e.ext.row")
 <br/>
 
 ### **2. Simulation of plot-level phenotypes**
-To simulate **grain yield and plant height phenotypes** for our multi-environment maize experiment, we now combine the simulated plot errors with the genetic values stored in the example data frame `df_gv_unstr`. This is done using the function `pheno_df()`, which supports random allocation of genotypes to plots within blocks, simulating a randomized complete block design (RCBD). 
+To simulate **grain yield and plant height phenotypes** for our multi-environment maize experiment, we now combine the simulated plot errors with the genetic values stored in the example data frame `gv_df_unstr`. This is done using the function `pheno_df()`, which supports random allocation of genotypes to plots within blocks, simulating a randomized complete block design (RCBD). 
 
 **Note:** more complex field designs require allocation of genotypes to plots using an external R package or software.
 
 ```{r}
-gv_df <- df_gv_unstr
+gv_df <- gv_df_unstr
 
 pheno_df <- make_phenotypes(
   gv_df,

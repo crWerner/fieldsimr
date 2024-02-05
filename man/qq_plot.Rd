@@ -25,13 +25,13 @@ distribution with the sample quantiles of the distribution of user effects.
 }
 \examples{
 # Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
-# data frame 'df_error_bivar'.
+# data frame 'error_df_bivar'.
 
-error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 
 qq <- qq_plot(
   df = error_df,
-  effect = "e.Trait.2",
+  effect = "e.Trait2",
   labels = TRUE
 )
 

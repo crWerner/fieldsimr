@@ -29,10 +29,10 @@ data frame as described below.
 }
 \examples{
 # Simulate phenotypes by combining the genetic values and plot errors provided in
-# the two example data frames 'df_gv_unstr' and 'df_error_bivar'.
+# the two example data frames 'gv_df_unstr' and 'error_df_bivar'.
 
-gv_df <- df_gv_unstr
-error_df <- df_error_bivar
+gv_df <- gv_df_unstr
+error_df <- error_df_bivar
 
 pheno_df <- make_phenotypes(
   gv_df,
