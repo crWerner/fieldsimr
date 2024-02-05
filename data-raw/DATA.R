@@ -99,7 +99,7 @@ hybrid_pop <- makeCross(pop = dh_lines, crossPlan = factorial_plan, nProgeny = 1
 # 3. Create a data frame containing the simulated genetic values for the two traits
 #  in the three environments.
 
-df_gv_unstr <- unstr_asr_output(
+gv_df_unstr <- unstr_asr_output(
   pop = hybrid_pop,
   n_envs = n_envs,
   n_reps = n_blocks,
@@ -141,7 +141,7 @@ E_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
 
 
 # Simulate field error using bivariate interpolation.
-df_error_bivar <- field_trial_error(
+error_df_bivar <- field_trial_error(
   n_envs = n_envs,
   n_traits = n_traits,
   n_blocks = n_blocks,
@@ -164,15 +164,15 @@ df_error_bivar <- field_trial_error(
 )
 
 # Combine genetic values and field error to obtain phenotypes.
-pheno_df <- make_phenotypes(df_gv_unstr, df_error_bivar, randomise = TRUE)
+pheno_df <- make_phenotypes(gv_df_unstr, error_df_bivar, randomise = TRUE)
 
-# str(df_gv_unstr)
-# str(df_error_bivar)
+# str(gv_df_unstr)
+# str(error_df_bivar)
 # head(pheno_df)
 #
 # plot_effects(pheno_df,
 #   env = 2,
-#   effect = "phe.Trait.2"
+#   effect = "phe.Trait2"
 # )
 
 
@@ -183,14 +183,14 @@ load("genetic_values_T1_paper.RData")
 pheno_df_spat <- pheno_df_spat[, c(5, 6)]
 pheno_df_spat <- pheno_df_spat[order(pheno_df_spat$id), ]
 gv_replace <- rep(unique(pheno_df_spat$gv), 2)
-df_gv_unstr$gv.Trait.1[1:200] <- gv_replace
+gv_df_unstr$gv.Trait1[1:200] <- gv_replace
 id_new <- rep(1:100, 7)
-df_gv_unstr$id <- id_new
-df_gv_unstr$id <- as.factor(df_gv_unstr$id)
+gv_df_unstr$id <- id_new
+gv_df_unstr$id <- as.factor(gv_df_unstr$id)
 
 ###########################################################
 
 
 
-# usethis::use_data(df_gv_unstr, overwrite = TRUE)
-usethis::use_data(df_error_bivar, overwrite = TRUE)
+# usethis::use_data(gv_df_unstr, overwrite = TRUE)
+usethis::use_data(error_df_bivar, overwrite = TRUE)

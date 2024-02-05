@@ -240,7 +240,7 @@ head(gv_df)
 **Histogram showing the genetic values of the 100 maize hybrids for grain yield in the three environments** 
 
 ```{r echo=TRUE, fig.height = 4, fig.width = 9, fig.align = "center"}
-ggplot(gv_df, aes(x = gv.Trait.1, fill = factor(env))) +
+ggplot(gv_df, aes(x = gv.Trait1, fill = factor(env))) +
   geom_histogram(color = "#e9ecef", alpha = 0.8, position = "identity", bins = 50) +
   scale_fill_manual(values = c("violetred3", "goldenrod3", "skyblue2")) +
   labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Environment")

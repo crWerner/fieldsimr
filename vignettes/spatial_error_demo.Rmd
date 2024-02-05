@@ -118,7 +118,7 @@ S_cor_R
 
 #### **1.4 Extraneous variation**
 
-Extraneous effects can, for example, result from trial management procedures in row and/or column direction, such as soil tillage, sowing or harvesting. We want to simulate extraneous variation in row direction and assume the proportion of extraneous error variance to total error variance to be 0.2. The correlation between neighbouring rows is assumed to be highly negative and a value is sampled from a uniform distribution. We also assume a correlation between the error of the two traits because of extraneous variation and randomly sample a value between 0 and 0.5. 
+Extraneous effects can, for example, result from trial management procedures in row and/or column direction, such as soil tillage, sowing or harvesting. We want to simulate extraneous variation in row direction and assume the proportion of extraneous error variance to total error variance to be 0.2. We assume a correlation between the error of the two traits because of extraneous variation and randomly sample a value between 0 and 0.5. 
 
 
 ```{r}
@@ -167,39 +167,39 @@ error_df <- field_trial_error(
 
 <br/>
 
-We will now plot the **total error for grain yield ("e.Trait.1") in environment 2**, as well as the **spatial error component**, the **random error component**, and the **extraneous variation**. Therefore, we first extract the required data from `error_df` and then create an individual plot for each of the four simulated error terms.
+We will now plot the **total error for grain yield ("e.Trait1") in environment 2**, as well as the **spatial error component**, the **random error component**, and the **extraneous variation**. Therefore, we first extract the required data from `error_df` and then create an individual plot for each of the four simulated error terms.
 
 ```{r}
 error_env2 <- error_df$plot_df[error_df$plot_df$env == 2, ]
-e_comp_env2 <- error_df$Trait.1[error_df$Trait.1$env == 2, ]
+e_comp_env2 <- error_df$Trait1[error_df$Trait1$env == 2, ]
 ```
 
 <br/>
 
 **Total plot error**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(error_env2, effect = "e.Trait.1")
+plot_effects(error_env2, effect = "e.Trait1")
 ```
 
 <br/>
 
 **Spatial error** simulated using bivariate interpolation
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env2, effect = "e_spat")
+plot_effects(e_comp_env2, effect = "e.spat")
 ```
 
 <br/>
 
 **Random error**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env2, effect = "e_rand")
+plot_effects(e_comp_env2, effect = "e.rand")
 ```
 
 <br/>
 
 **Extraneous variation **in the row direction
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env2, effect = "e_ext_row")
+plot_effects(e_comp_env2, effect = "e.ext.row")
 ```
 
 <br/>
@@ -225,7 +225,7 @@ pheno_env2 <- pheno_df[pheno_df$env == 2, ] # Extract phenotypes in environment 
 
 **Simulated phenotypes**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(pheno_env2, effect = "phe.Trait.1")
+plot_effects(pheno_env2, effect = "phe.Trait1")
 ```
 
 <br/>
@@ -233,7 +233,7 @@ plot_effects(pheno_env2, effect = "phe.Trait.1")
 **Histogram showing the genetic phenotypes of the 100 maize hybrids for grain yield in the three blocks in environment 2** 
 
 ```{r echo=TRUE, fig.height = 4, fig.width = 9, fig.align = "center"}
-ggplot(pheno_env2, aes(x = phe.Trait.1, fill = factor(block))) +
+ggplot(pheno_env2, aes(x = phe.Trait1, fill = factor(block))) +
   geom_histogram(color = "#e9ecef", alpha = 0.8, position = "identity", bins = 50) +
   scale_fill_manual(values = c("violetred3", "goldenrod3", "skyblue2")) +
   labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Block")
