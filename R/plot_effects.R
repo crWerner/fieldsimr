@@ -375,16 +375,16 @@ sample_variogram <- function(df,
 #' @param n_cols A scalar defining the number of columns.
 #' @param n_rows A scalar defining the number of rows.
 #' @param var_R A scalar defining the total error variance.
-#' @param prop_spatial A scalar defining the proportion of spatial error variance to total error
-#'   variance (spatial + random).
-#' @param col_cor A scalar defining the column autocorrelation value.
-#' @param row_cor A scalar defining the row autocorrelation value.
+#' @param prop_spatial A scalar defining the proportion of spatial error variance to total (spatial + random) error
+#'   variance.
+#' @param col_cor A scalar defining the column autocorrelation parameter.
+#' @param row_cor A scalar defining the row autocorrelation parameter.
 #'
 #' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
 #'
 #' @examples
-#' # Theoretical variogram for a field with 10 columns and 20 rows, using column and row
+#' # Theoretical variogram for a field trial with 10 columns and 20 rows, using column and row
 #' # autocorrelations of 0.4 and 0.8.
 #'
 #' vario <- theoretical_variogram(
@@ -406,12 +406,12 @@ sample_variogram <- function(df,
 #'
 #' @export
 #'
-theoretical_variogram <- function(n_cols,
-                                  n_rows,
+theoretical_variogram <- function(n_cols = 10,
+                                  n_rows = 20,
                                   var_R = 1,
                                   prop_spatial = 0.5,
-                                  col_cor,
-                                  row_cor) {
+                                  col_cor = 0.5,
+                                  row_cor = 0.7) {
   prop_rand <- 1 - prop_spatial
   col_displacement <- rep(0:(n_cols - 1), each = n_rows)
   row_displacement <- rep(0:(n_rows - 1), times = n_cols)
