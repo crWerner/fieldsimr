@@ -19,13 +19,13 @@
 #'
 #' @examples
 #' # Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
-#' # frame 'df_error_bivar'.
+#' # frame 'error_df_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 #'
 #' plot_effects(
 #'   df = error_df,
-#'   effect = "e.Trait.2"
+#'   effect = "e.Trait2"
 #' )
 #' @export
 plot_effects <- function(df,
@@ -188,13 +188,13 @@ plot_effects <- function(df,
 #'
 #' @examples
 #' # Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
-#' # data frame 'df_error_bivar'.
+#' # data frame 'error_df_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 #'
 #' qq <- qq_plot(
 #'   df = error_df,
-#'   effect = "e.Trait.2",
+#'   effect = "e.Trait2",
 #'   labels = TRUE
 #' )
 #'
@@ -293,13 +293,13 @@ qq_plot <- function(df,
 #'
 #' @examples
 #' # Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the
-#' # example data frame 'df_error_bivar'.
+#' # example data frame 'error_df_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 #'
 #' vario <- sample_variogram(
 #'   df = error_df,
-#'   effect = "e.Trait.2",
+#'   effect = "e.Trait2",
 #' )
 #'
 #' # Sample variogram
