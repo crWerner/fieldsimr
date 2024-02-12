@@ -19,13 +19,13 @@
 #'
 #' @examples
 #' # Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
-#' # frame 'df_error_bivar'.
+#' # frame 'error_df_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 #'
 #' plot_effects(
 #'   df = error_df,
-#'   effect = "e.Trait.2"
+#'   effect = "e.Trait2"
 #' )
 #' @export
 plot_effects <- function(df,
@@ -188,13 +188,13 @@ plot_effects <- function(df,
 #'
 #' @examples
 #' # Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
-#' # data frame 'df_error_bivar'.
+#' # data frame 'error_df_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 #'
 #' qq <- qq_plot(
 #'   df = error_df,
-#'   effect = "e.Trait.2",
+#'   effect = "e.Trait2",
 #'   labels = TRUE
 #' )
 #'
@@ -293,13 +293,13 @@ qq_plot <- function(df,
 #'
 #' @examples
 #' # Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the
-#' # example data frame 'df_error_bivar'.
+#' # example data frame 'error_df_bivar'.
 #'
-#' error_df <- df_error_bivar[df_error_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
 #'
 #' vario <- sample_variogram(
 #'   df = error_df,
-#'   effect = "e.Trait.2",
+#'   effect = "e.Trait2",
 #' )
 #'
 #' # Sample variogram
@@ -375,16 +375,16 @@ sample_variogram <- function(df,
 #' @param n_cols A scalar defining the number of columns.
 #' @param n_rows A scalar defining the number of rows.
 #' @param var_R A scalar defining the total error variance.
-#' @param prop_spatial A scalar defining the proportion of spatial error variance to total error
-#'   variance (spatial + random).
-#' @param col_cor A scalar defining the column autocorrelation value.
-#' @param row_cor A scalar defining the row autocorrelation value.
+#' @param prop_spatial A scalar defining the proportion of spatial error variance to total (spatial + random) error
+#'   variance.
+#' @param col_cor A scalar defining the column autocorrelation parameter.
+#' @param row_cor A scalar defining the row autocorrelation parameter.
 #'
 #' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
 #'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
 #'
 #' @examples
-#' # Theoretical variogram for a field with 10 columns and 20 rows, using column and row
+#' # Theoretical variogram for a field trial with 10 columns and 20 rows, using column and row
 #' # autocorrelations of 0.4 and 0.8.
 #'
 #' vario <- theoretical_variogram(
@@ -406,12 +406,12 @@ sample_variogram <- function(df,
 #'
 #' @export
 #'
-theoretical_variogram <- function(n_cols,
-                                  n_rows,
+theoretical_variogram <- function(n_cols = 10,
+                                  n_rows = 20,
                                   var_R = 1,
                                   prop_spatial = 0.5,
-                                  col_cor,
-                                  row_cor) {
+                                  col_cor = 0.5,
+                                  row_cor = 0.7) {
   prop_rand <- 1 - prop_spatial
   col_displacement <- rep(0:(n_cols - 1), each = n_rows)
   row_displacement <- rep(0:(n_rows - 1), times = n_cols)
