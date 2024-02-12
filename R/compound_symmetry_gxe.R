@@ -472,8 +472,11 @@ compsym_asr_output <- function(pop,
     int <- pop@gv[, -seq(1, (n_traits + n_traits * n_envs), n_envs + 1)]
     index_eff <- as.list(as.data.frame(t(matrix(1:(n_traits * n_envs), nrow = n_traits, byrow = TRUE))))
     int <- lapply(index_eff, function(x) int[, x])
-    int <- lapply(int, function(x){colnames(x)=paste0("Env", 1:n_envs);x})
-                      
+    int <- lapply(int, function(x) {
+      colnames(x) <- paste0("Env", 1:n_envs)
+      x
+    })
+
     eff_comps <- mapply(cbind, main, int = int, SIMPLIFY = F)
     eff_comps <- lapply(eff_comps, function(x) {
       x[[1]] <- factor(as.numeric(as.character(x[[1]])))
