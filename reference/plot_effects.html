@@ -105,13 +105,13 @@ to green (high value).</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Plot the simulated plot errors for trait 2 in environment 2 provided in the example data</span></span></span>
-<span class="r-in"><span><span class="co"># frame 'df_error_bivar'.</span></span></span>
+<span class="r-in"><span><span class="co"># frame 'error_df_bivar'.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="va">df_error_bivar</span><span class="op">[</span><span class="va">df_error_bivar</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="va">error_df_bivar</span><span class="op">[</span><span class="va">error_df_bivar</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_effects</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="va">error_df</span>,</span></span>
-<span class="r-in"><span>  effect <span class="op">=</span> <span class="st">"e.Trait.2"</span></span></span>
+<span class="r-in"><span>  effect <span class="op">=</span> <span class="st">"e.Trait2"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_effects-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

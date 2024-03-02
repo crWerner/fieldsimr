@@ -340,18 +340,18 @@ frame.</p>
 <span>  n_reps <span class="op">=</span> <span class="va">n_reps</span>,</span>
 <span>  n_traits <span class="op">=</span> <span class="va">n_traits</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt;   env rep  id gv.Trait.1 gv.Trait.2</span></span>
-<span><span class="co">#&gt; 1   1   1 121   4.909572   241.4425</span></span>
-<span><span class="co">#&gt; 2   1   1 122   5.343066   242.1297</span></span>
-<span><span class="co">#&gt; 3   1   1 123   5.183964   239.2610</span></span>
-<span><span class="co">#&gt; 4   1   1 124   4.958018   238.2221</span></span>
-<span><span class="co">#&gt; 5   1   1 125   5.096638   239.4851</span></span>
-<span><span class="co">#&gt; 6   1   1 126   5.170143   238.4677</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;   env rep  id gv.Trait1 gv.Trait2</span></span>
+<span><span class="co">#&gt; 1   1   1 121  4.782722  231.8344</span></span>
+<span><span class="co">#&gt; 2   1   1 122  4.829307  236.7076</span></span>
+<span><span class="co">#&gt; 3   1   1 123  4.999304  233.2093</span></span>
+<span><span class="co">#&gt; 4   1   1 124  5.156955  237.3732</span></span>
+<span><span class="co">#&gt; 5   1   1 125  5.044361  236.4030</span></span>
+<span><span class="co">#&gt; 6   1   1 126  4.958014  232.8340</span></span></code></pre>
 <p><br></p>
 <p><strong>Histogram showing the genetic values of the 100 maize hybrids
 for grain yield in the three environments</strong></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">gv_df</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">gv.Trait.1</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">gv_df</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">gv.Trait1</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#e9ecef"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>, position <span class="op">=</span> <span class="st">"identity"</span>, bins <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"violetred3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"skyblue2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Genetic values for grain yield (t/ha)"</span>, y <span class="op">=</span> <span class="st">"Count"</span>, fill <span class="op">=</span> <span class="st">"Environment"</span><span class="op">)</span></span></code></pre></div>

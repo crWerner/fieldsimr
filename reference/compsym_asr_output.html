@@ -71,7 +71,7 @@ generated using the function <a href="compsym_asr_input.html">compsym_asr_input<
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compsym_asr_output</span><span class="op">(</span><span class="va">pop</span>, <span class="va">n_envs</span>, <span class="va">n_traits</span>, <span class="va">n_reps</span>, effects <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compsym_asr_output</span><span class="op">(</span><span class="va">pop</span>, <span class="va">n_envs</span>, <span class="va">n_traits</span>, <span class="va">n_reps</span>, return_effects <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -97,10 +97,10 @@ generated using <a href="compsym_asr_input.html">compsym_asr_input</a>.</p></dd>
 is specified, all environments will be assigned the same number.</p></dd>
 
 
-<dt>effects</dt>
+<dt>return_effects</dt>
 <dd><p>When <code>TRUE</code>, a list is returned with additional entries containing the total
 (additive + dominance + epistatic) main effects and GxE interaction effects for each
-environment-within-trait combination. By default, <code>effects = FALSE</code>.</p></dd>
+environment-within-trait combination. By default, <code>return_effects = FALSE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -108,7 +108,7 @@ environment-within-trait combination. By default, <code>effects = FALSE</code>.<
     
 
 <p>A data frame with columns 'env', 'rep', genotype 'id', and the
-  simulated genetic values for each trait. When <code>effects = TRUE</code>, a list is returned with
+  simulated genetic values for each trait. When <code>return_effects = TRUE</code>, a list is returned with
   additional entries containing the total (additive + dominance + epistatic) main effects and
   GxE interaction effects for each environment-within-trait combination.</p>
     </div>
@@ -200,9 +200,9 @@ environment-within-trait combination. By default, <code>effects = FALSE</code>.<
 <span class="r-in"><span>  n_envs <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  n_traits <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  n_reps <span class="op">=</span> <span class="va">n_reps</span>,</span></span>
-<span class="r-in"><span>  effects <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  return_effects <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in compsym_asr_output(pop = pop, n_envs = 2, n_traits = 2, n_reps = n_reps,     effects = TRUE):</span> unused argument (effects = TRUE)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'pop' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
