@@ -1,32 +1,26 @@
 #' Graphics for plot effects
 #'
-#' Graphically displays plot effects (e.g., phenotypes, genetic values, plot errors) onto a
-#' field array, in which the colour gradient ranges from red (low value) to green (high value).
-#' The function requires a data frame generated with field_trial_error as an input, or any data
-#' frame with columns 'col', 'row', and the effect to be displayed. When the data frame contains a
-#' 'block' column, the field array is split into blocks if \code{blocks = TRUE}.
+#' Creates a graphical field array for a set of user-defined effects (e.g., phenotypes, genetic values, or plot errors).
+#' Requires a data frame generated with the functions \link[FieldSimR]{field_trial_error} and \link[FieldSimR]{make_phenotypes},
+#' or any data frame as described below.
 #'
-#' @param df A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
-#'   also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}.
-#' @param effect The effect to be plotted.
+#' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
+#' @param effect The name of the effects to be plotted.
 #' @param blocks When \code{TRUE} (default), the field array is split into blocks.
-#' @param labels When \code{TRUE}, row and column numbers are plotted. By default,
-#'   \code{labels = FALSE}.
+#'   This requires an additional column 'block' in the data frame.
+#' @param labels When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
 #'
-#'
-#' @return A graphical field array, in which the colour gradient ranges from red (low value)
-#' to green (high value).
+#' @return A graphical field array with x- and y-axes displaying the column and row numbers,
+#'  and colour gradient ranging from red (low effect) to green (high effect).
 #'
 #' @examples
-#' # Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
-#' # frame 'error_df_bivar'.
+#' # Display the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
 #'
-#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
-#' plot_effects(
-#'   df = error_df,
-#'   effect = "e.Trait2"
-#' )
+#' plot_effects(df = error_df,
+#'              effect = "e.Trait1")
+#'
 #' @export
 plot_effects <- function(df,
                          effect,
@@ -35,58 +29,59 @@ plot_effects <- function(df,
   colnames(df) <- tolower(colnames(df))
   effect <- tolower(effect)
 
+  colnames(df)[grep("col", colnames(df))] <- "col"
   if (any(!c("col", "row", effect) %in% colnames(df))) {
-    stop("'df' must contain columns 'col', 'row', and the effect to be plotted.")
+    stop("'df' must contain the columns 'col', 'row', and the effect to be plotted")
   }
 
   if (blocks) {
     if (!"block" %in% colnames(df)) {
-      stop("'df' must contain column 'block' if blocks = TRUE.")
+      stop("'df' must contain the column 'block' if blocks are to be plotted")
     }
   }
 
   colnames(df)[colnames(df) %in% effect] <- "eff"
 
-  n_cols <- length(unique(df$col))
-  n_rows <- length(unique(df$row))
-  n_blocks <- length(unique(df$block))
+  ncols <- length(unique(df$col))
+  nrows <- length(unique(df$row))
+  nblocks <- length(unique(df$block))
 
-  if (n_blocks > 1) {
+  if (nblocks > 1) {
     df1 <- df[df[["block"]] == 1, ]
     df2 <- df[df[["block"]] == 2, ]
 
     if (any(unique(df[df[["block"]] == 1, ]$row) == unique(df[df[["block"]] == 2, ]$row)) == FALSE) {
-      dist <- (n_rows / n_blocks)
-      x_min <- rep(0.5, n_blocks)
-      y_min <- (seq(0, n_rows, dist) + 0.5)[1:n_blocks]
-      x_max <- rep((n_cols + 0.5), n_blocks)
-      y_max <- (seq(0, n_rows, dist) + 0.5)[2:(n_blocks + 1)]
+      dist <- (nrows / nblocks)
+      x_min <- rep(0.5, nblocks)
+      y_min <- (seq(0, nrows, dist) + 0.5)[1:nblocks]
+      x_max <- rep((ncols + 0.5), nblocks)
+      y_max <- (seq(0, nrows, dist) + 0.5)[2:(nblocks + 1)]
 
-      block_x_min <- rep(0.5, n_blocks)
+      block_x_min <- rep(0.5, nblocks)
       block_y_min <- y_max
-      block_x_max <- rep((n_cols + 0.5), n_blocks)
+      block_x_max <- rep((ncols + 0.5), nblocks)
       block_y_max <- y_max
 
-      block_x_min_2 <- rep(0, n_blocks)
+      block_x_min_2 <- rep(0, nblocks)
       block_y_min_2 <- y_max
-      block_x_max_2 <- rep((n_cols + 1), n_blocks)
+      block_x_max_2 <- rep((ncols + 1), nblocks)
       block_y_max_2 <- y_max
     } else if (any(unique(df[df[["block"]] == 1, ]$col) == unique(df[df[["block"]] == 2, ]$col)) == FALSE) {
-      dist <- (n_cols / n_blocks)
-      x_min <- (seq(0, n_cols, dist) + 0.5)[1:n_blocks]
-      y_min <- rep(0.5, n_blocks)
-      x_max <- (seq(0, n_cols, dist) + 0.5)[2:(n_blocks + 1)]
-      y_max <- rep((n_rows + 0.5), n_blocks)
+      dist <- (ncols / nblocks)
+      x_min <- (seq(0, ncols, dist) + 0.5)[1:nblocks]
+      y_min <- rep(0.5, nblocks)
+      x_max <- (seq(0, ncols, dist) + 0.5)[2:(nblocks + 1)]
+      y_max <- rep((nrows + 0.5), nblocks)
 
       block_x_min <- x_max
-      block_y_min <- rep(0.5, n_blocks)
+      block_y_min <- rep(0.5, nblocks)
       block_x_max <- x_max
-      block_y_max <- rep((n_rows + 0.5), n_blocks)
+      block_y_max <- rep((nrows + 0.5), nblocks)
 
       block_x_min_2 <- x_max
-      block_y_min_2 <- rep(0, n_blocks)
+      block_y_min_2 <- rep(0, nblocks)
       block_x_max_2 <- x_max
-      block_y_max_2 <- rep((n_rows + 1), n_blocks)
+      block_y_max_2 <- rep((nrows + 1), nblocks)
     } else {
       stop("Check row and column assignment within blocks")
     }
@@ -120,7 +115,7 @@ plot_effects <- function(df,
       ) +
       ggplot2::annotate(
         geom = "rect", xmin = 0.5, ymin = 0.5,
-        xmax = n_cols + 0.5, ymax = n_rows + 0.5,
+        xmax = ncols + 0.5, ymax = nrows + 0.5,
         fill = "transparent", col = "black", lwd = 0.5
       )
   } else {
@@ -145,13 +140,13 @@ plot_effects <- function(df,
       ) +
       ggplot2::annotate(
         geom = "rect", xmin = 0.5, ymin = 0.5,
-        xmax = n_cols + 0.5, ymax = n_rows + 0.5,
+        xmax = ncols + 0.5, ymax = nrows + 0.5,
         fill = "transparent", col = "black", lwd = 0.5
       )
   }
 
   if (blocks == TRUE & length(unique(df$block)) > 1) {
-    for (i in 1:(n_blocks - 1)) {
+    for (i in 1:(nblocks - 1)) {
       p <- p + ggplot2::geom_segment(
         x = block_x_min[i],
         y = block_y_min[i],
@@ -174,41 +169,33 @@ plot_effects <- function(df,
 
 #' Q-Q plot
 #'
-#' Creates a quantile-quantile (Q-Q) plot which compares the theoretical quantiles of a normal
-#' distribution with the sample quantiles of the distribution of user effects.
+#' Creates a normal quantile-quantile (Q-Q) plot for a set of user-defined effects (e.g., phenotypes, genetic values, or plot errors).
 #'
-#' @param df A data frame containing the effect to be plotted.
-#' @param effect The name of the effect to be plotted.
-#' @param labels When \code{FALSE} (default), data points without labels are plotted. When
-#'   \code{TRUE}, column and row labels are shown in the Q-Q plot. This requires additional
-#'   columns 'col' and 'row' in the data frame.
+#' @param df A data frame with the effects to be plotted.
+#' @param effect The name of the effects to be plotted.
+#' @param labels When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
+#'   This requires additional columns 'col' and 'row' in the data frame.
 #'
-#' @return A Q-Q plot with the x- and y-axes displaying the theoretical and sample quantiles of
-#'   the effect to be plotted, respectively.
+#' @return A Q-Q plot with x- and y-axes displaying the theoretical and sample quantiles of
+#'   the user-defined effects, respectively.
 #'
 #' @examples
-#' # Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
-#' # data frame 'error_df_bivar'.
+#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
 #'
-#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
-#' qq <- qq_plot(
-#'   df = error_df,
-#'   effect = "e.Trait2",
-#'   labels = TRUE
-#' )
+#' qq <- qq_plot(df = error_df,
+#'               effect = "e.Trait1",
+#'               labels = TRUE)
 #'
 #' # Q-Q plot
 #' qq
 #'
-#' # Extraction of a data frame containing the theoretical and sample quantiles of
-#' # the effect to be plotted.
+#' # Extract the data frame with the theoretical and sample quantiles of
+#' # the user-defined effects.
 #' qq_df <- qq$data
 #'
 #' @export
-#'
-#'
-
 qq_plot <- function(df,
                     effect,
                     labels = FALSE) {
@@ -239,8 +226,9 @@ qq_plot <- function(df,
   }
 
   if (labels) {
+    colnames(df)[grep("col", colnames(df))] <- "col"
     if (any(!c("col", "row") %in% colnames(df))) {
-      stop("'df' must contain columns 'col' and 'row' in order to plot labels")
+      stop("'df' must contain the columns 'col' and 'row' if labels are to be plotted")
     }
     qq_df <- data.frame(
       col = df[["col"]],
@@ -260,13 +248,13 @@ qq_plot <- function(df,
     qq_df <- qq_df[order(qq_df$col, qq_df$row), ]
     rownames(qq_df) <- NULL
 
-    qq_df$ColRowLabel <- paste0(qq_df$col, ":", qq_df$row)
+    qq_df$ColRowLabel <- factor(paste0(qq_df$col, ":", qq_df$row))
     theoretical <- ColRowLabel <- NULL
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = ColRowLabel)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_text(size = 4) +
       ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
-      ggplot2::ggtitle(label = "Residuals indexed as Col:Row") +
+      ggplot2::ggtitle(label = "Effects indexed as col:row") +
       ggplot2::theme(
         title = ggplot2::element_text(size = 10),
         axis.title.x = ggplot2::element_text(size = 12),
@@ -280,71 +268,67 @@ qq_plot <- function(df,
 
 #' Sample variogram
 #'
-#' Creates a sample variogram. The x- and y-axes display the row and column displacements,
-#' respectively. The z-axis displays the semi-variance (variogram ordinates).
+#' Creates a sample variogram for a set of user-defined effects (e.g., plot errors).
 #'
-#' @param df A data frame containing the columns 'col', 'row', and the effect to be plotted.
-#' @param effect The name of the effect to be plotted.
-#' @param min_np Only semi variances based on at least \code{min_np} pairs of plots will be
-#'   displayed. By default, \code{min_np = 30}.
+#' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
+#' @param effect The name of the effects to be plotted.
+#' @param min.np Minimum number of pairs for which semi-variances are displayed (default is 30).
 #'
-#' @return Graphic of the sample variogram, where the x- and y-axes display the row and
-#'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
+#' @return A sample variogram with x- and y-axes displaying the row and
+#'   column displacements, and the z-axis displaying the sample semi-variances (variogram ordinates)
+#'   for the user-defined effects.
 #'
 #' @examples
-#' # Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the
-#' # example data frame 'error_df_bivar'.
+#' # Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
 #'
-#' error_df <- error_df_bivar[error_df_bivar$env == 2, ]
+#' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
-#' vario <- sample_variogram(
-#'   df = error_df,
-#'   effect = "e.Trait2",
-#' )
+#' variogram <- sample_variogram(df = error_df,
+#'                               effect = "e.Trait1")
 #'
 #' # Sample variogram
-#' vario
+#' variogram
 #'
-#' # Extraction of a data frame containing the column and row displacements as well as the
-#' # semi-variances (sample variogram ordinates).
+#' # Extract the data frame with the column and row displacements, and the
+#' # sample semi-variances.
 #'
-#' sample_df <- vario$data
+#' variogram_df <- variogram$data
 #'
 #' @export
-#'
 sample_variogram <- function(df,
                              effect,
-                             min_np = 30) {
+                             min.np = 30) {
   colnames(df) <- tolower(colnames(df))
   effect <- tolower(effect)
   colnames(df)[colnames(df) %in% effect] <- "eff"
 
+  colnames(df)[grep("col", colnames(df))] <- "col"
   if (any(!c("col", "row") %in% colnames(df))) {
-    stop("'df' must contain columns 'col' and 'row', and the effect to be plotted.")
+    stop("'df' must contain the columns 'col' and 'row', and the effect to be plotted")
   }
 
-  sample_df <- data.frame(
+  variogram_df <- data.frame(
     col = df[["col"]],
     row = df[["row"]],
     effect = df[["eff"]]
   )
-  sample_df <- sample_df[order(sample_df$col, sample_df$row), ]
+  variogram_df <- variogram_df[order(variogram_df$col, variogram_df$row), ]
 
-  col_dis <- abs(outer(as.numeric(trimws(sample_df$col)), as.numeric(trimws(sample_df$col)), FUN = "-"))
-  row_dis <- abs(outer(as.numeric(trimws(sample_df$row)), as.numeric(trimws(sample_df$row)), FUN = "-"))
-  var_mat <- outer(sample_df$effect, sample_df$effect, FUN = "-")^2 / 2
-  sample_df <- data.frame(
+  col_dis <- abs(outer(as.numeric(trimws(variogram_df$col)), as.numeric(trimws(variogram_df$col)), FUN = "-"))
+  row_dis <- abs(outer(as.numeric(trimws(variogram_df$row)), as.numeric(trimws(variogram_df$row)), FUN = "-"))
+  var_mat <- outer(variogram_df$effect, variogram_df$effect, FUN = "-")^2 / 2
+  variogram_df <- data.frame(
     col_dis = col_dis[upper.tri(col_dis, diag = T)],
     row_dis = row_dis[upper.tri(row_dis, diag = T)],
     semi_var = var_mat[upper.tri(var_mat, diag = T)]
   )
-  sample_df <- sample_df[order(sample_df$col_dis, sample_df$row_dis), ]
+  variogram_df <- variogram_df[order(variogram_df$col_dis, variogram_df$row_dis), ]
 
-  sample_df <- data.frame(
-    col_dis = rep(unique(sample_df$col_dis), each = length(unique(sample_df$row_dis))),
-    row_dis = unique(sample_df$row_dis),
-    semi_var = c(with(sample_df, tapply(semi_var, list(row_dis, col_dis), function(x) mean(x, na.rm = T)))),
-    np = c(with(sample_df, tapply(semi_var, list(row_dis, col_dis), function(x) length(x[!is.na(x)]))))
+  variogram_df <- data.frame(
+    col.dis = rep(unique(variogram_df$col_dis), each = length(unique(variogram_df$row_dis))),
+    row.dis = unique(variogram_df$row_dis),
+    semi.var = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) mean(x, na.rm = T)))),
+    np = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) length(x[!is.na(x)]))))
   )
 
   lattice::lattice.options(
@@ -352,8 +336,8 @@ sample_variogram <- function(df,
     layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
   )
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-  p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
-    data = sample_df[sample_df$np >= min_np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+  p <- lattice::wireframe(semi.var ~ row.dis * col.dis,
+    data = variogram_df[variogram_df$np >= min.np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
     screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
     scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
     zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
@@ -361,76 +345,72 @@ sample_variogram <- function(df,
     ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
     par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
   )
-  sample_df$col_dis <- factor(sample_df$col_dis)
-  sample_df$row_dis <- factor(sample_df$row_dis)
-  p$data <- sample_df
+  variogram_df$col.dis <- factor(variogram_df$col.dis)
+  variogram_df$row.dis <- factor(variogram_df$row.dis)
+  p$data <- variogram_df
   return(p)
 }
 
 #' Theoretical variogram
 #'
-#' Creates a theoretical variogram. The x- and y-axes display the row and column displacements,
-#' respectively. The z-axis displays the semi-variance (variogram ordinates).
+#' Creates a theoretical variogram for a separable first order autoregressive process based on user-defined parameters.
 #'
-#' @param n_cols A scalar defining the number of columns.
-#' @param n_rows A scalar defining the number of rows.
-#' @param var_R A scalar defining the total error variance.
-#' @param prop_spatial A scalar defining the proportion of spatial error variance to total (spatial + random) error
+#' @param ncols A scalar defining the number of columns.
+#' @param nrows A scalar defining the number of rows.
+#' @param varR A scalar defining the total error variance.
+#' @param prop.spatial A scalar defining the proportion of spatial error variance to total (spatial + random) error
 #'   variance.
-#' @param col_cor A scalar defining the column autocorrelation parameter.
-#' @param row_cor A scalar defining the row autocorrelation parameter.
+#' @param col.cor A scalar defining the column autocorrelation,
+#' @param row.cor A scalar defining the row autocorrelation.
 #'
-#' @return Graphic of the theoretical variogram, where the x- and y- axes display the row and
-#'   column displacements and the z-axis displays the semi-variance (variogram ordinates).
+#' @return A theoretical variogram with x- and y-axes displaying the row and column displacements,
+#'  and the z-axis displaying the theoretical semi-variances (variogram ordinates) for a separable autoregressive process.
 #'
 #' @examples
-#' # Theoretical variogram for a field trial with 10 columns and 20 rows, using column and row
-#' # autocorrelations of 0.4 and 0.8.
+#' # Theoretical variogram for a field trial with 10 columns and 20 rows, based on column and row
+#' # autocorrelations of 0.5 and 0.7, and a proportion of spatial error variance of 0.5.
 #'
-#' vario <- theoretical_variogram(
-#'   n_cols = 10,
-#'   n_rows = 20,
-#'   var_R = 1,
-#'   prop_spatial = 0.5,
-#'   col_cor = 0.4,
-#'   row_cor = 0.8
-#' )
+#' variogram <- theoretical_variogram(ncols = 10,
+#'                                    nrows = 20,
+#'                                    varR = 1,
+#'                                    prop.spatial = 0.5,
+#'                                    col.cor = 0.5,
+#'                                    row.cor = 0.7)
 #'
 #' # Theoretical variogram
-#' vario
+#' variogram
 #'
-#' # Extraction of a data frame containing the column and row displacements as well as the
-#' # semi-variances (theoretical variogram ordinates).
+#' # Extract the data frame with the column and row displacements, and the
+#' # theoretical semi-variances.
 #'
-#' theoretical_df <- vario$data
+#' variogram_df <- variogram$data
 #'
 #' @export
-#'
-theoretical_variogram <- function(n_cols = 10,
-                                  n_rows = 20,
-                                  var_R = 1,
-                                  prop_spatial = 0.5,
-                                  col_cor = 0.5,
-                                  row_cor = 0.7) {
-  prop_rand <- 1 - prop_spatial
-  col_displacement <- rep(0:(n_cols - 1), each = n_rows)
-  row_displacement <- rep(0:(n_rows - 1), times = n_cols)
-  theoretical_df <- data.frame(
-    col_dis = col_displacement,
-    row_dis = row_displacement,
-    semi_var = var_R * (prop_rand + prop_spatial * (1 - col_cor^(col_displacement) * row_cor^(row_displacement)))
+theoretical_variogram <- function(ncols = 10,
+                                  nrows = 10,
+                                  varR = 1,
+                                  prop.spatial = 1,
+                                  col.cor = 0.5,
+                                  row.cor = 0.5) {
+  prop_rand <- 1 - prop.spatial
+  col_dis <- rep(0:(ncols - 1), each = nrows)
+  row_dis <- rep(0:(nrows - 1), times = ncols)
+  variogram_df <- data.frame(
+    col.dis = col_dis,
+    row.dis = row_dis,
+    semi.var = varR * (prop_rand + prop.spatial * (1 - col.cor^(col_dis) * row.cor^(row_dis)))
   )
-  theoretical_df$semi_var[1] <- 0
-  theoretical_df$col_dis <- as.numeric(trimws(theoretical_df$col_dis))
-  theoretical_df$row_dis <- as.numeric(trimws(theoretical_df$row_dis))
+  variogram_df$semi.var[1] <- 0
+  variogram_df$col.dis <- as.numeric(trimws(variogram_df$col.dis))
+  variogram_df$row.dis <- as.numeric(trimws(variogram_df$row.dis))
 
   lattice::lattice.options(
     layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
     layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
   )
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-  p <- lattice::wireframe(semi_var ~ row_dis * col_dis,
-    data = theoretical_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+  p <- lattice::wireframe(semi.var ~ row.dis * col.dis,
+    data = variogram_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
     screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
     scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
     zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
@@ -438,8 +418,8 @@ theoretical_variogram <- function(n_cols = 10,
     ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
     par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
   )
-  theoretical_df$col_dis <- factor(theoretical_df$col_dis)
-  theoretical_df$row_dis <- factor(theoretical_df$row_dis)
-  p$data <- theoretical_df
+  variogram_df$col.dis <- factor(variogram_df$col.dis)
+  variogram_df$row.dis <- factor(variogram_df$row.dis)
+  p$data <- variogram_df
   return(p)
 }

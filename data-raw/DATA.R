@@ -177,7 +177,7 @@ pheno_df <- make_phenotypes(gv_df_unstr, error_df_bivar, randomise = TRUE)
 
 
 
-##### USE GENETIC VALUES USED IN PAPER AND UPDATE IDs #####
+##### IMPLEMENT GENETIC VALUES USED IN PAPER AND UPDATE IDs #####
 
 load("genetic_values_T1_paper.RData")
 pheno_df_spat <- pheno_df_spat[, c(5, 6)]
@@ -193,4 +193,4 @@ gv_df_unstr$id <- as.factor(gv_df_unstr$id)
 
 
 # usethis::use_data(gv_df_unstr, overwrite = TRUE)
-usethis::use_data(error_df_bivar, overwrite = TRUE)
+# usethis::use_data(error_df_bivar, overwrite = TRUE)
