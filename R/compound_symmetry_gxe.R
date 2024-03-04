@@ -80,20 +80,24 @@
 #' prop.mainDD <- 0.4 # Same value for Traits 1 and 2
 #'
 #' # Additive and dominance degree correlations between the two simulated traits.
-#' corA <- matrix(c(1.0, 0.5,
-#'                  0.5, 1.0), ncol = 2)
+#' corA <- matrix(c(
+#'   1.0, 0.5,
+#'   0.5, 1.0
+#' ), ncol = 2)
 #' corDD <- diag(2) # Assuming independence
 #'
-#' input_asr <- compsym_asr_input(ntraits = 2,
-#'                                nenvs = 2,
-#'                                mean = mean,
-#'                                var = var,
-#'                                prop.main = prop.main,
-#'                                corA = corA,
-#'                                meanDD = meanDD,
-#'                                varDD = varDD,
-#'                                prop.mainDD = prop.mainDD,
-#'                                corDD = corDD)
+#' input_asr <- compsym_asr_input(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   mean = mean,
+#'   var = var,
+#'   prop.main = prop.main,
+#'   corA = corA,
+#'   meanDD = meanDD,
+#'   varDD = varDD,
+#'   prop.mainDD = prop.mainDD,
+#'   corDD = corDD
+#' )
 #'
 #' @export
 compsym_asr_input <- function(ntraits = 1,
@@ -339,28 +343,34 @@ compsym_asr_input <- function(ntraits = 1,
 #' prop.mainDD <- 0.4 # Same value for Traits 1 and 2
 #'
 #' # Additive and dominance degree correlations between the two simulated traits.
-#' corA <- matrix(c(1.0, 0.5,
-#'                  0.5, 1.0), ncol = 2)
+#' corA <- matrix(c(
+#'   1.0, 0.5,
+#'   0.5, 1.0
+#' ), ncol = 2)
 #' corDD <- diag(2) # Assuming independence
 #'
-#' input_asr <- compsym_asr_input(ntraits = 2,
-#'                                nenvs = 2,
-#'                                mean = mean,
-#'                                var = var,
-#'                                prop.main = prop.main,
-#'                                corA = corA,
-#'                                meanDD = meanDD,
-#'                                varDD = varDD,
-#'                                prop.mainDD = prop.mainDD,
-#'                                corDD = corDD)
+#' input_asr <- compsym_asr_input(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   mean = mean,
+#'   var = var,
+#'   prop.main = prop.main,
+#'   corA = corA,
+#'   meanDD = meanDD,
+#'   varDD = varDD,
+#'   prop.mainDD = prop.mainDD,
+#'   corDD = corDD
+#' )
 #'
 #'
 #' # 2. Use input_asr to simulate genetic values with AlphaSimR based on a compound symmetry model.
 #'
 #' library("AlphaSimR")
-#' FOUNDERPOP <- quickHaplo(nInd = 10,
-#'                          nChr = 1,
-#'                          segSites = 20)
+#' FOUNDERPOP <- quickHaplo(
+#'   nInd = 10,
+#'   nChr = 1,
+#'   segSites = 20
+#' )
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
@@ -368,14 +378,16 @@ compsym_asr_input <- function(ntraits = 1,
 #' SP$nThreads <- 1L
 #' }
 #'
-#' SP$addTraitAD(nQtlPerChr = 20,
-#'               mean = input_asr$mean,
-#'               var = input_asr$var,
-#'               corA = input_asr$corA,
-#'               meanDD = input_asr$meanDD,
-#'               varDD = input_asr$varDD,
-#'               corDD = input_asr$corDD,
-#'               useVarA = TRUE)
+#' SP$addTraitAD(
+#'   nQtlPerChr = 20,
+#'   mean = input_asr$mean,
+#'   var = input_asr$var,
+#'   corA = input_asr$corA,
+#'   meanDD = input_asr$meanDD,
+#'   varDD = input_asr$varDD,
+#'   corDD = input_asr$corDD,
+#'   useVarA = TRUE
+#' )
 #'
 #' # By default, the variances in 'var' represent additive genetic variances.
 #' # When useVarA = FALSE, the values represent total genetic variances.
@@ -386,11 +398,13 @@ compsym_asr_input <- function(ntraits = 1,
 #' # 3. Create a data frame with the simulated genetic values for the two traits in the
 #' # two environments, with two replicates of each genotype.
 #'
-#' gv_ls <- compsym_asr_output(pop = pop,
-#'                             ntraits = 2,
-#'                             nenvs = 2,
-#'                             nreps = 2,
-#'                             return.effects = TRUE)
+#' gv_ls <- compsym_asr_output(
+#'   pop = pop,
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   nreps = 2,
+#'   return.effects = TRUE
+#' )
 #'
 #' @export
 compsym_asr_output <- function(pop,

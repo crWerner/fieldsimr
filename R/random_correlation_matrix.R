@@ -18,11 +18,13 @@
 #' the correlation matrix is guaranteed to be positive (semi)-definite.
 #'
 #' @examples
-#' corA <- rand_cor_mat(n = 10,
-#'                      min.cor = -0.2,
-#'                      max.cor = 0.8,
-#'                      pos.def = TRUE,
-#'                      small.positive = 1e-8)
+#' corA <- rand_cor_mat(
+#'   n = 10,
+#'   min.cor = -0.2,
+#'   max.cor = 0.8,
+#'   pos.def = TRUE,
+#'   small.positive = 1e-8
+#' )
 #'
 #' @export
 rand_cor_mat <- function(n = 2,
@@ -45,12 +47,13 @@ rand_cor_mat <- function(n = 2,
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
 
   if (pos.def && !matrixcalc::is.positive.definite(cor_mat)) {
-    if (is.null(small.positive)) {small.positive <- 1e-4}
-    if(small.positive <= 0 | small.positive > 0.1) stop("'small.positive' must be a value > 0 and <= 0.1")
+    if (is.null(small.positive)) {
+      small.positive <- 1e-4
+    }
+    if (small.positive <= 0 | small.positive > 0.1) stop("'small.positive' must be a value > 0 and <= 0.1")
     cor_mat <- mbend::bend(cor_mat, small.positive = small.positive)
     cor_mat <- round(cor_mat$bent, 12)
     cor_mat <- (cor_mat + t(cor_mat)) / 2
   }
   return(cor_mat)
 }
-

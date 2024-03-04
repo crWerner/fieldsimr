@@ -122,25 +122,31 @@
 #' varDD <- 0.2 # Same value for all environment-within-trait combinations
 #'
 #' # Additive genetic correlations between the two simulated traits.
-#' TcorA <- matrix(c(1.0, 0.6,
-#'                   0.6, 1.0), ncol = 2)
+#' TcorA <- matrix(c(
+#'   1.0, 0.6,
+#'   0.6, 1.0
+#' ), ncol = 2)
 #'
 #' # Additive genetic correlations between the two simulated environments.
-#' EcorA <- matrix(c(1.0, 0.2,
-#'                   0.2, 1.0), ncol = 2)
+#' EcorA <- matrix(c(
+#'   1.0, 0.2,
+#'   0.2, 1.0
+#' ), ncol = 2)
 #'
 #' # Dominance degree correlations between the four environment-within-trait combinations.
 #' corDD <- diag(4) # Assuming independence
 #'
-#' input_asr <- unstr_asr_input(ntraits = 2,
-#'                              nenvs = 2,
-#'                              mean = mean,
-#'                              var = var,
-#'                              TcorA = TcorA,
-#'                              EcorA = EcorA,
-#'                              meanDD = meanDD,
-#'                              varDD = varDD,
-#'                              corDD = corDD)
+#' input_asr <- unstr_asr_input(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   mean = mean,
+#'   var = var,
+#'   TcorA = TcorA,
+#'   EcorA = EcorA,
+#'   meanDD = meanDD,
+#'   varDD = varDD,
+#'   corDD = corDD
+#' )
 #'
 #' @export
 unstr_asr_input <- function(ntraits = 1,
@@ -478,33 +484,41 @@ unstr_asr_input <- function(ntraits = 1,
 #' varDD <- 0.2 # Same value for all environment-within-trait combinations
 #'
 #' # Additive genetic correlations between the two simulated traits.
-#' TcorA <- matrix(c(1.0, 0.6,
-#'                   0.6, 1.0), ncol = 2)
+#' TcorA <- matrix(c(
+#'   1.0, 0.6,
+#'   0.6, 1.0
+#' ), ncol = 2)
 #'
 #' # Additive genetic correlations between the two simulated environments.
-#' EcorA <- matrix(c(1.0, 0.2,
-#'                   0.2, 1.0), ncol = 2)
+#' EcorA <- matrix(c(
+#'   1.0, 0.2,
+#'   0.2, 1.0
+#' ), ncol = 2)
 #'
 #' # Dominance degree correlations between the four environment-within-trait combinations.
 #' corDD <- diag(4) # Assuming independence
 #'
-#' input_asr <- unstr_asr_input(ntraits = 2,
-#'                              nenvs = 2,
-#'                              mean = mean,
-#'                              var = var,
-#'                              TcorA = TcorA,
-#'                              EcorA = EcorA,
-#'                              meanDD = meanDD,
-#'                              varDD = varDD,
-#'                              corDD = corDD)
+#' input_asr <- unstr_asr_input(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   mean = mean,
+#'   var = var,
+#'   TcorA = TcorA,
+#'   EcorA = EcorA,
+#'   meanDD = meanDD,
+#'   varDD = varDD,
+#'   corDD = corDD
+#' )
 #'
 #'
 #' # 2. Use input_asr to simulate genetic values with AlphaSimR based on an unstructured model.
 #'
 #' library("AlphaSimR")
-#' FOUNDERPOP <- quickHaplo(nInd = 10,
-#'                          nChr = 1,
-#'                          segSites = 20)
+#' FOUNDERPOP <- quickHaplo(
+#'   nInd = 10,
+#'   nChr = 1,
+#'   segSites = 20
+#' )
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
@@ -512,14 +526,16 @@ unstr_asr_input <- function(ntraits = 1,
 #' SP$nThreads <- 1L
 #' }
 #'
-#' SP$addTraitAD(nQtlPerChr = 20,
-#'               mean = input_asr$mean,
-#'               var = input_asr$var,
-#'               corA = input_asr$corA,
-#'               meanDD = input_asr$meanDD,
-#'               varDD = input_asr$varDD,
-#'               corDD = input_asr$corDD,
-#'               useVarA = TRUE)
+#' SP$addTraitAD(
+#'   nQtlPerChr = 20,
+#'   mean = input_asr$mean,
+#'   var = input_asr$var,
+#'   corA = input_asr$corA,
+#'   meanDD = input_asr$meanDD,
+#'   varDD = input_asr$varDD,
+#'   corDD = input_asr$corDD,
+#'   useVarA = TRUE
+#' )
 #'
 #' # By default, the variances in 'var' represent additive genetic variances.
 #' # When useVarA = FALSE, the values represent total genetic variances.
@@ -530,10 +546,12 @@ unstr_asr_input <- function(ntraits = 1,
 #' # 3. Create a data frame with the simulated genetic values for the two traits in the
 #' # two environments, with two replicates of each genotype.
 #'
-#' gv_df <- unstr_asr_output(pop = pop,
-#'                           ntraits = 2,
-#'                           nenvs = 2,
-#'                           nreps = 2)
+#' gv_df <- unstr_asr_output(
+#'   pop = pop,
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   nreps = 2
+#' )
 #'
 #' @export
 unstr_asr_output <- function(pop,

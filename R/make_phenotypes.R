@@ -1,4 +1,4 @@
-#' Generate phenotypes - combine genetic values and plot errors
+#' Generate phenotypes - Combine genetic values and plot errors
 #'
 #' Creates a data frame of phenotypes by combining genetic values with plot errors
 #' generated with the function \link[FieldSimR]{field_trial_error}.
@@ -24,9 +24,11 @@
 #' # Generate phenotypes by combining the genetic values and plot errors provided in
 #' # the two example data frames gv_df_unstr and error_df_bivar.
 #'
-#' pheno_df <- make_phenotypes(gv.df = gv_df_unstr,
-#'                             error.df = error_df_bivar,
-#'                             randomise = TRUE)
+#' pheno_df <- make_phenotypes(
+#'   gv.df = gv_df_unstr,
+#'   error.df = error_df_bivar,
+#'   randomise = TRUE
+#' )
 #'
 #' @export
 make_phenotypes <- function(gv.df,
@@ -73,7 +75,7 @@ make_phenotypes <- function(gv.df,
   }
 
   phe <- error.df[, !(colnames(error.df) %in% c("env", "block", "col", "row"))] +
-         gv.df[, !(colnames(gv.df) %in% c("env", "rep", "id", "ord"))]
+    gv.df[, !(colnames(gv.df) %in% c("env", "rep", "id", "ord"))]
   error.df.names <- error.df[, c("env", "block", "col", "row")]
   ids <- factor(as.numeric(as.character(gv.df$id)))
 

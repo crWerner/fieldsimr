@@ -18,8 +18,10 @@
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
-#' plot_effects(df = error_df,
-#'              effect = "e.Trait1", labels = T)
+#' plot_effects(
+#'   df = error_df,
+#'   effect = "e.Trait1", labels = T
+#' )
 #'
 #' @export
 plot_effects <- function(df,
@@ -102,8 +104,8 @@ plot_effects <- function(df,
       low = "#A51122", mid = "#FEFDBE", high = "#006228",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
     ) +
-    ggplot2::scale_x_discrete(expand = c(0.0001,0.0001)) +
-    ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001,0.0001)) +
+    ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
+    ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001, 0.0001)) +
     ggplot2::xlab("Column") +
     ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
@@ -118,8 +120,10 @@ plot_effects <- function(df,
       plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
     ) +
     ggplot2::geom_rect(
-      ggplot2::aes(xmin = plot_x_min, xmax = plot_x_max,
-                   ymin = plot_y_min, ymax = plot_y_max),
+      ggplot2::aes(
+        xmin = plot_x_min, xmax = plot_x_max,
+        ymin = plot_y_min, ymax = plot_y_max
+      ),
       fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
     ) +
     ggplot2::annotate(
@@ -129,13 +133,17 @@ plot_effects <- function(df,
     )
 
   if (labels) {
-    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
-                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 7, b = 0, l = 0)))
+    p <- p + ggplot2::theme(
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 7, b = 0, l = 0))
+    )
   } else {
-    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
-                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
-                            axis.ticks = ggplot2::element_blank(),
-                            axis.text = ggplot2::element_blank())
+    p <- p + ggplot2::theme(
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
+      axis.ticks = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank()
+    )
   }
 
   if (blocks == TRUE & length(unique(df$block)) > 1) {
@@ -176,13 +184,17 @@ plot_effects <- function(df,
 #' @examples
 #' # Display a simulated correlation matrix.
 #'
-#' corA <- rand_cor_mat(n = 10,
-#'                      min.cor = -1,
-#'                      max.cor = 1)
+#' corA <- rand_cor_mat(
+#'   n = 10,
+#'   min.cor = -1,
+#'   max.cor = 1
+#' )
 #'
-#' plot_matrix(mat = corA,
-#'             order = TRUE,
-#'             labels = TRUE)
+#' plot_matrix(
+#'   mat = corA,
+#'   order = TRUE,
+#'   labels = TRUE
+#' )
 #'
 #' @export
 plot_matrix <- function(mat,
@@ -194,7 +206,7 @@ plot_matrix <- function(mat,
   n <- ncol(mat)
   if (is.null(colnames(mat)) & !is.null(rownames(mat))) {
     colnames(mat) <- rownames(mat)
-  } else if(!is.null(colnames(mat)) & is.null(rownames(mat))) {
+  } else if (!is.null(colnames(mat)) & is.null(rownames(mat))) {
     rownames(mat) <- colnames(mat)
   } else {
     colnames(mat) <- rownames(mat) <- 1:n
@@ -212,13 +224,13 @@ plot_matrix <- function(mat,
   df <- as.data.frame(as.table(mat))
   colnames(df) <- c("var1", "var2", "eff")
 
-  if(is_cor_mat) {
+  if (is_cor_mat) {
     df$eff[df$var1 == df$var2] <- NA
   }
   df$var1 <- factor(as.numeric(trimws(df$var1)))
   df$var2 <- factor(as.numeric(trimws(df$var2)))
 
-  if(order) {
+  if (order) {
     if (!is_cor_mat) {
       mat <- cov2cor(mat)
     }
@@ -243,8 +255,8 @@ plot_matrix <- function(mat,
       low = "midnightblue", mid = "#FEFDBE", high = "#A51122", na.value = "transparent",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
     ) +
-    ggplot2::scale_x_discrete(expand = c(0.0001,0.0001)) +
-    ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001,0.0001)) +
+    ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
+    ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001, 0.0001)) +
     ggplot2::xlab("Variable") +
     ggplot2::ylab("Variable") +
     ggplot2::theme_grey(base_size = 10) +
@@ -259,8 +271,10 @@ plot_matrix <- function(mat,
       plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
     ) +
     ggplot2::geom_rect(
-      ggplot2::aes(xmin = rep(seq(0.5, n - 0.5, 1), each = n), xmax = rep(seq(1.5, n + 0.5, 1), each = n),
-                   ymin = rep(seq(0.5, n - 0.5, 1), n), ymax = rep(seq(1.5, n + 0.5, 1), n)),
+      ggplot2::aes(
+        xmin = rep(seq(0.5, n - 0.5, 1), each = n), xmax = rep(seq(1.5, n + 0.5, 1), each = n),
+        ymin = rep(seq(0.5, n - 0.5, 1), n), ymax = rep(seq(1.5, n + 0.5, 1), n)
+      ),
       fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
     ) +
     ggplot2::annotate(
@@ -270,13 +284,17 @@ plot_matrix <- function(mat,
     )
 
   if (labels) {
-    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
-                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 6, b = 0, l = 0)))
+    p <- p + ggplot2::theme(
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 6, b = 0, l = 0))
+    )
   } else {
-    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
-                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
-                            axis.ticks = ggplot2::element_blank(),
-                            axis.text = ggplot2::element_blank())
+    p <- p + ggplot2::theme(
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
+      axis.ticks = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank()
+    )
   }
   return(p)
 }
@@ -298,9 +316,11 @@ plot_matrix <- function(mat,
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
-#' qq <- qq_plot(df = error_df,
-#'               effect = "e.Trait1",
-#'               labels = TRUE)
+#' qq <- qq_plot(
+#'   df = error_df,
+#'   effect = "e.Trait1",
+#'   labels = TRUE
+#' )
 #'
 #' # Q-Q plot
 #' qq
@@ -400,8 +420,10 @@ qq_plot <- function(df,
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
-#' variogram <- sample_variogram(df = error_df,
-#'                               effect = "e.Trait1")
+#' variogram <- sample_variogram(
+#'   df = error_df,
+#'   effect = "e.Trait1"
+#' )
 #'
 #' # Sample variogram
 #' variogram
@@ -486,12 +508,14 @@ sample_variogram <- function(df,
 #' # Theoretical variogram for a field trial with 10 columns and 20 rows, based on column and row
 #' # autocorrelations of 0.5 and 0.7, and a proportion of spatial error variance of 0.5.
 #'
-#' variogram <- theoretical_variogram(ncols = 10,
-#'                                    nrows = 20,
-#'                                    varR = 1,
-#'                                    prop.spatial = 0.5,
-#'                                    col.cor = 0.5,
-#'                                    row.cor = 0.7)
+#' variogram <- theoretical_variogram(
+#'   ncols = 10,
+#'   nrows = 20,
+#'   varR = 1,
+#'   prop.spatial = 0.5,
+#'   col.cor = 0.5,
+#'   row.cor = 0.7
+#' )
 #'
 #' # Theoretical variogram
 #' variogram

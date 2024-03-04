@@ -193,7 +193,7 @@ error_df_bivar$env[error_df_bivar$env == 3] <- 4
 error_df_bivar$env[error_df_bivar$env == 2] <- 3
 error_df_bivar$env[error_df_bivar$env == 4] <- 2
 error_df_bivar$env <- factor(error_df_bivar$env)
-error_df_bivar <- error_df_bivar[order(error_df_bivar$env, error_df_bivar$col, error_df_bivar$row),]
+error_df_bivar <- error_df_bivar[order(error_df_bivar$env, error_df_bivar$col, error_df_bivar$row), ]
 rownames(error_df_bivar) <- NULL
 
 gv_df_unstr$env <- trimws(gv_df_unstr$env)
@@ -201,7 +201,7 @@ gv_df_unstr$env[gv_df_unstr$env == 3] <- 4
 gv_df_unstr$env[gv_df_unstr$env == 2] <- 3
 gv_df_unstr$env[gv_df_unstr$env == 4] <- 2
 gv_df_unstr$env <- factor(gv_df_unstr$env)
-gv_df_unstr <- gv_df_unstr[order(gv_df_unstr$env, gv_df_unstr$rep, gv_df_unstr$id),]
+gv_df_unstr <- gv_df_unstr[order(gv_df_unstr$env, gv_df_unstr$rep, gv_df_unstr$id), ]
 rownames(gv_df_unstr) <- NULL
 
 

@@ -1,4 +1,4 @@
-#' Plot errors - example data frame
+#' Plot errors - Example data frame
 #'
 #' An example data frame with simulated plot errors for two traits in three environments.
 #' Environments 1 and 2 comprise two blocks, while Environment 3 comprises three blocks.
@@ -18,7 +18,7 @@
 #' }
 "error_df_bivar"
 
-#' Genetic values - example data frame
+#' Genetic values - Example data frame
 #'
 #' An example data frame with simulated genetic values of 100 genotypes for two traits in three environments.
 #' Environments 1 and 2 comprise two replicates of each genotype, while Environment 3 comprises three replicates.

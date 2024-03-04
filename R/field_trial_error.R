@@ -78,25 +78,29 @@
 #' varR <- c(0.2, 0.4, 10, 15) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Spatial error correlations between the two simulated traits.
-#' ScorR <- matrix(c(1.0, 0.2,
-#'                   0.2, 1.0), ncol = 2)
+#' ScorR <- matrix(c(
+#'   1.0, 0.2,
+#'   0.2, 1.0
+#' ), ncol = 2)
 #'
-#' error_ls <- field_trial_error(ntraits = 2,
-#'                               nenvs = 2,
-#'                               nblocks = 2,
-#'                               block.dir = "row",
-#'                               ncols = 10,
-#'                               nrows = 20,
-#'                               varR = varR,
-#'                               ScorR = ScorR,
-#'                               spatial.model = "AR1",
-#'                               col.cor = 0.5,
-#'                               row.cor = 0.7,
-#'                               prop.spatial = 0.4,
-#'                               ext.ord = "zig-zag",
-#'                               ext.dir = "row",
-#'                               prop.ext = 0.2,
-#'                               return.effects = TRUE)
+#' error_ls <- field_trial_error(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   nblocks = 2,
+#'   block.dir = "row",
+#'   ncols = 10,
+#'   nrows = 20,
+#'   varR = varR,
+#'   ScorR = ScorR,
+#'   spatial.model = "AR1",
+#'   col.cor = 0.5,
+#'   row.cor = 0.7,
+#'   prop.spatial = 0.4,
+#'   ext.ord = "zig-zag",
+#'   ext.dir = "row",
+#'   prop.ext = 0.2,
+#'   return.effects = TRUE
+#' )
 #'
 #' @export
 field_trial_error <- function(ntraits = 1,
