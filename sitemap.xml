@@ -13,7 +13,7 @@
     <loc>https://crwerner.github.io/fieldsimr/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html</loc>
+    <loc>https://crwerner.github.io/fieldsimr/articles/spatial_variation_demo.html</loc>
   </url>
   <url>
     <loc>https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html</loc>
@@ -49,7 +49,16 @@
     <loc>https://crwerner.github.io/fieldsimr/reference/make_phenotypes.html</loc>
   </url>
   <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/multi_asr_input.html</loc>
+  </url>
+  <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/multi_asr_output.html</loc>
+  </url>
+  <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/plot_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/plot_matrix.html</loc>
   </url>
   <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/qq_plot.html</loc>
