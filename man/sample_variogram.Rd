@@ -4,41 +4,40 @@
 \alias{sample_variogram}
 \title{Sample variogram}
 \usage{
-sample_variogram(df, effect, min_np = 30)
+sample_variogram(df, effect, min.np = 30)
 }
 \arguments{
-\item{df}{A data frame containing the columns 'col', 'row', and the effect to be plotted.}
+\item{df}{A data frame with the columns 'col', 'row', and the effects to be plotted.}
 
-\item{effect}{The name of the effect to be plotted.}
+\item{effect}{The name of the effects to be plotted.}
 
-\item{min_np}{Only semi variances based on at least \code{min_np} pairs of plots will be
-displayed. By default, \code{min_np = 30}.}
+\item{min.np}{Minimum number of pairs for which semi-variances are displayed (default is 30).}
 }
 \value{
-Graphic of the sample variogram, where the x- and y-axes display the row and
-  column displacements and the z-axis displays the semi-variance (variogram ordinates).
+A sample variogram with x- and y-axes displaying the row and
+  column displacements, and the z-axis displaying the average semi-variances (variogram ordinates)
+  for the effects.
 }
 \description{
-Creates a sample variogram. The x- and y-axes display the row and column displacements,
-respectively. The z-axis displays the semi-variance (variogram ordinates).
+Creates a sample variogram for a set of effects (e.g., plot errors).
 }
 \examples{
-# Sample variogram of the simulated plot errors for trait 2 in environment 2 provided in the
-# example data frame 'error_df_bivar'.
+# Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar'
+# for Trait 1 in Environment 1.
 
-error_df <- error_df_bivar[error_df_bivar$env == 2, ]
+error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 
-vario <- sample_variogram(
+variogram <- sample_variogram(
   df = error_df,
-  effect = "e.Trait2",
+  effect = "e.Trait1"
 )
 
 # Sample variogram
-vario
+variogram
 
-# Extraction of a data frame containing the column and row displacements as well as the
-# semi-variances (sample variogram ordinates).
+# Extract the data frame with the column and row displacements, and the
+# sample semi-variances.
 
-sample_df <- vario$data
+variogram_df <- variogram$data
 
 }

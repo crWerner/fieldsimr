@@ -2,41 +2,44 @@
 % Please edit documentation in R/make_phenotypes.R
 \name{make_phenotypes}
 \alias{make_phenotypes}
-\title{Simulate phenotypes - Combine simulated genetic values and plot errors}
+\title{Generate phenotypes - Combine genetic values and plot errors}
 \usage{
-make_phenotypes(gv_df, error_df, randomise = FALSE)
+make_phenotypes(gv.df, error.df, randomise = FALSE, return.effects = FALSE)
 }
 \arguments{
-\item{gv_df}{A data frame of genetic values. Must contain the columns 'env', 'rep', and 'id',
-followed by the genetic values for each trait.}
+\item{gv.df}{A data frame of genetic values. Must contain the columns 'env', 'rep', genotype 'id',
+and the genetic values for each trait.}
 
-\item{error_df}{A data frame of plot errors. Must contain the columns 'env', 'block',
-'col', and 'row', followed by the plot errors for each trait.}
+\item{error.df}{A data frame of plot errors. Must contain the columns 'env', 'block',
+'col', 'row', and the plot errors for each trait.}
 
-\item{randomise}{When TRUE, genotypes are randomly allocated to plots within blocks to generate
+\item{randomise}{When \code{TRUE}, genotypes are randomly allocated to plots according to
 a randomized complete block design (RCBD).\cr
-\strong{Note:} Other experimental designs must be generated externally.}
+\strong{Note:} Other experimental designs are being implemented and should be generated externally.}
+
+\item{return.effects}{When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
+entries containing the genetic values and plot errors for each trait.}
 }
 \value{
-A data frame with columns 'env', 'block', 'column', 'row' and 'genotype', followed by
-  the phenotypes for each trait.
+A data frame with columns 'env', 'block', 'column', 'row', genotype 'id', and
+  the phenotypes for each trait. When \code{return.effects = TRUE}, a list is returned with additional
+  entries containing the genetic values and plot errors for each trait.
 }
 \description{
-Creates a data frame of simulated phenotypes for one or more traits by
-combining simulated plot errors with genetic values (e.g. true, simulated or predicted).
-The genetic values can be generated externally, but note that they must be stored in a
-data frame as described below.
+Creates a data frame of phenotypes by combining genetic values with plot errors
+generated with the function \link[FieldSimR]{field_trial_error}.
+Requires genetic values generated with the functions \link[FieldSimR]{compsym_asr_output},
+\link[FieldSimR]{unstr_asr_output}, and \link[FieldSimR]{multi_asr_output},
+or any data frame matching the description below.
 }
 \examples{
-# Simulate phenotypes by combining the genetic values and plot errors provided in
-# the two example data frames 'gv_df_unstr' and 'error_df_bivar'.
-
-gv_df <- gv_df_unstr
-error_df <- error_df_bivar
+# Generate phenotypes by combining the genetic values and plot errors provided in
+# the two example data frames gv_df_unstr and error_df_bivar.
 
 pheno_df <- make_phenotypes(
-  gv_df,
-  error_df,
+  gv.df = gv_df_unstr,
+  error.df = error_df_bivar,
   randomise = TRUE
 )
+
 }

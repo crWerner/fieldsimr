@@ -7,35 +7,34 @@
 plot_effects(df, effect, blocks = TRUE, labels = FALSE)
 }
 \arguments{
-\item{df}{A data frame with columns 'col', 'row', and the effect to be plotted. When \code{df}
-also contains a 'block' column, the field array is split into blocks if \code{blocks = TRUE}.}
+\item{df}{A data frame with the columns 'col', 'row', and the effects to be plotted.}
 
-\item{effect}{The effect to be plotted.}
+\item{effect}{The name of the effects to be plotted.}
 
-\item{blocks}{When \code{TRUE} (default), the field array is split into blocks.}
+\item{blocks}{When \code{TRUE} (default), the field array is split into blocks.
+This requires an additional column 'block' in the data frame.}
 
-\item{labels}{When \code{TRUE}, row and column numbers are plotted. By default,
-\code{labels = FALSE}.}
+\item{labels}{When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.}
 }
 \value{
-A graphical field array, in which the colour gradient ranges from red (low value)
-to green (high value).
+A graphical field array with x- and y-axes displaying the column and row numbers,
+ and colour gradient ranging from red (low value) to green (high value).
 }
 \description{
-Graphically displays plot effects (e.g., phenotypes, genetic values, plot errors) onto a
-field array, in which the colour gradient ranges from red (low value) to green (high value).
-The function requires a data frame generated with field_trial_error as an input, or any data
-frame with columns 'col', 'row', and the effect to be displayed. When the data frame contains a
-'block' column, the field array is split into blocks if \code{blocks = TRUE}.
+Creates a graphical field array for a set of plot effects (e.g., phenotypes, genetic values, or plot errors).
+Requires a data frame generated with the functions \link[FieldSimR]{field_trial_error} and \link[FieldSimR]{make_phenotypes},
+or any data frame matching the description below.
 }
 \examples{
-# Plot the simulated plot errors for trait 2 in environment 2 provided in the example data
-# frame 'error_df_bivar'.
+# Display the simulated plot errors in the example data frame 'error_df_bivar'
+# for Trait 1 in Environment 1.
 
-error_df <- error_df_bivar[error_df_bivar$env == 2, ]
+error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 
 plot_effects(
   df = error_df,
-  effect = "e.Trait2"
+  effect = "e.Trait1",
+  labels = TRUE
 )
+
 }

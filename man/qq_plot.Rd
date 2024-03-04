@@ -7,39 +7,37 @@
 qq_plot(df, effect, labels = FALSE)
 }
 \arguments{
-\item{df}{A data frame containing the effect to be plotted.}
+\item{df}{A data frame with the effects to be plotted.}
 
-\item{effect}{The name of the effect to be plotted.}
+\item{effect}{The name of the effects to be plotted.}
 
-\item{labels}{When \code{FALSE} (default), data points without labels are plotted. When
-\code{TRUE}, column and row labels are shown in the Q-Q plot. This requires additional
-columns 'col' and 'row' in the data frame.}
+\item{labels}{When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
+This requires additional columns 'col' and 'row' in the data frame.}
 }
 \value{
-A Q-Q plot with the x- and y-axes displaying the theoretical and sample quantiles of
-  the effect to be plotted, respectively.
+A Q-Q plot with x- and y-axes displaying the theoretical and sample quantiles of
+  the effects, respectively.
 }
 \description{
-Creates a quantile-quantile (Q-Q) plot which compares the theoretical quantiles of a normal
-distribution with the sample quantiles of the distribution of user effects.
+Creates a normal quantile-quantile (Q-Q) plot for a set of effects (e.g., phenotypes, genetic values, or plot errors).
 }
 \examples{
-# Q-Q plot of the simulated plot errors for trait 2 in environment 2 provided in the example
-# data frame 'error_df_bivar'.
+# Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar'
+# for Trait 1 in Environment 1.
 
-error_df <- error_df_bivar[error_df_bivar$env == 2, ]
+error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 
 qq <- qq_plot(
   df = error_df,
-  effect = "e.Trait2",
+  effect = "e.Trait1",
   labels = TRUE
 )
 
 # Q-Q plot
 qq
 
-# Extraction of a data frame containing the theoretical and sample quantiles of
-# the effect to be plotted.
+# Extract the data frame with the theoretical and sample quantiles of the
+# user-defined effects.
 qq_df <- qq$data
 
 }

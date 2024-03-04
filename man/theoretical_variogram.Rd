@@ -5,55 +5,54 @@
 \title{Theoretical variogram}
 \usage{
 theoretical_variogram(
-  n_cols,
-  n_rows,
-  var_R = 1,
-  prop_spatial = 0.5,
-  col_cor,
-  row_cor
+  ncols = 10,
+  nrows = 20,
+  varR = 1,
+  prop.spatial = 1,
+  col.cor = 0.5,
+  row.cor = 0.7
 )
 }
 \arguments{
-\item{n_cols}{A scalar defining the number of columns.}
+\item{ncols}{A scalar defining the number of columns.}
 
-\item{n_rows}{A scalar defining the number of rows.}
+\item{nrows}{A scalar defining the number of rows.}
 
-\item{var_R}{A scalar defining the total error variance.}
+\item{varR}{A scalar defining the total error variance.}
 
-\item{prop_spatial}{A scalar defining the proportion of spatial error variance to total error
-variance (spatial + random).}
+\item{prop.spatial}{A scalar defining the proportion of spatial error variance to total (spatial + random) error
+variance.}
 
-\item{col_cor}{A scalar defining the column autocorrelation value.}
+\item{col.cor}{A scalar defining the column autocorrelation,}
 
-\item{row_cor}{A scalar defining the row autocorrelation value.}
+\item{row.cor}{A scalar defining the row autocorrelation.}
 }
 \value{
-Graphic of the theoretical variogram, where the x- and y- axes display the row and
-  column displacements and the z-axis displays the semi-variance (variogram ordinates).
+A theoretical variogram with x- and y-axes displaying the row and column displacements,
+ and the z-axis displaying the semi-variances (variogram ordinates) for a separable autoregressive process.
 }
 \description{
-Creates a theoretical variogram. The x- and y-axes display the row and column displacements,
-respectively. The z-axis displays the semi-variance (variogram ordinates).
+Creates a theoretical variogram for a separable first order autoregressive process.
 }
 \examples{
-# Theoretical variogram for a field with 10 columns and 20 rows, using column and row
-# autocorrelations of 0.4 and 0.8.
+# Theoretical variogram for a field trial with 10 columns and 20 rows, based on column and row
+# autocorrelations of 0.5 and 0.7, and a proportion of spatial error variance of 0.5.
 
-vario <- theoretical_variogram(
-  n_cols = 10,
-  n_rows = 20,
-  var_R = 1,
-  prop_spatial = 0.5,
-  col_cor = 0.4,
-  row_cor = 0.8
+variogram <- theoretical_variogram(
+  ncols = 10,
+  nrows = 20,
+  varR = 1,
+  prop.spatial = 0.5,
+  col.cor = 0.5,
+  row.cor = 0.7
 )
 
 # Theoretical variogram
-vario
+variogram
 
-# Extraction of a data frame containing the column and row displacements as well as the
-# semi-variances (theoretical variogram ordinates).
+# Extract the data frame with the column and row displacements, and the
+# theoretical semi-variances.
 
-theoretical_df <- vario$data
+variogram_df <- variogram$data
 
 }

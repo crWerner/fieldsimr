@@ -55,7 +55,7 @@
 #' # Construct separable additive genetic correlation matrix.
 #' corA <- kronecker(TcorA, EcorA)
 #'
-#' asr_input <- multi_asr_input(
+#' input_asr <- multi_asr_input(
 #'   ntraits = 2,
 #'   nenvs = 2,
 #'   mean = mean,
@@ -113,7 +113,7 @@ multi_asr_input <- function(ntraits = 1,
     stop("'corA' must be positive (semi)-definite")
   }
 
-  rank <- sum(eigen_decom$values > 1e-12)
+  rank <- sum(eigen_decom$values > 1e-8)
   if (nterms == rank) {
     covariates <- cbind(eigen_decom$vectors[, 1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
   } else if (nterms < rank) {
@@ -201,7 +201,7 @@ multi_asr_input <- function(ntraits = 1,
 #' # Construct separable additive genetic correlation matrix
 #' corA <- kronecker(TcorA, EcorA)
 #'
-#' asr_input <- multi_asr_input(
+#' input_asr <- multi_asr_input(
 #'   ntraits = 2,
 #'   nenvs = 2,
 #'   mean = mean,

@@ -46,11 +46,12 @@ rand_cor_mat <- function(n = 2,
   cor_mat <- t(cor_mat)
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
 
-  if (pos.def && !matrixcalc::is.positive.definite(cor_mat)) {
+  is_pos_def <- sum(eigen(cor_mat)$values > 1e-8) == n
+  if (pos.def && !is_pos_def) {
     if (is.null(small.positive)) {
       small.positive <- 1e-4
     }
-    if (small.positive <= 0 | small.positive > 0.1) stop("'small.positive' must be a value > 0 and <= 0.1")
+    if (small.positive <= 0 | small.positive > 0.1) stop("'small.positive' must be a positive value < 0.1")
     cor_mat <- mbend::bend(cor_mat, small.positive = small.positive)
     cor_mat <- round(cor_mat$bent, 12)
     cor_mat <- (cor_mat + t(cor_mat)) / 2

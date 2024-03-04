@@ -3,27 +3,27 @@
 \docType{data}
 \name{error_df_bivar}
 \alias{error_df_bivar}
-\title{Plot errors - example data frame}
+\title{Plot errors - Example data frame}
 \format{
 A data frame with 700 rows and 6 columns:
 \describe{
-  \item{env}{Environment id}
-  \item{block}{Block id}
-  \item{col}{Column id}
-  \item{row}{Row id}
-  \item{e.Trait1}{Simulated plot error for trait 1}
-  \item{e.Trait2}{Simulated plot error for trait 2}
+  \item{env}{Environment number}
+  \item{block}{Block number}
+  \item{col}{Column number}
+  \item{row}{Row number}
+  \item{e.Trait1}{Simulated plot errors for Trait 1}
+  \item{e.Trait2}{Simulated plot errors for Trait 2}
 }
 }
 \usage{
 error_df_bivar
 }
 \description{
-An example data frame of simulated plot errors for two traits across three locations. The first
-and the third location include two blocks, and the second location includes three blocks.
-Each block comprises 20 rows and 5 columns. The data frame was generated using the
-function \link[FieldSimR]{field_trial_error} with bivariate interpolation. The simulation of
-the plot errors is shown in the vignette on the
-\href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes for a multi-environment plant breeding trial}.
+An example data frame with simulated plot errors for two traits in three environments.
+Environments 1 and 2 comprise two blocks, while Environment 3 comprises three blocks.
+The blocks are aligned in the column direction (side-by-side) and comprise 5 columns and 20 rows.
+The data frame was generated using the function \link[FieldSimR]{field_trial_error} with
+bivariate interpolation. The simulation is demonstrated in the vignette
+\href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes in multi-environment field trials}.
 }
 \keyword{datasets}

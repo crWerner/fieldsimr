@@ -3,82 +3,75 @@
 \name{unstr_asr_output}
 \alias{unstr_asr_output}
 \title{Simulate genetic values based on an unstructured model for GxE interaction -
-Simulation using 'AlphaSimR'}
+Simulation with AlphaSimR}
 \usage{
-unstr_asr_output(pop, n_envs, n_traits, n_reps)
+unstr_asr_output(pop, nenvs, ntraits, nreps)
 }
 \arguments{
-\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
+\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
 (\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
 \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
-generated using \link[FieldSimR]{unstr_asr_input}.}
+generated with \link[FieldSimR]{unstr_asr_input}.}
 
-\item{n_envs}{Number of simulated environments (same number used in \link[FieldSimR]{unstr_asr_input}).}
+\item{nenvs}{Number of simulated environments specified in \link[FieldSimR]{unstr_asr_input}.}
 
-\item{n_traits}{Number of simulated traits (same number used in \link[FieldSimR]{unstr_asr_input}).}
+\item{ntraits}{Number of simulated traits specified in \link[FieldSimR]{unstr_asr_input}.}
 
-\item{n_reps}{A vector defining the number of replicates in each environment. If only one value
+\item{nreps}{A vector defining the number of replicates in each environment. If only one value
 is specified, all environments will be assigned the same number.}
 }
 \value{
-A data frame with columns 'env', 'rep', genotype 'id', and the
+A data frame with columns 'env', 'rep', and genotype 'id', followed by the
   simulated genetic values for each trait.
 }
 \description{
-Creates a data frame of simulated genetic values for multiple traits across multiple environments
-based on an unstructured model for genotype-by-environment (GxE) interaction. This function
-requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{'AlphaSimR'} population object
-generated using the \link[FieldSimR]{unstr_asr_input} function.
+Creates a data frame of simulated genetic values in multiple environments for one or more traits
+based on an unstructured model for genotype-by-environment (GxE) interaction. The wrapper function
+\code{unstr_asr_output} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR}
+population object generated with \link[FieldSimR]{unstr_asr_input}.
 }
 \examples{
-# Simulate genetic values in 'AlphaSimR' for two additive + dominance traits across
-# two environments based on an unstructured model for GxE interaction.
+# Simulate genetic values with AlphaSimR for two additive + dominance traits in
+# two environments based on an unstructured model.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees.
-mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, trait 2 x 2 environments.
-mean_DD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same values in the two environments.
+mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+meanDD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same value for both environments
 
 # Additive genetic variances and dominance degree variances.
-var <- c(0.085, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, trait 2 x 2 environments.
-var_DD <- rep(0.2, 4) # The same value set for traits 1 and 2.
+var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+varDD <- 0.2 # Same value for all environment-within-trait combinations
 
 # Additive genetic correlations between the two simulated traits.
-T_cor_A <- matrix(
-  c(
-    1.0, 0.6,
-    0.6, 1.0
-  ),
-  ncol = 2
-)
+TcorA <- matrix(c(
+  1.0, 0.6,
+  0.6, 1.0
+), ncol = 2)
 
 # Additive genetic correlations between the two simulated environments.
-E_cor_A <- matrix(
-  c(
-    1.0, 0.2,
-    0.2, 1.0
-  ),
-  ncol = 2
-)
+EcorA <- matrix(c(
+  1.0, 0.2,
+  0.2, 1.0
+), ncol = 2)
 
 # Dominance degree correlations between the four environment-within-trait combinations.
-cor_DD <- diag(4) # Assuming independence between traits
+corDD <- diag(4) # Assuming independence
 
 input_asr <- unstr_asr_input(
-  n_envs = 2,
-  n_traits = 2,
+  ntraits = 2,
+  nenvs = 2,
   mean = mean,
   var = var,
-  T_cor_A = T_cor_A,
-  E_cor_A = E_cor_A,
-  mean_DD = mean_DD,
-  var_DD = var_DD,
-  cor_DD = cor_DD
+  TcorA = TcorA,
+  EcorA = EcorA,
+  meanDD = meanDD,
+  varDD = varDD,
+  corDD = corDD
 )
 
 
-# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on an unstructured model for
-# GxE interaction.
+# 2. Use input_asr to simulate genetic values with AlphaSimR based on an unstructured model.
 
 library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(
@@ -97,28 +90,27 @@ SP$addTraitAD(
   nQtlPerChr = 20,
   mean = input_asr$mean,
   var = input_asr$var,
-  meanDD = input_asr$mean_DD,
-  varDD = input_asr$var_DD,
-  corA = input_asr$cor_A,
-  corDD = input_asr$cor_DD,
+  corA = input_asr$corA,
+  meanDD = input_asr$meanDD,
+  varDD = input_asr$varDD,
+  corDD = input_asr$corDD,
   useVarA = TRUE
 )
 
-# By default, the value provided in 'var' represents the additive variance.
-# If useVarA = FALSE, 'var' represents the total genetic variance.
+# By default, the variances in 'var' represent additive genetic variances.
+# When useVarA = FALSE, the values represent total genetic variances.
 
 pop <- newPop(FOUNDERPOP)
 
 
-# 3. Create a data frame containing the simulated genetic values for the two traits across the
-# two environments.
-
-n_reps <- c(2, 2) # Vector containing the number of complete replicates in each environment.
+# 3. Create a data frame with the simulated genetic values for the two traits in the
+# two environments, with two replicates of each genotype.
 
 gv_df <- unstr_asr_output(
   pop = pop,
-  n_envs = 2,
-  n_traits = 2,
-  n_reps = n_reps
+  ntraits = 2,
+  nenvs = 2,
+  nreps = 2
 )
+
 }

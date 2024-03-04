@@ -14,13 +14,15 @@
 #'  and colour gradient ranging from red (low value) to green (high value).
 #'
 #' @examples
-#' # Display the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
+#' # Display the simulated plot errors in the example data frame 'error_df_bivar'
+#' # for Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
 #' plot_effects(
 #'   df = error_df,
-#'   effect = "e.Trait1", labels = T
+#'   effect = "e.Trait1",
+#'   labels = TRUE
 #' )
 #'
 #' @export
@@ -182,7 +184,7 @@ plot_effects <- function(df,
 #'  and colour gradient ranging from blue (low value) to red (high value).
 #'
 #' @examples
-#' # Display a simulated correlation matrix.
+#' # Display a random correlation matrix.
 #'
 #' corA <- rand_cor_mat(
 #'   n = 10,
@@ -232,7 +234,7 @@ plot_matrix <- function(mat,
 
   if (order) {
     if (!is_cor_mat) {
-      mat <- cov2cor(mat)
+      mat <- stats::cov2cor(mat)
     }
     dis_mat <- 1 - mat
     order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order
@@ -312,7 +314,8 @@ plot_matrix <- function(mat,
 #'   the effects, respectively.
 #'
 #' @examples
-#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
+#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar'
+#' # for Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
@@ -325,8 +328,8 @@ plot_matrix <- function(mat,
 #' # Q-Q plot
 #' qq
 #'
-#' # Extract the data frame with the theoretical and sample quantiles of
-#' # the user-defined effects.
+#' # Extract the data frame with the theoretical and sample quantiles of the
+#' # user-defined effects.
 #' qq_df <- qq$data
 #'
 #' @export
@@ -416,7 +419,8 @@ qq_plot <- function(df,
 #'   for the effects.
 #'
 #' @examples
-#' # Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
+#' # Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar'
+#' # for Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
