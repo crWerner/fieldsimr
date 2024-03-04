@@ -17,14 +17,14 @@ range(rnorm_pht)
 
 ### Unstructured model
 
-n_env <- 3
+nenvs <- 3
 
-gy_fwt_env_means <- rnorm(n_env, gy_fwt_mean, 0.15)
+gy_fwt_env_means <- rnorm(nenvs, gy_fwt_mean, 0.15)
 gy_fwt_env_means
-pht_env_means <- rnorm(n_env, pht_mean, 20)
+pht_env_means <- rnorm(nenvs, pht_mean, 20)
 pht_env_means
 
-gy_fwt_env_var <- rnorm(n_env, gy_fwt_var, 0.05)
+gy_fwt_env_var <- rnorm(nenvs, gy_fwt_var, 0.05)
 gy_fwt_env_var
-pht_env_var <- rnorm(n_env, pht_var, 5)
+pht_env_var <- rnorm(nenvs, pht_var, 5)
 pht_env_var

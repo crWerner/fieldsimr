@@ -27,9 +27,9 @@ plot_effects <- function(df,
                          blocks = TRUE,
                          labels = FALSE) {
   colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
+  colnames(df)[colnames(df) %in% effect] <- "eff"
 
-  colnames(df)[grep("col", colnames(df))] <- "col"
-  if (any(!c("col", "row", effect) %in% colnames(df))) {
+  if (any(!c("col", "row", "eff") %in% colnames(df))) {
     stop("'df' must contain the columns 'col', 'row', and the effect to be plotted")
   }
   df$col <- factor(as.numeric(as.character(df$col)))
@@ -42,11 +42,14 @@ plot_effects <- function(df,
     df$block <- factor(as.numeric(as.character(df$block)))
   }
 
-  colnames(df)[colnames(df) %in% effect] <- "eff"
-
   ncols <- length(unique(df$col))
   nrows <- length(unique(df$row))
   nblocks <- length(unique(df$block))
+
+  plot_x_min <- rep(seq(0.5, ncols - 0.5, 1), each = nrows)
+  plot_y_min <- rep(seq(0.5, nrows - 0.5, 1), ncols)
+  plot_x_max <- rep(seq(1.5, ncols + 0.5, 1), each = nrows)
+  plot_y_max <- rep(seq(1.5, nrows + 0.5, 1), ncols)
 
   if (nblocks > 1) {
     df1 <- df[df[["block"]] == 1, ]
@@ -115,8 +118,8 @@ plot_effects <- function(df,
       plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
     ) +
     ggplot2::geom_rect(
-      ggplot2::aes(xmin = rep(seq(0.5, ncols - 0.5, 1), each = nrows), xmax = rep(seq(1.5, ncols + 0.5, 1), each = nrows),
-                   ymin = rep(seq(0.5, nrows - 0.5, 1), ncols), ymax = rep(seq(1.5, nrows + 0.5, 1), ncols)),
+      ggplot2::aes(xmin = plot_x_min, xmax = plot_x_max,
+                   ymin = plot_y_min, ymax = plot_y_max),
       fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
     ) +
     ggplot2::annotate(
@@ -162,7 +165,7 @@ plot_effects <- function(df,
 #' Creates a heatmap for a symmetric matrix (e.g., correlation or covariance matrix).
 #'
 #' @param mat A symmetric matrix.
-#' @param order When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the package
+#' @param order When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the R package
 #'   \href{https://cran.r-project.org/package=cluster}{cluster} is used with default arguments to
 #'   order the matrix based on a dendrogram.
 #' @param labels When \code{TRUE} (default is \code{FALSE}), variable labels are displayed.
@@ -314,6 +317,10 @@ qq_plot <- function(df,
   effect <- tolower(effect)
   colnames(df)[colnames(df) %in% effect] <- "eff"
 
+  if (!("eff" %in% colnames(df))) {
+    stop("'df' must contain the effect to be plotted")
+  }
+
   if (!labels) {
     qq_df <- data.frame(effect = df[["eff"]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
@@ -337,7 +344,6 @@ qq_plot <- function(df,
   }
 
   if (labels) {
-    colnames(df)[grep("col", colnames(df))] <- "col"
     if (any(!c("col", "row") %in% colnames(df))) {
       stop("'df' must contain the columns 'col' and 'row' if labels are to be plotted")
     }
@@ -413,8 +419,7 @@ sample_variogram <- function(df,
   effect <- tolower(effect)
   colnames(df)[colnames(df) %in% effect] <- "eff"
 
-  colnames(df)[grep("col", colnames(df))] <- "col"
-  if (any(!c("col", "row") %in% colnames(df))) {
+  if (any(!c("col", "row", "eff") %in% colnames(df))) {
     stop("'df' must contain the columns 'col' and 'row', and the effect to be plotted")
   }
 
@@ -498,11 +503,11 @@ sample_variogram <- function(df,
 #'
 #' @export
 theoretical_variogram <- function(ncols = 10,
-                                  nrows = 10,
+                                  nrows = 20,
                                   varR = 1,
                                   prop.spatial = 1,
                                   col.cor = 0.5,
-                                  row.cor = 0.5) {
+                                  row.cor = 0.7) {
   prop_rand <- 1 - prop.spatial
   col_dis <- rep(0:(ncols - 1), each = nrows)
   row_dis <- rep(0:(nrows - 1), times = ncols)

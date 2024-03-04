@@ -1,8 +1,8 @@
 ---
-title: "Simulation of plot errors and phenotypes for a multi-environment plant breeding trial"
+title: "Simulating plot errors and phenotypes in a plant breeding field trial"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Simulation of plot errors and phenotypes for a multi-environment plant breeding trial}
+  %\VignetteIndexEntry{Simulating plot errors and phenotypes in a plant breeding field trial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -41,7 +41,7 @@ The **simulation of plot errors** requires specification of various simulation p
 
 <br/>
 
-**Phenotypes** are then simulated through the combination of the plot errors with the genetic values stored in the package's example data frame `gv_df_unstr`. The data frame contains simulated genetic values for two traits in three environments based on an unstructured model for genotype-by-environment (GxE) interaction. The simulation of the genetic values is shown in the vignette on the [Simulation of genetic values using an unstructured model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html).
+**Phenotypes** are then simulated through the combination of the plot errors with the genetic values stored in the package's example data frame `gv_df_unstr`. The data frame contains simulated genetic values for two traits in three environments based on an unstructured model for genotype-by-environment (GxE) interaction. The simulation of the genetic values is shown in the vignette on the [Simulation of genetic values based on an unstructured model for genotype-by-environment (GxE) interaction](https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html).
 
 <br/>
 
@@ -50,17 +50,17 @@ The **simulation of plot errors** requires specification of various simulation p
 
 #### **1.1 Field trial layout**
 
-We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three locations. The first and the third location include two blocks, and the second location includes three blocks. Each block comprises 20 rows and 5 columns. The blocks are arranged in column direction (“side-by-side”). The plot length (column direction) is 8 meters, and the plot width (row direction) is 2 meters. 
+We conceive a scenario in which 100 maize hybrids are measured for grain yield (t/ha) and plant height (cm) in three environments. The first and the third environment include two blocks, and the second environment includes three blocks. Each block comprises 20 rows and 5 columns. The blocks are arranged in column direction (“side-by-side”). The plot length (column direction) is 8 meters, and the plot width (row direction) is 2 meters. 
 
 ```{r}
-n_envs <- 3 # Number of environments.
-n_traits <- 2 # Number of traits.
-n_blocks <- c(2, 3, 2) # Number of blocks in the three environments, respectively.
-block_dir <- "col" # Layout of blocks (“side-by-side”).
-n_cols <- c(10, 15, 10) # Total umber of columns per location.
-n_rows <- 20 # Total number of rows per location.
-plot_length <- 8 # Plot length; here in meters (column direction).
-plot_width <- 2 # Plot width; here in meters (row direction).
+ntraits <- 2 # Number of traits
+nenvs <- 3 # Number of environments
+nblocks <- c(2, 2, 3) # Number of blocks per environment
+block_dir <- "col" # Arrangement of blocks ("side-by-side")
+ncols <- c(10, 10, 15) # Number of columns per environment
+nrows <- 20 # Number of rows per environment
+plot_length <- 8 # Plot length; here in meters (column direction)
+plot_width <- 2 # Plot width; here in meters (row direction)
 ```
 
 **Note:** `plot_length` and `plot_width` are only required when `spatial_model = "Bivariate"`. The two arguments are used to set the x-coordinates and y-coordinates required for the bivariate interpolation algorithm to model a spatial correlation between plots. Therefore, the assumed unit of length (meters here) has no actual meaning, and the ratio between `plot_length` and `plot_width` is important rather than the absolute values. We recommend to use realistic, absolute values for `plot_length` and `plot_width` regardless of the unit of length.
@@ -71,7 +71,7 @@ When spatially correlated errors are simulated based on a **two-dimensional auto
 
 #### **1.2 Total error**
 
-To obtain pre-defined target heritabilities at the plot-level, we need to define the total error variances for the two simulated traits relative to their genetic variances. We assume broad-sense heritabilities at the plot level of ***H<sup>2</sup>*** **= 0.3 for grain yield** and ***H<sup>2</sup>*** **= 0.5 for plant height** at all three locations. The heritabilities for the six trait x environment combinations are stored in a single vector.
+To obtain pre-defined target heritabilities at the plot-level, we need to define the total error variances for the two simulated traits relative to their genetic variances. We assume broad-sense heritabilities at the plot level of ***H<sup>2</sup>*** **= 0.3 for grain yield** and ***H<sup>2</sup>*** **= 0.5 for plant height** at all three environments. The heritabilities for the six trait x environment combinations are stored in a single vector.
 
 ```{r}
 H2 <- c(0.3, 0.3, 0.3, 0.5, 0.5, 0.5) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
@@ -82,7 +82,7 @@ H2 <- c(0.3, 0.3, 0.3, 0.5, 0.5, 0.5) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2
 The total genetic variances of the six trait x environment combinations (environments nested within traits) can be extracted from the description of the simulation of the genetic values in FieldSimR::unstructured_GxE_demo.
 
 ```{r}
-var <- c(0.085, 0.12, 0.06, 15.1, 8.5, 11.7) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
+var <- c(0.086, 0.12, 0.06, 15.1, 8.5, 11.7) # c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
 ```
 
 <br/>
@@ -91,13 +91,13 @@ We now create a simple function to calculate the total error variances based on 
 
 ```{r}
 # Calculation of error variances based on the genetic variance and target heritability vectors.
-calc_var_R <- function(var, H2) {
+calc_varR <- function(var, H2) {
   varR <- (var / H2) - var
   return(varR)
 }
 
-var_R <- calc_var_R(var, H2)
-var_R # Vector of error variances: c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
+varR <- calc_varR(var, H2)
+round(varR, 2) # Vector of error variances: c(Yld:E1, Yld:E2, Yld:E3, Pht:E1, Pht:E2, Pht:E3)
 ```
 
 <br/>
@@ -108,10 +108,10 @@ We simulate a spatial error term using bivariate interpolation and assume the pr
 
 ```{r}
 spatial_model <- "Bivariate" # Spatial error model.
-prop_spatial <- 0.4 # Proportion of spatial to total error variance.
+prop_spatial <- 0.4 # Proportion of spatial trend.
 
-S_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
-S_cor_R
+ScorR <- rand_cor_mat(ntraits, min.cor = 0, max.cor = 0.5, pos.def = TRUE)
+round(ScorR, 2)
 ```
 
 <br/>
@@ -122,12 +122,12 @@ Extraneous effects can, for example, result from trial management procedures in 
 
 
 ```{r}
-prop_ext <- 0.2
-ext_dir <- "row"
 ext_ord <- "zig-zag"
+ext_dir <- "row"
+prop_ext <- 0.2
 
-E_cor_R <- rand_cor_mat(n_traits, min_cor = 0, max_cor = 0.5, pos_def = TRUE)
-E_cor_R
+EcorR <- rand_cor_mat(ntraits, min.cor = 0, max.cor = 0.5, pos.def = TRUE)
+round(EcorR, 2)
 ```
 
 **Note:** the **proportion of the random error variance to total error variance** is defined as 1 - (prop_spatial + prop_ext). Hence, `prop_spatial` and `prop_ext` are set with reference to the random error, and the sum of the two proportions must not be greater than 1.
@@ -137,75 +137,75 @@ E_cor_R
 
 #### **1.5 Simulation of plot errors**
 
-Finally, we use all the parameters defined above with the function `field_trial_error()` to simulate plot errors for grain yield and plant height in the three test locations:
+Finally, we use all the parameters defined above with the function `field_trial_error()` to simulate plot errors for grain yield and plant height in the three test environments:
 
 ```{r}
-error_df <- field_trial_error(
-  n_envs = n_envs,
-  n_traits = n_traits,
-  n_blocks = n_blocks,
-  block_dir = block_dir,
-  n_cols = n_cols,
-  n_rows = n_rows,
-  plot_length = plot_length,
-  plot_width = plot_width,
-  var_R = var_R,
-  R_cor_R = NULL,
-  spatial_model = spatial_model,
-  prop_spatial = prop_spatial,
-  S_cor_R = S_cor_R,
-  prop_ext = prop_ext,
-  ext_dir = ext_dir,
-  ext_ord = ext_ord,
-  E_cor_R = E_cor_R,
-  return_effects = TRUE
+error_ls <- field_trial_error(
+  ntraits = ntraits,
+  nenvs = nenvs,
+  nblocks = nblocks,
+  block.dir = block_dir,
+  ncols = ncols,
+  nrows = nrows,
+  plot.length = plot_length,
+  plot.width = plot_width,
+  varR = varR,
+  ScorR = ScorR,
+  EcorR = EcorR,
+  RcorR = NULL,
+  spatial.model = spatial_model,
+  prop.spatial = prop_spatial,
+  ext.ord = ext_ord,
+  ext.dir = ext_dir,
+  prop.ext = prop_ext,
+  return.effects = TRUE
 )
 ```
 
 
-**Note:** by default, the function `field_trial_error()` generates a data frame with the following columns: ***environment id*** (location), ***block id***, ***column id***, ***row id***, and the ***total plot error for each trait***. When `return_effects = TRUE`, ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) returns a list with an additional entry for each trait containing the spatial error, the extraneous effect and the random error. 
+**Note:** by default, the function `field_trial_error()` generates a data frame with the following columns: ***environment id*** (environment), ***block id***, ***column id***, ***row id***, and the ***total plot error for each trait***. When `return_effects = TRUE`, ['FieldSimR'](https://cran.r-project.org/package=FieldSimR) returns a list with an additional entry for each trait containing the spatial error, the extraneous effect and the random error. 
 
 <br/>
 
-We will now plot the **total error for grain yield ("e.Trait1") in environment 2**, as well as the **spatial error component**, the **random error component**, and the **extraneous variation**. Therefore, we first extract the required data from `error_df` and then create an individual plot for each of the four simulated error terms.
+We will now plot the **total error for grain yield ("e.Trait1") in Environment 1**, as well as the **spatial error component**, the **random error component**, and the **extraneous variation**. Therefore, we first extract the required data from `error_df` and then create an individual graphic for each of the four simulated error terms.
 
 ```{r}
-error_env2 <- error_df$plot_df[error_df$plot_df$env == 2, ]
-e_comp_env2 <- error_df$Trait1[error_df$Trait1$env == 2, ]
+e_total_env1 <- error_ls$error.df[error_ls$error.df$env == 1, ]
+e_terms_env1 <- error_ls$Trait1[error_ls$Trait1$env == 1, ]
 ```
 
 <br/>
 
 **Total plot error**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(error_env2, effect = "e.Trait1")
+plot_effects(e_total_env1, effect = "e.Trait1", labels = TRUE)
 ```
 
 <br/>
 
 **Spatial error** simulated using bivariate interpolation
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env2, effect = "e.spat")
+plot_effects(e_terms_env1, effect = "e.spat", labels = TRUE)
 ```
 
 <br/>
 
 **Random error**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env2, effect = "e.rand")
+plot_effects(e_terms_env1, effect = "e.rand", labels = TRUE)
 ```
 
 <br/>
 
 **Extraneous variation **in the row direction
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(e_comp_env2, effect = "e.ext.row")
+plot_effects(e_terms_env1, effect = "e.ext.row")
 ```
 
 <br/>
 
 ### **2. Simulation of plot-level phenotypes**
-To simulate **grain yield and plant height phenotypes** for our multi-environment maize experiment, we now combine the simulated plot errors with the genetic values stored in the example data frame `gv_df_unstr`. This is done using the function `pheno_df()`, which supports random allocation of genotypes to plots within blocks, simulating a randomized complete block design (RCBD). 
+To simulate **grain yield and plant height phenotypes** for our multi-environment maize experiment, we now combine the simulated plot errors with the genetic values stored in the example data frame `gv_df_unstr`. This is done using the function `make_phenotypes()`, which allocates genotypes to plots within blocks according to a randomized complete block design (RCBD). 
 
 **Note:** more complex field designs require allocation of genotypes to plots using an external R package or software.
 
@@ -214,29 +214,29 @@ gv_df <- gv_df_unstr
 
 pheno_df <- make_phenotypes(
   gv_df,
-  error_df$plot_df,
+  error_ls$error.df,
   randomise = TRUE
 )
 
-pheno_env2 <- pheno_df[pheno_df$env == 2, ] # Extract phenotypes in environment 2.
+pheno_env1 <- pheno_df[pheno_df$env == 1, ] # Extract phenotypes in environment 1.
 ```
 
 <br/>
 
 **Simulated phenotypes**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(pheno_env2, effect = "phe.Trait1")
+plot_effects(pheno_env1, effect = "phe.Trait1")
 ```
 
 <br/>
 
-**Histogram showing the genetic phenotypes of the 100 maize hybrids for grain yield in the three blocks in environment 2** 
+**Histogram showing the phenotypes of the 100 maize hybrids for grain yield in the two blocks in Environment 1** 
 
 ```{r echo=TRUE, fig.height = 4, fig.width = 9, fig.align = "center"}
-ggplot(pheno_env2, aes(x = phe.Trait1, fill = factor(block))) +
+ggplot(pheno_env1, aes(x = phe.Trait1, fill = factor(block))) +
   geom_histogram(color = "#e9ecef", alpha = 0.8, position = "identity", bins = 50) +
   scale_fill_manual(values = c("violetred3", "goldenrod3", "skyblue2")) +
-  labs(x = "Genetic values for grain yield (t/ha)", y = "Count", fill = "Block")
+  labs(x = "Phenotypes for grain yield (t/ha)", y = "Count", fill = "Block")
 ```
 
 

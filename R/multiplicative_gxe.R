@@ -5,7 +5,7 @@
 #' \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
 #' genetic values in multiple environments for one or more traits based on a multiplicative
 #' model for genotype-by-environment (GxE) interaction. \cr
-#' This function utilises the ability of AlphaSimR to simulate correlated genetic values.
+#' This function utilises the ability of AlphaSimR to simulate correlated traits.
 #' The wrapper function \code{multi_asr_input} is used to specify the input parameters required in AlphaSimR.
 #' After simulating the genetic values, the wrapper function \link[FieldSimR]{multi_asr_output} can be used to
 #' obtain a data frame with output values.
@@ -38,7 +38,7 @@
 #' mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Additive genetic variances.
-#' var <- c(0.085, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+#' var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Additive genetic correlations between the two simulated traits.
 #' TcorA <- matrix(c(1.0, 0.6,
@@ -92,14 +92,13 @@ multi_asr_input <- function(ntraits = 1,
   if (is.null(corA)) {
       corA <- diag(ntraits * nenvs)
   }
-  if (!isSymmetric(corA)) stop("corA is not symmetric")
   if (nrow(corA) != length(mean)) {
       stop("Dimensions of 'corA' must match number of environment-within-trait
             combinations")
   }
   corA <- round(corA, 12)
-  if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < -1)) {
-      stop("'corA' must be a correlation matrix")
+  if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < -1) | !isSymmetric(corA)) {
+      stop("'corA' must be a symmetric correlation matrix")
   }
 
   covA <- diag(sqrt(var)) %*% corA %*% diag(sqrt(var))
@@ -159,11 +158,11 @@ multi_asr_input <- function(ntraits = 1,
 #'   is specified, all environments will be assigned the same number.
 #' @param covs A matrix of covariates that will be used to construct the genetic values, typically generated
 #'   with \link[FieldSimR]{multi_asr_input}.
-#' @param return_effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
+#' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
 #'   entries containing the genotype slopes for each multiplicative term.
 #'
-#' @return A data frame with columns 'env', 'rep', genotype 'id', and the
-#'   simulated genetic values for each trait. When \code{return_effects = TRUE}, a list is returned with
+#' @return A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+#'   simulated genetic values for each trait. When \code{return.effects = TRUE}, a list is returned with
 #'   additional entries containing the genotype slopes for each multiplicative term.
 #'
 #' @examples
@@ -175,7 +174,7 @@ multi_asr_input <- function(ntraits = 1,
 #' mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Additive genetic variances.
-#' var <- c(0.085, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+#' var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Additive genetic correlations between the two simulated traits.
 #' TcorA <- matrix(c(1.0, 0.6,
@@ -223,7 +222,7 @@ multi_asr_input <- function(ntraits = 1,
 #'
 #' The covariates are obtained from input_asr.
 #'
-#' gv_df <- multi_asr_output(pop = pop,
+#' gv_ls <- multi_asr_output(pop = pop,
 #'                           ntraits = 2,
 #'                           nenvs = 2,
 #'                           nreps = 2,
@@ -241,7 +240,7 @@ multi_asr_output <- function(pop,
   if (!ntraits > 0 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
 
   if ((sum(nreps < 1) > 0) | (sum(nreps %% 1 != 0) > 0)) {
-    stop("'nreps' must contain positive integer values")
+    stop("'nreps' must contain positive integers")
   }
   if (length(nreps) == 1) {
     nreps <- rep(nreps, nenvs)

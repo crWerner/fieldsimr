@@ -5,10 +5,15 @@
 #' \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
 #' genetic values in multiple environments for one or more traits based on a compound symmetry
 #' model for genotype-by-environment (GxE) interaction. \cr
-#' This function utilises the ability of AlphaSimR to simulate correlated genetic values.
+#' This function utilises the ability of AlphaSimR to simulate correlated traits.
 #' The wrapper function \code{compsym_asr_input} is used to specify the input parameters required in AlphaSimR.
 #' After simulating the genetic values, the wrapper function \link[FieldSimR]{compsym_asr_output} can be used to
 #' obtain a data frame with output values.
+#'
+#' The compound symmetry model assumes the same genetic variance for each environment
+#' and the same genetic covariance between each pair of environments. New functionality
+#' is being implemented which relaxes the former assumption
+#' (also see \link[FieldSimR]{unstr_asr_output} and \link[FieldSimR]{multi_asr_output}).
 #'
 #' \strong{Note:} AlphaSimR can simulate different biological effects (see:
 #' \href{https://gaynorr.github.io/AlphaSimR/reference/SimParam.html}{SimParam}).
@@ -25,12 +30,12 @@
 #' @param mean A vector of mean genetic values for each environment-within-trait combination.
 #'   If only one value is specified, all combinations will be assigned the same mean.
 #' @param var A vector of genetic variances for each trait. \cr
-#'   \strong{Note:} When \code{useVarA = TRUE} is specified in AlphaSimR (default) the values in
+#'   \strong{Note:} When \code{useVarA = TRUE} is specified in AlphaSimR (default), the values in
 #'   \code{var} represent the additive genetic variances, otherwise they represent the
 #'   total (additive + non-additive) genetic variances.
-#' @param prop.mainA  A vector defining the proportion of additive main effect variance for each trait.
+#' @param prop.main  A vector defining the proportion of main effect variance for each trait.
 #'   If only one value is specified, all traits will be assigned the same proportion. \cr
-#'   \strong{Note:} \code{0 < prop.mainA < 1}.
+#'   \strong{Note:} \code{0 < prop.main < 1}.
 #' @param corA A matrix of additive genetic correlations between traits. By default, a diagonal
 #'   matrix is constructed.
 #' @param meanDD A vector of mean dominance degrees for each environment-within-trait combination
@@ -38,17 +43,17 @@
 #'   the same mean. By default, \code{meanDD = NULL} and dominance is not simulated.
 #' @param varDD A vector of dominance degree variances for each trait.
 #' @param prop.mainDD A vector defining the proportion of dominance degree main effect
-#'   variance for each trait (similar to \code{prop.mainA}).
+#'   variance for each trait (similar to \code{prop.main}).
 #'   If only one value is specified, all traits will be assigned the same proportion. \cr
 #'   \strong{Note:} \code{0 < prop.mainDD < 1}.
 #' @param corDD A matrix of dominance degree correlations between traits (similar
 #'   to \code{corA}). If not specified and dominance is simulated, a diagonal matrix is constructed.
-#' @param relAA A vector defining the magnitude of additive-by-additive (epistatic) variance
-#'   relative to the additive genetic variance for each trait, that is in a diploid organism with
+#' @param relAA A vector defining the relative magnitude of additive-by-additive (epistatic) variance
+#'   to additive genetic variance for each trait, that is in a diploid organism with
 #'   allele frequency of 0.5.
 #'   If only one value is specified, all traits will be assigned the same relative magnitude.
 #' @param prop.mainAA A vector defining the proportion of epistatic main effect variance for each
-#'   trait (similar to \code{prop.mainA}). If only one value is specified, all traits will be assigned the
+#'   trait (similar to \code{prop.main}). If only one value is specified, all traits will be assigned the
 #'   same proportion. \cr
 #'   \strong{Note:} \code{0 < prop.mainAA < 1}.
 #' @param corAA A matrix of epistatic correlations between traits (similar to
@@ -64,26 +69,26 @@
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values and mean dominance degrees.
 #' mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
-#' meanDD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same values in the two environments
+#' meanDD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same value for both environments
 #'
 #' # Additive genetic variances and dominance degree variances.
 #' var <- c(0.08, 13) # Different values for Traits 1 and 2
-#' varDD <- c(0.2, 0.2) # The same value for Traits 1 and 2
+#' varDD <- 0.2 # Same value for Traits 1 and 2
 #'
 #' # Proportion of additive and dominance degree main effect variances.
-#' prop.mainA <- c(0.4, 0.6) # Different values set for Traits 1 and 2
-#' prop.mainDD <- 0.4 # The same value set for Traits 1 and 2
+#' prop.main <- c(0.4, 0.6) # Different values for Traits 1 and 2
+#' prop.mainDD <- 0.4 # Same value for Traits 1 and 2
 #'
 #' # Additive and dominance degree correlations between the two simulated traits.
 #' corA <- matrix(c(1.0, 0.5,
-#'                  0.5, 1.0), ncol = 2) # Additive correlation matrix
-#' corDD <- diag(2) # Dominance correlation matrix, assuming independence
+#'                  0.5, 1.0), ncol = 2)
+#' corDD <- diag(2) # Assuming independence
 #'
 #' input_asr <- compsym_asr_input(ntraits = 2,
 #'                                nenvs = 2,
 #'                                mean = mean,
 #'                                var = var,
-#'                                prop.mainA = prop.mainA,
+#'                                prop.main = prop.main,
 #'                                corA = corA,
 #'                                meanDD = meanDD,
 #'                                varDD = varDD,
@@ -95,7 +100,7 @@ compsym_asr_input <- function(ntraits = 1,
                               nenvs = 2,
                               mean = 0,
                               var = 1,
-                              prop.mainA = 0.5,
+                              prop.main = 0.5,
                               corA = NULL,
                               meanDD = NULL,
                               varDD = NULL,
@@ -122,7 +127,8 @@ compsym_asr_input <- function(ntraits = 1,
       } else if (length(mean) == (ntraits * nenvs)) {
         mean_vals <- mean
       } else {
-        stop("Number of values in 'mean' must be 1 or match number of environment-within-trait combinations")
+        stop("Number of values in 'mean' must be 1 or match
+             number of environment-within-trait combinations")
       }
 
       if (length(var) == 1) {
@@ -131,17 +137,17 @@ compsym_asr_input <- function(ntraits = 1,
         stop("Number of values in 'var' must be 1 or match number of traits")
       }
 
-      if (length(prop.mainA) == ntraits) {
-        prop_main <- prop.mainA
-      } else if (length(prop.mainA) == 1) {
-        prop_main <- rep(prop.mainA, ntraits)
+      if (length(prop.main) == ntraits) {
+        prop_main <- prop.main
+      } else if (length(prop.main) == 1) {
+        prop_main <- rep(prop.main, ntraits)
       } else {
-        stop("Number of values in 'prop.mainA' must be 1 or
+        stop("Number of values in 'prop.main' must be 1 or
                match number of traits")
       }
 
-      if (any(prop.mainA < 0) | any(prop.mainA > 1)) {
-        stop("'prop.mainA' must contain values between 0 and 1")
+      if (any(prop.main < 0) | any(prop.main > 1)) {
+        stop("'prop.main' must contain values between 0 and 1")
       }
 
       if (is.null(corA)) corA <- diag(ntraits)
@@ -151,11 +157,9 @@ compsym_asr_input <- function(ntraits = 1,
       }
 
       corA <- round(corA, 12)
-      if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < (-1))) {
-        stop("'corA' must be a correlation matrix")
+      if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < (-1)) | !isSymmetric(corA)) {
+        stop("'corA' must be a symmetric correlation matrix")
       }
-
-      if (!isSymmetric(corA)) stop("'corA' must be a symmetric matrix")
 
       main_mean <- colMeans(matrix(mean_vals, ncol = ntraits))
       vars <- var
@@ -202,11 +206,9 @@ compsym_asr_input <- function(ntraits = 1,
       }
 
       corDD <- round(corDD, 12)
-      if (any(unique(diag(corDD)) != 1) | any(corDD > 1) | any(corDD < (-1))) {
-        stop("'corDD' must be a correlation matrix")
+      if (any(unique(diag(corDD)) != 1) | any(corDD > 1) | any(corDD < (-1)) | !isSymmetric(corDD)) {
+        stop("'corDD' must be a symmetric correlation matrix")
       }
-
-      if (!isSymmetric(corDD)) stop("'corDD' must be a symmetric matrix")
 
       main_mean <- colMeans(matrix(mean_vals, ncol = ntraits))
       vars <- varDD
@@ -239,15 +241,13 @@ compsym_asr_input <- function(ntraits = 1,
       if (is.null(corAA)) corAA <- diag(ntraits)
 
       if (nrow(corAA) != ntraits | ncol(corAA) != ntraits) {
-        stop("Dimensions of 'corAA' must match number of traits")
+        stop("Dimensions of 'corAA' must match number of traits'")
       }
 
       corAA <- round(corAA, 12)
-      if (any(unique(diag(corAA)) != 1) | any(corAA > 1) | any(corAA < (-1))) {
-        stop("'corAA' must be a correlation matrix")
+      if (any(unique(diag(corAA)) != 1) | any(corAA > 1) | any(corAA < (-1)) | !isSymmetric(corAA)) {
+        stop("'corAA' must be a symmetric correlation matrix")
       }
-
-      if (!isSymmetric(corAA)) stop("'corAA' must be a symmetric matrix")
 
 
       mean_vals <- rep(0, ntraits * nenvs)
@@ -310,8 +310,8 @@ compsym_asr_input <- function(ntraits = 1,
 #'   (\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
 #'   \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
 #'   generated with \link[FieldSimR]{compsym_asr_input}.
-#' @param ntraits Number of simulated traits specified in \link[FieldSimR]{compsym_asr_input}.
-#' @param nenvs Number of simulated environments specified in \link[FieldSimR]{compsym_asr_input}.
+#' @param ntraits Number of traits specified in \link[FieldSimR]{compsym_asr_input}.
+#' @param nenvs Number of environments specified in \link[FieldSimR]{compsym_asr_input}.
 #' @param nreps A vector defining the number of replicates in each environment. If only one value
 #'   is specified, all environments will be assigned the same number.
 #' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
@@ -322,32 +322,32 @@ compsym_asr_input <- function(ntraits = 1,
 #'   additional entries containing the genotype main effects and GxE interaction effects for each trait.
 #'
 #' @examples
-#' # Simulate genetic values in AlphaSimR for two additive + dominance traits in
+#' # Simulate genetic values with AlphaSimR for two additive + dominance traits in
 #' # two environments based on a compound symmetry model.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values and mean dominance degrees.
 #' mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
-#' meanDD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same values in the two environments
+#' meanDD <- c(0.4, 0.4, 0.1, 0.1) # Trait 1 and 2, same value for both environments
 #'
 #' # Additive genetic variances and dominance degree variances.
 #' var <- c(0.08, 13) # Different values for Traits 1 and 2
-#' varDD <- c(0.2, 0.2) # The same value for Traits 1 and 2
+#' varDD <- 0.2 # Same value for Traits 1 and 2
 #'
 #' # Proportion of additive and dominance degree main effect variances.
-#' prop.mainA <- c(0.4, 0.6) # Different values set for Traits 1 and 2
-#' prop.mainDD <- 0.4 # The same value set for Traits 1 and 2
+#' prop.main <- c(0.4, 0.6) # Different values for Traits 1 and 2
+#' prop.mainDD <- 0.4 # Same value for Traits 1 and 2
 #'
 #' # Additive and dominance degree correlations between the two simulated traits.
 #' corA <- matrix(c(1.0, 0.5,
-#'                  0.5, 1.0), ncol = 2) # Additive correlation matrix
-#' corDD <- diag(2) # Dominance correlation matrix, assuming independence
+#'                  0.5, 1.0), ncol = 2)
+#' corDD <- diag(2) # Assuming independence
 #'
 #' input_asr <- compsym_asr_input(ntraits = 2,
 #'                                nenvs = 2,
 #'                                mean = mean,
 #'                                var = var,
-#'                                prop.mainA = prop.mainA,
+#'                                prop.main = prop.main,
 #'                                corA = corA,
 #'                                meanDD = meanDD,
 #'                                varDD = varDD,
@@ -355,7 +355,7 @@ compsym_asr_input <- function(ntraits = 1,
 #'                                corDD = corDD)
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values in AlphaSimR based on a compound symmetry model.
+#' # 2. Use input_asr to simulate genetic values with AlphaSimR based on a compound symmetry model.
 #'
 #' library("AlphaSimR")
 #' FOUNDERPOP <- quickHaplo(nInd = 10,
@@ -386,7 +386,7 @@ compsym_asr_input <- function(ntraits = 1,
 #' # 3. Create a data frame with the simulated genetic values for the two traits in the
 #' # two environments, with two replicates of each genotype.
 #'
-#' gv_df <- compsym_asr_output(pop = pop,
+#' gv_ls <- compsym_asr_output(pop = pop,
 #'                             ntraits = 2,
 #'                             nenvs = 2,
 #'                             nreps = 2,
@@ -402,7 +402,7 @@ compsym_asr_output <- function(pop,
   if (nenvs < 2 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
 
   if ((sum(nreps < 1) > 0) | (sum(nreps %% 1 != 0) > 0)) {
-    stop("'nreps' must contain positive integer values")
+    stop("'nreps' must contain positive integers")
   }
   if (length(nreps) == 1) nreps <- rep(nreps, nenvs)
 
