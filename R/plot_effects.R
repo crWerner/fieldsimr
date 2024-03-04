@@ -1,8 +1,8 @@
 #' Graphics for plot effects
 #'
-#' Creates a graphical field array for a set of user-defined effects (e.g., phenotypes, genetic values, or plot errors).
+#' Creates a graphical field array for a set of plot effects (e.g., phenotypes, genetic values, or plot errors).
 #' Requires a data frame generated with the functions \link[FieldSimR]{field_trial_error} and \link[FieldSimR]{make_phenotypes},
-#' or any data frame as described below.
+#' or any data frame matching the description below.
 #'
 #' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
 #' @param effect The name of the effects to be plotted.
@@ -11,7 +11,7 @@
 #' @param labels When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
 #'
 #' @return A graphical field array with x- and y-axes displaying the column and row numbers,
-#'  and colour gradient ranging from red (low effect) to green (high effect).
+#'  and colour gradient ranging from red (low value) to green (high value).
 #'
 #' @examples
 #' # Display the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
@@ -19,25 +19,27 @@
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
 #' plot_effects(df = error_df,
-#'              effect = "e.Trait1")
+#'              effect = "e.Trait1", labels = T)
 #'
 #' @export
 plot_effects <- function(df,
                          effect,
                          blocks = TRUE,
                          labels = FALSE) {
-  colnames(df) <- tolower(colnames(df))
-  effect <- tolower(effect)
+  colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
 
   colnames(df)[grep("col", colnames(df))] <- "col"
   if (any(!c("col", "row", effect) %in% colnames(df))) {
     stop("'df' must contain the columns 'col', 'row', and the effect to be plotted")
   }
+  df$col <- factor(as.numeric(as.character(df$col)))
+  df$row <- factor(as.numeric(as.character(df$row)))
 
   if (blocks) {
     if (!"block" %in% colnames(df)) {
       stop("'df' must contain the column 'block' if blocks are to be plotted")
     }
+    df$block <- factor(as.numeric(as.character(df$block)))
   }
 
   colnames(df)[colnames(df) %in% effect] <- "eff"
@@ -83,66 +85,54 @@ plot_effects <- function(df,
       block_x_max_2 <- x_max
       block_y_max_2 <- rep((nrows + 1), nblocks)
     } else {
-      stop("Check row and column assignment within blocks")
+      stop("Check column and row assignment within blocks")
     }
   }
 
   col <- row <- eff <- NULL
-  mid_pt <- mean(df$eff)
-  max_pt <- max(abs(c(mid_pt - min(df$eff), max(df$eff) - mid_pt)))
+  mid_pt <- mean(df$eff, na.rm = TRUE)
+  max_pt <- max(abs(c(mid_pt - min(df$eff, na.rm = TRUE), max(df$eff, na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
+    ggplot2::scale_fill_gradient2(
+      low = "#A51122", mid = "#FEFDBE", high = "#006228",
+      midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
+    ) +
+    ggplot2::scale_x_discrete(expand = c(0.0001,0.0001)) +
+    ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001,0.0001)) +
+    ggplot2::xlab("Column") +
+    ggplot2::ylab("Row") +
+    ggplot2::theme_grey(base_size = 10) +
+    ggplot2::ggtitle(effect) +
+    ggplot2::labs(fill = "Effect") +
+    ggplot2::theme(
+      legend.title = ggplot2::element_text(size = 11),
+      legend.text = ggplot2::element_text(size = 9),
+      axis.text = ggplot2::element_text(size = 10),
+      axis.title = ggplot2::element_text(size = 11),
+      panel.background = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
+    ) +
+    ggplot2::geom_rect(
+      ggplot2::aes(xmin = rep(seq(0.5, ncols - 0.5, 1), each = nrows), xmax = rep(seq(1.5, ncols + 0.5, 1), each = nrows),
+                   ymin = rep(seq(0.5, nrows - 0.5, 1), ncols), ymax = rep(seq(1.5, nrows + 0.5, 1), ncols)),
+      fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
+    ) +
+    ggplot2::annotate(
+      geom = "rect", xmin = 0.5, ymin = 0.5,
+      xmax = ncols + 0.5, ymax = nrows + 0.5,
+      fill = "transparent", col = "black", lwd = 1.25
+    )
 
   if (labels) {
-    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-      ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
-      ggplot2::scale_fill_gradient2(
-        low = "#A51122", mid = "#FEFDBE", high = "#006228",
-        midpoint = mid_pt, limits = c(mid_pt - max_pt, max_pt + mid_pt)
-      ) +
-      ggplot2::scale_y_discrete(limits = rev) +
-      ggplot2::xlab("Column") +
-      ggplot2::ylab("Row") +
-      ggplot2::theme_grey(base_size = 10) +
-      ggplot2::ggtitle(effect) +
-      ggplot2::labs(fill = "Effect") +
-      ggplot2::theme(
-        axis.ticks = ggplot2::element_blank(),
-        axis.text = ggplot2::element_text(size = 11),
-        axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
-        axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 8, b = 0, l = 0)),
-        axis.title = ggplot2::element_text(size = 12),
-        panel.background = ggplot2::element_blank(),
-        plot.title = ggplot2::element_text(size = 12, colour = "gray40")
-      ) +
-      ggplot2::annotate(
-        geom = "rect", xmin = 0.5, ymin = 0.5,
-        xmax = ncols + 0.5, ymax = nrows + 0.5,
-        fill = "transparent", col = "black", lwd = 0.5
-      )
+    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
+                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 7, b = 0, l = 0)))
   } else {
-    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-      ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
-      ggplot2::scale_fill_gradient2(
-        low = "#A51122", mid = "#FEFDBE", high = "#006228",
-        midpoint = mid_pt, limits = c(mid_pt - max_pt, max_pt + mid_pt)
-      ) +
-      ggplot2::scale_y_discrete(limits = rev) +
-      ggplot2::xlab("Column") +
-      ggplot2::ylab("Row") +
-      ggplot2::theme_grey(base_size = 10) +
-      ggplot2::ggtitle(effect) +
-      ggplot2::labs(fill = "Effect") +
-      ggplot2::theme(
-        axis.ticks = ggplot2::element_blank(),
-        axis.text = ggplot2::element_blank(),
-        axis.title = ggplot2::element_text(size = 12),
-        panel.background = ggplot2::element_blank(),
-        plot.title = ggplot2::element_text(size = 12, colour = "gray40")
-      ) +
-      ggplot2::annotate(
-        geom = "rect", xmin = 0.5, ymin = 0.5,
-        xmax = ncols + 0.5, ymax = nrows + 0.5,
-        fill = "transparent", col = "black", lwd = 0.5
-      )
+    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
+                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
+                            axis.ticks = ggplot2::element_blank(),
+                            axis.text = ggplot2::element_blank())
   }
 
   if (blocks == TRUE & length(unique(df$block)) > 1) {
@@ -152,14 +142,14 @@ plot_effects <- function(df,
         y = block_y_min[i],
         xend = block_x_max[i],
         yend = block_y_max[i],
-        linewidth = 1.5
+        linewidth = 2
       ) +
         ggplot2::geom_segment(
           x = block_x_min_2[i],
           y = block_y_min_2[i],
           xend = block_x_max_2[i],
           yend = block_y_max_2[i],
-          linewidth = 1,
+          linewidth = 0.7,
           col = "white"
         )
     }
@@ -167,9 +157,130 @@ plot_effects <- function(df,
   return(p)
 }
 
+#' Graphics for matrices
+#'
+#' Creates a heatmap for a symmetric matrix (e.g., correlation or covariance matrix).
+#'
+#' @param mat A symmetric matrix.
+#' @param order When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the package
+#'   \href{https://cran.r-project.org/package=cluster}{cluster} is used with default arguments to
+#'   order the matrix based on a dendrogram.
+#' @param labels When \code{TRUE} (default is \code{FALSE}), variable labels are displayed.
+#'
+#' @return A graphical field array with x- and y-axes displaying the variable numbers,
+#'  and colour gradient ranging from blue (low value) to red (high value).
+#'
+#' @examples
+#' # Display a simulated correlation matrix.
+#'
+#' corA <- rand_cor_mat(n = 10,
+#'                      min.cor = -1,
+#'                      max.cor = 1)
+#'
+#' plot_matrix(mat = corA,
+#'             order = TRUE,
+#'             labels = TRUE)
+#'
+#' @export
+plot_matrix <- function(mat,
+                        order = FALSE,
+                        labels = FALSE) {
+  mat <- round(mat, 12)
+  if (!isSymmetric(mat)) stop("'mat' must be a symmetric matrix")
+
+  n <- ncol(mat)
+  if (is.null(colnames(mat)) & !is.null(rownames(mat))) {
+    colnames(mat) <- rownames(mat)
+  } else if(!is.null(colnames(mat)) & is.null(rownames(mat))) {
+    rownames(mat) <- colnames(mat)
+  } else {
+    colnames(mat) <- rownames(mat) <- 1:n
+  }
+
+  is_cor_mat <- TRUE
+  effect <- "Correlation matrix"
+  effect_short <- "Cor."
+  if (any(diag(mat) != 1)) {
+    is_cor_mat <- FALSE
+    effect <- "Covariance matrix"
+    effect_short <- "Cov."
+  }
+
+  df <- as.data.frame(as.table(mat))
+  colnames(df) <- c("var1", "var2", "eff")
+
+  if(is_cor_mat) {
+    df$eff[df$var1 == df$var2] <- NA
+  }
+  df$var1 <- factor(as.numeric(trimws(df$var1)))
+  df$var2 <- factor(as.numeric(trimws(df$var2)))
+
+  if(order) {
+    if (!is_cor_mat) {
+      mat <- cov2cor(mat)
+    }
+    dis_mat <- 1 - mat
+    order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order
+    df$var1 <- factor(df$var1, levels = order2)
+    df$var2 <- factor(df$var2, levels = order2)
+  }
+
+  var1 <- var2 <- eff <- NULL
+  if (is_cor_mat) {
+    mid_pt <- 0
+    max_pt <- 1.1
+  } else {
+    mid_pt <- mean(df$eff, na.rm = TRUE)
+    max_pt <- max(abs(c(mid_pt - min(df$eff, na.rm = TRUE), max(df$eff, na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+  }
+
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = var1, y = var2)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
+    ggplot2::scale_fill_gradient2(
+      low = "midnightblue", mid = "#FEFDBE", high = "#A51122", na.value = "transparent",
+      midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
+    ) +
+    ggplot2::scale_x_discrete(expand = c(0.0001,0.0001)) +
+    ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001,0.0001)) +
+    ggplot2::xlab("Variable") +
+    ggplot2::ylab("Variable") +
+    ggplot2::theme_grey(base_size = 10) +
+    ggplot2::ggtitle(effect) +
+    ggplot2::labs(fill = effect_short) +
+    ggplot2::theme(
+      legend.title = ggplot2::element_text(size = 11),
+      legend.text = ggplot2::element_text(size = 9),
+      axis.text = ggplot2::element_text(size = 10),
+      axis.title = ggplot2::element_text(size = 11),
+      panel.background = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
+    ) +
+    ggplot2::geom_rect(
+      ggplot2::aes(xmin = rep(seq(0.5, n - 0.5, 1), each = n), xmax = rep(seq(1.5, n + 0.5, 1), each = n),
+                   ymin = rep(seq(0.5, n - 0.5, 1), n), ymax = rep(seq(1.5, n + 0.5, 1), n)),
+      fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
+    ) +
+    ggplot2::annotate(
+      geom = "rect", xmin = 0.5, ymin = 0.5,
+      xmax = n + 0.5, ymax = n + 0.5,
+      fill = "transparent", col = "black", lwd = 1.25
+    )
+
+  if (labels) {
+    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
+                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 6, b = 0, l = 0)))
+  } else {
+    p <- p + ggplot2::theme(axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
+                            axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
+                            axis.ticks = ggplot2::element_blank(),
+                            axis.text = ggplot2::element_blank())
+  }
+  return(p)
+}
+
 #' Q-Q plot
 #'
-#' Creates a normal quantile-quantile (Q-Q) plot for a set of user-defined effects (e.g., phenotypes, genetic values, or plot errors).
+#' Creates a normal quantile-quantile (Q-Q) plot for a set of effects (e.g., phenotypes, genetic values, or plot errors).
 #'
 #' @param df A data frame with the effects to be plotted.
 #' @param effect The name of the effects to be plotted.
@@ -177,7 +288,7 @@ plot_effects <- function(df,
 #'   This requires additional columns 'col' and 'row' in the data frame.
 #'
 #' @return A Q-Q plot with x- and y-axes displaying the theoretical and sample quantiles of
-#'   the user-defined effects, respectively.
+#'   the effects, respectively.
 #'
 #' @examples
 #' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
@@ -248,9 +359,9 @@ qq_plot <- function(df,
     qq_df <- qq_df[order(qq_df$col, qq_df$row), ]
     rownames(qq_df) <- NULL
 
-    qq_df$ColRowLabel <- factor(paste0(qq_df$col, ":", qq_df$row))
-    theoretical <- ColRowLabel <- NULL
-    p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = ColRowLabel)) +
+    qq_df$cr.label <- factor(paste0(qq_df$col, ":", qq_df$row))
+    theoretical <- cr.label <- NULL
+    p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = cr.label)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_text(size = 4) +
       ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
@@ -268,15 +379,15 @@ qq_plot <- function(df,
 
 #' Sample variogram
 #'
-#' Creates a sample variogram for a set of user-defined effects (e.g., plot errors).
+#' Creates a sample variogram for a set of effects (e.g., plot errors).
 #'
 #' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
 #' @param effect The name of the effects to be plotted.
 #' @param min.np Minimum number of pairs for which semi-variances are displayed (default is 30).
 #'
 #' @return A sample variogram with x- and y-axes displaying the row and
-#'   column displacements, and the z-axis displaying the sample semi-variances (variogram ordinates)
-#'   for the user-defined effects.
+#'   column displacements, and the z-axis displaying the average semi-variances (variogram ordinates)
+#'   for the effects.
 #'
 #' @examples
 #' # Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar' for Trait 1 in Environment 1.
@@ -353,7 +464,7 @@ sample_variogram <- function(df,
 
 #' Theoretical variogram
 #'
-#' Creates a theoretical variogram for a separable first order autoregressive process based on user-defined parameters.
+#' Creates a theoretical variogram for a separable first order autoregressive process.
 #'
 #' @param ncols A scalar defining the number of columns.
 #' @param nrows A scalar defining the number of rows.
@@ -364,7 +475,7 @@ sample_variogram <- function(df,
 #' @param row.cor A scalar defining the row autocorrelation.
 #'
 #' @return A theoretical variogram with x- and y-axes displaying the row and column displacements,
-#'  and the z-axis displaying the theoretical semi-variances (variogram ordinates) for a separable autoregressive process.
+#'  and the z-axis displaying the semi-variances (variogram ordinates) for a separable autoregressive process.
 #'
 #' @examples
 #' # Theoretical variogram for a field trial with 10 columns and 20 rows, based on column and row

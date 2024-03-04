@@ -4,7 +4,7 @@
 #' generated with the function \link[FieldSimR]{field_trial_error}.
 #' Requires genetic values generated with the functions \link[FieldSimR]{compsym_asr_output},
 #' \link[FieldSimR]{unstr_asr_output}, and \link[FieldSimR]{multi_asr_output},
-#' or any data frame as described below.
+#' or any data frame matching the description below.
 #'
 #' @param gv.df A data frame of genetic values. Must contain the columns 'env', 'rep', genotype 'id',
 #'   and the genetic values for each trait.
@@ -36,14 +36,14 @@ make_phenotypes <- function(gv.df,
   if (inherits(gv.df, "list")) gv.df <- gv.df[[1]]
   if (inherits(error.df, "list")) error.df <- error.df[[1]]
 
-  colnames(gv.df) <- tolower(colnames(gv.df))
-  colnames(error.df) <- tolower(colnames(error.df))
+  colnames(gv.df)[grep("env|rep|id", tolower(colnames(gv.df)))] <- tolower(colnames(gv.df))[grep("env|rep|id", tolower(colnames(gv.df)))]
+  colnames(error.df)[grep("env|block|col|row", tolower(colnames(error.df)))] <- tolower(colnames(error.df))[grep("env|block|col|row", tolower(colnames(error.df)))]
 
   if (any(!c("env", "rep", "id") %in% colnames(gv.df))) {
     stop("'gv.df' must contain the columns 'env', 'rep', 'id', and the genetic values for each trait")
   }
 
-  colnames(error.df)[grep("col", colnames(error.df))] <- "col"
+  colnames(error.df)[grep("column", colnames(error.df))] <- "col"
   if (any(!c("env", "block", "col", "row") %in% colnames(error.df))) {
     stop("'error.df' must contain the columns 'env', 'block', 'col', 'row', and the plot errors for each trait")
   }
@@ -89,8 +89,6 @@ make_phenotypes <- function(gv.df,
   if (return.effects) {
     listNames <- c("pheno.df", "gv.df", "error.df")
     gv.df <- gv.df[, !(colnames(gv.df) %in% c("ord"))]
-    colnames(gv.df) <- c("env", "rep", "id", paste0("gv.Trait", 1:ntraits))
-    colnames(error.df) <- c("env", "block", "col", "row", paste0("e.Trait", 1:ntraits))
     pheno_df <- c(list(pheno_df), list(gv.df), list(error.df))
     names(pheno_df) <- listNames
   }

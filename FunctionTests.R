@@ -1,4 +1,33 @@
 
+# plot matrix / heatmap
+corA <- rand_cor_mat(n = 10, min.cor = 0)
+# corA[6:8,6:8] <- 0.8
+# diag(corA) <- 1
+mat <- corA[1:10,1:10]
+
+xx <- plot_matrix(corA,
+            labels = T,
+            order = T)
+xx$data
+# midnightblue royalblue4
+# should we move the middle range for correlation matrices?
+# more generic for matrix col names
+
+# plot effect
+tt6 <- error_df
+str(tt6)
+tt6$env <- trimws(tt6$env)
+tt6$col <- as.numeric(trimws(tt6$col))
+tt6$row <- as.numeric(trimws(tt6$row))
+tt6$block <- as.numeric(trimws(tt6$block))
+# tt6$block <- tt6$col
+
+tt6$block <- 1:2
+tt6$e.Trait1[1] <- NA
+xx <- plot_effects(df = tt6,
+             effect = "e.Trait1", labels = T, blocks = T)
+xx
+head(xx$data)
 # multi_asr_input
 ntraits <- sample(1:10, 1)
 nenvs <- sample(1:100, 1)
@@ -62,6 +91,7 @@ head(tt2)
 tt2 <- data.frame(tt2, x = 1)
 tt3 <- data.frame(tt3, x = 2)
 # tt2$x <- NULL
+colnames(tt2)[2] <- "REP"
 tt4 <- make_phenotypes(gv.df = tt2,
                 error.df = tt3,
                 randomise = T,

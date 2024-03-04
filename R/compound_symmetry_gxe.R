@@ -155,7 +155,7 @@ compsym_asr_input <- function(ntraits = 1,
         stop("'corA' must be a correlation matrix")
       }
 
-      if (!isSymmetric(corA)) stop("'corA' is not symmetric")
+      if (!isSymmetric(corA)) stop("'corA' must be a symmetric matrix")
 
       main_mean <- colMeans(matrix(mean_vals, ncol = ntraits))
       vars <- var
@@ -206,7 +206,7 @@ compsym_asr_input <- function(ntraits = 1,
         stop("'corDD' must be a correlation matrix")
       }
 
-      if (!isSymmetric(corDD)) stop("'corDD' is not symmetric")
+      if (!isSymmetric(corDD)) stop("'corDD' must be a symmetric matrix")
 
       main_mean <- colMeans(matrix(mean_vals, ncol = ntraits))
       vars <- varDD
@@ -247,7 +247,7 @@ compsym_asr_input <- function(ntraits = 1,
         stop("'corAA' must be a correlation matrix")
       }
 
-      if (!isSymmetric(corAA)) stop("'corAA' is not symmetric")
+      if (!isSymmetric(corAA)) stop("'corAA' must be a symmetric matrix")
 
 
       mean_vals <- rep(0, ntraits * nenvs)
