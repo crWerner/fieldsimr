@@ -41,22 +41,28 @@
 #' var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Additive genetic correlations between the two simulated traits.
-#' TcorA <- matrix(c(1.0, 0.6,
-#'                   0.6, 1.0), ncol = 2)
+#' TcorA <- matrix(c(
+#'   1.0, 0.6,
+#'   0.6, 1.0
+#' ), ncol = 2)
 #'
 #' # Additive genetic correlations between the two simulated environments.
-#' EcorA <- matrix(c(1.0, 0.2,
-#'                   0.2, 1.0), ncol = 2)
+#' EcorA <- matrix(c(
+#'   1.0, 0.2,
+#'   0.2, 1.0
+#' ), ncol = 2)
 #'
 #' # Construct separable additive genetic correlation matrix.
 #' corA <- kronecker(TcorA, EcorA)
 #'
-#' asr_input <- multi_asr_input(ntraits = 2,
-#'                              nenvs = 2,
-#'                              mean = mean,
-#'                              var = var,
-#'                              corA = corA,
-#'                              nterms = 3)
+#' asr_input <- multi_asr_input(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   mean = mean,
+#'   var = var,
+#'   corA = corA,
+#'   nterms = 3
+#' )
 #'
 #' @export
 multi_asr_input <- function(ntraits = 1,
@@ -69,61 +75,65 @@ multi_asr_input <- function(ntraits = 1,
   if (!nenvs > 1 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
 
   if (is.null(nterms)) {
-      nterms <- ceiling(ntraits * nenvs)
+    nterms <- ceiling(ntraits * nenvs)
   }
   if (!nterms > 0 | nterms %% 1 != 0) stop("'nterms' must be a positive integer")
 
   if (length(mean) == 1) {
-      mean <- rep(mean, each = ntraits * nenvs)
+    mean <- rep(mean, each = ntraits * nenvs)
   }
   if (length(mean) != (ntraits * nenvs)) {
-      stop("Number of values in 'mean' must be 1 or match
+    stop("Number of values in 'mean' must be 1 or match
             number of environment-within-trait combinations")
   }
 
   if (length(var) == 1) {
-      var <- rep(var, each = ntraits * nenvs)
+    var <- rep(var, each = ntraits * nenvs)
   }
   if (length(var) != (ntraits * nenvs)) {
-      stop("Number of values in 'var' must be 1 or match number of
+    stop("Number of values in 'var' must be 1 or match number of
             environment-within-trait combinations")
   }
 
   if (is.null(corA)) {
-      corA <- diag(ntraits * nenvs)
+    corA <- diag(ntraits * nenvs)
   }
   if (nrow(corA) != length(mean)) {
-      stop("Dimensions of 'corA' must match number of environment-within-trait
+    stop("Dimensions of 'corA' must match number of environment-within-trait
             combinations")
   }
   corA <- round(corA, 12)
   if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < -1) | !isSymmetric(corA)) {
-      stop("'corA' must be a symmetric correlation matrix")
+    stop("'corA' must be a symmetric correlation matrix")
   }
 
   covA <- diag(sqrt(var)) %*% corA %*% diag(sqrt(var))
   eigen_decom <- eigen(covA)
   if (any(eigen_decom$values < 0)) {
-      stop("'corA' must be positive (semi)-definite")
+    stop("'corA' must be positive (semi)-definite")
   }
 
   rank <- sum(eigen_decom$values > 1e-12)
   if (nterms == rank) {
-    covariates <- cbind(eigen_decom$vectors[,1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
+    covariates <- cbind(eigen_decom$vectors[, 1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
   } else if (nterms < rank) {
     term_char <- "terms"
-    if (nterms == 1) {term_char <- "term"}
-    message(paste0("Warning message: \n 'nterms' is less than rank of 'corA', ",
-            round(100*sum(eigen_decom$values[1:nterms])/sum(eigen_decom$values), 2), "% of variation captured with ", nterms, " ", term_char))
+    if (nterms == 1) {
+      term_char <- "term"
+    }
+    message(paste0(
+      "Warning message: \n 'nterms' is less than rank of 'corA', ",
+      round(100 * sum(eigen_decom$values[1:nterms]) / sum(eigen_decom$values), 2), "% of variation captured with ", nterms, " ", term_char
+    ))
 
-    covariates <- cbind(eigen_decom$vectors[,1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
+    covariates <- cbind(eigen_decom$vectors[, 1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
   } else if (nterms > rank) {
     message("Warning message: \n 'nterms' is greater than rank of 'corA', some terms added")
-    covariates <- cbind(eigen_decom$vectors[,1:rank]) %*% diag(sqrt(eigen_decom$values[1:rank]), nrow = rank)
+    covariates <- cbind(eigen_decom$vectors[, 1:rank]) %*% diag(sqrt(eigen_decom$values[1:rank]), nrow = rank)
     covariates <- cbind(covariates, matrix(0, ncol = (nterms - rank), nrow = ntraits * nenvs))
   }
-  if(nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) {
-    message("Warning message: \n 'nterms' and/or rank of 'corA' are less than number of environment-within-trait combinations, values in 'mean' will be approximated" )
+  if (nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) {
+    message("Warning message: \n 'nterms' and/or rank of 'corA' are less than number of environment-within-trait combinations, values in 'mean' will be approximated")
   }
 
   mean_pseudo <- c(solve(t(covariates) %*% covariates) %*% t(covariates) %*% mean)
@@ -131,10 +141,10 @@ multi_asr_input <- function(ntraits = 1,
   cor_pseudo <- diag(nterms)
 
   input_asr <- list(
-        mean = mean_pseudo,
-        var = var_pseudo,
-        corA = cor_pseudo,
-        covs = covariates
+    mean = mean_pseudo,
+    var = var_pseudo,
+    corA = cor_pseudo,
+    covs = covariates
   )
 
   return(input_asr)
@@ -177,31 +187,39 @@ multi_asr_input <- function(ntraits = 1,
 #' var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
 #'
 #' # Additive genetic correlations between the two simulated traits.
-#' TcorA <- matrix(c(1.0, 0.6,
-#'                   0.6, 1.0), ncol = 2)
+#' TcorA <- matrix(c(
+#'   1.0, 0.6,
+#'   0.6, 1.0
+#' ), ncol = 2)
 #'
 #' # Additive genetic correlations between the two simulated environments.
-#' EcorA <- matrix(c(1.0, 0.2,
-#'                   0.2, 1.0), ncol = 2)
+#' EcorA <- matrix(c(
+#'   1.0, 0.2,
+#'   0.2, 1.0
+#' ), ncol = 2)
 #'
 #' # Construct separable additive genetic correlation matrix
 #' corA <- kronecker(TcorA, EcorA)
 #'
-#' asr_input <- multi_asr_input(ntraits = 2,
-#'                              nenvs = 2,
-#'                              mean = mean,
-#'                              var = var,
-#'                              corA = corA,
-#'                              nterms = 3)
+#' asr_input <- multi_asr_input(
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   mean = mean,
+#'   var = var,
+#'   corA = corA,
+#'   nterms = 3
+#' )
 #'
 #'
 #' # 2. Use input_asr to simulate genetic values in AlphaSimR based on a multiplicative model with
-#' three terms.
+#' # three terms.
 #'
 #' library("AlphaSimR")
-#' FOUNDERPOP <- quickHaplo(nInd = 10,
-#'                          nChr = 1,
-#'                          segSites = 20)
+#' FOUNDERPOP <- quickHaplo(
+#'   nInd = 10,
+#'   nChr = 1,
+#'   segSites = 20
+#' )
 #'
 #' SP <- SimParam$new(FOUNDERPOP)
 #'
@@ -209,10 +227,12 @@ multi_asr_input <- function(ntraits = 1,
 #' SP$nThreads <- 1L
 #' }
 #'
-#' SP$addTraitA(nQtlPerChr = 20,
-#'              mean = input_asr$mean,
-#'              var = input_asr$var,
-#'              corA = input_asr$corA)
+#' SP$addTraitA(
+#'   nQtlPerChr = 20,
+#'   mean = input_asr$mean,
+#'   var = input_asr$var,
+#'   corA = input_asr$corA
+#' )
 #'
 #' pop <- newPop(FOUNDERPOP)
 #'
@@ -220,14 +240,16 @@ multi_asr_input <- function(ntraits = 1,
 #' # 3. Create a data frame with simulated genetic values for the two traits in the
 #' # two environments, with two replicates of each genotype.
 #'
-#' The covariates are obtained from input_asr.
+#' # The covariates are obtained from input_asr.
 #'
-#' gv_ls <- multi_asr_output(pop = pop,
-#'                           ntraits = 2,
-#'                           nenvs = 2,
-#'                           nreps = 2,
-#'                           covs = input_asr$covs,
-#'                           return.effects = TRUE)
+#' gv_ls <- multi_asr_output(
+#'   pop = pop,
+#'   ntraits = 2,
+#'   nenvs = 2,
+#'   nreps = 2,
+#'   covs = input_asr$covs,
+#'   return.effects = TRUE
+#' )
 #'
 #' @export
 multi_asr_output <- function(pop,
@@ -263,15 +285,14 @@ multi_asr_output <- function(pop,
   colnames(gv) <- paste0("gv.Trait", 1:ntraits)
 
   output_asr <- data.frame(
-       env = envs,
-       rep = reps,
-       id = ids,
-       gv
-   )
-   output_asr <- output_asr[order(output_asr$env, output_asr$rep, output_asr$id), ]
+    env = envs,
+    rep = reps,
+    id = ids,
+    gv
+  )
+  output_asr <- output_asr[order(output_asr$env, output_asr$rep, output_asr$id), ]
 
   if (return.effects) {
-
     colnames(slopes) <- paste0("slope.Term", 1:nterms)
     slopes <- data.frame(id = pop@id, slopes)
 
