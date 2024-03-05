@@ -73,7 +73,7 @@
 
 * Added `return.effects` argument to the `make_phenotypes` function for returning the plot errors and genetic values. The latter will be returned in randomised order when `randomise = TRUE`.
 
-* Added `plot_matrix` function for graphically displaying a symmetric matrix, e.g., correlation or covariance matrix.
+* Added `plot_matrix` function for graphically displaying a symmetric matrix, e.g., correlation or covariance matrix, in a similar manner to the `plot_effects` function.
 
 
 
