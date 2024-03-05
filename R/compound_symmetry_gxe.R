@@ -6,9 +6,9 @@
 #' genetic values in multiple environments for one or more traits based on a compound symmetry
 #' model for genotype-by-environment (GxE) interaction. \cr
 #' This function utilises the ability of `AlphaSimR` to simulate correlated traits.
-#' The wrapper function \code{compsym_asr_input} is used to specify the input parameters required in `AlphaSimR`.
+#' The wrapper function \code{compsym_asr_input()} is used to specify the input parameters required in `AlphaSimR`.
 #' After simulating the genetic values, the wrapper function \link[FieldSimR]{compsym_asr_output} can be used to
-#' obtain a data frame with output values.
+#' generate a data frame with output values.
 #'
 #' The compound symmetry model assumes the same genetic variance for each environment
 #' and the same genetic covariance between each pair of environments. New functionality
@@ -307,7 +307,7 @@ compsym_asr_input <- function(ntraits = 1,
 #'
 #' Creates a data frame of simulated genetic values in multiple environments for one or more traits
 #' based on a compound symmetry model for genotype-by-environment (GxE) interaction. The wrapper function
-#' \code{compsym_asr_output} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}
+#' \code{compsym_asr_output()} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}
 #' population object generated with \link[FieldSimR]{compsym_asr_input}.
 #'
 #' @param pop An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object

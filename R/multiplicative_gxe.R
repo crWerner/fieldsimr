@@ -6,9 +6,9 @@
 #' genetic values in multiple environments for one or more traits based on a multiplicative
 #' model for genotype-by-environment (GxE) interaction. \cr
 #' This function utilises the ability of `AlphaSimR` to simulate correlated traits.
-#' The wrapper function \code{multi_asr_input} is used to specify the input parameters required in `AlphaSimR`.
+#' The wrapper function \code{multi_asr_input()} is used to specify the input parameters required in `AlphaSimR`.
 #' After simulating the genetic values, the wrapper function \link[FieldSimR]{multi_asr_output} can be used to
-#' obtain a data frame with output values.
+#' generate a data frame with output values.
 #'
 #' Currently supports additive traits only, but other (non-additive) traits are being implemented.
 #'
