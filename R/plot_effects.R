@@ -419,10 +419,11 @@ qq_plot <- function(df,
 #'   for the effects.
 #'
 #' @examples
-#' # Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar'
-#' # for Trait 1 in Environment 1.
+#' # Sample variogram of plot errors simulated using a separable first order autoregressive (AR1) process.
 #'
-#' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
+#' error_df <- field_trial_error(ntraits = 1,
+#'                               nenvs = 1,
+#'                               spatial.model = "AR1")
 #'
 #' variogram <- sample_variogram(
 #'   df = error_df,
@@ -495,15 +496,14 @@ sample_variogram <- function(df,
 
 #' Theoretical variogram
 #'
-#' Creates a theoretical variogram for a separable first order autoregressive process.
+#' Creates a theoretical variogram for a separable first order autoregressive (AR1) process.
 #'
 #' @param ncols A scalar defining the number of columns.
 #' @param nrows A scalar defining the number of rows.
-#' @param varR A scalar defining the total error variance.
-#' @param prop.spatial A scalar defining the proportion of spatial error variance to total (spatial + random) error
-#'   variance.
+#' @param varR A scalar defining the error variance.
 #' @param col.cor A scalar defining the column autocorrelation,
 #' @param row.cor A scalar defining the row autocorrelation.
+#' @param prop.spatial A scalar defining the proportion of spatial trend.
 #'
 #' @return A theoretical variogram with x- and y-axes displaying the row and column displacements,
 #'  and the z-axis displaying the semi-variances (variogram ordinates) for a separable autoregressive process.
@@ -516,9 +516,9 @@ sample_variogram <- function(df,
 #'   ncols = 10,
 #'   nrows = 20,
 #'   varR = 1,
-#'   prop.spatial = 0.5,
 #'   col.cor = 0.5,
-#'   row.cor = 0.7
+#'   row.cor = 0.7,
+#'   prop.spatial = 0.5
 #' )
 #'
 #' # Theoretical variogram
@@ -533,9 +533,9 @@ sample_variogram <- function(df,
 theoretical_variogram <- function(ncols = 10,
                                   nrows = 20,
                                   varR = 1,
-                                  prop.spatial = 1,
                                   col.cor = 0.5,
-                                  row.cor = 0.7) {
+                                  row.cor = 0.7,
+                                  prop.spatial = 1) {
   prop_rand <- 1 - prop.spatial
   col_dis <- rep(0:(ncols - 1), each = nrows)
   row_dis <- rep(0:(nrows - 1), times = ncols)

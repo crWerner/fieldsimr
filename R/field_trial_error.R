@@ -62,7 +62,7 @@
 #'   half is assigned to the rows. If only one value is specified, all environments will be
 #'   assigned the same direction.
 #' @param prop.ext A vector defining the proportion of extraneous variation for each environment-within-trait
-#'   combination. If only one value is specified, all combinations will be assigned the proportion.
+#'   combination. If only one value is specified, all combinations will be assigned the same proportion.
 #' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional entries
 #'   containing the spatial, random, and extraneous error terms for each trait.
 #'

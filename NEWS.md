@@ -47,10 +47,34 @@
 
 * Argument `plot_labels` added to function `plot_effects`.
 
-* Added function `qq_plot to create` quantile-quantile (Q-Q) plots.
+* Added function `qq_plot` to create quantile-quantile (Q-Q) plots.
 
 * Added function `sample_variogram` to create sample variograms.
 
 * Added function `theoretical_variogram` to create theoretical variograms.
+
+# FieldSimR 1.3.1
+
+* Replaced all instances of `_` with `.` in all function arguments, e.g., `pos.def` replaced `pos_def`.
+
+* Replaced `n_` with `n` in all function arguments, e.g., `ntraits` replaced `n_traits`.
+
+* Added `multi_asr_input` and `multi_asr_output` wrapper functions for simulating genetic values based on a multiplicative model for GxE interaction.
+
+* Added `small.positive` argument to function `rand_cor_mat`, which is passed to the `bend` function.
+
+* Changed names of example data frames to `error_df_bivar` and `gv_df_unstr` from `df_error_bivar` and `df_gv_unstr`.
+
+* Replaced `rel.main.eff.A` with `prop.main`, `rel.main.eff.DD` with `prop.mainD`, and `rel.main.eff.AA` with `prop.mainAA` in the `compsym_asr_input` function, since these arguments define the proportion of main effect variance, not the relative magnitude. 
+
+* `prop.main` was implemented instead of `prop.mainA`, since this argument is aligned with `var` - i.e., it represents the proportion of additive or total main effect variance depending on whether `useVarA = TRUE` or `FALSE` in `AlphaSimR`.
+
+* Added `return.effects` argument to the `make_phenotypes` function for returning the plot errors and genetic values. The latter will be returned in randomised order when `randomise = TRUE`.
+
+* Added `plot_matrix` function for graphically displaying a symmetric matrix, e.g., correlation or covariance matrix.
+
+
+
+
 
 
