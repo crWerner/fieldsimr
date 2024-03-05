@@ -5,7 +5,7 @@
 #' The blocks are aligned in the column direction (side-by-side) and comprise 5 columns and 20 rows.
 #' The data frame was generated using the function \link[FieldSimR]{field_trial_error} with
 #' bivariate interpolation. The simulation is demonstrated in the vignette
-#' \href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes in multi-environment field trials}.
+#' \href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes in a plant breeding field trial}.
 #'
 #' @format A data frame with 700 rows and 6 columns:
 #' \describe{
@@ -24,9 +24,9 @@
 #' Environments 1 and 2 comprise two replicates of each genotype, while Environment 3 comprises three replicates.
 #' The data frame was generated using the wrapper functions
 #' \link[FieldSimR]{unstr_asr_input} and \link[FieldSimR]{unstr_asr_output}, which simulate correlated
-#' genetic values in \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR}. The simulation is
+#' genetic values with \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}. The simulation is
 #' demonstrated in the vignette
-#' \href{https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html}{Simulation of genetic values using an unstructured model for GxE interaction}.
+#' \href{https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html}{Simulation of genetic values based on an unstructured model for GxE interaction}.
 #'
 #' @format A data frame with 700 rows and 5 columns:
 #' \describe{

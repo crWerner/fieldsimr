@@ -35,7 +35,7 @@
 #' @param spatial.model A character string defining the model used to simulate spatial trend.
 #'   Use 'Bivariate' for bivariate interpolation (default) or 'AR1' for a separable first-order
 #'   autoregressive process. Bivariate interpolation is implemented with the \code{interp}
-#'   function of the R package \href{https://CRAN.R-project.org/package=interp}{interp}.
+#'   function of the R package \href{https://CRAN.R-project.org/package=interp}{`interp`}.
 #' @param complexity A vector defining the complexity of the simulated spatial trend in each
 #'   environment when \code{spatial.model = "Bivariate"}. If only one value is specified,
 #'   all environments will be assigned the same complexity.

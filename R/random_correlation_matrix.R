@@ -8,7 +8,7 @@
 #' @param max.cor A scalar defining the maximum correlation. \cr
 #'  \strong{Note:} \code{-1 < min.cor < max.cor < 1}.
 #' @param pos.def When \code{TRUE} (default is \code{FALSE}), the function \code{bend} of the R package
-#'   \href{https://cran.r-project.org/package=mbend}{mbend} is used with default arguments to
+#'   \href{https://cran.r-project.org/package=mbend}{`mbend`} is used with default arguments to
 #'   bend a non-positive-definite matrix to a positive (semi)-definite matrix.
 #' @param small.positive Argument passed to \code{bend} when \code{pos.def = TRUE}.
 #'   Eigenvalues smaller than \code{small.positive} are replaced with this value. \cr

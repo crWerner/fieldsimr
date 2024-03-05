@@ -176,11 +176,11 @@ plot_effects <- function(df,
 #'
 #' @param mat A symmetric matrix.
 #' @param order When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the R package
-#'   \href{https://cran.r-project.org/package=cluster}{cluster} is used with default arguments to
+#'   \href{https://cran.r-project.org/package=cluster}{`cluster`} is used with default arguments to
 #'   order the matrix based on a dendrogram.
 #' @param labels When \code{TRUE} (default is \code{FALSE}), variable labels are displayed.
 #'
-#' @return A graphical field array with x- and y-axes displaying the variable numbers,
+#' @return A graphical array with x- and y-axes displaying the variable numbers,
 #'  and colour gradient ranging from blue (low value) to red (high value).
 #'
 #' @examples

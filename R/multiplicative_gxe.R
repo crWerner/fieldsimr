@@ -1,12 +1,12 @@
-#' Simulate genetic values based on a multiplicative model for GxE interaction - AlphaSimR
+#' Simulate genetic values based on a multiplicative model for GxE interaction - `AlphaSimR`
 #' input parameters
 #'
 #' Creates a list of input parameters for
-#' \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
+#' \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} to simulate
 #' genetic values in multiple environments for one or more traits based on a multiplicative
 #' model for genotype-by-environment (GxE) interaction. \cr
-#' This function utilises the ability of AlphaSimR to simulate correlated traits.
-#' The wrapper function \code{multi_asr_input} is used to specify the input parameters required in AlphaSimR.
+#' This function utilises the ability of `AlphaSimR` to simulate correlated traits.
+#' The wrapper function \code{multi_asr_input} is used to specify the input parameters required in `AlphaSimR`.
 #' After simulating the genetic values, the wrapper function \link[FieldSimR]{multi_asr_output} can be used to
 #' obtain a data frame with output values.
 #'
@@ -25,12 +25,12 @@
 #'   \strong{Note:} when \code{nterms} is less than the number of environment-within-trait combinations,
 #'   the values in \code{mean} will be approximated.
 #'
-#' @return A list with input parameters for AlphaSimR, which are used to simulate
+#' @return A list with input parameters for `AlphaSimR`, which are used to simulate
 #'   correlated genetic values based on a multiplicative model for GxE interaction.
 #'   Covariates are also supplied for use in \link[FieldSimR]{multi_asr_output}.
 #'
 #' @examples
-#' # Simulate genetic values with AlphaSimR for two additive traits in
+#' # Simulate genetic values with 'AlphaSimR' for two additive traits in
 #' # two environments based on a multiplicative model with three terms.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -151,14 +151,14 @@ multi_asr_input <- function(ntraits = 1,
 }
 
 #' Simulate genetic values based on a multiplicative model for GxE interaction -
-#' Simulation with AlphaSimR
+#' Simulation with `AlphaSimR`
 #'
 #' Creates a data frame of simulated genetic values in multiple environments for one or more traits
 #' based on a multiplicative model for genotype-by-environment (GxE) interaction. This function
-#' requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
+#' requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
 #' generated with \link[FieldSimR]{multi_asr_input}.
 #'
-#' @param pop An \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
+#' @param pop An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
 #'   (\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
 #'   \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
 #'   generated with \link[FieldSimR]{multi_asr_input}.
@@ -176,7 +176,7 @@ multi_asr_input <- function(ntraits = 1,
 #'   additional entries containing the genotype slopes for each multiplicative term.
 #'
 #' @examples
-#' # Simulate genetic values with AlphaSimR for two additive traits in
+#' # Simulate genetic values with 'AlphaSimR' for two additive traits in
 #' # two environments based on a (reduced rank) multiplicative model with three terms.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -211,7 +211,7 @@ multi_asr_input <- function(ntraits = 1,
 #' )
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values in AlphaSimR based on a multiplicative model with
+#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a multiplicative model with
 #' # three terms.
 #'
 #' library("AlphaSimR")

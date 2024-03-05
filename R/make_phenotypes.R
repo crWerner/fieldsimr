@@ -10,7 +10,7 @@
 #'   and the genetic values for each trait.
 #' @param error.df A data frame of plot errors. Must contain the columns 'env', 'block',
 #'   'col', 'row', and the plot errors for each trait.
-#' @param randomise When \code{TRUE}, genotypes are randomly allocated to plots according to
+#' @param randomise When \code{TRUE} (default is \code{FALSE}), genotypes are randomly allocated to plots according to
 #'   a randomized complete block design (RCBD).\cr
 #'   \strong{Note:} Other experimental designs are being implemented and should be generated externally.
 #' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional

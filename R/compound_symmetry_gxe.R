@@ -1,12 +1,12 @@
-#' Simulate genetic values based on a compound symmetry model for GxE interaction - AlphaSimR
+#' Simulate genetic values based on a compound symmetry model for GxE interaction - `AlphaSimR`
 #' input parameters
 #'
 #' Creates a list of input parameters for
-#' \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
+#' \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} to simulate
 #' genetic values in multiple environments for one or more traits based on a compound symmetry
 #' model for genotype-by-environment (GxE) interaction. \cr
-#' This function utilises the ability of AlphaSimR to simulate correlated traits.
-#' The wrapper function \code{compsym_asr_input} is used to specify the input parameters required in AlphaSimR.
+#' This function utilises the ability of `AlphaSimR` to simulate correlated traits.
+#' The wrapper function \code{compsym_asr_input} is used to specify the input parameters required in `AlphaSimR`.
 #' After simulating the genetic values, the wrapper function \link[FieldSimR]{compsym_asr_output} can be used to
 #' obtain a data frame with output values.
 #'
@@ -15,7 +15,7 @@
 #' is being implemented which relaxes the former assumption
 #' (also see \link[FieldSimR]{unstr_asr_output} and \link[FieldSimR]{multi_asr_output}).
 #'
-#' \strong{Note:} AlphaSimR can simulate different biological effects (see:
+#' \strong{Note:} `AlphaSimR` can simulate different biological effects (see:
 #' \href{https://gaynorr.github.io/AlphaSimR/reference/SimParam.html}{SimParam}).
 #' \itemize{
 #'   \item For additive traits use \code{addTraitA()}.
@@ -30,7 +30,7 @@
 #' @param mean A vector of mean genetic values for each environment-within-trait combination.
 #'   If only one value is specified, all combinations will be assigned the same mean.
 #' @param var A vector of genetic variances for each trait. \cr
-#'   \strong{Note:} When \code{useVarA = TRUE} is specified in AlphaSimR (default), the values in
+#'   \strong{Note:} When \code{useVarA = TRUE} is specified in `AlphaSimR` (default), the values in
 #'   \code{var} represent the additive genetic variances, otherwise they represent the
 #'   total (additive + non-additive) genetic variances.
 #' @param prop.main  A vector defining the proportion of main effect variance for each trait.
@@ -59,11 +59,11 @@
 #' @param corAA A matrix of epistatic correlations between traits (similar to
 #'   \code{corA}). If not specified and epistasis is simulated, a diagonal matrix is constructed.
 #'
-#' @return A list with input parameters for AlphaSimR, which are used to simulate
+#' @return A list with input parameters for `AlphaSimR`, which are used to simulate
 #'   correlated genetic values based on a compound symmetry model for GxE interaction.
 #'
 #' @examples
-#' # Simulate genetic values with AlphaSimR for two additive + dominance traits in
+#' # Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
 #' # two environments based on a compound symmetry model.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -303,14 +303,14 @@ compsym_asr_input <- function(ntraits = 1,
 }
 
 #' Simulate genetic values based on a compound symmetry model for GxE interaction -
-#' Simulation with AlphaSimR
+#' Simulation with `AlphaSimR`
 #'
 #' Creates a data frame of simulated genetic values in multiple environments for one or more traits
 #' based on a compound symmetry model for genotype-by-environment (GxE) interaction. The wrapper function
-#' \code{compsym_asr_output} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR}
+#' \code{compsym_asr_output} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}
 #' population object generated with \link[FieldSimR]{compsym_asr_input}.
 #'
-#' @param pop An \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
+#' @param pop An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
 #'   (\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
 #'   \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
 #'   generated with \link[FieldSimR]{compsym_asr_input}.
@@ -326,7 +326,7 @@ compsym_asr_input <- function(ntraits = 1,
 #'   additional entries containing the genotype main effects and GxE interaction effects for each trait.
 #'
 #' @examples
-#' # Simulate genetic values with AlphaSimR for two additive + dominance traits in
+#' # Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
 #' # two environments based on a compound symmetry model.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
@@ -363,7 +363,7 @@ compsym_asr_input <- function(ntraits = 1,
 #' )
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values with AlphaSimR based on a compound symmetry model.
+#' # 2. Use input_asr to simulate genetic values with 'AlphaSimR' based on a compound symmetry model.
 #'
 #' library("AlphaSimR")
 #' FOUNDERPOP <- quickHaplo(
