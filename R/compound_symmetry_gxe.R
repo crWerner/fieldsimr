@@ -13,7 +13,7 @@
 #' The compound symmetry model assumes the same genetic variance for each environment
 #' and the same genetic covariance between each pair of environments. New functionality
 #' is being implemented which relaxes the former assumption
-#' (also see \link[FieldSimR]{unstr_asr_output} and \link[FieldSimR]{multi_asr_output}).
+#' (also see \link[FieldSimR]{unstr_asr_output}).
 #'
 #' \strong{Note:} `AlphaSimR` can simulate different biological effects (see:
 #' \href{https://gaynorr.github.io/AlphaSimR/reference/SimParam.html}{SimParam}).
@@ -160,7 +160,6 @@ compsym_asr_input <- function(ntraits = 1,
         stop("Dimensions of 'corA' must match number of traits")
       }
 
-      corA <- round(corA, 12)
       if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < (-1)) | !isSymmetric(corA)) {
         stop("'corA' must be a symmetric correlation matrix")
       }
@@ -171,7 +170,7 @@ compsym_asr_input <- function(ntraits = 1,
     }
 
     if (i == "DD") {
-      if (is.null(meanDD)) stop("'meanDD' is not specified")
+      if (is.null(meanDD)) stop("'meanDD' must be specified when simulating dominance")
       if (length(meanDD) == 1) {
         mean_vals <- rep(meanDD, each = ntraits * nenvs)
       } else if (length(meanDD) == (ntraits * nenvs)) {
@@ -181,14 +180,14 @@ compsym_asr_input <- function(ntraits = 1,
               number of environment-within-trait combinations")
       }
 
-      if (is.null(varDD)) stop("'varDD' is not specified")
+      if (is.null(varDD)) stop("'varDD' must be specified when simulating dominance")
       if (length(varDD) == 1) {
         varDD <- rep(varDD, each = ntraits)
       } else if (length(varDD) != ntraits) {
         stop("Number of values in 'varDD' must be 1 or match number of traits")
       }
 
-      if (is.null(prop.mainDD)) stop("'prop.mainDD' is not specified")
+      if (is.null(prop.mainDD)) stop("'prop.mainDD' must be specified when simulating dominance")
 
       if (length(prop.mainDD) == ntraits) {
         prop_main <- prop.mainDD
@@ -209,7 +208,6 @@ compsym_asr_input <- function(ntraits = 1,
         stop("Dimensions of 'corDD' must match number of traits")
       }
 
-      corDD <- round(corDD, 12)
       if (any(unique(diag(corDD)) != 1) | any(corDD > 1) | any(corDD < (-1)) | !isSymmetric(corDD)) {
         stop("'corDD' must be a symmetric correlation matrix")
       }
@@ -220,14 +218,14 @@ compsym_asr_input <- function(ntraits = 1,
     }
 
     if (i == "AA") {
-      if (is.null(relAA)) stop("'relAA' is not specified")
+      if (is.null(relAA)) stop("'relAA' must be specified when simulating epistasis")
       if (length(relAA) == 1) {
         relAA <- rep(relAA, ntraits)
       } else if (length(relAA) != ntraits) {
         stop("Number of values in 'relAA' must be 1 or match number of traits")
       }
 
-      if (is.null(prop.mainAA)) stop("'prop.mainAA' is not specified")
+      if (is.null(prop.mainAA)) stop("'prop.mainAA' must be specified when simulating epistasis")
 
       if (length(prop.mainAA) == ntraits) {
         prop_main <- prop.mainAA
@@ -248,7 +246,6 @@ compsym_asr_input <- function(ntraits = 1,
         stop("Dimensions of 'corAA' must match number of traits'")
       }
 
-      corAA <- round(corAA, 12)
       if (any(unique(diag(corAA)) != 1) | any(corAA > 1) | any(corAA < (-1)) | !isSymmetric(corAA)) {
         stop("'corAA' must be a symmetric correlation matrix")
       }

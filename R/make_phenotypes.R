@@ -2,8 +2,8 @@
 #'
 #' Creates a data frame of phenotypes by combining genetic values with plot errors
 #' generated with the function \link[FieldSimR]{field_trial_error}.
-#' Requires genetic values generated with the functions \link[FieldSimR]{compsym_asr_output},
-#' \link[FieldSimR]{unstr_asr_output}, and \link[FieldSimR]{multi_asr_output},
+#' Requires genetic values generated with the functions \link[FieldSimR]{compsym_asr_output}
+#' or \link[FieldSimR]{unstr_asr_output},
 #' or any data frame matching the description below.
 #'
 #' @param gv.df A data frame of genetic values. Must contain the columns 'env', 'rep', genotype 'id',
@@ -37,6 +37,13 @@ make_phenotypes <- function(gv.df,
                             return.effects = FALSE) {
   if (inherits(gv.df, "list")) gv.df <- gv.df[[1]]
   if (inherits(error.df, "list")) error.df <- error.df[[1]]
+
+  if (!is.data.frame(gv.df)) {
+    stop("'gv.df' must be a data frame")
+  }
+  if (!is.data.frame(error.df)) {
+    stop("'error.df' must be a data frame")
+  }
 
   colnames(gv.df)[grep("env|rep|id", tolower(colnames(gv.df)))] <- tolower(colnames(gv.df))[grep("env|rep|id", tolower(colnames(gv.df)))]
   colnames(error.df)[grep("env|block|col|row", tolower(colnames(error.df)))] <- tolower(colnames(error.df))[grep("env|block|col|row", tolower(colnames(error.df)))]

@@ -234,7 +234,7 @@ unstr_asr_input <- function(ntraits = 1,
           stop("Dimensions of 'corA' must match number of environment-within-trait
                combinations")
         }
-        corA <- round(corA, 12)
+        corA <- round(corA, 18)
         if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < (-1)) | !isSymmetric(corA)) {
           stop("'corA' must be a symmetric correlation matrix")
         }
@@ -248,7 +248,7 @@ unstr_asr_input <- function(ntraits = 1,
         } else if (length(TcorA) == 1) {
           TcorA <- matrix(1)
         } else {
-          TcorA <- round(TcorA, 12)
+          TcorA <- round(TcorA, 18)
           if (any(unique(diag(TcorA)) != 1) | any(TcorA > 1) | any(TcorA < (-1)) | !isSymmetric(TcorA)) {
             stop("'TcorA' must be a symmetric correlation matrix")
           }
@@ -257,7 +257,7 @@ unstr_asr_input <- function(ntraits = 1,
           stop("Dimensions of the 'TcorA' & 'EcorA' Kronecker product must
                  match number of environment-within-trait combinations")
         }
-        EcorA <- round(EcorA, 12)
+        EcorA <- round(EcorA, 18)
         if (any(unique(diag(EcorA)) != 1) | any(EcorA > 1) | any(EcorA < (-1)) | !isSymmetric(EcorA)) {
           stop("'EcorA' must be a symmetric correlation matrix")
         }
@@ -322,7 +322,7 @@ unstr_asr_input <- function(ntraits = 1,
           stop("Dimensions of 'corDD' must match number of environment-within-trait
                combinations")
         }
-        corDD <- round(corDD, 12)
+        corDD <- round(corDD, 18)
         if (any(unique(diag(corDD)) != 1) | any(corDD > 1) | any(corDD < (-1)) | !isSymmetric(corDD)) {
           stop("'corDD' must be a symmetric correlation matrix")
         }
@@ -336,7 +336,7 @@ unstr_asr_input <- function(ntraits = 1,
         } else if (length(TcorDD) == 1) {
           TcorDD <- matrix(1)
         } else {
-          TcorDD <- round(TcorDD, 12)
+          TcorDD <- round(TcorDD, 18)
           if (any(unique(diag(TcorDD)) != 1) | any(TcorDD > 1) | any(TcorDD < (-1)) | !isSymmetric(TcorDD)) {
             stop("'TcorDD' must be a symmetric correlation matrix")
           }
@@ -345,7 +345,7 @@ unstr_asr_input <- function(ntraits = 1,
           stop("Dimensions of the 'TcorDD' & 'EcorDD' Kronecker product must
                  match number of environment-within-trait combinations")
         }
-        EcorDD <- round(EcorDD, 12)
+        EcorDD <- round(EcorDD, 18)
         if (any(unique(diag(EcorDD)) != 1) | any(EcorDD > 1) | any(EcorDD < (-1)) | !isSymmetric(EcorDD)) {
           stop("'EcorDD' must be a symmetric correlation matrix")
         }
@@ -403,7 +403,7 @@ unstr_asr_input <- function(ntraits = 1,
           stop("Dimensions of 'corAA' must match number of environment-within-trait
                combinations")
         }
-        corAA <- round(corAA, 12)
+        corAA <- round(corAA, 18)
         if (any(unique(diag(corAA)) != 1) | any(corAA > 1) | any(corAA < (-1)) | !isSymmetric(corAA)) {
           stop("'corAA' must be a symmetric correlation matrix")
         }
@@ -417,7 +417,7 @@ unstr_asr_input <- function(ntraits = 1,
         } else if (length(TcorAA) == 1) {
           TcorAA <- matrix(1)
         } else {
-          TcorAA <- round(TcorAA, 12)
+          TcorAA <- round(TcorAA, 18)
           if (any(unique(diag(TcorAA)) != 1) | any(TcorAA > 1) | any(TcorAA < (-1)) | !isSymmetric(TcorAA)) {
             stop("'TcorAA' must be a symmetric correlation matrix")
           }
@@ -426,7 +426,7 @@ unstr_asr_input <- function(ntraits = 1,
           stop("Dimension of the 'TcorAA' & 'EcorAA' Kronecker product must
                  match number of environment-within-trait combinations")
         }
-        EcorAA <- round(EcorAA, 12)
+        EcorAA <- round(EcorAA, 18)
         if (any(unique(diag(EcorAA)) != 1) | any(EcorAA > 1) | any(EcorAA < (-1)) | !isSymmetric(EcorAA)) {
           stop("'EcorAA' must be a symmetric correlation matrix")
         }
