@@ -93,7 +93,7 @@ make_phenotypes <- function(gv.df,
   )
 
   pheno_df <- pheno_df[order(pheno_df$env, pheno_df$col, pheno_df$row), ]
-  colnames(pheno_df) <- c("env", "block", "col", "row", "id", paste0("phe.Trait", 1:ntraits))
+  colnames(pheno_df) <- c("env", "block", "col", "row", "id", paste0("y.Trait", 1:ntraits))
 
   if (return.effects) {
     listNames <- c("pheno.df", "gv.df", "error.df")

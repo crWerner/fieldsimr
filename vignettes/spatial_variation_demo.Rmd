@@ -225,7 +225,7 @@ pheno_env1 <- pheno_df[pheno_df$env == 1, ] # Extract phenotypes in environment 
 
 **Simulated phenotypes**
 ```{r fig.height = 4, fig.width = 9, fig.align = "center"}
-plot_effects(pheno_env1, effect = "phe.Trait1")
+plot_effects(pheno_env1, effect = "y.Trait1")
 ```
 
 <br/>
@@ -233,7 +233,7 @@ plot_effects(pheno_env1, effect = "phe.Trait1")
 **Histogram showing the phenotypes of the 100 maize hybrids for grain yield in the two blocks in Environment 1** 
 
 ```{r echo=TRUE, fig.height = 4, fig.width = 9, fig.align = "center"}
-ggplot(pheno_env1, aes(x = phe.Trait1, fill = factor(block))) +
+ggplot(pheno_env1, aes(x = y.Trait1, fill = factor(block))) +
   geom_histogram(color = "#e9ecef", alpha = 0.8, position = "identity", bins = 50) +
   scale_fill_manual(values = c("violetred3", "goldenrod3", "skyblue2")) +
   labs(x = "Phenotypes for grain yield (t/ha)", y = "Count", fill = "Block")
