@@ -218,9 +218,9 @@ sample a value between 0 and 0.5.</p>
 <span></span>
 <span><span class="va">ScorR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">ntraits</span>, min.cor <span class="op">=</span> <span class="fl">0</span>, max.cor <span class="op">=</span> <span class="fl">0.5</span>, pos.def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ScorR</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      [,1] [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.00 0.14</span></span>
-<span><span class="co">#&gt; [2,] 0.14 1.00</span></span></code></pre></div>
+<span><span class="co">#&gt;      1    2</span></span>
+<span><span class="co">#&gt; 1 1.00 0.03</span></span>
+<span><span class="co">#&gt; 2 0.03 1.00</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -241,9 +241,9 @@ between 0 and 0.5.</p>
 <span></span>
 <span><span class="va">EcorR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">ntraits</span>, min.cor <span class="op">=</span> <span class="fl">0</span>, max.cor <span class="op">=</span> <span class="fl">0.5</span>, pos.def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">EcorR</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      [,1] [,2]</span></span>
-<span><span class="co">#&gt; [1,] 1.00 0.02</span></span>
-<span><span class="co">#&gt; [2,] 0.02 1.00</span></span></code></pre></div>
+<span><span class="co">#&gt;     1   2</span></span>
+<span><span class="co">#&gt; 1 1.0 0.5</span></span>
+<span><span class="co">#&gt; 2 0.5 1.0</span></span></code></pre></div>
 <p><strong>Note:</strong> the <strong>proportion of the random error
 variance to total error variance</strong> is defined as 1 -
 (prop_spatial + prop_ext). Hence, <code>prop_spatial</code> and
@@ -348,13 +348,13 @@ of genotypes to plots using an external R package or software.</p>
 <p><br></p>
 <p><strong>Simulated phenotypes</strong></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">pheno_env1</span>, effect <span class="op">=</span> <span class="st">"phe.Trait1"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">pheno_env1</span>, effect <span class="op">=</span> <span class="st">"y.Trait1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-15-1.png" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Histogram showing the phenotypes of the 100 maize hybrids for
 grain yield in the two blocks in Environment 1</strong></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">pheno_env1</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">phe.Trait1</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">block</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">pheno_env1</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">y.Trait1</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">block</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#e9ecef"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>, position <span class="op">=</span> <span class="st">"identity"</span>, bins <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"violetred3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"skyblue2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Phenotypes for grain yield (t/ha)"</span>, y <span class="op">=</span> <span class="st">"Count"</span>, fill <span class="op">=</span> <span class="st">"Block"</span><span class="op">)</span></span></code></pre></div>
