@@ -2,7 +2,7 @@
 % Please edit documentation in R/unstructured_gxe.R
 \name{unstr_asr_input}
 \alias{unstr_asr_input}
-\title{Simulate genetic values based on an unstructured model for GxE interaction - AlphaSimR input
+\title{Simulate genetic values based on an unstructured model for GxE interaction - `AlphaSimR` input
 parameters}
 \usage{
 unstr_asr_input(
@@ -128,20 +128,20 @@ Must be provided in combination with \code{EcorAA}. \cr
 \strong{Alternatively}, \code{corAA} can be specified.}
 }
 \value{
-A list with input parameters for AlphaSimR, which are used to simulate
+A list with input parameters for `AlphaSimR`, which are used to simulate
   correlated genetic values based on an unstructured model for GxE interaction.
 }
 \description{
 Creates a list of input parameters for
-\href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
+\href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} to simulate
 genetic values in multiple environments for one or more traits based on an unstructured
 model for genotype-by-environment (GxE) interaction. \cr
-This function utilises the ability of AlphaSimR to simulate correlated traits.
-The wrapper function \code{unstr_asr_input} is used to specify the input parameters required in AlphaSimR,
+This function utilises the ability of `AlphaSimR` to simulate correlated traits.
+The wrapper function \code{unstr_asr_input()} is used to specify the input parameters required in `AlphaSimR`,
 and can handle separable and non-separable structures between traits and
 environments (see below).
 After simulating the genetic values, the wrapper function \link[FieldSimR]{unstr_asr_output} can be used to
-obtain a data frame with output values.
+generate a data frame with output values.
 }
 \details{
 \code{unstr_asr_input} can handle separable and non-separable structures between traits and
@@ -152,7 +152,7 @@ environments.
   \item For non-separable structures, provide (1) \code{var}, and (2) \code{corA}. \cr
   }
 
-\strong{Note:} AlphaSimR can simulate different biological effects (see:
+\strong{Note:} `AlphaSimR` can simulate different biological effects (see:
 \href{https://gaynorr.github.io/AlphaSimR/reference/SimParam.html}{SimParam}).
 \itemize{
   \item For additive traits use \code{addTraitA()}.
@@ -163,7 +163,7 @@ environments.
 Check the \code{useVarA} argument of these functions when simulating non-additive traits.
 }
 \examples{
-# Simulate genetic values with AlphaSimR for two additive + dominance traits in
+# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
 # two environments based on an unstructured model.
 
 # 1. Define the genetic architecture of the simulated traits.

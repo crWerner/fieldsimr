@@ -3,12 +3,12 @@
 \name{compsym_asr_output}
 \alias{compsym_asr_output}
 \title{Simulate genetic values based on a compound symmetry model for GxE interaction -
-Simulation with AlphaSimR}
+Simulation with `AlphaSimR`}
 \usage{
 compsym_asr_output(pop, ntraits, nenvs, nreps, return.effects = FALSE)
 }
 \arguments{
-\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
+\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
 (\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
 \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
 generated with \link[FieldSimR]{compsym_asr_input}.}
@@ -31,11 +31,11 @@ A data frame with columns 'env', 'rep', and genotype 'id', followed by the
 \description{
 Creates a data frame of simulated genetic values in multiple environments for one or more traits
 based on a compound symmetry model for genotype-by-environment (GxE) interaction. The wrapper function
-\code{compsym_asr_output} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR}
+\code{compsym_asr_output()} requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}
 population object generated with \link[FieldSimR]{compsym_asr_input}.
 }
 \examples{
-# Simulate genetic values with AlphaSimR for two additive + dominance traits in
+# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
 # two environments based on a compound symmetry model.
 
 # 1. Define the genetic architecture of the simulated traits.
@@ -72,7 +72,7 @@ input_asr <- compsym_asr_input(
 )
 
 
-# 2. Use input_asr to simulate genetic values with AlphaSimR based on a compound symmetry model.
+# 2. Use input_asr to simulate genetic values with 'AlphaSimR' based on a compound symmetry model.
 
 library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(

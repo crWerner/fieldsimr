@@ -2,7 +2,7 @@
 % Please edit documentation in R/compound_symmetry_gxe.R
 \name{compsym_asr_input}
 \alias{compsym_asr_input}
-\title{Simulate genetic values based on a compound symmetry model for GxE interaction - AlphaSimR
+\title{Simulate genetic values based on a compound symmetry model for GxE interaction - `AlphaSimR`
 input parameters}
 \usage{
 compsym_asr_input(
@@ -30,7 +30,7 @@ compsym_asr_input(
 If only one value is specified, all combinations will be assigned the same mean.}
 
 \item{var}{A vector of genetic variances for each trait. \cr
-\strong{Note:} When \code{useVarA = TRUE} is specified in AlphaSimR (default), the values in
+\strong{Note:} When \code{useVarA = TRUE} is specified in `AlphaSimR` (default), the values in
 \code{var} represent the additive genetic variances, otherwise they represent the
 total (additive + non-additive) genetic variances.}
 
@@ -69,26 +69,26 @@ same proportion. \cr
 \code{corA}). If not specified and epistasis is simulated, a diagonal matrix is constructed.}
 }
 \value{
-A list with input parameters for AlphaSimR, which are used to simulate
+A list with input parameters for `AlphaSimR`, which are used to simulate
   correlated genetic values based on a compound symmetry model for GxE interaction.
 }
 \description{
 Creates a list of input parameters for
-\href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
+\href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} to simulate
 genetic values in multiple environments for one or more traits based on a compound symmetry
 model for genotype-by-environment (GxE) interaction. \cr
-This function utilises the ability of AlphaSimR to simulate correlated traits.
-The wrapper function \code{compsym_asr_input} is used to specify the input parameters required in AlphaSimR.
+This function utilises the ability of `AlphaSimR` to simulate correlated traits.
+The wrapper function \code{compsym_asr_input()} is used to specify the input parameters required in `AlphaSimR`.
 After simulating the genetic values, the wrapper function \link[FieldSimR]{compsym_asr_output} can be used to
-obtain a data frame with output values.
+generate a data frame with output values.
 }
 \details{
 The compound symmetry model assumes the same genetic variance for each environment
 and the same genetic covariance between each pair of environments. New functionality
 is being implemented which relaxes the former assumption
-(also see \link[FieldSimR]{unstr_asr_output} and \link[FieldSimR]{multi_asr_output}).
+(also see \link[FieldSimR]{unstr_asr_output}).
 
-\strong{Note:} AlphaSimR can simulate different biological effects (see:
+\strong{Note:} `AlphaSimR` can simulate different biological effects (see:
 \href{https://gaynorr.github.io/AlphaSimR/reference/SimParam.html}{SimParam}).
 \itemize{
   \item For additive traits use \code{addTraitA()}.
@@ -99,7 +99,7 @@ is being implemented which relaxes the former assumption
 Check the \code{useVarA} argument of these functions when simulating non-additive traits.
 }
 \examples{
-# Simulate genetic values with AlphaSimR for two additive + dominance traits in
+# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
 # two environments based on a compound symmetry model.
 
 # 1. Define the genetic architecture of the simulated traits.

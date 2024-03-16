@@ -21,10 +21,10 @@ rand_cor_mat(
 \strong{Note:} \code{-1 < min.cor < max.cor < 1}.}
 
 \item{pos.def}{When \code{TRUE} (default is \code{FALSE}), the function \code{bend} of the R package
-\href{https://cran.r-project.org/package=mbend}{mbend} is used with default arguments to
+\href{https://cran.r-project.org/package=mbend}{`mbend`} is used with default arguments to
 bend a non-positive-definite matrix to a positive (semi)-definite matrix.}
 
-\item{small.positive}{Argument passed to \code{bend} when \code{pos.def = TRUE}.
+\item{small.positive}{Argument passed to \code{bend} when \code{pos.def = TRUE} (default is 0.0001).
  Eigenvalues smaller than \code{small.positive} are replaced with this value. \cr
 \strong{Note:} \code{0 < small.positive < 0.1}.}
 }
@@ -42,7 +42,7 @@ corA <- rand_cor_mat(
   min.cor = -0.2,
   max.cor = 0.8,
   pos.def = TRUE,
-  small.positive = 1e-8
+  small.positive = 1e-4
 )
 
 }

@@ -3,7 +3,7 @@
 \name{multi_asr_output}
 \alias{multi_asr_output}
 \title{Simulate genetic values based on a multiplicative model for GxE interaction -
-Simulation with AlphaSimR}
+Simulation with `AlphaSimR`}
 \usage{
 multi_asr_output(
   pop,
@@ -15,7 +15,7 @@ multi_asr_output(
 )
 }
 \arguments{
-\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
+\item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
 (\href{https://gaynorr.github.io/AlphaSimR/reference/Pop-class.html}{Pop-class} or
 \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
 generated with \link[FieldSimR]{multi_asr_input}.}
@@ -41,11 +41,11 @@ A data frame with columns 'env', 'rep', and genotype 'id', followed by the
 \description{
 Creates a data frame of simulated genetic values in multiple environments for one or more traits
 based on a multiplicative model for genotype-by-environment (GxE) interaction. This function
-requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} population object
+requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
 generated with \link[FieldSimR]{multi_asr_input}.
 }
 \examples{
-# Simulate genetic values with AlphaSimR for two additive traits in
+# Simulate genetic values with 'AlphaSimR' for two additive traits in
 # two environments based on a (reduced rank) multiplicative model with three terms.
 
 # 1. Define the genetic architecture of the simulated traits.
@@ -80,7 +80,7 @@ input_asr <- multi_asr_input(
 )
 
 
-# 2. Use input_asr to simulate genetic values in AlphaSimR based on a multiplicative model with
+# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a multiplicative model with
 # three terms.
 
 library("AlphaSimR")

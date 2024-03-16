@@ -2,7 +2,7 @@
 % Please edit documentation in R/multiplicative_gxe.R
 \name{multi_asr_input}
 \alias{multi_asr_input}
-\title{Simulate genetic values based on a multiplicative model for GxE interaction - AlphaSimR
+\title{Simulate genetic values based on a multiplicative model for GxE interaction - `AlphaSimR`
 input parameters}
 \usage{
 multi_asr_input(
@@ -34,25 +34,25 @@ the number of terms is set to the number of environment-within-trait combination
 the values in \code{mean} will be approximated.}
 }
 \value{
-A list with input parameters for AlphaSimR, which are used to simulate
+A list with input parameters for `AlphaSimR`, which are used to simulate
   correlated genetic values based on a multiplicative model for GxE interaction.
   Covariates are also supplied for use in \link[FieldSimR]{multi_asr_output}.
 }
 \description{
 Creates a list of input parameters for
-\href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR} to simulate
+\href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} to simulate
 genetic values in multiple environments for one or more traits based on a multiplicative
 model for genotype-by-environment (GxE) interaction. \cr
-This function utilises the ability of AlphaSimR to simulate correlated traits.
-The wrapper function \code{multi_asr_input} is used to specify the input parameters required in AlphaSimR.
+This function utilises the ability of `AlphaSimR` to simulate correlated traits.
+The wrapper function \code{multi_asr_input()} is used to specify the input parameters required in `AlphaSimR`.
 After simulating the genetic values, the wrapper function \link[FieldSimR]{multi_asr_output} can be used to
-obtain a data frame with output values.
+generate a data frame with output values.
 }
 \details{
 Currently supports additive traits only, but other (non-additive) traits are being implemented.
 }
 \examples{
-# Simulate genetic values with AlphaSimR for two additive traits in
+# Simulate genetic values with 'AlphaSimR' for two additive traits in
 # two environments based on a multiplicative model with three terms.
 
 # 1. Define the genetic architecture of the simulated traits.

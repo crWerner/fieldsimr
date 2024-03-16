@@ -4,7 +4,7 @@
 \alias{plot_effects}
 \title{Graphics for plot effects}
 \usage{
-plot_effects(df, effect, blocks = TRUE, labels = FALSE)
+plot_effects(df, effect, blocks = TRUE, labels = TRUE)
 }
 \arguments{
 \item{df}{A data frame with the columns 'col', 'row', and the effects to be plotted.}
@@ -14,7 +14,7 @@ plot_effects(df, effect, blocks = TRUE, labels = FALSE)
 \item{blocks}{When \code{TRUE} (default), the field array is split into blocks.
 This requires an additional column 'block' in the data frame.}
 
-\item{labels}{When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.}
+\item{labels}{When \code{TRUE} (default), column and row labels are displayed.}
 }
 \value{
 A graphical field array with x- and y-axes displaying the column and row numbers,
@@ -22,7 +22,7 @@ A graphical field array with x- and y-axes displaying the column and row numbers
 }
 \description{
 Creates a graphical field array for a set of plot effects (e.g., phenotypes, genetic values, or plot errors).
-Requires a data frame generated with the functions \link[FieldSimR]{field_trial_error} and \link[FieldSimR]{make_phenotypes},
+Requires a data frame generated with the functions \link[FieldSimR]{field_trial_error} or \link[FieldSimR]{make_phenotypes},
 or any data frame matching the description below.
 }
 \examples{

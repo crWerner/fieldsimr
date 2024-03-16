@@ -104,9 +104,9 @@ make_phenotypes <- function(gv.df,
   if (return.effects) {
     gv_ls <- as.list(as.data.frame(gv.df[, 4:(ntraits + 3)]))
     error_ls <- as.list(as.data.frame(error.df[, 5:(ntraits + 4)]))
-    effects_df <- mapply(function(x,y) cbind(pheno_df[,1:5], x, y), x = gv_ls, y = error_ls, SIMPLIFY = FALSE)
+    effects_df <- mapply(function(x, y) cbind(pheno_df[, 1:5], x, y), x = gv_ls, y = error_ls, SIMPLIFY = FALSE)
 
-    effects_df <-  mapply(function(x,y) {
+    effects_df <- mapply(function(x, y) {
       colnames(x)[6:(ntraits + 5)] <- c(paste0("gv.Trait", y), paste0("e.Trait", y))
       x
     }, x = effects_df, y = seq_len(ntraits), SIMPLIFY = FALSE)

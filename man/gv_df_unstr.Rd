@@ -22,8 +22,8 @@ An example data frame with simulated genetic values of 100 genotypes for two tra
 Environments 1 and 2 comprise two replicates of each genotype, while Environment 3 comprises three replicates.
 The data frame was generated using the wrapper functions
 \link[FieldSimR]{unstr_asr_input} and \link[FieldSimR]{unstr_asr_output}, which simulate correlated
-genetic values in \href{https://CRAN.R-project.org/package=AlphaSimR}{AlphaSimR}. The simulation is
+genetic values with \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}. The simulation is
 demonstrated in the vignette
-\href{https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html}{Simulation of genetic values using an unstructured model for GxE interaction}.
+\href{https://crwerner.github.io/fieldsimr/articles/unstructured_GxE_demo.html}{Simulation of genetic values based on an unstructured model for GxE interaction}.
 }
 \keyword{datasets}

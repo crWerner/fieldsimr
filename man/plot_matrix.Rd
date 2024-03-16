@@ -4,19 +4,22 @@
 \alias{plot_matrix}
 \title{Graphics for matrices}
 \usage{
-plot_matrix(mat, order = FALSE, labels = FALSE)
+plot_matrix(mat, order = FALSE, group.df = NULL, labels = TRUE)
 }
 \arguments{
 \item{mat}{A symmetric matrix.}
 
 \item{order}{When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the R package
-\href{https://cran.r-project.org/package=cluster}{cluster} is used with default arguments to
+\href{https://cran.r-project.org/package=cluster}{`cluster`} is used with default arguments to
 order the matrix based on a dendrogram.}
 
-\item{labels}{When \code{TRUE} (default is \code{FALSE}), variable labels are displayed.}
+\item{group.df}{An optional data frame with columns containing the variable names followed by the group numbers.
+When supplied, the heatmap is split into groups and then ordered (when \code{order = TRUE}).}
+
+\item{labels}{When \code{TRUE} (default), variable labels are displayed.}
 }
 \value{
-A graphical field array with x- and y-axes displaying the variable numbers,
+A heatmap with x- and y-axes displaying the variable numbers,
  and colour gradient ranging from blue (low value) to red (high value).
 }
 \description{
@@ -31,9 +34,13 @@ corA <- rand_cor_mat(
   max.cor = 1
 )
 
+# Define groups
+group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
+
 plot_matrix(
   mat = corA,
   order = TRUE,
+  group.df = group_df,
   labels = TRUE
 )
 

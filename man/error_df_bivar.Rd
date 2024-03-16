@@ -24,6 +24,6 @@ Environments 1 and 2 comprise two blocks, while Environment 3 comprises three bl
 The blocks are aligned in the column direction (side-by-side) and comprise 5 columns and 20 rows.
 The data frame was generated using the function \link[FieldSimR]{field_trial_error} with
 bivariate interpolation. The simulation is demonstrated in the vignette
-\href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes in multi-environment field trials}.
+\href{https://crwerner.github.io/fieldsimr/articles/spatial_error_demo.html}{Simulation of plot errors and phenotypes in a plant breeding field trial}.
 }
 \keyword{datasets}

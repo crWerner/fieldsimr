@@ -13,7 +13,7 @@ and the genetic values for each trait.}
 \item{error.df}{A data frame of plot errors. Must contain the columns 'env', 'block',
 'col', 'row', and the plot errors for each trait.}
 
-\item{randomise}{When \code{TRUE}, genotypes are randomly allocated to plots according to
+\item{randomise}{When \code{TRUE} (default is \code{FALSE}), genotypes are randomly allocated to plots according to
 a randomized complete block design (RCBD).\cr
 \strong{Note:} Other experimental designs are being implemented and should be generated externally.}
 
@@ -28,8 +28,8 @@ A data frame with columns 'env', 'block', 'column', 'row', genotype 'id', and
 \description{
 Creates a data frame of phenotypes by combining genetic values with plot errors
 generated with the function \link[FieldSimR]{field_trial_error}.
-Requires genetic values generated with the functions \link[FieldSimR]{compsym_asr_output},
-\link[FieldSimR]{unstr_asr_output}, and \link[FieldSimR]{multi_asr_output},
+Requires genetic values generated with the functions \link[FieldSimR]{compsym_asr_output}
+or \link[FieldSimR]{unstr_asr_output},
 or any data frame matching the description below.
 }
 \examples{
@@ -39,7 +39,8 @@ or any data frame matching the description below.
 pheno_df <- make_phenotypes(
   gv.df = gv_df_unstr,
   error.df = error_df_bivar,
-  randomise = TRUE
+  randomise = TRUE,
+  return.effects = TRUE
 )
 
 }

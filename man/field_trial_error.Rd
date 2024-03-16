@@ -64,7 +64,7 @@ Currently only implemented when \code{ext.ord = "random"}.}
 \item{spatial.model}{A character string defining the model used to simulate spatial trend.
 Use 'Bivariate' for bivariate interpolation (default) or 'AR1' for a separable first-order
 autoregressive process. Bivariate interpolation is implemented with the \code{interp}
-function of the R package \href{https://CRAN.R-project.org/package=interp}{interp}.}
+function of the R package \href{https://CRAN.R-project.org/package=interp}{`interp`}.}
 
 \item{complexity}{A vector defining the complexity of the simulated spatial trend in each
 environment when \code{spatial.model = "Bivariate"}. If only one value is specified,
@@ -100,7 +100,7 @@ half is assigned to the rows. If only one value is specified, all environments w
 assigned the same direction.}
 
 \item{prop.ext}{A vector defining the proportion of extraneous variation for each environment-within-trait
-combination. If only one value is specified, all combinations will be assigned the proportion.}
+combination. If only one value is specified, all combinations will be assigned the same proportion.}
 
 \item{return.effects}{When \code{TRUE} (default is \code{FALSE}), a list is returned with additional entries
 containing the spatial, random, and extraneous error terms for each trait.}

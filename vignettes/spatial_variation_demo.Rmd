@@ -1,8 +1,8 @@
 ---
-title: "Simulating plot errors and phenotypes in a plant breeding field trial"
+title: "Simulation of plot errors and phenotypes in a plant breeding field trial"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Simulating plot errors and phenotypes in a plant breeding field trial}
+  %\VignetteIndexEntry{Simulation of plot errors and phenotypes in a plant breeding field trial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

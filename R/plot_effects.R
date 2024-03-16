@@ -199,7 +199,7 @@ plot_effects <- function(df,
 #' )
 #'
 #' # Define groups
-#' group_df <- data.frame(variable = 1:10, group = c(1,1,1,1,2,2,2,3,3,4))
+#' group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
 #'
 #' plot_matrix(
 #'   mat = corA,
@@ -231,12 +231,12 @@ plot_matrix <- function(mat,
   if (!is.null(group.df)) {
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with at least two columns")
-    colnames(group.df)[1:2] <- c("variable","group")
+    colnames(group.df)[1:2] <- c("variable", "group")
     if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
 
     group.df$variable <- factor(as.numeric(as.character(group.df$variable)))
     group.df$group <- factor(as.numeric(as.character(group.df$group)))
-    group.df <- group.df[order(group.df$group),]
+    group.df <- group.df[order(group.df$group), ]
     rownames(group.df) <- NULL
     ord <- as.character(group.df$variable)
     mat <- mat[ord, ord]
@@ -277,18 +277,18 @@ plot_matrix <- function(mat,
     dis_mat <- 1 - mat
 
     if (ngroups == 1) {
-        order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order.lab
+      order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order.lab
     } else if (ngroups > 1) {
-          order2 <- c()
-          for (i in 1:ngroups) {
-            ord <- as.character(group.df$variable[group.df$group == i])
-            dis_mat_tmp <- as.matrix(dis_mat[ord, ord])
-            if (ncol(dis_mat_tmp) == 1){
-              order2 <- c(order2, ord)
-            } else if(ncol(dis_mat_tmp) > 1) {
-            order_tmp <- cluster::agnes(x = dis_mat_tmp, diss = TRUE, method = "average")$order.lab
-            order2 <- c(order2, order_tmp)
-            }
+      order2 <- c()
+      for (i in 1:ngroups) {
+        ord <- as.character(group.df$variable[group.df$group == i])
+        dis_mat_tmp <- as.matrix(dis_mat[ord, ord])
+        if (ncol(dis_mat_tmp) == 1) {
+          order2 <- c(order2, ord)
+        } else if (ncol(dis_mat_tmp) > 1) {
+          order_tmp <- cluster::agnes(x = dis_mat_tmp, diss = TRUE, method = "average")$order.lab
+          order2 <- c(order2, order_tmp)
+        }
       }
     }
     df$var1 <- factor(df$var1, levels = order2)
@@ -440,7 +440,7 @@ qq_plot <- function(df,
         axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0), size = 11),
         axis.text = ggplot2::element_text(size = 10)
       ) +
-    ggplot2::lims(x = c(mid_pt_x - max_pt_x, mid_pt_x + max_pt_x))
+      ggplot2::lims(x = c(mid_pt_x - max_pt_x, mid_pt_x + max_pt_x))
     return(p)
   }
 
@@ -474,8 +474,10 @@ qq_plot <- function(df,
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = cr.label)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_text(size = 4) +
-      ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles",
-                    subtitle = "Effects indexed as col:row") +
+      ggplot2::labs(
+        y = "Sample quantiles", x = "Theoretical quantiles",
+        subtitle = "Effects indexed as col:row"
+      ) +
       ggplot2::ggtitle(label = effect) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
@@ -504,9 +506,11 @@ qq_plot <- function(df,
 #' @examples
 #' # Sample variogram of plot errors simulated using a separable first order autoregressive (AR1) process.
 #'
-#' error_df <- field_trial_error(ntraits = 1,
-#'                               nenvs = 1,
-#'                               spatial.model = "AR1")
+#' error_df <- field_trial_error(
+#'   ntraits = 1,
+#'   nenvs = 1,
+#'   spatial.model = "AR1"
+#' )
 #'
 #' variogram <- sample_variogram(
 #'   df = error_df,

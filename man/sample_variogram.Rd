@@ -22,10 +22,13 @@ A sample variogram with x- and y-axes displaying the row and
 Creates a sample variogram for a set of effects (e.g., plot errors).
 }
 \examples{
-# Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar'
-# for Trait 1 in Environment 1.
+# Sample variogram of plot errors simulated using a separable first order autoregressive (AR1) process.
 
-error_df <- error_df_bivar[error_df_bivar$env == 1, ]
+error_df <- field_trial_error(
+  ntraits = 1,
+  nenvs = 1,
+  spatial.model = "AR1"
+)
 
 variogram <- sample_variogram(
   df = error_df,
@@ -36,7 +39,7 @@ variogram <- sample_variogram(
 variogram
 
 # Extract the data frame with the column and row displacements, and the
-# sample semi-variances.
+# average semi-variances.
 
 variogram_df <- variogram$data
 
