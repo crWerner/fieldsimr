@@ -1,0 +1,23 @@
+compsym_asr_input       Simulate genetic values based on a compound
+                        symmetry model for GxE interaction -
+                        'AlphaSimR' input parameters
+compsym_asr_output      Simulate genetic values based on a compound
+                        symmetry model for GxE interaction - Simulation
+                        using 'AlphaSimR'
+df_error_bivar          Plot errors - example data frame
+df_gv_unstr             Genetic values - example data frame
+field_trial_error       Simulate plot errors in multi-environment field
+                        trials
+make_phenotypes         Simulate phenotypes - Combine simulated genetic
+                        values and plot errors
+plot_effects            Graphics for plot effects
+qq_plot                 Q-Q plot
+rand_cor_mat            Random correlation matrix
+sample_variogram        Sample variogram
+theoretical_variogram   Theoretical variogram
+unstr_asr_input         Simulate genetic values based on an
+                        unstructured model for GxE interaction -
+                        'AlphaSimR' input parameters
+unstr_asr_output        Simulate genetic values based on an
+                        unstructured model for GxE interaction -
+                        Simulation using 'AlphaSimR'

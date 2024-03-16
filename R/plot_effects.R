@@ -34,9 +34,8 @@ plot_effects <- function(df,
     stop("'df' must be a data frame")
   }
   colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
-  colnames(df)[colnames(df) %in% effect] <- "eff"
 
-  if (any(!c("col", "row", "eff") %in% colnames(df))) {
+  if (any(!c("col", "row", effect) %in% colnames(df))) {
     stop("'df' must contain the columns 'col', 'row', and the effect to be plotted")
   }
   df$col <- factor(as.numeric(as.character(df$col)))
@@ -100,12 +99,15 @@ plot_effects <- function(df,
     }
   }
 
-  col <- row <- eff <- NULL
-  mid_pt <- mean(df$eff, na.rm = TRUE)
-  max_pt <- max(abs(c(mid_pt - min(df$eff, na.rm = TRUE), max(df$eff, na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+  if (effect == "block") {
+    df$block <- as.numeric(as.character(df$block))
+  }
+  col <- row <- NULL
+  mid_pt <- mean(df[[effect]], na.rm = TRUE)
+  max_pt <- max(abs(c(mid_pt - min(df[[effect]], na.rm = TRUE), max(df[[effect]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
 
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = .data[[effect]])) +
     ggplot2::scale_fill_gradient2(
       low = "#A51122", mid = "#FEFDBE", high = "#006228",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
@@ -176,7 +178,7 @@ plot_effects <- function(df,
 
 #' Graphics for matrices
 #'
-#' Creates a heatmap for a symmetric matrix (e.g., correlation or covariance matrix).
+#' Creates a heatmap of a symmetric matrix (e.g., correlation or covariance matrix).
 #'
 #' @param mat A symmetric matrix.
 #' @param order When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the R package
@@ -404,22 +406,19 @@ qq_plot <- function(df,
                     effect,
                     labels = FALSE) {
   if (is.vector(df)) {
-    df <- data.frame(eff = c(df))
-    effect <- "eff"
+    df <- data.frame(effect = c(df))
   }
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  colnames(df) <- tolower(colnames(df))
-  effect <- tolower(effect)
-  colnames(df)[colnames(df) %in% effect] <- "eff"
+  colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
 
-  if (!("eff" %in% colnames(df))) {
+  if (!(effect %in% colnames(df))) {
     stop("'df' must contain the effect to be plotted")
   }
 
   if (!labels) {
-    qq_df <- data.frame(effect = df[["eff"]])
+    qq_df <- data.frame(effect = df[[effect]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
     qq_df <- data.frame(
@@ -451,7 +450,7 @@ qq_plot <- function(df,
     qq_df <- data.frame(
       col = df[["col"]],
       row = df[["row"]],
-      effect = df[["eff"]]
+      effect = df[[effect]]
     )
     qq_df$col <- factor(as.numeric(as.character(qq_df$col)))
     qq_df$row <- factor(as.numeric(as.character(qq_df$row)))
@@ -532,18 +531,16 @@ sample_variogram <- function(df,
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  colnames(df) <- tolower(colnames(df))
-  effect <- tolower(effect)
-  colnames(df)[colnames(df) %in% effect] <- "eff"
+  colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
 
-  if (any(!c("col", "row", "eff") %in% colnames(df))) {
+  if (any(!c("col", "row", effect) %in% colnames(df))) {
     stop("'df' must contain the columns 'col' and 'row', and the effect to be plotted")
   }
 
   variogram_df <- data.frame(
     col = df[["col"]],
     row = df[["row"]],
-    effect = df[["eff"]]
+    effect = df[[effect]]
   )
   variogram_df <- variogram_df[order(variogram_df$col, variogram_df$row), ]
 
@@ -560,7 +557,7 @@ sample_variogram <- function(df,
   variogram_df <- data.frame(
     col.dis = rep(unique(variogram_df$col_dis), each = length(unique(variogram_df$row_dis))),
     row.dis = unique(variogram_df$row_dis),
-    semi.var = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) mean(x, na.rm = T)))),
+    semivar = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) mean(x, na.rm = T)))),
     np = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) length(x[!is.na(x)]))))
   )
 
@@ -569,11 +566,11 @@ sample_variogram <- function(df,
     layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
   )
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-  p <- lattice::wireframe(semi.var ~ row.dis * col.dis,
+  p <- lattice::wireframe(semivar ~ row.dis * col.dis,
     data = variogram_df[variogram_df$np >= min.np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
     screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
     scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-    zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+    zlab = list(label = paste("Semivariance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
     xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
     ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
     par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
@@ -633,9 +630,9 @@ theoretical_variogram <- function(ncols = 10,
   variogram_df <- data.frame(
     col.dis = col_dis,
     row.dis = row_dis,
-    semi.var = varR * (prop_rand + prop.spatial * (1 - col.cor^(col_dis) * row.cor^(row_dis)))
+    semivar = varR * (prop_rand + prop.spatial * (1 - col.cor^(col_dis) * row.cor^(row_dis)))
   )
-  variogram_df$semi.var[1] <- 0
+  variogram_df$semivar[1] <- 0
   variogram_df$col.dis <- as.numeric(as.character(variogram_df$col.dis))
   variogram_df$row.dis <- as.numeric(as.character(variogram_df$row.dis))
 
@@ -644,11 +641,11 @@ theoretical_variogram <- function(ncols = 10,
     layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
   )
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-  p <- lattice::wireframe(semi.var ~ row.dis * col.dis,
+  p <- lattice::wireframe(semivar ~ row.dis * col.dis,
     data = variogram_df, drape = T, colorkey = F, zoom = 0.97, cuts = 30,
     screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
     scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-    zlab = list(label = paste("Semi-variance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
+    zlab = list(label = paste("Semivariance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
     xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
     ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
     par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
