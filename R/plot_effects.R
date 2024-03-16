@@ -548,17 +548,17 @@ sample_variogram <- function(df,
   row_dis <- abs(outer(as.numeric(as.character(variogram_df$row)), as.numeric(as.character(variogram_df$row)), FUN = "-"))
   var_mat <- outer(variogram_df$effect, variogram_df$effect, FUN = "-")^2 / 2
   variogram_df <- data.frame(
-    col_dis = col_dis[upper.tri(col_dis, diag = T)],
-    row_dis = row_dis[upper.tri(row_dis, diag = T)],
-    semi_var = var_mat[upper.tri(var_mat, diag = T)]
+    col.dis = col_dis[upper.tri(col_dis, diag = TRUE)],
+    row.dis = row_dis[upper.tri(row_dis, diag = TRUE)],
+    semivar = var_mat[upper.tri(var_mat, diag = TRUE)]
   )
-  variogram_df <- variogram_df[order(variogram_df$col_dis, variogram_df$row_dis), ]
+  variogram_df <- variogram_df[order(variogram_df$col.dis, variogram_df$row.dis), ]
 
   variogram_df <- data.frame(
-    col.dis = rep(unique(variogram_df$col_dis), each = length(unique(variogram_df$row_dis))),
-    row.dis = unique(variogram_df$row_dis),
-    semivar = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) mean(x, na.rm = T)))),
-    np = c(with(variogram_df, tapply(semi_var, list(row_dis, col_dis), function(x) length(x[!is.na(x)]))))
+    col.dis = rep(unique(variogram_df$col.dis), each = length(unique(variogram_df$row.dis))),
+    row.dis = unique(variogram_df$row.dis),
+    np = c(with(variogram_df, tapply(semivar, list(row.dis, col.dis), function(x) length(x[!is.na(x)])))),
+    semivar = c(with(variogram_df, tapply(semivar, list(row.dis, col.dis), function(x) mean(x, na.rm = T))))
   )
 
   lattice::lattice.options(
