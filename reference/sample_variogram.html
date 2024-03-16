@@ -25,7 +25,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/compound_symmetry_GxE_demo.html">Simulation of genetic values based on a compound symmetry model for genotype-by-environment (GxE) interaction</a>
-    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulating plot errors and phenotypes in a plant breeding field trial</a>
+    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulation of plot errors and phenotypes in a plant breeding field trial</a>
     <a class="dropdown-item" href="../articles/unstructured_GxE_demo.html">Simulation of genetic values based on an unstructured model for genotype-by-environment (GxE) interaction</a>
   </div>
 </li>
@@ -87,10 +87,13 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sample variogram of the simulated plot errors in the example data frame 'error_df_bivar'</span></span></span>
-<span class="r-in"><span><span class="co"># for Trait 1 in Environment 1.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sample variogram of plot errors simulated using a separable first order autoregressive (AR1) process.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="va">error_df_bivar</span><span class="op">[</span><span class="va">error_df_bivar</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">error_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="field_trial_error.html">field_trial_error</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ntraits <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  nenvs <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  spatial.model <span class="op">=</span> <span class="st">"AR1"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">variogram</span> <span class="op">&lt;-</span> <span class="fu">sample_variogram</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="va">error_df</span>,</span></span>
@@ -102,7 +105,7 @@
 <span class="r-plt img"><img src="sample_variogram-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract the data frame with the column and row displacements, and the</span></span></span>
-<span class="r-in"><span><span class="co"># sample semi-variances.</span></span></span>
+<span class="r-in"><span><span class="co"># average semi-variances.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">variogram_df</span> <span class="op">&lt;-</span> <span class="va">variogram</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span></span></span>

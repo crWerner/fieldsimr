@@ -41,7 +41,7 @@ but different error variances can be specified for each environment-within-trait
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/compound_symmetry_GxE_demo.html">Simulation of genetic values based on a compound symmetry model for genotype-by-environment (GxE) interaction</a>
-    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulating plot errors and phenotypes in a plant breeding field trial</a>
+    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulation of plot errors and phenotypes in a plant breeding field trial</a>
     <a class="dropdown-item" href="../articles/unstructured_GxE_demo.html">Simulation of genetic values based on an unstructured model for genotype-by-environment (GxE) interaction</a>
   </div>
 </li>
@@ -165,7 +165,7 @@ Currently only implemented when <code>ext.ord = "random"</code>.</p></dd>
 <dd><p>A character string defining the model used to simulate spatial trend.
 Use 'Bivariate' for bivariate interpolation (default) or 'AR1' for a separable first-order
 autoregressive process. Bivariate interpolation is implemented with the <code>interp</code>
-function of the R package <a href="https://CRAN.R-project.org/package=interp" class="external-link">interp</a>.</p></dd>
+function of the R package <a href="https://CRAN.R-project.org/package=interp" class="external-link">`interp`</a>.</p></dd>
 
 
 <dt>complexity</dt>
@@ -219,7 +219,7 @@ assigned the same direction.</p></dd>
 
 <dt>prop.ext</dt>
 <dd><p>A vector defining the proportion of extraneous variation for each environment-within-trait
-combination. If only one value is specified, all combinations will be assigned the proportion.</p></dd>
+combination. If only one value is specified, all combinations will be assigned the same proportion.</p></dd>
 
 
 <dt>return.effects</dt>

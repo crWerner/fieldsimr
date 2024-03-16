@@ -25,7 +25,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/compound_symmetry_GxE_demo.html">Simulation of genetic values based on a compound symmetry model for genotype-by-environment (GxE) interaction</a>
-    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulating plot errors and phenotypes in a plant breeding field trial</a>
+    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulation of plot errors and phenotypes in a plant breeding field trial</a>
     <a class="dropdown-item" href="../articles/unstructured_GxE_demo.html">Simulation of genetic values based on an unstructured model for genotype-by-environment (GxE) interaction</a>
   </div>
 </li>
@@ -59,7 +59,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_matrix</span><span class="op">(</span><span class="va">mat</span>, order <span class="op">=</span> <span class="cn">FALSE</span>, labels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_matrix</span><span class="op">(</span><span class="va">mat</span>, order <span class="op">=</span> <span class="cn">FALSE</span>, group.df <span class="op">=</span> <span class="cn">NULL</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,19 +70,24 @@
 
 <dt>order</dt>
 <dd><p>When <code>TRUE</code> (default is <code>FALSE</code>), the function <code>agnes</code> of the R package
-<a href="https://cran.r-project.org/package=cluster" class="external-link">cluster</a> is used with default arguments to
+<a href="https://cran.r-project.org/package=cluster" class="external-link">`cluster`</a> is used with default arguments to
 order the matrix based on a dendrogram.</p></dd>
 
 
+<dt>group.df</dt>
+<dd><p>An optional data frame with columns containing the variable names followed by the group numbers.
+When supplied, the heatmap is split into groups and then ordered (when <code>order = TRUE</code>).</p></dd>
+
+
 <dt>labels</dt>
-<dd><p>When <code>TRUE</code> (default is <code>FALSE</code>), variable labels are displayed.</p></dd>
+<dd><p>When <code>TRUE</code> (default), variable labels are displayed.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A graphical field array with x- and y-axes displaying the variable numbers,
+<p>A heatmap with x- and y-axes displaying the variable numbers,
  and colour gradient ranging from blue (low value) to red (high value).</p>
     </div>
 
@@ -96,9 +101,13 @@ order the matrix based on a dendrogram.</p></dd>
 <span class="r-in"><span>  max.cor <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define groups</span></span></span>
+<span class="r-in"><span><span class="va">group_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_matrix</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  mat <span class="op">=</span> <span class="va">corA</span>,</span></span>
 <span class="r-in"><span>  order <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  group.df <span class="op">=</span> <span class="va">group_df</span>,</span></span>
 <span class="r-in"><span>  labels <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_matrix-1.png" alt="" width="700" height="433"></span>

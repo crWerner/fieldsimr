@@ -27,7 +27,7 @@ correlations."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/compound_symmetry_GxE_demo.html">Simulation of genetic values based on a compound symmetry model for genotype-by-environment (GxE) interaction</a>
-    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulating plot errors and phenotypes in a plant breeding field trial</a>
+    <a class="dropdown-item" href="../articles/spatial_variation_demo.html">Simulation of plot errors and phenotypes in a plant breeding field trial</a>
     <a class="dropdown-item" href="../articles/unstructured_GxE_demo.html">Simulation of genetic values based on an unstructured model for genotype-by-environment (GxE) interaction</a>
   </div>
 </li>
@@ -87,12 +87,12 @@ correlations.</p>
 
 <dt>pos.def</dt>
 <dd><p>When <code>TRUE</code> (default is <code>FALSE</code>), the function <code>bend</code> of the R package
-<a href="https://cran.r-project.org/package=mbend" class="external-link">mbend</a> is used with default arguments to
+<a href="https://cran.r-project.org/package=mbend" class="external-link">`mbend`</a> is used with default arguments to
 bend a non-positive-definite matrix to a positive (semi)-definite matrix.</p></dd>
 
 
 <dt>small.positive</dt>
-<dd><p>Argument passed to <code>bend</code> when <code>pos.def = TRUE</code>.
+<dd><p>Argument passed to <code>bend</code> when <code>pos.def = TRUE</code> (default is 0.0001).
  Eigenvalues smaller than <code>small.positive</code> are replaced with this value. <br><strong>Note:</strong> <code>0 &lt; small.positive &lt; 0.1</code>.</p></dd>
 
 </dl></div>
@@ -111,14 +111,14 @@ the correlation matrix is guaranteed to be positive (semi)-definite.</p>
 <span class="r-in"><span>  min.cor <span class="op">=</span> <span class="op">-</span><span class="fl">0.2</span>,</span></span>
 <span class="r-in"><span>  max.cor <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
 <span class="r-in"><span>  pos.def <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  small.positive <span class="op">=</span> <span class="fl">1e-8</span></span></span>
+<span class="r-in"><span>  small.positive <span class="op">=</span> <span class="fl">1e-4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Unweighted bending</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> max.iter = 10000</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> small.positive = 1e-08</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> small.positive = 1e-04</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> method = hj</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found a correlation matrix.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Convergence met after 15 iterations.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Convergence met after 8 iterations.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
