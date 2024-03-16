@@ -5,7 +5,7 @@ Date: 2024-03-04
 Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me", 
 	  role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9400-5061")),
     person("Daniel", "Tolhurst", email = "uow.tolhurst@gmail.com", 
-    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4787-080X")))
+    role = "aut", comment = c(ORCID = "0000-0002-4787-080X")))
 Maintainer: Christian Werner <werner.christian@proton.me>
 Description: Simulates plot data in multi-environment field trials with one or more traits. 
   Its core function generates plot errors that capture spatial trend, random error (noise), 
