@@ -27,7 +27,8 @@
 #' pheno_df <- make_phenotypes(
 #'   gv.df = gv_df_unstr,
 #'   error.df = error_df_bivar,
-#'   randomise = TRUE
+#'   randomise = TRUE,
+#'   return.effects = TRUE
 #' )
 #'
 #' @export
@@ -68,11 +69,15 @@ make_phenotypes <- function(gv.df,
   error.df$col <- factor(as.numeric(as.character(error.df$col)))
   error.df$row <- factor(as.numeric(as.character(error.df$row)))
   error.df <- error.df[order(error.df$env, error.df$block), ]
+  error.df <- unique(error.df)
 
   gv.df$env <- factor(as.numeric(as.character(gv.df$env)))
   gv.df$rep <- factor(as.numeric(as.character(gv.df$rep)))
   gv.df$id <- factor(as.numeric(as.character(gv.df$id)))
   gv.df <- gv.df[order(gv.df$env, gv.df$rep), ]
+  gv.df <- unique(gv.df)
+
+  if (nrow(gv.df) != nrow(error.df)) stop("number of rows in 'gv.df' and 'error.df' must match")
 
   if (randomise) {
     id <- unique(gv.df$id)
@@ -81,7 +86,7 @@ make_phenotypes <- function(gv.df,
     gv.df <- gv.df[order(gv.df$env, gv.df$rep, gv.df$ord), ]
   }
 
-  phe <- error.df[, !(colnames(error.df) %in% c("env", "block", "col", "row"))] +
+  y <- error.df[, !(colnames(error.df) %in% c("env", "block", "col", "row"))] +
     gv.df[, !(colnames(gv.df) %in% c("env", "rep", "id", "ord"))]
   error.df.names <- error.df[, c("env", "block", "col", "row")]
   ids <- factor(as.numeric(as.character(gv.df$id)))
@@ -89,17 +94,26 @@ make_phenotypes <- function(gv.df,
   pheno_df <- cbind(
     error.df.names,
     id = ids,
-    phe
+    y
   )
 
   pheno_df <- pheno_df[order(pheno_df$env, pheno_df$col, pheno_df$row), ]
+  rownames(pheno_df) <- NULL
   colnames(pheno_df) <- c("env", "block", "col", "row", "id", paste0("y.Trait", 1:ntraits))
 
   if (return.effects) {
-    listNames <- c("pheno.df", "gv.df", "error.df")
-    gv.df <- gv.df[, !(colnames(gv.df) %in% c("ord"))]
-    pheno_df <- c(list(pheno_df), list(gv.df), list(error.df))
-    names(pheno_df) <- listNames
+    gv_ls <- as.list(as.data.frame(gv.df[, 4:(ntraits + 3)]))
+    error_ls <- as.list(as.data.frame(error.df[, 5:(ntraits + 4)]))
+    effects_df <- mapply(function(x,y) cbind(pheno_df[,1:5], x, y), x = gv_ls, y = error_ls, SIMPLIFY = FALSE)
+
+    effects_df <-  mapply(function(x,y) {
+      colnames(x)[6:(ntraits + 5)] <- c(paste0("gv.Trait", y), paste0("e.Trait", y))
+      x
+    }, x = effects_df, y = seq_len(ntraits), SIMPLIFY = FALSE)
+
+    list_names <- c("pheno.df", paste0("Trait", 1:ntraits))
+    pheno_df <- c(list(pheno_df), effects_df)
+    names(pheno_df) <- list_names
   }
 
   return(pheno_df)

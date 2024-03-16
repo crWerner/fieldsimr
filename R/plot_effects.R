@@ -8,7 +8,7 @@
 #' @param effect The name of the effects to be plotted.
 #' @param blocks When \code{TRUE} (default), the field array is split into blocks.
 #'   This requires an additional column 'block' in the data frame.
-#' @param labels When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
+#' @param labels When \code{TRUE} (default), column and row labels are displayed.
 #'
 #' @return A graphical field array with x- and y-axes displaying the column and row numbers,
 #'  and colour gradient ranging from red (low value) to green (high value).
@@ -29,7 +29,7 @@
 plot_effects <- function(df,
                          effect,
                          blocks = TRUE,
-                         labels = FALSE) {
+                         labels = TRUE) {
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
@@ -42,6 +42,7 @@ plot_effects <- function(df,
   df$col <- factor(as.numeric(as.character(df$col)))
   df$row <- factor(as.numeric(as.character(df$row)))
 
+  nblocks <- 1
   if (blocks) {
     if (!"block" %in% colnames(df)) {
       stop("'df' must contain the column 'block' if blocks are to be plotted")
@@ -49,9 +50,9 @@ plot_effects <- function(df,
     df$block <- factor(as.numeric(as.character(df$block)))
   }
 
-  ncols <- length(unique(df$col))
-  nrows <- length(unique(df$row))
-  nblocks <- length(unique(df$block))
+  ncols <- nlevels(df$col)
+  nrows <- nlevels(df$row)
+  nblocks <- nlevels(df$block)
 
   plot_x_min <- rep(seq(0.5, ncols - 0.5, 1), each = nrows)
   plot_y_min <- rep(seq(0.5, nrows - 0.5, 1), ncols)
@@ -114,7 +115,7 @@ plot_effects <- function(df,
     ggplot2::xlab("Column") +
     ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
-    ggplot2::ggtitle(effect) +
+    ggplot2::ggtitle(label = effect) +
     ggplot2::labs(fill = "Effect") +
     ggplot2::theme(
       legend.title = ggplot2::element_text(size = 11),
@@ -134,7 +135,7 @@ plot_effects <- function(df,
     ggplot2::annotate(
       geom = "rect", xmin = 0.5, ymin = 0.5,
       xmax = ncols + 0.5, ymax = nrows + 0.5,
-      fill = "transparent", col = "black", lwd = 1.25
+      fill = "transparent", col = "black", lwd = 1.5
     )
 
   if (labels) {
@@ -151,7 +152,7 @@ plot_effects <- function(df,
     )
   }
 
-  if (blocks == TRUE & length(unique(df$block)) > 1) {
+  if (nblocks > 1) {
     for (i in 1:(nblocks - 1)) {
       p <- p + ggplot2::geom_segment(
         x = block_x_min[i],
@@ -181,9 +182,11 @@ plot_effects <- function(df,
 #' @param order When \code{TRUE} (default is \code{FALSE}), the function \code{agnes} of the R package
 #'   \href{https://cran.r-project.org/package=cluster}{`cluster`} is used with default arguments to
 #'   order the matrix based on a dendrogram.
-#' @param labels When \code{TRUE} (default is \code{FALSE}), variable labels are displayed.
+#' @param group.df An optional data frame with columns containing the variable names followed by the group numbers.
+#'   When supplied, the heatmap is split into groups and then ordered (when \code{order = TRUE}).
+#' @param labels When \code{TRUE} (default), variable labels are displayed.
 #'
-#' @return A graphical array with x- and y-axes displaying the variable numbers,
+#' @return A heatmap with x- and y-axes displaying the variable numbers,
 #'  and colour gradient ranging from blue (low value) to red (high value).
 #'
 #' @examples
@@ -195,28 +198,57 @@ plot_effects <- function(df,
 #'   max.cor = 1
 #' )
 #'
+#' # Define groups
+#' group_df <- data.frame(variable = 1:10, group = c(1,1,1,1,2,2,2,3,3,4))
+#'
 #' plot_matrix(
 #'   mat = corA,
 #'   order = TRUE,
+#'   group.df = group_df,
 #'   labels = TRUE
 #' )
 #'
 #' @export
 plot_matrix <- function(mat,
                         order = FALSE,
-                        labels = FALSE) {
-  if (!is.matrix(mat)) {
-    stop("'mat' must be a matrix")
-  }
+                        group.df = NULL,
+                        labels = TRUE) {
+  if (!is.matrix(mat)) stop("'mat' must be a matrix")
   if (!isSymmetric(mat)) stop("'mat' must be a symmetric matrix")
+  if (any(colnames(mat) != rownames(mat))) stop("colnames and rownames of 'mat' must match")
 
   n <- ncol(mat)
-  if (is.null(colnames(mat)) & !is.null(rownames(mat))) {
+  if (is.null(colnames(mat)) && !is.null(rownames(mat))) {
     colnames(mat) <- rownames(mat)
-  } else if (!is.null(colnames(mat)) & is.null(rownames(mat))) {
+  } else if (!is.null(colnames(mat)) && is.null(rownames(mat))) {
     rownames(mat) <- colnames(mat)
   } else {
     colnames(mat) <- rownames(mat) <- 1:n
+  }
+
+  groups <- FALSE
+  ngroups <- 1
+  if (!is.null(group.df)) {
+    if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
+    if (ncol(group.df) < 2) stop("'group.df' must be a data frame with at least two columns")
+    colnames(group.df)[1:2] <- c("variable","group")
+    if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
+
+    group.df$variable <- factor(as.numeric(as.character(group.df$variable)))
+    group.df$group <- factor(as.numeric(as.character(group.df$group)))
+    group.df <- group.df[order(group.df$group),]
+    rownames(group.df) <- NULL
+    ord <- as.character(group.df$variable)
+    mat <- mat[ord, ord]
+    groups <- TRUE
+    ngroups <- nlevels(group.df$group)
+
+    dist <- cumsum(table(group.df$group))
+    group_x_min <- c(0.52, dist + 0.5)[1:ngroups]
+    group_y_min <- (n + 1) - group_x_min
+    group_x_max <- (dist + 0.5)[1:ngroups]
+    group_x_max[ngroups] <- n + 0.48
+    group_y_max <- (n + 1) - group_x_max
   }
 
   is_cor_mat <- TRUE
@@ -234,15 +266,31 @@ plot_matrix <- function(mat,
   if (is_cor_mat) {
     df$eff[df$var1 == df$var2] <- NA
   }
-  df$var1 <- factor(as.numeric(trimws(df$var1)))
-  df$var2 <- factor(as.numeric(trimws(df$var2)))
+  levs <- unique(df$var1)
+  df$var1 <- factor(as.numeric(as.character(df$var1)), levels = levs)
+  df$var2 <- factor(as.numeric(as.character(df$var2)), levels = levs)
 
   if (order) {
     if (!is_cor_mat) {
       mat <- stats::cov2cor(mat)
     }
     dis_mat <- 1 - mat
-    order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order
+
+    if (ngroups == 1) {
+        order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order.lab
+    } else if (ngroups > 1) {
+          order2 <- c()
+          for (i in 1:ngroups) {
+            ord <- as.character(group.df$variable[group.df$group == i])
+            dis_mat_tmp <- as.matrix(dis_mat[ord, ord])
+            if (ncol(dis_mat_tmp) == 1){
+              order2 <- c(order2, ord)
+            } else if(ncol(dis_mat_tmp) > 1) {
+            order_tmp <- cluster::agnes(x = dis_mat_tmp, diss = TRUE, method = "average")$order.lab
+            order2 <- c(order2, order_tmp)
+            }
+      }
+    }
     df$var1 <- factor(df$var1, levels = order2)
     df$var2 <- factor(df$var2, levels = order2)
   }
@@ -259,7 +307,7 @@ plot_matrix <- function(mat,
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = var1, y = var2)) +
     ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
     ggplot2::scale_fill_gradient2(
-      low = "midnightblue", mid = "#FEFDBE", high = "#A51122", na.value = "transparent",
+      low = "#195696", mid = "#fcfce1", high = "#9C1127", na.value = "transparent",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
     ) +
     ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
@@ -267,7 +315,7 @@ plot_matrix <- function(mat,
     ggplot2::xlab("Variable") +
     ggplot2::ylab("Variable") +
     ggplot2::theme_grey(base_size = 10) +
-    ggplot2::ggtitle(effect) +
+    ggplot2::ggtitle(label = effect) +
     ggplot2::labs(fill = effect_short) +
     ggplot2::theme(
       legend.title = ggplot2::element_text(size = 11),
@@ -287,7 +335,7 @@ plot_matrix <- function(mat,
     ggplot2::annotate(
       geom = "rect", xmin = 0.5, ymin = 0.5,
       xmax = n + 0.5, ymax = n + 0.5,
-      fill = "transparent", col = "black", lwd = 1.25
+      fill = "transparent", col = "black", lwd = 1.6
     )
 
   if (labels) {
@@ -302,6 +350,20 @@ plot_matrix <- function(mat,
       axis.ticks = ggplot2::element_blank(),
       axis.text = ggplot2::element_blank()
     )
+  }
+
+  if (ngroups > 1) {
+    for (i in 1:ngroups) {
+      p <- p + ggplot2::geom_rect(
+        xmin = group_x_min[i],
+        ymin = group_y_min[i],
+        xmax = group_x_max[i],
+        ymax = group_y_max[i],
+        color = "black",
+        linewidth = 0.5,
+        alpha = 0
+      )
+    }
   }
   return(p)
 }
@@ -341,6 +403,10 @@ plot_matrix <- function(mat,
 qq_plot <- function(df,
                     effect,
                     labels = FALSE) {
+  if (is.vector(df)) {
+    df <- data.frame(eff = c(df))
+    effect <- "eff"
+  }
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
@@ -361,12 +427,13 @@ qq_plot <- function(df,
       ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
     )
     mid_pt_x <- mean(qq_df$theoretical, na.rm = TRUE)
-    max_pt_x <- max(abs(c(mid_pt_x - min(df$theoretical, na.rm = TRUE), max(df$theoretical, na.rm = TRUE) - mid_pt_x)), na.rm = TRUE) + 1e-8
+    max_pt_x <- max(abs(c(mid_pt_x - min(qq_df$theoretical, na.rm = TRUE), max(qq_df$theoretical, na.rm = TRUE) - mid_pt_x)), na.rm = TRUE) + 1e-8
 
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_point(size = 2) +
       ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
+      ggplot2::ggtitle(label = effect) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
         axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0), size = 11),
@@ -386,8 +453,8 @@ qq_plot <- function(df,
       row = df[["row"]],
       effect = df[["eff"]]
     )
-    qq_df$col <- factor(as.numeric(trimws(qq_df$col)))
-    qq_df$row <- factor(as.numeric(trimws(qq_df$row)))
+    qq_df$col <- factor(as.numeric(as.character(qq_df$col)))
+    qq_df$row <- factor(as.numeric(as.character(qq_df$row)))
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
       ggplot2::stat_qq()
     qq_df <- data.frame(
@@ -407,10 +474,12 @@ qq_plot <- function(df,
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = cr.label)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_text(size = 4) +
-      ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
-      ggplot2::ggtitle(label = "Effects indexed as col:row") +
+      ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles",
+                    subtitle = "Effects indexed as col:row") +
+      ggplot2::ggtitle(label = effect) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
+        plot.subtitle = ggplot2::element_text(size = 10, colour = "gray40"),
         axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0), size = 11),
         axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0), size = 11),
         axis.text = ggplot2::element_text(size = 10)
@@ -474,8 +543,8 @@ sample_variogram <- function(df,
   )
   variogram_df <- variogram_df[order(variogram_df$col, variogram_df$row), ]
 
-  col_dis <- abs(outer(as.numeric(trimws(variogram_df$col)), as.numeric(trimws(variogram_df$col)), FUN = "-"))
-  row_dis <- abs(outer(as.numeric(trimws(variogram_df$row)), as.numeric(trimws(variogram_df$row)), FUN = "-"))
+  col_dis <- abs(outer(as.numeric(as.character(variogram_df$col)), as.numeric(as.character(variogram_df$col)), FUN = "-"))
+  row_dis <- abs(outer(as.numeric(as.character(variogram_df$row)), as.numeric(as.character(variogram_df$row)), FUN = "-"))
   var_mat <- outer(variogram_df$effect, variogram_df$effect, FUN = "-")^2 / 2
   variogram_df <- data.frame(
     col_dis = col_dis[upper.tri(col_dis, diag = T)],
@@ -563,8 +632,8 @@ theoretical_variogram <- function(ncols = 10,
     semi.var = varR * (prop_rand + prop.spatial * (1 - col.cor^(col_dis) * row.cor^(row_dis)))
   )
   variogram_df$semi.var[1] <- 0
-  variogram_df$col.dis <- as.numeric(trimws(variogram_df$col.dis))
-  variogram_df$row.dis <- as.numeric(trimws(variogram_df$row.dis))
+  variogram_df$col.dis <- as.numeric(as.character(variogram_df$col.dis))
+  variogram_df$row.dis <- as.numeric(as.character(variogram_df$row.dis))
 
   lattice::lattice.options(
     layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),

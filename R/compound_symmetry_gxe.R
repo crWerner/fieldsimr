@@ -437,6 +437,7 @@ compsym_asr_output <- function(pop,
     gv
   )
   output_asr <- output_asr[order(output_asr$env, output_asr$rep, output_asr$id), ]
+  rownames(output_asr) <- NULL
 
   if (return.effects) {
     main <- mapply(cbind, list(data.frame(id = pop@id)), main = main, SIMPLIFY = F)
@@ -449,15 +450,15 @@ compsym_asr_output <- function(pop,
       x
     })
 
-    eff_comps <- mapply(cbind, main, int = int, SIMPLIFY = F)
-    eff_comps <- lapply(eff_comps, function(x) {
+    effects_df <- mapply(cbind, main, int = int, SIMPLIFY = F)
+    effects_df <- lapply(effects_df, function(x) {
       x[[1]] <- factor(as.numeric(as.character(x[[1]])))
       x <- x[order(x[[1]]), ]
     })
 
-    listNames <- c("gv.df", paste0("Trait", 1:ntraits))
-    output_asr <- c(list(output_asr), eff_comps)
-    names(output_asr) <- listNames
+    list_names <- c("gv.df", paste0("Trait", 1:ntraits))
+    output_asr <- c(list(output_asr), effects_df)
+    names(output_asr) <- list_names
   }
 
   return(output_asr)

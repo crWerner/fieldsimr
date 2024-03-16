@@ -619,7 +619,7 @@ field_trial_error <- function(ntraits = 1,
     e_ext_c <- do.call("rbind", e_ext_c)
     e_ext_r <- do.call("rbind", e_ext_r)
     e_all <- lapply(seq_len(ncol(e_spat)), function(i) cbind(e_spat[, i], e_rand[, i], e_ext_c[, i], e_ext_r[, i]))
-    resids <- lapply(e_all, function(x) {
+    effects_df <- lapply(e_all, function(x) {
       data.frame(error_df[, 1:4],
         e.spat = x[, 1],
         e.rand = x[, 2],
@@ -630,7 +630,7 @@ field_trial_error <- function(ntraits = 1,
 
     list_names <- c("error.df", paste0("Trait", 1:ntraits))
     error_df <- list(error_df)
-    error_df <- c(error_df, resids)
+    error_df <- c(error_df, effects_df)
     names(error_df) <- list_names
   }
   error_df

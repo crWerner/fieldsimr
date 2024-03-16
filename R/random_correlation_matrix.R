@@ -32,10 +32,10 @@ rand_cor_mat <- function(n = 2,
                          max.cor = 1,
                          pos.def = FALSE,
                          small.positive = NULL) {
-  if (n < 1 | n %% 1 != 0) stop("'n' must be a positive integer")
+  if (n < 1 || n %% 1 != 0) stop("'n' must be a positive integer")
 
-  if (min.cor < -1 | min.cor > 1) stop("'min.cor' must be a value >= -1 and <= 1")
-  if (max.cor < -1 | max.cor > 1) stop("'max.cor' must be a value >= -1 and <= 1")
+  if (min.cor < -1 || min.cor > 1) stop("'min.cor' must be a value >= -1 and <= 1")
+  if (max.cor < -1 || max.cor > 1) stop("'max.cor' must be a value >= -1 and <= 1")
   if (max.cor < min.cor) stop("'max.cor' must be >= 'min.cor'")
 
   ncor <- sum(seq(1, (n - 1)))
@@ -45,6 +45,7 @@ rand_cor_mat <- function(n = 2,
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
   cor_mat <- t(cor_mat)
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
+  colnames(cor_mat) <- rownames(cor_mat) <- 1:n
 
   is_pos_def <- sum(eigen(cor_mat)$values > 1e-8) == n
   if (pos.def && !is_pos_def) {
