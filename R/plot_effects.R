@@ -106,15 +106,15 @@ plot_effects <- function(df,
     p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
       ggplot2::geom_tile(ggplot2::aes(fill = get(effect))) +
       ggplot2::scale_fill_gradient2(
-      low = "#A51122", mid = "#FEFDBE", high = "#006228",
-      midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
+        low = "#A51122", mid = "#FEFDBE", high = "#006228",
+        midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
       ) +
       ggplot2::ggtitle(label = effect) +
       ggplot2::labs(fill = "Effect")
   } else if (effect == "block") {
     p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
       ggplot2::geom_tile(ggplot2::aes(fill = get(effect)), alpha = 0.6) +
-      ggplot2::scale_fill_manual(values = c("#888888","#6699CC","#882255","#117733","#332288")) +
+      ggplot2::scale_fill_manual(values = c("#888888", "#6699CC", "#882255", "#117733", "#332288")) +
       ggplot2::labs(fill = "Block")
   }
   p <- p + ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
