@@ -163,8 +163,8 @@ environments.
 Check the \code{useVarA} argument of these functions when simulating non-additive traits.
 }
 \examples{
-# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
-# two environments based on an unstructured model.
+# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in two
+# environments based on an unstructured model.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees.

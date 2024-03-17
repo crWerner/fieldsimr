@@ -22,8 +22,8 @@ A Q-Q plot with x- and y-axes displaying the theoretical and sample quantiles of
 Creates a normal quantile-quantile (Q-Q) plot for a set of effects (e.g., phenotypes, genetic values, or plot errors).
 }
 \examples{
-# Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar'
-# for Trait 1 in Environment 1.
+# Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar' for
+# Trait 1 in Environment 1.
 
 error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 

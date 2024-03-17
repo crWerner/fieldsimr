@@ -22,7 +22,8 @@ A sample variogram with x- and y-axes displaying the row and
 Creates a sample variogram for a set of effects (e.g., plot errors).
 }
 \examples{
-# Sample variogram of plot errors simulated using a separable first order autoregressive (AR1) process.
+# Sample variogram of plot errors simulated using a separable first order
+# autoregressive (AR1) process.
 
 error_df <- field_trial_error(
   ntraits = 1,

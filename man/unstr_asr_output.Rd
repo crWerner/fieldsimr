@@ -31,8 +31,8 @@ based on an unstructured model for genotype-by-environment (GxE) interaction. Th
 population object generated with \link[FieldSimR]{unstr_asr_input}.
 }
 \examples{
-# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
-# two environments based on an unstructured model.
+# Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in two
+# environments based on an unstructured model.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values and mean dominance degrees.
@@ -103,8 +103,8 @@ SP$addTraitAD(
 pop <- newPop(FOUNDERPOP)
 
 
-# 3. Create a data frame with the simulated genetic values for the two traits in the
-# two environments, with two replicates of each genotype.
+# 3. Create a data frame with simulated genetic values for the two traits in the two
+# environments, with two replicates of each genotype.
 
 gv_df <- unstr_asr_output(
   pop = pop,

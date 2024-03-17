@@ -122,8 +122,8 @@ for each error component. A separable structure is assumed between traits and pl
 but different error variances can be specified for each environment-within-trait combination.
 }
 \examples{
-# Simulate plot errors for two traits in two environments using an AR1 model
-# for spatial variation.
+# Simulate plot errors for two traits in two environments using an AR1 model for
+# spatial variation.
 
 # Error variances for the four environment-within-trait combinations.
 varR <- c(0.2, 0.4, 10, 15) # Trait 1 x 2 environments, Trait 2 x 2 environments

@@ -33,8 +33,8 @@ or \link[FieldSimR]{unstr_asr_output},
 or any data frame matching the description below.
 }
 \examples{
-# Generate phenotypes by combining the genetic values and plot errors provided in
-# the two example data frames gv_df_unstr and error_df_bivar.
+# Generate phenotypes by combining the genetic values and plot errors provided in the
+# two example data frames gv_df_unstr and error_df_bivar.
 
 pheno_df <- make_phenotypes(
   gv.df = gv_df_unstr,

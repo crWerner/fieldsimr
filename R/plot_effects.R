@@ -107,7 +107,7 @@ plot_effects <- function(df,
   max_pt <- max(abs(c(mid_pt - min(df[[effect]], na.rm = TRUE), max(df[[effect]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
 
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = .data[[effect]])) +
+    ggplot2::geom_tile(ggplot2::aes(fill = get(effect))) +
     ggplot2::scale_fill_gradient2(
       low = "#A51122", mid = "#FEFDBE", high = "#006228",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)

@@ -52,8 +52,8 @@ generate a data frame with output values.
 Currently supports additive traits only, but other (non-additive) traits are being implemented.
 }
 \examples{
-# Simulate genetic values with 'AlphaSimR' for two additive traits in
-# two environments based on a multiplicative model with three terms.
+# Simulate genetic values with 'AlphaSimR' for two additive traits in two environments
+# based on a (reduced rank) multiplicative model with three terms.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values.

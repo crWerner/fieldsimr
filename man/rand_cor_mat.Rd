@@ -37,6 +37,8 @@ Creates a symmetric \code{n x n} correlation matrix with user-defined minimum an
 correlations.
 }
 \examples{
+# Simulate a random correlation matrix with 10 columns and rows.
+
 corA <- rand_cor_mat(
   n = 10,
   min.cor = -0.2,
