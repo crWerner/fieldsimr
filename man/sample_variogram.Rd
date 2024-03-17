@@ -11,11 +11,11 @@ sample_variogram(df, effect, min.np = 30)
 
 \item{effect}{The name of the effects to be plotted.}
 
-\item{min.np}{Minimum number of pairs for which semi-variances are displayed (default is 30).}
+\item{min.np}{Minimum number of pairs for which semivariances are displayed (default is 30).}
 }
 \value{
 A sample variogram with x- and y-axes displaying the row and
-  column displacements, and the z-axis displaying the average semi-variances (variogram ordinates)
+  column displacements, and the z-axis displaying the average semivariances (variogram ordinates)
   for the effects.
 }
 \description{
@@ -40,7 +40,7 @@ variogram <- sample_variogram(
 variogram
 
 # Extract the data frame with the column and row displacements, and the
-# average semi-variances.
+# average semivariances.
 
 variogram_df <- variogram$data
 

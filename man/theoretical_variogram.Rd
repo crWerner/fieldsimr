@@ -28,7 +28,7 @@ theoretical_variogram(
 }
 \value{
 A theoretical variogram with x- and y-axes displaying the row and column displacements,
- and the z-axis displaying the semi-variances (variogram ordinates) for a separable autoregressive process.
+ and the z-axis displaying the semivariances (variogram ordinates) for a separable autoregressive process.
 }
 \description{
 Creates a theoretical variogram for a separable first order autoregressive (AR1) process.
@@ -51,7 +51,7 @@ variogram <- theoretical_variogram(
 variogram
 
 # Extract the data frame with the column and row displacements, and the
-# theoretical semi-variances.
+# theoretical semivariances.
 
 variogram_df <- variogram$data
 

@@ -14,8 +14,8 @@
 #'  and colour gradient ranging from red (low value) to green (high value).
 #'
 #' @examples
-#' # Display the simulated plot errors in the example data frame 'error_df_bivar' for
-#' # Trait 1 in Environment 1.
+#' # Display the simulated plot errors in the example data frame 'error_df_bivar'
+#' # for Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
@@ -203,7 +203,7 @@ plot_effects <- function(df,
 #'   max.cor = 1
 #' )
 #'
-#' # Define groups
+#' # Define groups.
 #' group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
 #'
 #' plot_matrix(
@@ -386,8 +386,8 @@ plot_matrix <- function(mat,
 #'   the effects, respectively.
 #'
 #' @examples
-#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar' for
-#' # Trait 1 in Environment 1.
+#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar'
+#' # for Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
@@ -499,10 +499,10 @@ qq_plot <- function(df,
 #'
 #' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
 #' @param effect The name of the effects to be plotted.
-#' @param min.np Minimum number of pairs for which semi-variances are displayed (default is 30).
+#' @param min.np Minimum number of pairs for which semivariances are displayed (default is 30).
 #'
 #' @return A sample variogram with x- and y-axes displaying the row and
-#'   column displacements, and the z-axis displaying the average semi-variances (variogram ordinates)
+#'   column displacements, and the z-axis displaying the average semivariances (variogram ordinates)
 #'   for the effects.
 #'
 #' @examples
@@ -524,7 +524,7 @@ qq_plot <- function(df,
 #' variogram
 #'
 #' # Extract the data frame with the column and row displacements, and the
-#' # average semi-variances.
+#' # average semivariances.
 #'
 #' variogram_df <- variogram$data
 #'
@@ -597,12 +597,12 @@ sample_variogram <- function(df,
 #' @param prop.spatial A scalar defining the proportion of spatial trend.
 #'
 #' @return A theoretical variogram with x- and y-axes displaying the row and column displacements,
-#'  and the z-axis displaying the semi-variances (variogram ordinates) for a separable autoregressive process.
+#'  and the z-axis displaying the semivariances (variogram ordinates) for a separable autoregressive process.
 #'
 #' @examples
-#' # Theoretical variogram for a field trial with 10 columns and 20 rows, based on column
-#' # and row autocorrelations of 0.5 and 0.7, and a proportion of spatial trend of 0.5.
-#' # The remaining proportion represents random error.
+#' # Theoretical variogram for a field trial with 10 columns and 20 rows, based
+#' # on column and row autocorrelations of 0.5 and 0.7, and a proportion of
+#' # spatial trend of 0.5. The remaining proportion represents random error.
 #'
 #' variogram <- theoretical_variogram(
 #'   ncols = 10,
@@ -617,7 +617,7 @@ sample_variogram <- function(df,
 #' variogram
 #'
 #' # Extract the data frame with the column and row displacements, and the
-#' # theoretical semi-variances.
+#' # theoretical semivariances.
 #'
 #' variogram_df <- variogram$data
 #'
