@@ -23,7 +23,7 @@ A heatmap with x- and y-axes displaying the variable numbers,
  and colour gradient ranging from blue (low value) to red (high value).
 }
 \description{
-Creates a heatmap for a symmetric matrix (e.g., correlation or covariance matrix).
+Creates a heatmap of a symmetric matrix (e.g., correlation or covariance matrix).
 }
 \examples{
 # Display a random correlation matrix.

@@ -30,8 +30,8 @@
 #'   Covariates are also supplied for use in \link[FieldSimR]{multi_asr_output}.
 #'
 #' @examples
-#' # Simulate genetic values with 'AlphaSimR' for two additive traits in
-#' # two environments based on a multiplicative model with three terms.
+#' # Simulate genetic values with 'AlphaSimR' for two additive traits in two environments
+#' # based on a (reduced rank) multiplicative model with three terms.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values.
@@ -176,8 +176,8 @@ multi_asr_input <- function(ntraits = 1,
 #'   additional entries containing the genotype slopes for each multiplicative term.
 #'
 #' @examples
-#' # Simulate genetic values with 'AlphaSimR' for two additive traits in
-#' # two environments based on a (reduced rank) multiplicative model with three terms.
+#' # Simulate genetic values with 'AlphaSimR' for two additive traits in two environments
+#' # based on a (reduced rank) multiplicative model with three terms.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values.
@@ -211,8 +211,8 @@ multi_asr_input <- function(ntraits = 1,
 #' )
 #'
 #'
-#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a multiplicative model with
-#' # three terms.
+#' # 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a multiplicative
+#' # model with three terms.
 #'
 #' library("AlphaSimR")
 #' FOUNDERPOP <- quickHaplo(
@@ -237,8 +237,8 @@ multi_asr_input <- function(ntraits = 1,
 #' pop <- newPop(FOUNDERPOP)
 #'
 #'
-#' # 3. Create a data frame with simulated genetic values for the two traits in the
-#' # two environments, with two replicates of each genotype.
+#' # 3. Create a data frame with simulated genetic values for the two traits in the two
+#' # environments, with two replicates of each genotype.
 #'
 #' # The covariates are obtained from input_asr.
 #'

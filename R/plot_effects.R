@@ -14,8 +14,8 @@
 #'  and colour gradient ranging from red (low value) to green (high value).
 #'
 #' @examples
-#' # Display the simulated plot errors in the example data frame 'error_df_bivar'
-#' # for Trait 1 in Environment 1.
+#' # Display the simulated plot errors in the example data frame 'error_df_bivar' for
+#' # Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
@@ -383,8 +383,8 @@ plot_matrix <- function(mat,
 #'   the effects, respectively.
 #'
 #' @examples
-#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar'
-#' # for Trait 1 in Environment 1.
+#' # Q-Q plot of the simulated plot errors in the example data frame 'error_df_bivar' for
+#' # Trait 1 in Environment 1.
 #'
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #'
@@ -503,7 +503,8 @@ qq_plot <- function(df,
 #'   for the effects.
 #'
 #' @examples
-#' # Sample variogram of plot errors simulated using a separable first order autoregressive (AR1) process.
+#' # Sample variogram of plot errors simulated using a separable first order
+#' # autoregressive (AR1) process.
 #'
 #' error_df <- field_trial_error(
 #'   ntraits = 1,
@@ -596,9 +597,9 @@ sample_variogram <- function(df,
 #'  and the z-axis displaying the semi-variances (variogram ordinates) for a separable autoregressive process.
 #'
 #' @examples
-#' # Theoretical variogram for a field trial with 10 columns and 20 rows, based on column and row
-#' # autocorrelations of 0.5 and 0.7, and a proportion of spatial trend of 0.5. The remaining proportion
-#' # represents random error.
+#' # Theoretical variogram for a field trial with 10 columns and 20 rows, based on column
+#' # and row autocorrelations of 0.5 and 0.7, and a proportion of spatial trend of 0.5.
+#' # The remaining proportion represents random error.
 #'
 #' variogram <- theoretical_variogram(
 #'   ncols = 10,

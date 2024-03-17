@@ -63,8 +63,8 @@
 #'   correlated genetic values based on a compound symmetry model for GxE interaction.
 #'
 #' @examples
-#' # Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
-#' # two environments based on a compound symmetry model.
+#' # Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in two
+#' # environments based on a compound symmetry model.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values and mean dominance degrees.
@@ -323,8 +323,8 @@ compsym_asr_input <- function(ntraits = 1,
 #'   additional entries containing the genotype main effects and GxE interaction effects for each trait.
 #'
 #' @examples
-#' # Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in
-#' # two environments based on a compound symmetry model.
+#' # Simulate genetic values with 'AlphaSimR' for two additive + dominance traits in two
+#' # environments based on a compound symmetry model.
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values and mean dominance degrees.
@@ -392,8 +392,8 @@ compsym_asr_input <- function(ntraits = 1,
 #' pop <- newPop(FOUNDERPOP)
 #'
 #'
-#' # 3. Create a data frame with the simulated genetic values for the two traits in the
-#' # two environments, with two replicates of each genotype.
+#' # 3. Create a data frame with simulated genetic values for the two traits in the two
+#' # environments, with two replicates of each genotype.
 #'
 #' gv_ls <- compsym_asr_output(
 #'   pop = pop,

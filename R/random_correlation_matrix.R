@@ -18,6 +18,8 @@
 #' the correlation matrix is guaranteed to be positive (semi)-definite.
 #'
 #' @examples
+#' # Simulate a random correlation matrix with 10 columns and rows.
+#'
 #' corA <- rand_cor_mat(
 #'   n = 10,
 #'   min.cor = -0.2,
