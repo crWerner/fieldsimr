@@ -34,7 +34,7 @@ corA <- rand_cor_mat(
   max.cor = 1
 )
 
-# Define groups
+# Define groups.
 group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
 
 plot_matrix(

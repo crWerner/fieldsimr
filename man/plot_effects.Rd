@@ -26,8 +26,8 @@ Requires a data frame generated with the functions \link[FieldSimR]{field_trial_
 or any data frame matching the description below.
 }
 \examples{
-# Display the simulated plot errors in the example data frame 'error_df_bivar' for
-# Trait 1 in Environment 1.
+# Display the simulated plot errors in the example data frame 'error_df_bivar'
+# for Trait 1 in Environment 1.
 
 error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 

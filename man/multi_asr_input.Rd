@@ -41,8 +41,8 @@ A list with input parameters for `AlphaSimR`, which are used to simulate
 \description{
 Creates a list of input parameters for
 \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} to simulate
-genetic values in multiple environments for one or more traits based on a multiplicative
-model for genotype-by-environment (GxE) interaction. \cr
+genetic values in multiple environments for one or more traits based on a (reduced rank)
+multiplicative model for genotype-by-environment (GxE) interaction. \cr
 This function utilises the ability of `AlphaSimR` to simulate correlated traits.
 The wrapper function \code{multi_asr_input()} is used to specify the input parameters required in `AlphaSimR`.
 After simulating the genetic values, the wrapper function \link[FieldSimR]{multi_asr_output} can be used to
@@ -52,8 +52,8 @@ generate a data frame with output values.
 Currently supports additive traits only, but other (non-additive) traits are being implemented.
 }
 \examples{
-# Simulate genetic values with 'AlphaSimR' for two additive traits in two environments
-# based on a (reduced rank) multiplicative model with three terms.
+# Simulate genetic values with 'AlphaSimR' for two additive traits in two
+# environments based on a multiplicative model with three terms.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values.

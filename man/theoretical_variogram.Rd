@@ -34,9 +34,9 @@ A theoretical variogram with x- and y-axes displaying the row and column displac
 Creates a theoretical variogram for a separable first order autoregressive (AR1) process.
 }
 \examples{
-# Theoretical variogram for a field trial with 10 columns and 20 rows, based on column
-# and row autocorrelations of 0.5 and 0.7, and a proportion of spatial trend of 0.5.
-# The remaining proportion represents random error.
+# Theoretical variogram for a field trial with 10 columns and 20 rows, based
+# on column and row autocorrelations of 0.5 and 0.7, and a proportion of
+# spatial trend of 0.5. The remaining proportion represents random error.
 
 variogram <- theoretical_variogram(
   ncols = 10,

@@ -40,13 +40,13 @@ A data frame with columns 'env', 'rep', and genotype 'id', followed by the
 }
 \description{
 Creates a data frame of simulated genetic values in multiple environments for one or more traits
-based on a multiplicative model for genotype-by-environment (GxE) interaction. This function
-requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
-generated with \link[FieldSimR]{multi_asr_input}.
+based on a (reduced rank) multiplicative model for genotype-by-environment (GxE) interaction.
+This function requires an \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`}
+population object generated with \link[FieldSimR]{multi_asr_input}.
 }
 \examples{
-# Simulate genetic values with 'AlphaSimR' for two additive traits in two environments
-# based on a (reduced rank) multiplicative model with three terms.
+# Simulate genetic values with 'AlphaSimR' for two additive traits in two
+# environments based on a multiplicative model with three terms.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values.
@@ -80,8 +80,8 @@ input_asr <- multi_asr_input(
 )
 
 
-# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a multiplicative
-# model with three terms.
+# 2. Use input_asr to simulate genetic values in 'AlphaSimR' based on a
+# multiplicative model with three terms.
 
 library("AlphaSimR")
 FOUNDERPOP <- quickHaplo(

@@ -107,7 +107,7 @@ make_phenotypes <- function(gv.df,
     effects_df <- mapply(function(x, y) cbind(pheno_df[, 1:5], x, y), x = gv_ls, y = error_ls, SIMPLIFY = FALSE)
 
     effects_df <- mapply(function(x, y) {
-      colnames(x)[6:(ntraits + 5)] <- c(paste0("gv.Trait", y), paste0("e.Trait", y))
+      colnames(x)[6:7] <- c(paste0("gv.Trait", y), paste0("e.Trait", y))
       x
     }, x = effects_df, y = seq_len(ntraits), SIMPLIFY = FALSE)
 
