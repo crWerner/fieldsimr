@@ -71,9 +71,11 @@
 
 * `prop.main` was implemented instead of `prop.mainA`, since this argument is aligned with `var`, i.e., it represents the proportion of additive or total main effect variance depending on whether `useVarA = TRUE` or `FALSE` in `AlphaSimR`.
 
-* Added `return.effects` argument to the `make_phenotypes` function for returning the plot errors and genetic values. The latter will be returned in randomised order when `randomise = TRUE`.
+* Added `return.effects` argument to the `make_phenotypes` function for returning the plot errors and genetic values for each trait. The latter will be returned in randomised order when `randomise = TRUE`.
 
-* Added `plot_matrix` function for graphically displaying a symmetric matrix, e.g., correlation or covariance matrix, in a similar manner to the `plot_effects` function.
+* Added functionality for `plot_effects` to display the factor `block`, instead of a numeric column.
+
+* Added `plot_matrix` function for graphically displaying a symmetric matrix, e.g., correlation or covariance matrix, in a similar manner to the `plot_effects` function. This function allows the matrix to be ordered based on a dendrogram, and split into user-defined groups.
 
 
 
