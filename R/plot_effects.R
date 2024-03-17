@@ -99,26 +99,29 @@ plot_effects <- function(df,
     }
   }
 
-  if (effect == "block") {
-    df$block <- as.numeric(as.character(df$block))
-  }
   col <- row <- NULL
-  mid_pt <- mean(df[[effect]], na.rm = TRUE)
-  max_pt <- max(abs(c(mid_pt - min(df[[effect]], na.rm = TRUE), max(df[[effect]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
-
-  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = get(effect))) +
-    ggplot2::scale_fill_gradient2(
+  if (effect != "block") {
+    mid_pt <- mean(df[[effect]], na.rm = TRUE)
+    max_pt <- max(abs(c(mid_pt - min(df[[effect]], na.rm = TRUE), max(df[[effect]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
+      ggplot2::geom_tile(ggplot2::aes(fill = get(effect))) +
+      ggplot2::scale_fill_gradient2(
       low = "#A51122", mid = "#FEFDBE", high = "#006228",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
-    ) +
-    ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
+      ) +
+      ggplot2::ggtitle(label = effect) +
+      ggplot2::labs(fill = "Effect")
+  } else if (effect == "block") {
+    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
+      ggplot2::geom_tile(ggplot2::aes(fill = get(effect)), alpha = 0.6) +
+      ggplot2::scale_fill_manual(values = c("#888888","#6699CC","#882255","#117733","#332288")) +
+      ggplot2::labs(fill = "Block")
+  }
+  p <- p + ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
     ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001, 0.0001)) +
     ggplot2::xlab("Column") +
     ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
-    ggplot2::ggtitle(label = effect) +
-    ggplot2::labs(fill = "Effect") +
     ggplot2::theme(
       legend.title = ggplot2::element_text(size = 11),
       legend.text = ggplot2::element_text(size = 9),
@@ -309,7 +312,7 @@ plot_matrix <- function(mat,
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = var1, y = var2)) +
     ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
     ggplot2::scale_fill_gradient2(
-      low = "#195696", mid = "#fcfce1", high = "#9C1127", na.value = "transparent",
+      low = "#195696", mid = "#fcfce1", high = "#A51122", na.value = "transparent",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
     ) +
     ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
