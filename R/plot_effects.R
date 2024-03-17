@@ -258,18 +258,20 @@ plot_matrix <- function(mat,
 
   is_cor_mat <- TRUE
   effect <- "Correlation matrix"
-  effect_short <- "Cor."
+  effect_short <- "cor"
+  effect_short2 <- "Cor."
   if (any(diag(mat) != 1)) {
     is_cor_mat <- FALSE
     effect <- "Covariance matrix"
-    effect_short <- "Cov."
+    effect_short <- "cov"
+    effect_short2 <- "Cov."
   }
 
   df <- as.data.frame(as.table(mat))
-  colnames(df) <- c("var1", "var2", "eff")
+  colnames(df) <- c("var1", "var2", effect_short)
 
   if (is_cor_mat) {
-    df$eff[df$var1 == df$var2] <- NA
+    df[[effect_short]][df$var1 == df$var2] <- NA
   }
   levs <- unique(df$var1)
   df$var1 <- factor(as.numeric(as.character(df$var1)), levels = levs)
@@ -300,17 +302,17 @@ plot_matrix <- function(mat,
     df$var2 <- factor(df$var2, levels = order2)
   }
 
-  var1 <- var2 <- eff <- NULL
+  var1 <- var2 <- NULL
   if (is_cor_mat) {
     mid_pt <- 0
     max_pt <- 1.1
   } else {
-    mid_pt <- mean(df$eff, na.rm = TRUE)
-    max_pt <- max(abs(c(mid_pt - min(df$eff, na.rm = TRUE), max(df$eff, na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+    mid_pt <- mean(df[[effect_short]], na.rm = TRUE)
+    max_pt <- max(abs(c(mid_pt - min(df[[effect_short]], na.rm = TRUE), max(df[[effect_short]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
   }
 
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = var1, y = var2)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = eff)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = get(effect_short))) +
     ggplot2::scale_fill_gradient2(
       low = "#195696", mid = "#fcfce1", high = "#A51122", na.value = "transparent",
       midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
@@ -321,7 +323,7 @@ plot_matrix <- function(mat,
     ggplot2::ylab("Variable") +
     ggplot2::theme_grey(base_size = 10) +
     ggplot2::ggtitle(label = effect) +
-    ggplot2::labs(fill = effect_short) +
+    ggplot2::labs(fill = effect_short2) +
     ggplot2::theme(
       legend.title = ggplot2::element_text(size = 11),
       legend.text = ggplot2::element_text(size = 9),
