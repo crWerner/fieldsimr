@@ -204,6 +204,7 @@ plot_effects <- function(df,
 #' )
 #'
 #' # Define groups.
+#'
 #' group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
 #'
 #' plot_matrix(
@@ -404,6 +405,7 @@ plot_matrix <- function(mat,
 #'
 #' # Extract the data frame with the theoretical and sample quantiles of the
 #' # user-defined effects.
+#'
 #' qq_df <- qq$data
 #'
 #' @export
@@ -412,6 +414,7 @@ qq_plot <- function(df,
                     labels = FALSE) {
   if (is.vector(df)) {
     df <- data.frame(effect = c(df))
+    effect <- "effect"
   }
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
@@ -523,6 +526,7 @@ qq_plot <- function(df,
 #' )
 #'
 #' # Sample variogram
+#'
 #' variogram
 #'
 #' # Extract the data frame with the column and row displacements, and the
@@ -616,6 +620,7 @@ sample_variogram <- function(df,
 #' )
 #'
 #' # Theoretical variogram
+#'
 #' variogram
 #'
 #' # Extract the data frame with the column and row displacements, and the
