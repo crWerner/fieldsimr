@@ -48,6 +48,7 @@ variogram <- theoretical_variogram(
 )
 
 # Theoretical variogram
+
 variogram
 
 # Extract the data frame with the column and row displacements, and the
