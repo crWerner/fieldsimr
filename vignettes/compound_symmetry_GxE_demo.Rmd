@@ -68,7 +68,7 @@ nenvs <- 3 # Number of environments.
 nreps <- c(2, 2, 3) # Number of replicates of each genotype in environments 1, 2, and 3.
 
 
-nind <- 100 # Number of founder genotypes in the population.
+nind <- 20 # Number of founder genotypes in the population.
 nchr <- 10 # Number of chromosomes.
 nseg_sites <- 200 # Number of QTN per chromosome.
 ```
