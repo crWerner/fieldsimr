@@ -70,7 +70,7 @@ nreps <- c(2, 2, 3) # Number of replicates tested within environments 1, 2 and 3
 
 nind <- 20 # Number of founder genotypes in the population.
 nchr <- 10 # Number of chromosomes.
-nseg_sites <- 300 # Number of QTN per chromosome.
+nseg_sites <- 200 # Number of QTN per chromosome.
 ```
 
 <br/>
