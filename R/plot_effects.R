@@ -22,7 +22,7 @@
 #' plot_effects(
 #'   df = error_df,
 #'   effect = "e.Trait1",
-#'   labels = TRUE
+#'   labels = TRUE,
 #' )
 #'
 #' @export
@@ -39,7 +39,9 @@ plot_effects <- function(df,
     stop("'df' must contain the columns 'col', 'row', and the effect to be plotted")
   }
   df$col <- factor(as.numeric(as.character(df$col)))
+  ncols <- nlevels(df$col)
   df$row <- factor(as.numeric(as.character(df$row)))
+  nrows <- nlevels(df$row)
 
   nblocks <- 1
   if (blocks) {
@@ -47,14 +49,8 @@ plot_effects <- function(df,
       stop("'df' must contain the column 'block' if blocks are to be plotted")
     }
     df$block <- factor(as.numeric(as.character(df$block)))
-    df$block <- droplevels(df$block)
     nblocks <- nlevels(df$block)
   }
-
-  df$col <- droplevels(df$col)
-  ncols <- nlevels(df$col)
-  df$row <- droplevels(df$row)
-  nrows <- nlevels(df$row)
 
   plot_x_min <- rep(seq(0.5, ncols - 0.5, 1), each = nrows)
   plot_y_min <- rep(seq(0.5, nrows - 0.5, 1), ncols)
@@ -195,7 +191,7 @@ plot_effects <- function(df,
 #' @param labels When \code{TRUE} (default), variable labels are displayed.
 #'
 #' @return A heatmap with x- and y-axes displaying the variable numbers,
-#'  and colour gradient ranging from blue (low value) to red (high value).
+#'   and colour gradient ranging from blue (low value) to red (high value).
 #'
 #' @examples
 #' # Display a random correlation matrix.
@@ -606,7 +602,7 @@ sample_variogram <- function(df,
 #' @param prop.spatial A scalar defining the proportion of spatial trend.
 #'
 #' @return A theoretical variogram with x- and y-axes displaying the row and column displacements,
-#'  and the z-axis displaying the semivariances (variogram ordinates) for a separable autoregressive process.
+#'   and the z-axis displaying the semivariances (variogram ordinates) for a separable autoregressive process.
 #'
 #' @examples
 #' # Theoretical variogram for a field trial with 10 columns and 20 rows, based
