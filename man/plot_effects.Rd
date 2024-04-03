@@ -34,7 +34,7 @@ error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 plot_effects(
   df = error_df,
   effect = "e.Trait1",
-  labels = TRUE
+  labels = TRUE,
 )
 
 }

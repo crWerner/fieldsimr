@@ -20,7 +20,7 @@ When supplied, the heatmap is split into groups and then ordered (when \code{ord
 }
 \value{
 A heatmap with x- and y-axes displaying the variable numbers,
- and colour gradient ranging from blue (low value) to red (high value).
+  and colour gradient ranging from blue (low value) to red (high value).
 }
 \description{
 Creates a heatmap of a symmetric matrix (e.g., correlation or covariance matrix).
