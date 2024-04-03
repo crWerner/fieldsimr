@@ -47,11 +47,14 @@ plot_effects <- function(df,
       stop("'df' must contain the column 'block' if blocks are to be plotted")
     }
     df$block <- factor(as.numeric(as.character(df$block)))
+    df$block <- droplevels(df$block)
+    nblocks <- nlevels(df$block)
   }
 
+  df$col <- droplevels(df$col)
   ncols <- nlevels(df$col)
+  df$row <- droplevels(df$row)
   nrows <- nlevels(df$row)
-  nblocks <- nlevels(df$block)
 
   plot_x_min <- rep(seq(0.5, ncols - 0.5, 1), each = nrows)
   plot_y_min <- rep(seq(0.5, nrows - 0.5, 1), ncols)
