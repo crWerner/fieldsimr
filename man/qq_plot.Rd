@@ -38,6 +38,7 @@ qq
 
 # Extract the data frame with the theoretical and sample quantiles of the
 # user-defined effects.
+
 qq_df <- qq$data
 
 }

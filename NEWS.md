@@ -35,7 +35,7 @@
 * Updated Description in `DESCRIPTION`.
 
 
-# FieldSimR 1.2.1
+# FieldSimR 1.2.0
 
 * Argument `ext_ord` replaced arguments `ext_col_cor` and `ext_row_cor` in function `field_trial_error`.
 
@@ -53,7 +53,7 @@
 
 * Added function `theoretical_variogram` to create theoretical variograms.
 
-# FieldSimR 1.3.1
+# FieldSimR 1.3.0
 
 * Replaced all instances of `_` with `.` in function arguments, e.g., `pos.def` replaced `pos_def`.
 
