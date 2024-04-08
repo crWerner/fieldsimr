@@ -1,7 +1,7 @@
 #' Simulate a random correlation matrix
 #'
 #' Creates a symmetric \code{n x n} correlation matrix with user-defined minimum and maximum
-#' correlations.
+#' correlations based on a continuous uniform distribution.
 #'
 #' @param n A scalar defining the dimensions of the correlation matrix.
 #' @param min.cor A scalar defining the minimum correlation.
@@ -38,7 +38,7 @@ rand_cor_mat <- function(n = 2,
 
   if (min.cor < -1 || min.cor > 1) stop("'min.cor' must be a value >= -1 and <= 1")
   if (max.cor < -1 || max.cor > 1) stop("'max.cor' must be a value >= -1 and <= 1")
-  if (max.cor < min.cor) stop("'max.cor' must be >= 'min.cor'")
+  if (max.cor < min.cor) stop("'max.cor' must be a value >= 'min.cor'")
 
   ncor <- sum(seq(1, (n - 1)))
 

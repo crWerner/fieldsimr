@@ -331,20 +331,23 @@ plot_matrix <- function(mat,
       axis.title = ggplot2::element_text(size = 11),
       panel.background = ggplot2::element_blank(),
       plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
-    ) +
-    ggplot2::geom_rect(
-      ggplot2::aes(
-        xmin = rep(seq(0.5, n - 0.5, 1), each = n), xmax = rep(seq(1.5, n + 0.5, 1), each = n),
-        ymin = rep(seq(0.5, n - 0.5, 1), n), ymax = rep(seq(1.5, n + 0.5, 1), n)
-      ),
-      fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
-    ) +
+    )  +
     ggplot2::annotate(
       geom = "rect", xmin = 0.5, ymin = 0.5,
       xmax = n + 0.5, ymax = n + 0.5,
       fill = "transparent", col = "black", lwd = 1.6
     )
 
+  if (n <= 10) {
+    p <- p +
+      ggplot2::geom_rect(
+        ggplot2::aes(
+          xmin = rep(seq(0.5, n - 0.5, 1), each = n), xmax = rep(seq(1.5, n + 0.5, 1), each = n),
+          ymin = rep(seq(0.5, n - 0.5, 1), n), ymax = rep(seq(1.5, n + 0.5, 1), n)
+        ),
+        fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
+      )
+  }
   if (labels) {
     p <- p + ggplot2::theme(
       axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),

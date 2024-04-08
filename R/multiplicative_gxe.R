@@ -78,29 +78,28 @@ multi_asr_input <- function(ntraits = 1,
     nterms <- ceiling(ntraits * nenvs)
   }
   if (!nterms > 0 | nterms %% 1 != 0) stop("'nterms' must be a positive integer")
+  if (nterms > ntraits * nenvs) stop("'nterms' must be less than or equal to the number of environment-within-trait combinations")
 
   if (length(mean) == 1) {
     mean <- rep(mean, each = ntraits * nenvs)
   }
   if (length(mean) != (ntraits * nenvs)) {
-    stop("Number of values in 'mean' must be 1 or match
-            number of environment-within-trait combinations")
+    stop("Number of values in 'mean' must be 1 or match number of environment-within-trait combinations")
   }
 
   if (length(var) == 1) {
     var <- rep(var, each = ntraits * nenvs)
   }
   if (length(var) != (ntraits * nenvs)) {
-    stop("Number of values in 'var' must be 1 or match number of
-            environment-within-trait combinations")
+    stop("Number of values in 'var' must be 1 or match number of environment-within-trait combinations")
   }
+  if(any(var < 0)) stop("All values in 'var' must be greater than or equal to 0")
 
   if (is.null(corA)) {
     corA <- diag(ntraits * nenvs)
   }
   if (nrow(corA) != length(mean)) {
-    stop("Dimensions of 'corA' must match number of environment-within-trait
-            combinations")
+    stop("Dimensions of 'corA' must match number of environment-within-trait combinations")
   }
 
   if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < -1) | !isSymmetric(corA)) {
@@ -109,13 +108,14 @@ multi_asr_input <- function(ntraits = 1,
 
   covA <- diag(sqrt(var)) %*% corA %*% diag(sqrt(var))
   eigen_decom <- eigen(covA)
-  if (any(eigen_decom$values < 0)) {
-    stop("'corA' must be positive (semi)-definite")
+  if (any(eigen_decom$values[1:nterms] < 0)) {
+    stop("'corA' must be positive (semi)-definite with regards to 'nterms'")
   }
 
   rank <- sum(eigen_decom$values > 1e-8)
   if (nterms == rank) {
-    covariates <- cbind(eigen_decom$vectors[, 1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
+    covariates <- cbind(eigen_decom$vectors[, 1:nterms])
+    var_pseudo <- eigen_decom$values[1:nterms]
   } else if (nterms < rank) {
     term_char <- "terms"
     if (nterms == 1) {
@@ -126,25 +126,28 @@ multi_asr_input <- function(ntraits = 1,
       round(100 * sum(eigen_decom$values[1:nterms]) / sum(eigen_decom$values), 2), "% of variation captured with ", nterms, " ", term_char
     ))
 
-    covariates <- cbind(eigen_decom$vectors[, 1:nterms]) %*% diag(sqrt(eigen_decom$values[1:nterms]), nrow = nterms)
+    covariates <- cbind(eigen_decom$vectors[, 1:nterms])
+    var_pseudo <- eigen_decom$values[1:nterms]
   } else if (nterms > rank) {
     message("Warning message: \n 'nterms' is greater than rank of 'corA', some terms added")
-    covariates <- cbind(eigen_decom$vectors[, 1:rank]) %*% diag(sqrt(eigen_decom$values[1:rank]), nrow = rank)
+    covariates <- cbind(eigen_decom$vectors[, 1:rank])
     covariates <- cbind(covariates, matrix(0, ncol = (nterms - rank), nrow = ntraits * nenvs))
+    var_pseudo <- eigen_decom$values[1:rank]
+    var_pseudo <- c(var_pseudo, rep(0, nterms - rank))
   }
   if (nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) {
     message("Warning message: \n 'nterms' and/or rank of 'corA' are less than number of environment-within-trait combinations, values in 'mean' will be approximated")
   }
 
   mean_pseudo <- c(solve(t(covariates) %*% covariates) %*% t(covariates) %*% mean)
-  var_pseudo <- rep(1, nterms)
   cor_pseudo <- diag(nterms)
+  colnames(covariates) <- paste0("cov.Term", 1:nterms)
 
   input_asr <- list(
     mean = mean_pseudo,
     var = var_pseudo,
     corA = cor_pseudo,
-    covs = covariates
+    cov.mat = covariates
   )
 
   return(input_asr)
@@ -166,7 +169,7 @@ multi_asr_input <- function(ntraits = 1,
 #' @param nenvs Number of environments specified in \link[FieldSimR]{multi_asr_input}.
 #' @param nreps A vector defining the number of replicates in each environment. If only one value
 #'   is specified, all environments will be assigned the same number.
-#' @param covs A matrix of covariates that will be used to construct the genetic values, typically generated
+#' @param cov.mat A matrix of covariates that will be used to construct the genetic values, typically generated
 #'   with \link[FieldSimR]{multi_asr_input}.
 #' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
 #'   entries containing the genotype slopes for each multiplicative term.
@@ -247,7 +250,7 @@ multi_asr_input <- function(ntraits = 1,
 #'   ntraits = 2,
 #'   nenvs = 2,
 #'   nreps = 2,
-#'   covs = input_asr$covs,
+#'   cov.mat = input_asr$cov.mat,
 #'   return.effects = TRUE
 #' )
 #'
@@ -255,8 +258,8 @@ multi_asr_input <- function(ntraits = 1,
 multi_asr_output <- function(pop,
                              ntraits,
                              nenvs,
-                             nreps,
-                             covs = NULL,
+                             nreps = 1,
+                             cov.mat = NULL,
                              return.effects = FALSE) {
   if (!nenvs > 1 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
   if (!ntraits > 0 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
@@ -274,11 +277,11 @@ multi_asr_output <- function(pop,
 
   slopes <- pop@gv
   nterms <- ncol(slopes)
-  if (is.null(covs)) stop("'covs' is not specified")
-  rank <- ncol(covs)
-  if (nterms != rank) stop("Number of columns in 'covs' does not match number of additive terms simulated")
+  if (is.null(cov.mat)) stop("'cov.mat' is not specified")
+  rank <- ncol(cov.mat)
+  if (nterms != rank) stop("Number of columns in 'cov.mat' does not match number of additive terms simulated")
 
-  gv <- slopes %*% t(covs)
+  gv <- slopes %*% t(cov.mat)
   index <- as.list(as.data.frame(t(matrix(1:(ntraits * nenvs), ncol = ntraits))))
   gv <- lapply(index, function(x) cbind(gv[, x]))
   gv <- do.call(rbind, mapply(function(x, y) cbind(x[rep(1:nrow(x), y), ]), x = gv, y = as.list(nreps), SIMPLIFY = F))
