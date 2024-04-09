@@ -107,7 +107,7 @@ multi_asr_input <- function(ntraits = 1,
   }
 
   covA <- diag(sqrt(var)) %*% corA %*% diag(sqrt(var))
-  eigen_decom <- eigen(covA)
+  eigen_decom <- eigen(covA, symmetric = TRUE)
   if (any(eigen_decom$values[1:nterms] < 0)) {
     stop("'corA' must be positive (semi)-definite with regards to 'nterms'")
   }
