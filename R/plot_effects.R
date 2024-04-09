@@ -203,7 +203,6 @@ plot_effects <- function(df,
 #' )
 #'
 #' # Define groups.
-#'
 #' group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
 #'
 #' plot_matrix(
@@ -235,7 +234,7 @@ plot_matrix <- function(mat,
   ngroups <- 1
   if (!is.null(group.df)) {
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
-    if (ncol(group.df) < 2) stop("'group.df' must be a data frame with at least two columns")
+    if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
     colnames(group.df)[1:2] <- c("variable", "group")
     if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
 
@@ -407,7 +406,6 @@ plot_matrix <- function(mat,
 #'
 #' # Extract the data frame with the theoretical and sample quantiles of the
 #' # user-defined effects.
-#'
 #' qq_df <- qq$data
 #'
 #' @export
@@ -528,12 +526,10 @@ qq_plot <- function(df,
 #' )
 #'
 #' # Sample variogram
-#'
 #' variogram
 #'
 #' # Extract the data frame with the column and row displacements, and the
 #' # average semivariances.
-#'
 #' variogram_df <- variogram$data
 #'
 #' @export
@@ -622,12 +618,10 @@ sample_variogram <- function(df,
 #' )
 #'
 #' # Theoretical variogram
-#'
 #' variogram
 #'
 #' # Extract the data frame with the column and row displacements, and the
 #' # theoretical semivariances.
-#'
 #' variogram_df <- variogram$data
 #'
 #' @export

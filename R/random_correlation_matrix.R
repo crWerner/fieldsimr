@@ -8,10 +8,10 @@
 #' @param max.cor A scalar defining the maximum correlation. \cr
 #'  \strong{Note:} \code{-1 < min.cor < max.cor < 1}.
 #' @param pos.def When \code{TRUE} (default is \code{FALSE}), the function \code{bend} of the R package
-#'   \href{https://cran.r-project.org/package=mbend}{`mbend`} is used with default arguments to
-#'   bend a non-positive-definite matrix to a positive (semi)-definite matrix.
-#' @param small.positive Argument passed to \code{bend} when \code{pos.def = TRUE} (default is 0.0001).
-#'   Eigenvalues smaller than \code{small.positive} are replaced with this value. \cr
+#'   \href{https://cran.r-project.org/package=mbend}{`mbend`} is used to
+#'   bend a non-positive (semi)-definite matrix to be positive (semi)-definite.
+#' @param small.positive Argument passed to \code{bend} when \code{pos.def = TRUE} (default is 1e-8).
+#'   Eigenvalues smaller than \code{small.positive} are replaced by this. \cr
 #'  \strong{Note:} \code{0 < small.positive < 0.1}.
 #'
 #' @return A symmetric \code{n x n} correlation matrix. When \code{pos.def = TRUE},
@@ -19,13 +19,12 @@
 #'
 #' @examples
 #' # Simulate a random correlation matrix with 10 columns and rows.
-#'
-#' corA <- rand_cor_mat(
+#' cor_mat <- rand_cor_mat(
 #'   n = 10,
 #'   min.cor = -0.2,
 #'   max.cor = 0.8,
 #'   pos.def = TRUE,
-#'   small.positive = 1e-4
+#'   small.positive = 1e-13
 #' )
 #'
 #' @export
@@ -49,14 +48,13 @@ rand_cor_mat <- function(n = 2,
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
   colnames(cor_mat) <- rownames(cor_mat) <- 1:n
 
-  is_pos_def <- sum(eigen(cor_mat)$values > 1e-8) == n
-  if (pos.def && !is_pos_def) {
+  if (pos.def) {
     if (is.null(small.positive)) {
-      small.positive <- 1e-4
+      small.positive <- 1e-8
     }
     if (small.positive <= 0 | small.positive > 0.1) stop("'small.positive' must be a positive value <= 0.1")
-    cor_mat <- mbend::bend(cor_mat, small.positive = small.positive)
-    cor_mat <- round(cor_mat$bent, 12)
+    error <- try(cor_mat <- mbend::bend(cor_mat, small.positive = small.positive)$bent, silent = TRUE)
+    if(inherits(error, "try-error")) message("'cor_mat' is already positive (semi)-definite, matrix was not altered")
     cor_mat <- (cor_mat + t(cor_mat)) / 2
   }
   return(cor_mat)
