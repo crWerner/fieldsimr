@@ -236,6 +236,7 @@ plot_matrix <- function(mat,
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
     colnames(group.df)[1:2] <- c("variable", "group")
+    if (any(is.na(group.df[,1:2]))) stop("'group.df' must not contain missing values")
     if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
 
     group.df$variable <- factor(as.numeric(as.character(group.df$variable)))
@@ -424,6 +425,7 @@ qq_plot <- function(df,
   if (!(effect %in% colnames(df))) {
     stop("'df' must contain the effect to be plotted")
   }
+  if (any(is.na(df[[effect]]))) stop("'df' must not contain missing values")
 
   if (!labels) {
     qq_df <- data.frame(effect = df[[effect]])
@@ -544,6 +546,7 @@ sample_variogram <- function(df,
   if (any(!c("col", "row", effect) %in% colnames(df))) {
     stop("'df' must contain the columns 'col' and 'row', and the effect to be plotted")
   }
+  if (any(is.na(df[[effect]]))) stop("'df' must not contain missing values")
 
   variogram_df <- data.frame(
     col = df[["col"]],

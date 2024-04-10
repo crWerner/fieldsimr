@@ -34,9 +34,12 @@ rand_cor_mat <- function(n = 2,
                          small.positive = NULL) {
   if (n < 1 || n %% 1 != 0) stop("'n' must be a positive integer")
 
+  if (!(is.atomic(min.cor) && length(min.cor) == 1L)) stop("'min.cor' must be a scalar")
   if (min.cor < -1 || min.cor > 1) stop("'min.cor' must be a value >= -1 and <= 1")
+  if (!(is.atomic(max.cor) && length(max.cor) == 1L)) stop("'max.cor' must be a scalar")
   if (max.cor < -1 || max.cor > 1) stop("'max.cor' must be a value >= -1 and <= 1")
   if (max.cor < min.cor) stop("'max.cor' must be a value >= 'min.cor'")
+  if (!is.logical(pos.def)) stop("'pos.def' must be logical")
 
   ncor <- sum(seq(1, (n - 1)))
 
@@ -47,7 +50,7 @@ rand_cor_mat <- function(n = 2,
   cor_mat[lower.tri(cor_mat, diag = FALSE)] <- off_dg
   colnames(cor_mat) <- rownames(cor_mat) <- 1:n
 
-  if(pos.def) {
+  if (pos.def) {
     is_pos_semi_def <- all(eigen(cor_mat, only.values = TRUE)$values >= 0)
     if (is_pos_semi_def) {
       message("'cor_mat' is already positive (semi)-definite, matrix was not altered")
