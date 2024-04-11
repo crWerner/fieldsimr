@@ -27,13 +27,13 @@
 #' )
 #'
 #' @export
-rand_cor_mat <- function(n = 2,
+rand_cor_mat <- function(n = 5,
                          min.cor = -1,
                          max.cor = 1,
                          pos.def = FALSE,
                          small.positive = NULL) {
-  if (n < 1 || n %% 1 != 0) stop("'n' must be a positive integer")
-
+  if (!(is.atomic(n) && length(n) == 1L)) stop("'n' must be a scalar")
+  if (n < 2 || n %% 1 != 0) stop("'n' must be an integer > 1")
   if (!(is.atomic(min.cor) && length(min.cor) == 1L)) stop("'min.cor' must be a scalar")
   if (min.cor < -1 || min.cor > 1) stop("'min.cor' must be a value >= -1 and <= 1")
   if (!(is.atomic(max.cor) && length(max.cor) == 1L)) stop("'max.cor' must be a scalar")
