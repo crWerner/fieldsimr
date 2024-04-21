@@ -506,6 +506,76 @@ qq_plot <- function(df,
   }
 }
 
+#' Histogram of values
+#'
+#' Creates a histogram of user-defined values (e.g., effects, correlations, or covariances).
+#'
+#' @param df A data frame or vector with the values to be plotted.
+#' @param value The name of the values to be plotted. Ignored when 'df' is a vector.
+#' @param breaks Argument passed to \code{ggplot2} (default is \code{30}). Controls the number
+#'   of breaks in the histogram.
+#' @param density When \code{TRUE} (default is \code{FALSE}), a density curve is superimposed
+#'   onto the histogram.
+#'
+#' @return A histogram with x- and y-axes displaying the values and their frequency, respectively.
+#'   When \code{density = TRUE}, a density curve is superimposed onto the histogram.
+#'
+#' @examples
+#' # Histogram of the simulated plot errors in the example data frame 'error_df_bivar'
+#' # for Trait 1 in Environment 1.
+#' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
+#' plot_hist(
+#'   df = error_df,
+#'   value = "e.Trait1",
+#'   density = TRUE
+#' )
+#'
+#' @export
+plot_hist <- function(df,
+                      value = NULL,
+                      bins = 30,
+                      density = FALSE) {
+  print_title <- TRUE
+  if (is.vector(df)) {
+    df <- data.frame(Value = c(df))
+    value <- "Value"
+    print_title <- FALSE
+  }
+  if (!is.data.frame(df)) {
+    stop("'df' must be a data frame")
+  }
+  if (!(value %in% colnames(df))) {
+    stop("'df' must contain the value to be plotted")
+  }
+  if (!is.logical(density)) stop("'density' must be logical")
+  if (!(is.atomic(bins) && length(bins) == 1L)) stop("'bins' must be a scalar")
+  if (bins < 1 || bins %% 1 != 0) stop("'bins' must be a positive integer")
+
+  mean_value <- mean(df[[value]], na.rm = TRUE)
+  sd_value <- sd(df[[value]], na.rm = TRUE)
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(value))) +
+    ggplot2::geom_histogram(color = "black", alpha = 0.3, position = "identity", bins = bins) +
+    ggplot2::geom_vline(data = df, ggplot2::aes(xintercept = mean_value), colour = "steelblue", linewidth = 0.75) +
+    ggplot2::labs(y = "Frequency", x = "Value") +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0), size = 11),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0), size = 11),
+      axis.text = ggplot2::element_text(size = 10)
+    )
+  if (print_title) {
+    p <- p + ggplot2::ggtitle(label = value)
+  }
+  if (density) {
+    if (bins < 2) stop("'bins' must be > 1 to print density curve")
+    bin_width <- (max(df[[value]], na.rm = TRUE) - min(df[[value]], na.rm = TRUE))/(bins - 1)
+    n <- length(df[[value]][!is.na(df[[value]])])
+    p <-  p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count)*bin_width), fill = "transparent", linewidth = 1)
+  }
+  return(p)
+
+}
+
 #' Sample variogram
 #'
 #' Creates a sample variogram for a set of effects (e.g., plot errors).

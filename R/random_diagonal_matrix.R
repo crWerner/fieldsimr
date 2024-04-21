@@ -8,7 +8,7 @@
 #' @param max.var A scalar defining the maximum variance. \cr
 #'  \strong{Note:} \code{0 < min.var < max.var}.
 #'
-#' @return A diagonal \code{n x n} variance matrix. 
+#' @return A diagonal \code{n x n} variance matrix.
 #'
 #' @examples
 #' # Simulate a random diagonal matrix with 10 columns and rows.
@@ -28,7 +28,7 @@ rand_diag_mat <- function(n = 5,
   if (min.var < 0) stop("'min.var' must be a value >= 0")
   if (!(is.atomic(max.var) && length(max.var) == 1L)) stop("'max.var' must be a scalar")
   if (max.var < min.var) stop("'max.var' must be a value >= 'min.var'")
-  
+
   dg <- stats::runif(n, min = min.var, max = max.var)
   diag_mat <- diag(dg)
   colnames(diag_mat) <- rownames(diag_mat) <- 1:n
@@ -43,12 +43,12 @@ rand_diag_mat <- function(n = 5,
 #' @param n A scalar defining the dimensions of the variance matrix.
 #' @param shape A scalar defining the shape of the distribution.
 #' @param scale A scalar defining the scale of the distribution.
-#' @param inverse When \code{TRUE} (default is \code{FALSE}), the variances are 
+#' @param inverse When \code{TRUE} (default is \code{FALSE}), the variances are
 #'   sampled from the inverse gamma distribution instead of the gamma distribution.
-#' @param mean.var An optional scalar defining the mean variance. 
+#' @param mean.var An optional scalar defining the mean variance.
 #'.  When supplied, the variances are scaled to achieve the defined mean.
 #'
-#' @return A diagonal \code{n x n} variance matrix. 
+#' @return A diagonal \code{n x n} variance matrix.
 #'
 #' @examples
 #' # Simulate a random diagonal matrix with 10 columns and rows, and negatively skewed variances
@@ -73,13 +73,13 @@ skew_diag_mat <- function(n = 5,
   if (!(is.atomic(scale) && length(scale) == 1L)) stop("'scale' must be a scalar")
   if (scale <= 0) stop("'scale' must be a positive value")
   if (!is.logical(inverse)) stop("'inverse' must be logical")
-  
+
   if (!inverse) {
     dg <- stats::rgamma(n, shape = shape, scale = scale)
   } else if (inverse) {
     dg <- 1/stats::rgamma(n, shape = shape, rate = scale)
   }
-  
+
   if (!is.null(mean.var)) {
     if (!(is.atomic(mean.var) && length(mean.var) == 1L)) stop("'mean.var' must be a scalar")
     if (mean.var <= 0) stop("'mean.var' must be a positive value")
@@ -87,7 +87,7 @@ skew_diag_mat <- function(n = 5,
       warning("Mean diagonal element is zero, 'mean.var' cannot be applied")
       } else dg <- dg * mean.var/mean(dg)
   }
-  
+
   diag_mat <- diag(dg)
   colnames(diag_mat) <- rownames(diag_mat) <- 1:n
   return(diag_mat)
