@@ -65,7 +65,7 @@ rand_cor_mat <- function(n = 5,
   return(cor_mat)
 }
 
-#' Simulate a reduced rank correlation matrix
+#' Simulate a structured correlation matrix with reduced rank
 #'
 #' Creates a symmetric \code{n x n} correlation matrix with user-defined structure and rank.
 #'
@@ -92,7 +92,7 @@ rand_cor_mat <- function(n = 5,
 #'
 #' @examples
 #' # Simulate a correlation matrix with 10 columns and rows, rank equal to 3 and negatively skewed correlations.
-#' cor_mat <- rr_cor_mat(
+#' cor_mat <- struc_cor_mat(
 #'   n = 10,
 #'   base.cor = 0.3,
 #'   rank = 4,
@@ -100,14 +100,14 @@ rand_cor_mat <- function(n = 5,
 #' )
 #'
 #' @export
-rr_cor_mat <- function(n = 5,
-                       base.cor = 0.5,
-                       range = NULL,
-                       rank = 3,
-                       skew = 0,
-                       base.mat = NULL,
-                       pos.def = FALSE,
-                       small.positive = NULL) {
+struc_cor_mat <- function(n = 5,
+                          base.cor = 0.5,
+                          range = NULL,
+                          rank = 3,
+                          skew = 0,
+                          base.mat = NULL,
+                          pos.def = FALSE,
+                          small.positive = NULL) {
   if (!(is.atomic(n) && length(n) == 1L)) stop("'n' must be a scalar")
 
   if (is.null(base.mat)){
@@ -147,7 +147,7 @@ rr_cor_mat <- function(n = 5,
     if (!isSymmetric(base.mat)) stop("'base.mat' must be a symmetric matrix")
     if (any(is.na(base.mat))) stop("'base.mat' must not contain missing values")
     max_abs_base_cor <- max(abs(base.mat[upper.tri(base.mat)]))
-    # if (max_abs_base_cor + range > 1) stop("The absolute sum of 'range' and the maximum correlation in 'base.mat' must be <= 1")
+    if (max_abs_base_cor + range > 1) stop("The absolute sum of 'range' and the maximum correlation in 'base.mat' must be <= 1")
     warning("'base.mat' supplied, 'n', 'base.cor' and 'skew' will be ignored")
     base_mat <- base.mat
     n <- ncol(base_mat)
@@ -168,7 +168,6 @@ rr_cor_mat <- function(n = 5,
     cor_mat <- base_mat
   }
   diag(cor_mat) <- 1
-  # cor_mat[cor_mat > 1] <- 1
   colnames(cor_mat) <- rownames(cor_mat) <- 1:n
 
   if (pos.def) {
