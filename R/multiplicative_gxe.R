@@ -118,7 +118,7 @@ multi_asr_input <- function(ntraits = 1,
 
   rank <- sum(eigen_decom$values > 1e-8)
   if (nterms == rank) {
-    covariates <- cbind(eigen_decom$vectors[, 1:nterms])
+    cov_mat <- cbind(eigen_decom$vectors[, 1:nterms])
     var_pseudo <- eigen_decom$values[1:nterms]
   } else if (nterms < rank) {
     term_char <- "terms"

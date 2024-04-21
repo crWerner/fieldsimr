@@ -382,8 +382,8 @@ plot_matrix <- function(mat,
 #'
 #' Creates a normal quantile-quantile (Q-Q) plot for a set of effects (e.g., phenotypes, genetic values, or plot errors).
 #'
-#' @param df A data frame with the effects to be plotted.
-#' @param effect The name of the effects to be plotted.
+#' @param df A data frame or vector with the effects to be plotted.
+#' @param effect The name of the effects to be plotted. Ignored when 'df' is a vector.
 #' @param labels When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
 #'   This requires additional columns 'col' and 'row' in the data frame.
 #'
@@ -413,9 +413,11 @@ plot_matrix <- function(mat,
 qq_plot <- function(df,
                     effect,
                     labels = FALSE) {
+  print_title <- TRUE
   if (is.vector(df)) {
-    df <- data.frame(effect = c(df))
-    effect <- "effect"
+    df <- data.frame(Effect = c(df))
+    effect <- "Effect"
+    print_title <- FALSE
   }
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
@@ -442,7 +444,6 @@ qq_plot <- function(df,
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_point(size = 2) +
       ggplot2::labs(y = "Sample quantiles", x = "Theoretical quantiles") +
-      ggplot2::ggtitle(label = effect) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
         axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0), size = 11),
@@ -450,6 +451,9 @@ qq_plot <- function(df,
         axis.text = ggplot2::element_text(size = 10)
       ) +
       ggplot2::lims(x = c(mid_pt_x - max_pt_x, mid_pt_x + max_pt_x))
+    if (print_title) {
+      p <- p + ggplot2::ggtitle(label = effect)
+    }
     return(p)
   }
 
@@ -487,7 +491,6 @@ qq_plot <- function(df,
         y = "Sample quantiles", x = "Theoretical quantiles",
         subtitle = "Effects indexed as col:row"
       ) +
-      ggplot2::ggtitle(label = effect) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
         plot.subtitle = ggplot2::element_text(size = 10, colour = "gray40"),
@@ -496,6 +499,9 @@ qq_plot <- function(df,
         axis.text = ggplot2::element_text(size = 10)
       ) +
       ggplot2::lims(x = c(mid_pt_x - max_pt_x, mid_pt_x + max_pt_x))
+    if (print_title) {
+      p <- p + ggplot2::ggtitle(label = effect)
+    }
     return(p)
   }
 }
