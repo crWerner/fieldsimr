@@ -70,10 +70,10 @@ population object generated with <a href="multi_asr_input.html">multi_asr_input<
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multi_asr_output</span><span class="op">(</span></span>
 <span>  <span class="va">pop</span>,</span>
-<span>  <span class="va">ntraits</span>,</span>
+<span>  ntraits <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">nenvs</span>,</span>
-<span>  <span class="va">nreps</span>,</span>
-<span>  covs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nreps <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">cov.mat</span>,</span>
 <span>  return.effects <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -100,7 +100,7 @@ generated with <a href="multi_asr_input.html">multi_asr_input</a>.</p></dd>
 is specified, all environments will be assigned the same number.</p></dd>
 
 
-<dt>covs</dt>
+<dt>cov.mat</dt>
 <dd><p>A matrix of covariates that will be used to construct the genetic values, typically generated
 with <a href="multi_asr_input.html">multi_asr_input</a>.</p></dd>
 
@@ -197,10 +197,10 @@ entries containing the genotype slopes for each multiplicative term.</p></dd>
 <span class="r-in"><span>  ntraits <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  nenvs <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  nreps <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>  covs <span class="op">=</span> <span class="va">input_asr</span><span class="op">$</span><span class="va">covs</span>,</span></span>
+<span class="r-in"><span>  cov.mat <span class="op">=</span> <span class="va">input_asr</span><span class="op">$</span><span class="va">cov.mat</span>,</span></span>
 <span class="r-in"><span>  return.effects <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in multi_asr_output(pop = pop, ntraits = 2, nenvs = 2, nreps = 2,     covs = input_asr$covs, return.effects = TRUE):</span> unused argument (covs = input_asr$covs)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'pop' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -49,6 +49,9 @@
     <loc>https://crwerner.github.io/fieldsimr/reference/make_phenotypes.html</loc>
   </url>
   <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/measure_variances.html</loc>
+  </url>
+  <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/multi_asr_input.html</loc>
   </url>
   <url>
@@ -56,6 +59,9 @@
   </url>
   <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/plot_effects.html</loc>
+  </url>
+  <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/plot_hist.html</loc>
   </url>
   <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/plot_matrix.html</loc>
@@ -67,7 +73,19 @@
     <loc>https://crwerner.github.io/fieldsimr/reference/rand_cor_mat.html</loc>
   </url>
   <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/rand_diag_mat.html</loc>
+  </url>
+  <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/sample_met.html</loc>
+  </url>
+  <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/sample_variogram.html</loc>
+  </url>
+  <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/skew_diag_mat.html</loc>
+  </url>
+  <url>
+    <loc>https://crwerner.github.io/fieldsimr/reference/struc_cor_mat.html</loc>
   </url>
   <url>
     <loc>https://crwerner.github.io/fieldsimr/reference/theoretical_variogram.html</loc>
