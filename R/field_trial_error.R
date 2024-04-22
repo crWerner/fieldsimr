@@ -191,13 +191,13 @@ field_trial_error <- function(ntraits = 1,
   if (is.null(RcorR)) RcorR <- diag(ntraits)
   if (is.null(EcorR)) EcorR <- diag(ntraits)
 
-  if (any(eigen(ScorR)$values < 1e-8)) {
+  if (any(eigen(ScorR, only.values = TRUE)$values < 1e-8)) {
     stop("'ScorR' must be positive definite")
   }
-  if (any(eigen(RcorR)$values < 1e-8)) {
+  if (any(eigen(RcorR, only.values = TRUE)$values < 1e-8)) {
     stop("'RcorR' must be positive definite")
   }
-  if (any(eigen(EcorR)$values < 1e-8)) {
+  if (any(eigen(EcorR, only.values = TRUE)$values < 1e-8)) {
     stop("'EcorR' must be positive definite")
   }
 

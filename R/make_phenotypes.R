@@ -88,11 +88,18 @@ make_phenotypes <- function(gv.df,
 
   y <- error.df[, !(colnames(error.df) %in% c("env", "block", "col", "row"))] +
     gv.df[, !(colnames(gv.df) %in% c("env", "rep", "id", "ord"))]
-  error.df.names <- error.df[, c("env", "block", "col", "row")]
+
+  gv_env_names <- gv.df[["env"]]
+  error_env_names <- as.character(error.df[["env"]])
+  if (any(gv_env_names != error_env_names)) warning("'env' names in 'gv.df' and 'error.df' do not match, names in 'gv.df' will be used")
+
+  gv_df_names <- data.frame(env = gv_env_names)
+  error_df_names <- error.df[, c("block", "col", "row")]
   ids <- factor(as.numeric(as.character(gv.df$id)))
 
   pheno_df <- cbind(
-    error.df.names,
+    gv_df_names,
+    error_df_names,
     id = ids,
     y
   )

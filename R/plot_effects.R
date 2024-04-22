@@ -233,6 +233,9 @@ plot_matrix <- function(mat,
   groups <- FALSE
   ngroups <- 1
   if (!is.null(group.df)) {
+    if (is.vector(group.df)) {
+      group.df <- data.frame(variable = 1:n, group = group.df)
+    }
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
     colnames(group.df)[1:2] <- c("variable", "group")
