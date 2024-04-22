@@ -28,7 +28,7 @@
 #'
 #' @export
 measure_variances <- function(mat,
-                                 estimate = FALSE) {
+                              estimate = FALSE) {
   if (!is.matrix(mat)) stop("'mat' must be a matrix")
   if (!isSymmetric(mat)) stop("'mat' must be a symmetric matrix")
   if (any(diag(mat) < 0)) stop("All diagonal elements of 'mat' must >= 0")
@@ -43,27 +43,31 @@ measure_variances <- function(mat,
     if (main_eff < 0) stop("The mean upper triangular element of 'mat' must be >= 0")
     if (main_eff < 1e-8) warning("The main effect variance is zero")
     int_eff <- mean(diag(mat - main_eff))
-    if(round(main_eff + int_eff, 8) != round(total_var, 8)) stop("Sum of main effect and interaction variances does not match total variance")
+    if (round(main_eff + int_eff, 8) != round(total_var, 8)) stop("Sum of main effect and interaction variances does not match total variance")
 
     sqrt_dg <- sqrt(diag(mat))
-    het_scale <- sum((sqrt_dg - mean(sqrt_dg))^2)/(n-1)
-    lack_cor <- sum(outer(sqrt_dg, sqrt_dg, "*") * (1 - cov2cor(mat)))/n/(n-1)
-    if(round(het_scale + lack_cor, 8) != round(int_eff, 8)) stop("Sum of heterogeneity of scale and lack of correlation does not match interaction variance")
-    df <- data.frame(Component = c("Main effect", "Interaction",
-                                   "Heterogeniety of scale", "Lack of correlation",
-                                   "Total"),
-                     Value = c(main_eff, int_eff, het_scale, lack_cor, total_var))
-  } else if(!estimate) {
+    het_scale <- sum((sqrt_dg - mean(sqrt_dg))^2) / (n - 1)
+    lack_cor <- sum(outer(sqrt_dg, sqrt_dg, "*") * (1 - stats::cov2cor(mat))) / n / (n - 1)
+    if (round(het_scale + lack_cor, 8) != round(int_eff, 8)) stop("Sum of heterogeneity of scale and lack of correlation does not match interaction variance")
+    df <- data.frame(
+      Component = c(
+        "Main effect", "Interaction",
+        "Heterogeniety of scale", "Lack of correlation",
+        "Total"
+      ),
+      Value = c(main_eff, int_eff, het_scale, lack_cor, total_var)
+    )
+  } else if (!estimate) {
     main_eff <- mean(mat)
     if (main_eff < 0) stop("The mean element of 'mat' must be >= 0")
     if (main_eff < 1e-8) warning("The main effect variance is zero")
     int_eff <- mean(diag(mat - main_eff))
-    if(round(main_eff + int_eff, 8) != round(total_var, 8)) stop("Sum of main effect and interaction variances does not match total variance")
+    if (round(main_eff + int_eff, 8) != round(total_var, 8)) stop("Sum of main effect and interaction variances does not match total variance")
 
     sqrt_dg <- sqrt(diag(mat))
-    het_scale <- sum((sqrt_dg - mean(sqrt_dg))^2)/n
-    lack_cor <- sum(outer(sqrt_dg, sqrt_dg, "*") * (1 - cov2cor(mat)))/n^2
-    if(round(het_scale + lack_cor, 8) != round(int_eff, 8)) stop("Sum of heterogeneity of scale and lack of correlation does not match interaction variance")
+    het_scale <- sum((sqrt_dg - mean(sqrt_dg))^2) / n
+    lack_cor <- sum(outer(sqrt_dg, sqrt_dg, "*") * (1 - stats::cov2cor(mat))) / n^2
+    if (round(het_scale + lack_cor, 8) != round(int_eff, 8)) stop("Sum of heterogeneity of scale and lack of correlation does not match interaction variance")
 
     cov_mat <- rowMeans(mat)
     adjust <- min(0, cov_mat)
@@ -72,16 +76,20 @@ measure_variances <- function(mat,
     }
     main_eff_adjust <- main_eff - adjust
     cov_mat_adjust <- cov_mat - adjust
-    non_cross <- main_eff * t(cov_mat_adjust) %*% cov_mat_adjust/n/(main_eff_adjust^2)
-    cross <- total_var - main_eff * t(cov_mat_adjust) %*% cov_mat_adjust/n/(main_eff_adjust^2)
-    if(round(non_cross + cross, 8) != round(total_var, 8)) stop("Sum of non-crossover and crossover variance does not match total variance")
+    non_cross <- main_eff * t(cov_mat_adjust) %*% cov_mat_adjust / n / (main_eff_adjust^2)
+    cross <- total_var - main_eff * t(cov_mat_adjust) %*% cov_mat_adjust / n / (main_eff_adjust^2)
+    if (round(non_cross + cross, 8) != round(total_var, 8)) stop("Sum of non-crossover and crossover variance does not match total variance")
 
-    df <- data.frame(Component = c("Main effect", "Interaction",
-                                   "Heterogeniety of scale", "Lack of correlation",
-                                   "Non-crossover", "Crossover",
-                                   "Total"),
-                     Value = c(main_eff, int_eff, het_scale, lack_cor, non_cross, cross, total_var))
+    df <- data.frame(
+      Component = c(
+        "Main effect", "Interaction",
+        "Heterogeniety of scale", "Lack of correlation",
+        "Non-crossover", "Crossover",
+        "Total"
+      ),
+      Value = c(main_eff, int_eff, het_scale, lack_cor, non_cross, cross, total_var)
+    )
   }
-  df$Proportion <- df$Value/total_var
+  df$Proportion <- df$Value / total_var
   return(df)
 }

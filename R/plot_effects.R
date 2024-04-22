@@ -239,7 +239,7 @@ plot_matrix <- function(mat,
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
     colnames(group.df)[1:2] <- c("variable", "group")
-    if (any(is.na(group.df[,1:2]))) stop("'group.df' must not contain missing values")
+    if (any(is.na(group.df[, 1:2]))) stop("'group.df' must not contain missing values")
     if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
 
     group.df$variable <- factor(as.numeric(as.character(group.df$variable)))
@@ -334,7 +334,7 @@ plot_matrix <- function(mat,
       axis.title = ggplot2::element_text(size = 11),
       panel.background = ggplot2::element_blank(),
       plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
-    )  +
+    ) +
     ggplot2::annotate(
       geom = "rect", xmin = 0.5, ymin = 0.5,
       xmax = n + 0.5, ymax = n + 0.5,
@@ -515,8 +515,8 @@ qq_plot <- function(df,
 #'
 #' @param df A data frame or vector with the values to be plotted.
 #' @param value The name of the values to be plotted. Ignored when 'df' is a vector.
-#' @param breaks Argument passed to \code{ggplot2} (default is \code{30}). Controls the number
-#'   of breaks in the histogram.
+#' @param bins Argument passed to \code{ggplot2} (default is \code{30}). Controls the number
+#'   of bins in the histogram.
 #' @param density When \code{TRUE} (default is \code{FALSE}), a density curve is superimposed
 #'   onto the histogram.
 #'
@@ -555,7 +555,8 @@ plot_hist <- function(df,
   if (bins < 1 || bins %% 1 != 0) stop("'bins' must be a positive integer")
 
   mean_value <- mean(df[[value]], na.rm = TRUE)
-  sd_value <- sd(df[[value]], na.rm = TRUE)
+  sd_value <- stats::sd(df[[value]], na.rm = TRUE)
+  count <- NULL
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(value))) +
     ggplot2::geom_histogram(color = "black", alpha = 0.3, position = "identity", bins = bins) +
     ggplot2::geom_vline(data = df, ggplot2::aes(xintercept = mean_value), colour = "steelblue", linewidth = 0.75) +
@@ -571,9 +572,9 @@ plot_hist <- function(df,
   }
   if (density) {
     if (bins < 2) stop("'bins' must be > 1 to print density curve")
-    bin_width <- (max(df[[value]], na.rm = TRUE) - min(df[[value]], na.rm = TRUE))/(bins - 1)
+    bin_width <- (max(df[[value]], na.rm = TRUE) - min(df[[value]], na.rm = TRUE)) / (bins - 1)
     n <- length(df[[value]][!is.na(df[[value]])])
-    p <-  p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count)*bin_width), fill = "transparent", linewidth = 1)
+    p <- p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count) * bin_width), fill = "transparent", linewidth = 1)
   }
   return(p)
 }

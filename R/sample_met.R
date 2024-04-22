@@ -35,7 +35,7 @@ sample_met <- function(ntraits = 1,
   if (!(is.atomic(nsamples) && length(nsamples) == 1L)) stop("'nsamples' must be a scalar")
   if (nsamples < 1 || nsamples %% 1 != 0) stop("'nsamples' must be a positive integer")
 
-  if(!is.vector(sample.size)) stop("'sample.size' must be a vector or scalar")
+  if (!is.vector(sample.size)) stop("'sample.size' must be a vector or scalar")
   if (length(sample.size) == 1) {
     sample.size <- rep(sample.size, nsamples)
   }
@@ -54,10 +54,10 @@ sample_met <- function(ntraits = 1,
     if (nsamples == 1) {
       sample_table <- matrix(c(1, cumsum_sample_size), ncol = 2)
     } else if (nsamples > 1) {
-      sample_table <- matrix(c(1, cumsum_sample_size[1:(nsamples-1)] + 1, cumsum_sample_size), ncol = 2)
+      sample_table <- matrix(c(1, cumsum_sample_size[1:(nsamples - 1)] + 1, cumsum_sample_size), ncol = 2)
     }
     sample_ls <- sample(1:nenvs)
-    sample_ls <- mapply(function(x,y) sample_ls[x:y], x = sample_table[,1], y = sample_table[,2], SIMPLIFY = FALSE)
+    sample_ls <- mapply(function(x, y) sample_ls[x:y], x = sample_table[, 1], y = sample_table[, 2], SIMPLIFY = FALSE)
   }
 
   if (!is.null(cov.mat)) {
@@ -69,8 +69,8 @@ sample_met <- function(ntraits = 1,
       stop("Number of rows in 'cov.mat' must match number of environment-within-trait combinations")
     }
     nterms <- ncol(cov.mat)
-    trait_grid <- lapply(sample.size, function(x) rep(nenvs*(seq(0,ntraits-1)), each = x))
-    cov_ls <- mapply(function(x,y) cbind(cov.mat[x + y,]), x = sample_ls, y = trait_grid, SIMPLIFY = FALSE)
+    trait_grid <- lapply(sample.size, function(x) rep(nenvs * (seq(0, ntraits - 1)), each = x))
+    cov_ls <- mapply(function(x, y) cbind(cov.mat[x + y, ]), x = sample_ls, y = trait_grid, SIMPLIFY = FALSE)
     cov_ls <- lapply(cov_ls, function(x) {
       colnames(x) <- paste0("cov.Term", 1:nterms)
       x
@@ -79,5 +79,5 @@ sample_met <- function(ntraits = 1,
   } else if (is.null(cov.mat)) {
     cov_ls <- sample_ls
   }
-return(cov_ls)
+  return(cov_ls)
 }

@@ -46,7 +46,7 @@ rand_diag_mat <- function(n = 5,
 #' @param inverse When \code{TRUE} (default is \code{FALSE}), the variances are
 #'   sampled from the inverse gamma distribution instead of the gamma distribution.
 #' @param mean.var An optional scalar defining the mean variance.
-#'.  When supplied, the variances are scaled to achieve the defined mean.
+#' .  When supplied, the variances are scaled to achieve the defined mean.
 #'
 #' @return A diagonal \code{n x n} variance matrix.
 #'
@@ -77,7 +77,7 @@ skew_diag_mat <- function(n = 5,
   if (!inverse) {
     dg <- stats::rgamma(n, shape = shape, scale = scale)
   } else if (inverse) {
-    dg <- 1/stats::rgamma(n, shape = shape, rate = scale)
+    dg <- 1 / stats::rgamma(n, shape = shape, rate = scale)
   }
 
   if (!is.null(mean.var)) {
@@ -85,7 +85,9 @@ skew_diag_mat <- function(n = 5,
     if (mean.var <= 0) stop("'mean.var' must be a positive value")
     if (mean(dg) == 0) {
       warning("Mean diagonal element is zero, 'mean.var' cannot be applied")
-      } else dg <- dg * mean.var/mean(dg)
+    } else {
+      dg <- dg * mean.var / mean(dg)
+    }
   }
 
   diag_mat <- diag(dg)

@@ -5,7 +5,7 @@
 \title{Simulate a random correlation matrix}
 \usage{
 rand_cor_mat(
-  n = 2,
+  n = 5,
   min.cor = -1,
   max.cor = 1,
   pos.def = FALSE,
@@ -21,11 +21,11 @@ rand_cor_mat(
 \strong{Note:} \code{-1 < min.cor < max.cor < 1}.}
 
 \item{pos.def}{When \code{TRUE} (default is \code{FALSE}), the function \code{bend} of the R package
-\href{https://cran.r-project.org/package=mbend}{`mbend`} is used with default arguments to
-bend a non-positive-definite matrix to a positive (semi)-definite matrix.}
+\href{https://cran.r-project.org/package=mbend}{`mbend`} is used to
+bend a non-positive (semi)-definite matrix to be positive (semi)-definite.}
 
-\item{small.positive}{Argument passed to \code{bend} when \code{pos.def = TRUE} (default is 0.0001).
- Eigenvalues smaller than \code{small.positive} are replaced with this value. \cr
+\item{small.positive}{Argument passed to \code{bend} when \code{pos.def = TRUE} (default is 1e-8).
+ Eigenvalues smaller than \code{small.positive} are replaced by this. \cr
 \strong{Note:} \code{0 < small.positive < 0.1}.}
 }
 \value{
@@ -34,17 +34,15 @@ the correlation matrix is guaranteed to be positive (semi)-definite.
 }
 \description{
 Creates a symmetric \code{n x n} correlation matrix with user-defined minimum and maximum
-correlations.
+correlations based on a continuous uniform distribution.
 }
 \examples{
 # Simulate a random correlation matrix with 10 columns and rows.
-
-corA <- rand_cor_mat(
+cor_mat <- rand_cor_mat(
   n = 10,
   min.cor = -0.2,
   max.cor = 0.8,
-  pos.def = TRUE,
-  small.positive = 1e-4
+  pos.def = TRUE
 )
 
 }

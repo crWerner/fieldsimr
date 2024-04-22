@@ -91,7 +91,8 @@ rand_cor_mat <- function(n = 5,
 #'   When \code{pos.def = TRUE}, the correlation matrix is guaranteed to be positive (semi)-definite.
 #'
 #' @examples
-#' # Simulate a correlation matrix with 10 columns and rows, rank equal to 3 and negatively skewed correlations.
+#' # Simulate a correlation matrix with 10 columns and rows, rank equal to 3 and
+#' # negatively skewed correlations.
 #' cor_mat <- struc_cor_mat(
 #'   n = 10,
 #'   base.cor = 0.3,
@@ -110,7 +111,7 @@ struc_cor_mat <- function(n = 5,
                           small.positive = NULL) {
   if (!(is.atomic(n) && length(n) == 1L)) stop("'n' must be a scalar")
 
-  if (is.null(base.mat)){
+  if (is.null(base.mat)) {
     if (n < 2 || n %% 1 != 0) stop("'n' must be an integer > 1")
     if (!is.logical(pos.def)) stop("'pos.def' must be logical")
     if (!(is.atomic(base.cor) && length(base.cor) == 1L)) stop("'base.cor' must be a scalar")
@@ -136,7 +137,7 @@ struc_cor_mat <- function(n = 5,
       rank <- rank - 1
     }
     base_mat <- matrix(rep(base.cor, n * n), ncol = n)
-  } else if (!is.null(base.mat)){
+  } else if (!is.null(base.mat)) {
     skew <- 0
     if (is.null(range)) {
       range <- 0
@@ -156,12 +157,12 @@ struc_cor_mat <- function(n = 5,
   skew_abs <- abs(skew)
   diag(base_mat) <- 1 - range
   if (rank > 0) {
-    eigen_ls <- lapply(seq_len(n), function(x) cbind(runif(rank, -1, 1 - skew_abs)))
-    eigen_ls <- lapply(eigen_ls, function(x) x/sqrt(sum(x^2)))
+    eigen_ls <- lapply(seq_len(n), function(x) cbind(stats::runif(rank, -1, 1 - skew_abs)))
+    eigen_ls <- lapply(eigen_ls, function(x) x / sqrt(sum(x^2)))
     eigen_vect <- do.call(cbind, eigen_ls)
     cor_mat <- base_mat + range * t(eigen_vect) %*% eigen_vect
 
-    if (skew > 0){
+    if (skew > 0) {
       cor_mat <- -cor_mat
     }
   } else {

@@ -7,9 +7,9 @@
 qq_plot(df, effect, labels = FALSE)
 }
 \arguments{
-\item{df}{A data frame with the effects to be plotted.}
+\item{df}{A data frame or vector with the effects to be plotted.}
 
-\item{effect}{The name of the effects to be plotted.}
+\item{effect}{The name of the effects to be plotted. Ignored when 'df' is a vector.}
 
 \item{labels}{When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
 This requires additional columns 'col' and 'row' in the data frame.}
@@ -38,7 +38,6 @@ qq
 
 # Extract the data frame with the theoretical and sample quantiles of the
 # user-defined effects.
-
 qq_df <- qq$data
 
 }

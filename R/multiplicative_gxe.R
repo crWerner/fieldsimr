@@ -96,7 +96,7 @@ multi_asr_input <- function(ntraits = 1,
   if (length(var) != (ntraits * nenvs)) {
     stop("Number of values in 'var' must be 1 or match number of environment-within-trait combinations")
   }
-  if(any(var < 0)) stop("All values in 'var' must be greater than or equal to 0")
+  if (any(var < 0)) stop("All values in 'var' must be greater than or equal to 0")
 
   if (is.null(corA)) {
     corA <- diag(ntraits * nenvs)

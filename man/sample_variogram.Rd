@@ -37,12 +37,10 @@ variogram <- sample_variogram(
 )
 
 # Sample variogram
-
 variogram
 
 # Extract the data frame with the column and row displacements, and the
 # average semivariances.
-
 variogram_df <- variogram$data
 
 }
