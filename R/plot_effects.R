@@ -573,7 +573,6 @@ plot_hist <- function(df,
     p <-  p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count)*bin_width), fill = "transparent", linewidth = 1)
   }
   return(p)
-
 }
 
 #' Sample variogram

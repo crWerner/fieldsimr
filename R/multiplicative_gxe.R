@@ -139,7 +139,7 @@ multi_asr_input <- function(ntraits = 1,
     var_pseudo <- eigen_decom$values[1:rank]
     var_pseudo <- c(var_pseudo, rep(0, nterms - rank))
   }
-  if (nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) {
+  if ((nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) && all(mean != 0)) {
     message("Warning message: \n 'nterms' and/or rank of 'corA' are less than number of environment-within-trait combinations, values in 'mean' will be approximated")
   }
 
