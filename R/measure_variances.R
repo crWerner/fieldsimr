@@ -55,7 +55,7 @@ measure_variances <- function(mat,
         "Heterogeniety of scale", "Lack of correlation",
         "Total"
       ),
-      Value = c(main_eff, int_eff, het_scale, lack_cor, total_var)
+      Variance = c(main_eff, int_eff, het_scale, lack_cor, total_var)
     )
   } else if (!estimate) {
     main_eff <- mean(mat)
@@ -87,9 +87,9 @@ measure_variances <- function(mat,
         "Non-crossover", "Crossover",
         "Total"
       ),
-      Value = c(main_eff, int_eff, het_scale, lack_cor, non_cross, cross, total_var)
+      Variance = c(main_eff, int_eff, het_scale, lack_cor, non_cross, cross, total_var)
     )
   }
-  df$Proportion <- df$Value / total_var
+  df$Proportion <- df$Variance / total_var
   return(df)
 }

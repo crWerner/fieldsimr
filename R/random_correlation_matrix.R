@@ -138,7 +138,6 @@ struc_cor_mat <- function(n = 5,
     }
     base_mat <- matrix(rep(base.cor, n * n), ncol = n)
   } else if (!is.null(base.mat)) {
-    skew <- 0
     if (is.null(range)) {
       range <- 0
     }
@@ -149,7 +148,7 @@ struc_cor_mat <- function(n = 5,
     if (any(is.na(base.mat))) stop("'base.mat' must not contain missing values")
     max_abs_base_cor <- max(abs(base.mat[upper.tri(base.mat)]))
     if (max_abs_base_cor + range > 1) stop("The absolute sum of 'range' and the maximum correlation in 'base.mat' must be <= 1")
-    warning("'base.mat' supplied, 'n', 'base.cor' and 'skew' will be ignored")
+    warning("'base.mat' supplied, 'n' and 'base.cor' will be ignored")
     base_mat <- base.mat
     n <- ncol(base_mat)
   }

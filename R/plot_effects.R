@@ -263,7 +263,7 @@ plot_matrix <- function(mat,
   effect <- "Correlation matrix"
   effect_short <- "cor"
   effect_short2 <- "Cor."
-  if (any(diag(mat) != 1)) {
+  if (any(diag(mat) != 1) | max(mat) > 1) {
     is_cor_mat <- FALSE
     effect <- "Covariance matrix"
     effect_short <- "cov"
@@ -307,19 +307,18 @@ plot_matrix <- function(mat,
 
   var1 <- var2 <- NULL
   if (is_cor_mat) {
-    mid_pt <- 0
-    max_pt <- 1.1
+    colour_limits <- c(-1.1, 1.1)
+    hm.palette <- grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(11, 'Spectral')), space='Lab')
+    colour_palette <- hm.palette(100)[c(1:45,50:100)]
+    gg_fill <- ggplot2::scale_fill_gradientn(colours = colour_palette, na.value = "transparent", limits = colour_limits)
   } else {
-    mid_pt <- mean(df[[effect_short]], na.rm = TRUE)
-    max_pt <- max(abs(c(mid_pt - min(df[[effect_short]], na.rm = TRUE), max(df[[effect_short]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+    colour_limits <- c(min(df[[effect_short]], na.rm = TRUE) - 0.001, max(df[[effect_short]], na.rm = TRUE) + 0.001)
+    gg_fill <- ggplot2::scale_fill_gradient(low = "#56B1F7", high = "#132B43", na.value = "transparent", limits = colour_limits)
   }
 
   p <- ggplot2::ggplot(data = df, ggplot2::aes(x = var1, y = var2)) +
     ggplot2::geom_tile(ggplot2::aes(fill = get(effect_short))) +
-    ggplot2::scale_fill_gradient2(
-      low = "#195696", mid = "#fcfce1", high = "#A51122", na.value = "transparent",
-      midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
-    ) +
+    gg_fill +
     ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
     ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001, 0.0001)) +
     ggplot2::xlab("Variable") +
