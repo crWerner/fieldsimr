@@ -217,8 +217,9 @@ sample a value between 0 and 0.5.</p>
 <span><span class="va">prop_spatial</span> <span class="op">&lt;-</span> <span class="fl">0.4</span> <span class="co"># Proportion of spatial trend.</span></span>
 <span></span>
 <span><span class="va">ScorR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">ntraits</span>, min.cor <span class="op">=</span> <span class="fl">0</span>, max.cor <span class="op">=</span> <span class="fl">0.5</span>, pos.def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'cor_mat' is already positive (semi)-definite, matrix was not altered</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ScorR</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'cor_mat' is already positive (semi)-definite, matrix was not altered</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ScorR</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      1    2</span></span>
 <span><span class="co">#&gt; 1 1.00 0.04</span></span>
 <span><span class="co">#&gt; 2 0.04 1.00</span></span></code></pre></div>
@@ -235,14 +236,15 @@ and assume the proportion of extraneous error variance to total error
 variance to be 0.2. We assume a correlation between the error of the two
 traits because of extraneous variation and randomly sample a value
 between 0 and 0.5.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ext_ord</span> <span class="op">&lt;-</span> <span class="st">"zig-zag"</span></span>
 <span><span class="va">ext_dir</span> <span class="op">&lt;-</span> <span class="st">"row"</span></span>
 <span><span class="va">prop_ext</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span>
 <span></span>
 <span><span class="va">EcorR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rand_cor_mat.html">rand_cor_mat</a></span><span class="op">(</span><span class="va">ntraits</span>, min.cor <span class="op">=</span> <span class="fl">0</span>, max.cor <span class="op">=</span> <span class="fl">0.5</span>, pos.def <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'cor_mat' is already positive (semi)-definite, matrix was not altered</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">EcorR</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'cor_mat' is already positive (semi)-definite, matrix was not altered</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">EcorR</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      1    2</span></span>
 <span><span class="co">#&gt; 1 1.00 0.42</span></span>
 <span><span class="co">#&gt; 2 0.42 1.00</span></span></code></pre></div>
@@ -260,7 +262,7 @@ the sum of the two proportions must not be greater than 1.</p>
 <p>Finally, we use all the parameters defined above with the function
 <code><a href="../reference/field_trial_error.html">field_trial_error()</a></code> to simulate plot errors for grain yield
 and plant height in the three test environments:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">error_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/field_trial_error.html">field_trial_error</a></span><span class="op">(</span></span>
 <span>  ntraits <span class="op">=</span> <span class="va">ntraits</span>,</span>
 <span>  nenvs <span class="op">=</span> <span class="va">nenvs</span>,</span>
@@ -297,28 +299,28 @@ component</strong>, the <strong>random error component</strong>, and the
 <strong>extraneous variation</strong>. Therefore, we first extract the
 required data from <code>error_df</code> and then create an individual
 graphic for each of the four simulated error terms.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">e_total_env1</span> <span class="op">&lt;-</span> <span class="va">error_ls</span><span class="op">$</span><span class="va">error.df</span><span class="op">[</span><span class="va">error_ls</span><span class="op">$</span><span class="va">error.df</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span>
 <span><span class="va">e_terms_env1</span> <span class="op">&lt;-</span> <span class="va">error_ls</span><span class="op">$</span><span class="va">Trait1</span><span class="op">[</span><span class="va">error_ls</span><span class="op">$</span><span class="va">Trait1</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span></span></code></pre></div>
 <p><br></p>
 <p><strong>Total plot error</strong></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_total_env1</span>, effect <span class="op">=</span> <span class="st">"e.Trait1"</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-10-1.png" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Spatial error</strong> simulated using bivariate
 interpolation</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_terms_env1</span>, effect <span class="op">=</span> <span class="st">"e.spat"</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-11-1.png" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Random error</strong></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_terms_env1</span>, effect <span class="op">=</span> <span class="st">"e.rand"</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-12-1.png" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Extraneous variation </strong>in the row direction</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_terms_env1</span>, effect <span class="op">=</span> <span class="st">"e.ext.row"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-13-1.png" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
@@ -337,7 +339,7 @@ within blocks according to a randomized complete block design
 (RCBD).</p>
 <p><strong>Note:</strong> more complex field designs require allocation
 of genotypes to plots using an external R package or software.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gv_df</span> <span class="op">&lt;-</span> <span class="va">gv_df_unstr</span></span>
 <span></span>
 <span><span class="va">pheno_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_phenotypes.html">make_phenotypes</a></span><span class="op">(</span></span>
@@ -349,13 +351,13 @@ of genotypes to plots using an external R package or software.</p>
 <span><span class="va">pheno_env1</span> <span class="op">&lt;-</span> <span class="va">pheno_df</span><span class="op">[</span><span class="va">pheno_df</span><span class="op">$</span><span class="va">env</span> <span class="op">==</span> <span class="fl">1</span>, <span class="op">]</span> <span class="co"># Extract phenotypes in environment 1.</span></span></code></pre></div>
 <p><br></p>
 <p><strong>Simulated phenotypes</strong></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">pheno_env1</span>, effect <span class="op">=</span> <span class="st">"y.Trait1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-15-1.png" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Histogram showing the phenotypes of the 100 maize hybrids for
 grain yield in the two blocks in Environment 1</strong></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">pheno_env1</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">y.Trait1</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">block</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#e9ecef"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>, position <span class="op">=</span> <span class="st">"identity"</span>, bins <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"violetred3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"skyblue2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
