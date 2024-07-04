@@ -406,9 +406,9 @@ compsym_asr_input <- function(ntraits = 1,
 #'
 #' @export
 compsym_asr_output <- function(pop,
-                               ntraits,
+                               ntraits = 1,
                                nenvs,
-                               nreps,
+                               nreps = 1,
                                return.effects = FALSE) {
   if (ntraits < 1 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
   if (nenvs < 2 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
