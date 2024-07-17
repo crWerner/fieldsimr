@@ -53,7 +53,7 @@ make_phenotypes <- function(gv.df,
   colnames(error.df)[grep("env|block|col|row", tolower(colnames(error.df)))] <- tolower(colnames(error.df))[grep("env|block|col|row", tolower(colnames(error.df)))]
 
   if (any(!c("env", "rep", "id") %in% colnames(gv.df))) {
-    stop("'gv.df' must contain the columns 'env', 'rep', 'id', and the genetic values for each trait")
+    stop("'gv.df' must contain the columns 'env', 'id', 'rep', and the genetic values for each trait")
   }
 
   colnames(error.df)[grep("column", colnames(error.df))] <- "col"
@@ -83,7 +83,9 @@ make_phenotypes <- function(gv.df,
     }
   }
 
-  error.df$env <- factor(as.numeric(as.character(error.df$env)))
+  if (all(!grepl('\\D', error.df$env))) {
+    error.df$env <- factor(as.numeric(as.character(error.df$env)))
+  } else {error.df$env <- factor(as.character(error.df$env))}
   error.df$block <- factor(as.numeric(as.character(error.df$block)))
   error.df$col <- factor(as.numeric(as.character(error.df$col)))
   error.df$row <- factor(as.numeric(as.character(error.df$row)))
@@ -91,8 +93,12 @@ make_phenotypes <- function(gv.df,
   error.df <- unique(error.df)
   rownames(error.df) <- NULL
 
-  gv.df$env <- factor(as.numeric(as.character(gv.df$env)))
-  gv.df$id <- factor(as.numeric(as.character(gv.df$id)))
+  if (all(!grepl('\\D', gv.df$env))) {
+    gv.df$env <- factor(as.numeric(as.character(gv.df$env)))
+  } else {gv.df$env <- factor(as.character(gv.df$env))}
+  if (all(!grepl('\\D', gv.df$id))) {
+    gv.df$id <- factor(as.numeric(as.character(gv.df$id)))
+  } else {gv.df$id <- factor(as.character(gv.df$id))}
   gv.df$block <- gv.df$rep <- factor(as.numeric(as.character(gv.df$rep)))
   gv.df <- gv.df[order(gv.df$env, gv.df$block), ]
   gv.df <- unique(gv.df)
@@ -100,8 +106,12 @@ make_phenotypes <- function(gv.df,
 
   if (design) {
     design.df <- droplevels(design.df[design.df$nreps != 0, ])
-    design.df$env <- factor(as.numeric(as.character(design.df$env)))
-    design.df$id <- factor(as.numeric(as.character(design.df$id)))
+    if (all(!grepl('\\D', design.df$env))) {
+      design.df$env <- factor(as.numeric(as.character(design.df$env)))
+    } else {design.df$env <- factor(as.character(design.df$env))}
+    if (all(!grepl('\\D', design.df$id))) {
+      design.df$id <- factor(as.numeric(as.character(design.df$id)))
+    } else {design.df$id <- factor(as.character(design.df$id))}
     design.df$nreps <- factor(as.numeric(as.character(design.df$nreps)))
     design.df <- design.df[order(design.df$env, design.df$id), ]
     design.df <- unique(design.df)
@@ -118,6 +128,9 @@ make_phenotypes <- function(gv.df,
     }
     design_plots <- with(design.df, tapply(nreps, env, function(x) sum(as.numeric(as.character(x)))))
     error_plots <- with(error.df, table(env))
+    if (length(error_plots) != length(design_plots)) {
+      stop("Number of environments in 'design.df' and 'error.df' must match")
+    }
     if (any(design_plots - error_plots != 0)) {
       stop("Number of plots dictated by 'design.df' must match number of plots in 'error.df' for each environment")
     }
@@ -201,14 +214,14 @@ make_phenotypes <- function(gv.df,
   y <- error.df[, !(colnames(error.df) %in% c("env", "block", "col", "row"))] +
     gv.df[, !(colnames(gv.df) %in% c("env", "id", "rep", "block", "ord"))]
 
-  gv_env_names <- as.character(gv.df[["env"]])
-  error_env_names <- as.character(error.df[["env"]])
+  gv_env_names <- levels(gv.df[["env"]])
+  error_env_names <- levels(error.df[["env"]])
   if (any(gv_env_names != error_env_names)) warning("'env' names in 'gv.df' and 'error.df' do not match, names in 'gv.df' will be used")
 
-  gv_df_names <- data.frame(env = gv_env_names)
+  gv_df_names <- data.frame(env = factor(gv_env_names))
   error_df_names <- error.df[, c("block", "col", "row")]
-  ids <- factor(as.numeric(as.character(gv.df$id)))
-  reps <- factor(as.numeric(as.character(gv.df$rep)))
+  ids <- gv.df$id
+  reps <- gv.df$rep
 
   pheno_df <- cbind(
     gv_df_names,

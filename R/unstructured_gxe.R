@@ -569,7 +569,10 @@ unstr_asr_output <- function(pop,
 
   envs <- factor(rep(1:nenvs, times = length(pop@id) * nreps))
   reps <- factor(unlist(lapply(nreps, function(x) rep(1:x, each = length(pop@id)))))
-  ids <- factor(as.numeric(as.character(pop@id)))
+  if (all(!grepl('\\D', pop@id))) {
+    ids <- factor(as.numeric(as.character(pop@id)))
+  } else {ids <- factor(as.character(pop@id))}
+
 
   index <- as.list(as.data.frame(t(matrix(1:(ntraits * nenvs), ncol = ntraits))))
   gv <- lapply(index, function(x) cbind(pop@gv[, x]))
