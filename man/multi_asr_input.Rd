@@ -19,10 +19,10 @@ multi_asr_input(
 
 \item{nenvs}{Number of environments to be simulated (minimum of two).}
 
-\item{mean}{A vector of mean genetic values for each environment-within-trait combination.
+\item{mean}{A vector of mean genetic values for each trait or each environment-within-trait combination.
 If only one value is specified, all combinations will be assigned the same mean.}
 
-\item{var}{A vector of additive genetic variances for each environment-within-trait combination.
+\item{var}{A vector of additive genetic variances for each trait or each environment-within-trait combination.
 If only one value is specified, all combinations will be assigned the same variance.}
 
 \item{corA}{A matrix of additive genetic correlations between environment-within-trait
@@ -57,7 +57,7 @@ Currently supports additive traits only, but other (non-additive) traits are bei
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values.
-mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+mean <- c(5, 240) # Trait 1, Trait 2
 
 # Additive genetic variances.
 var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments

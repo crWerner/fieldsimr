@@ -308,8 +308,8 @@ plot_matrix <- function(mat,
   var1 <- var2 <- NULL
   if (is_cor_mat) {
     colour_limits <- c(-1.1, 1.1)
-    hm.palette <- grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(11, 'Spectral')), space='Lab')
-    colour_palette <- hm.palette(100)[c(1:45,50:100)]
+    hm.palette <- grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(11, "Spectral")), space = "Lab")
+    colour_palette <- hm.palette(100)[c(1:45, 50:100)]
     gg_fill <- ggplot2::scale_fill_gradientn(colours = colour_palette, na.value = "transparent", limits = colour_limits)
   } else {
     colour_limits <- c(min(df[[effect_short]], na.rm = TRUE) - 0.001, max(df[[effect_short]], na.rm = TRUE) + 0.001)
@@ -416,7 +416,7 @@ qq_plot <- function(df,
                     effect,
                     labels = FALSE) {
   print_title <- TRUE
-  if (is.vector(df)) {
+  if (is.vector(df) | is.matrix(df)) {
     df <- data.frame(Effect = c(df))
     effect <- "Effect"
     print_title <- FALSE
@@ -538,7 +538,7 @@ plot_hist <- function(df,
                       bins = 30,
                       density = FALSE) {
   print_title <- TRUE
-  if (is.vector(df)) {
+  if (is.vector(df) | is.matrix(df)) {
     df <- data.frame(Value = c(df))
     value <- "Value"
     print_title <- FALSE

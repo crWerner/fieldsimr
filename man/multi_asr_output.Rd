@@ -34,7 +34,7 @@ with \link[FieldSimR]{multi_asr_input}.}
 entries containing the genotype slopes for each multiplicative term.}
 }
 \value{
-A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+A data frame with columns 'env', genotype 'id', and 'rep', followed by the
   simulated genetic values for each trait. When \code{return.effects = TRUE}, a list is returned with
   additional entries containing the genotype slopes for each multiplicative term.
 }
@@ -50,7 +50,7 @@ population object generated with \link[FieldSimR]{multi_asr_input}.
 
 # 1. Define the genetic architecture of the simulated traits.
 # Mean genetic values.
-mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+mean <- c(5, 240) # Trait 1, Trait 2
 
 # Additive genetic variances.
 var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments

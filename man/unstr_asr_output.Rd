@@ -5,7 +5,7 @@
 \title{Simulate genetic values based on an unstructured model for GxE interaction -
 Simulation with `AlphaSimR`}
 \usage{
-unstr_asr_output(pop, nenvs, ntraits, nreps)
+unstr_asr_output(pop, ntraits = 1, nenvs, nreps = 1)
 }
 \arguments{
 \item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
@@ -13,15 +13,15 @@ unstr_asr_output(pop, nenvs, ntraits, nreps)
 \href{https://gaynorr.github.io/AlphaSimR/reference/HybridPop-class.html}{HybridPop-class})
 generated with \link[FieldSimR]{unstr_asr_input}.}
 
-\item{nenvs}{Number of simulated environments specified in \link[FieldSimR]{unstr_asr_input}.}
-
 \item{ntraits}{Number of simulated traits specified in \link[FieldSimR]{unstr_asr_input}.}
+
+\item{nenvs}{Number of simulated environments specified in \link[FieldSimR]{unstr_asr_input}.}
 
 \item{nreps}{A vector defining the number of replicates in each environment. If only one value
 is specified, all environments will be assigned the same number.}
 }
 \value{
-A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+A data frame with columns 'env', genotype 'id', and 'rep', followed by the
   simulated genetic values for each trait.
 }
 \description{

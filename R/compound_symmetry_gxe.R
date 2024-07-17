@@ -318,7 +318,7 @@ compsym_asr_input <- function(ntraits = 1,
 #' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
 #'   entries containing the genotype main effects and GxE interaction effects for each trait.
 #'
-#' @return A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+#' @return A data frame with columns 'env', genotype 'id', and 'rep', followed by the
 #'   simulated genetic values for each trait. When \code{return.effects = TRUE}, a list is returned with
 #'   additional entries containing the genotype main effects and GxE interaction effects for each trait.
 #'
@@ -406,9 +406,9 @@ compsym_asr_input <- function(ntraits = 1,
 #'
 #' @export
 compsym_asr_output <- function(pop,
-                               ntraits,
+                               ntraits = 1,
                                nenvs,
-                               nreps,
+                               nreps = 1,
                                return.effects = FALSE) {
   if (ntraits < 1 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
   if (nenvs < 2 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
@@ -433,8 +433,8 @@ compsym_asr_output <- function(pop,
 
   output_asr <- data.frame(
     env = envs,
-    rep = reps,
     id = ids,
+    rep = reps,
     gv
   )
   output_asr <- output_asr[order(output_asr$env, output_asr$rep, output_asr$id), ]

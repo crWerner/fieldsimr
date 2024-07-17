@@ -8,8 +8,8 @@
 A data frame with 700 rows and 5 columns:
 \describe{
   \item{env}{Environment number}
-  \item{rep}{Replicate number}
   \item{id}{Genotype identifier}
+  \item{rep}{Replicate number}
   \item{gv.Trait1}{Simulated genetic values for Trait 1}
   \item{gv.Trait2}{Simulated genetic values for Trait 2}
 }

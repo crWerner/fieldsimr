@@ -185,6 +185,8 @@ gv_df_unstr$gv.Trait1[1:200] <- gv_replace
 id_new <- rep(1:100, 7)
 gv_df_unstr$id <- id_new
 gv_df_unstr$id <- as.factor(gv_df_unstr$id)
+# reorder columns (ids followed by reps)
+gv_df_unstr <- gv_df_unstr[, c(1, 3, 2, 4:5)]
 
 ##### REORDER ENVS 2 & 3 AND INSERT PAPER ERRORS FOR ENV1 #####
 error_df_bivar$e.Trait1[error_df_bivar$env == 1] <- pheno_df_spat$e_total

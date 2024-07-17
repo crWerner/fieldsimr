@@ -14,9 +14,9 @@
 #'
 #' @param ntraits Number of traits to be simulated.
 #' @param nenvs Number of environments to be simulated (minimum of two).
-#' @param mean A vector of mean genetic values for each environment-within-trait combination.
+#' @param mean A vector of mean genetic values for each trait or each environment-within-trait combination.
 #'   If only one value is specified, all combinations will be assigned the same mean.
-#' @param var A vector of additive genetic variances for each environment-within-trait combination.
+#' @param var A vector of additive genetic variances for each trait or each environment-within-trait combination.
 #'   If only one value is specified, all combinations will be assigned the same variance.
 #' @param corA A matrix of additive genetic correlations between environment-within-trait
 #'   combinations. By default, a diagonal matrix is constructed.
@@ -35,7 +35,7 @@
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values.
-#' mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+#' mean <- c(5, 240) # Trait 1, Trait 2
 #'
 #' # Additive genetic variances.
 #' var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
@@ -86,15 +86,21 @@ multi_asr_input <- function(ntraits = 1,
   if (length(mean) == 1) {
     mean <- rep(mean, each = ntraits * nenvs)
   }
+  if (length(mean) == ntraits) {
+    mean <- rep(mean, each = nenvs)
+  }
   if (length(mean) != (ntraits * nenvs)) {
-    stop("Number of values in 'mean' must be 1 or match number of environment-within-trait combinations")
+    stop("Number of values in 'mean' must be 1 or match number of traits or environment-within-trait combinations")
   }
 
   if (length(var) == 1) {
     var <- rep(var, each = ntraits * nenvs)
   }
+  if (length(var) == ntraits) {
+    var <- rep(var, each = nenvs)
+  }
   if (length(var) != (ntraits * nenvs)) {
-    stop("Number of values in 'var' must be 1 or match number of environment-within-trait combinations")
+    stop("Number of values in 'var' must be 1 or match number of traits or environment-within-trait combinations")
   }
   if (any(var < 0)) stop("All values in 'var' must be greater than or equal to 0")
 
@@ -119,7 +125,7 @@ multi_asr_input <- function(ntraits = 1,
   rank <- sum(eigen_decom$values > 1e-8)
   if (nterms == rank) {
     cov_mat <- cbind(eigen_decom$vectors[, 1:nterms])
-    var_pseudo <- eigen_decom$values[1:nterms]
+    var_pseudo <- c(rep(0, ntraits), eigen_decom$values[1:nterms])
   } else if (nterms < rank) {
     term_char <- "terms"
     if (nterms == 1) {
@@ -131,22 +137,26 @@ multi_asr_input <- function(ntraits = 1,
     ))
 
     cov_mat <- cbind(eigen_decom$vectors[, 1:nterms])
-    var_pseudo <- eigen_decom$values[1:nterms]
+    var_pseudo <- c(rep(0, ntraits), eigen_decom$values[1:nterms])
   } else if (nterms > rank) {
     message("Warning message: \n 'nterms' is greater than rank of 'corA', some terms added")
     cov_mat <- cbind(eigen_decom$vectors[, 1:rank])
     cov_mat <- cbind(cov_mat, matrix(0, ncol = (nterms - rank), nrow = ntraits * nenvs))
-    var_pseudo <- eigen_decom$values[1:rank]
+    var_pseudo <- c(rep(0, ntraits), eigen_decom$values[1:rank])
     var_pseudo <- c(var_pseudo, rep(0, nterms - rank))
   }
-  if ((nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) && all(mean != 0)) {
+
+  trait_means <- colMeans(matrix(mean, ncol = ntraits))
+  mean_centre <- mean - rep(trait_means, each = nenvs)
+
+  if ((nterms < (ntraits * nenvs) | rank < (ntraits * nenvs)) && any(mean_centre != 0)) {
     message("Warning message: \n 'nterms' and/or rank of 'corA' are less than number of environment-within-trait combinations, values in 'mean' will be approximated")
   }
 
   which_neg <- colSums(cov_mat > 0) < ceiling(ntraits * nenvs / 2)
   cov_mat <- cov_mat %*% diag(-2 * as.numeric(which_neg) + 1)
-  mean_pseudo <- c(solve(t(cov_mat) %*% cov_mat) %*% t(cov_mat) %*% mean)
-  cor_pseudo <- diag(nterms)
+  mean_pseudo <- c(trait_means, solve(t(cov_mat) %*% cov_mat) %*% t(cov_mat) %*% mean_centre)
+  cor_pseudo <- diag(ntraits + nterms)
   colnames(cov_mat) <- paste0("cov.Term", 1:nterms)
 
   input_asr <- list(
@@ -180,7 +190,7 @@ multi_asr_input <- function(ntraits = 1,
 #' @param return.effects When \code{TRUE} (default is \code{FALSE}), a list is returned with additional
 #'   entries containing the genotype slopes for each multiplicative term.
 #'
-#' @return A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+#' @return A data frame with columns 'env', genotype 'id', and 'rep', followed by the
 #'   simulated genetic values for each trait. When \code{return.effects = TRUE}, a list is returned with
 #'   additional entries containing the genotype slopes for each multiplicative term.
 #'
@@ -190,7 +200,7 @@ multi_asr_input <- function(ntraits = 1,
 #'
 #' # 1. Define the genetic architecture of the simulated traits.
 #' # Mean genetic values.
-#' mean <- c(4.9, 5.4, 235.2, 228.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
+#' mean <- c(5, 240) # Trait 1, Trait 2
 #'
 #' # Additive genetic variances.
 #' var <- c(0.086, 0.12, 15.1, 8.5) # Trait 1 x 2 environments, Trait 2 x 2 environments
@@ -285,12 +295,13 @@ multi_asr_output <- function(pop,
   reps <- factor(unlist(lapply(nreps, function(x) rep(1:x, each = length(pop@id)))))
   ids <- factor(as.numeric(as.character(pop@id)))
 
-  slopes <- pop@gv
+  trait_means <- cbind(pop@gv[, 1:ntraits])
+  slopes <- pop@gv[, (ntraits + 1):ncol(pop@gv)]
   nterms <- ncol(slopes)
   rank <- ncol(cov.mat)
   if (nterms != rank) stop("Number of columns in 'cov.mat' does not match number of multiplicative terms simulated")
 
-  gv <- slopes %*% t(cov.mat)
+  gv <- slopes %*% t(cov.mat) + trait_means[, rep(1:ntraits, each = nenvs)]
   index <- as.list(as.data.frame(t(matrix(1:(ntraits * nenvs), ncol = ntraits))))
   gv <- lapply(index, function(x) cbind(gv[, x]))
   gv <- do.call(rbind, mapply(function(x, y) cbind(x[rep(1:nrow(x), y), ]), x = gv, y = as.list(nreps), SIMPLIFY = F))
@@ -298,8 +309,8 @@ multi_asr_output <- function(pop,
 
   output_asr <- data.frame(
     env = envs,
-    rep = reps,
     id = ids,
+    rep = reps,
     gv
   )
   output_asr <- output_asr[order(output_asr$env, output_asr$rep, output_asr$id), ]
@@ -308,10 +319,10 @@ multi_asr_output <- function(pop,
   if (!is.logical(return.effects)) stop("'return.effects' must be logical")
   if (return.effects) {
     colnames(slopes) <- paste0("slope.Term", 1:nterms)
-    slopes <- data.frame(id = pop@id, slopes)
+    terms <- data.frame(id = pop@id, slopes)
 
     listNames <- c("gv.df", "Terms")
-    output_asr <- c(list(output_asr), list(slopes))
+    output_asr <- c(list(output_asr), list(terms))
     names(output_asr) <- listNames
   }
 

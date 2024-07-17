@@ -467,7 +467,7 @@ unstr_asr_input <- function(ntraits = 1,
 #' @param nreps A vector defining the number of replicates in each environment. If only one value
 #'   is specified, all environments will be assigned the same number.
 #'
-#' @return A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+#' @return A data frame with columns 'env', genotype 'id', and 'rep', followed by the
 #'   simulated genetic values for each trait.
 #'
 #' @examples
@@ -556,9 +556,9 @@ unstr_asr_input <- function(ntraits = 1,
 #'
 #' @export
 unstr_asr_output <- function(pop,
+                             ntraits = 1,
                              nenvs,
-                             ntraits,
-                             nreps) {
+                             nreps = 1) {
   if (ntraits < 1 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
   if (nenvs < 2 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
 
@@ -578,8 +578,8 @@ unstr_asr_output <- function(pop,
 
   output_asr <- data.frame(
     env = envs,
-    rep = reps,
     id = ids,
+    rep = reps,
     gv
   )
   output_asr <- output_asr[order(output_asr$env, output_asr$rep, output_asr$id), ]

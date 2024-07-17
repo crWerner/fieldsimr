@@ -3,6 +3,7 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^\.github$
+^code-papers$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^data-raw$
@@ -11,3 +12,5 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^measure_variances\.R$
+^measure_variances$

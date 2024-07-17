@@ -1,7 +1,7 @@
 Package: FieldSimR
 Title: Simulation of Plot Errors and Phenotypes in Plant Breeding Field Trials
-Version: 1.3.0
-Date: 2024-04-03
+Version: 1.4.0
+Date: 2024-17-07
 Authors@R: c(person("Christian", "Werner", email = "werner.christian@proton.me", 
 	    role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9400-5061")),
 	    person("Daniel", "Tolhurst", email = "uow.tolhurst@gmail.com", 
@@ -25,7 +25,7 @@ Suggests:
     AlphaSimR,
     knitr,
     rmarkdown
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends: 
     R (>= 3.5.0)
 VignetteBuilder: knitr

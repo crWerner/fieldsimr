@@ -49,7 +49,8 @@ A symmetric \code{n x n} correlation matrix with defined rank.
 Creates a symmetric \code{n x n} correlation matrix with user-defined structure and rank.
 }
 \examples{
-# Simulate a correlation matrix with 10 columns and rows, rank equal to 3 and negatively skewed correlations.
+# Simulate a correlation matrix with 10 columns and rows, rank equal to 3 and
+# negatively skewed correlations.
 cor_mat <- struc_cor_mat(
   n = 10,
   base.cor = 0.3,

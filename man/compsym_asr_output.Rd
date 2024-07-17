@@ -5,7 +5,7 @@
 \title{Simulate genetic values based on a compound symmetry model for GxE interaction -
 Simulation with `AlphaSimR`}
 \usage{
-compsym_asr_output(pop, ntraits, nenvs, nreps, return.effects = FALSE)
+compsym_asr_output(pop, ntraits = 1, nenvs, nreps = 1, return.effects = FALSE)
 }
 \arguments{
 \item{pop}{An \href{https://CRAN.R-project.org/package=AlphaSimR}{`AlphaSimR`} population object
@@ -24,7 +24,7 @@ is specified, all environments will be assigned the same number.}
 entries containing the genotype main effects and GxE interaction effects for each trait.}
 }
 \value{
-A data frame with columns 'env', 'rep', and genotype 'id', followed by the
+A data frame with columns 'env', genotype 'id', and 'rep', followed by the
   simulated genetic values for each trait. When \code{return.effects = TRUE}, a list is returned with
   additional entries containing the genotype main effects and GxE interaction effects for each trait.
 }
