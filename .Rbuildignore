@@ -12,5 +12,3 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^measure_variances\.R$
-^measure_variances$
