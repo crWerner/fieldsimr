@@ -83,9 +83,11 @@ make_phenotypes <- function(gv.df,
     }
   }
 
-  if (all(!grepl('\\D', error.df$env))) {
+  if (all(!grepl("\\D", error.df$env))) {
     error.df$env <- factor(as.numeric(as.character(error.df$env)))
-  } else {error.df$env <- factor(as.character(error.df$env))}
+  } else {
+    error.df$env <- factor(as.character(error.df$env))
+  }
   error.df$block <- factor(as.numeric(as.character(error.df$block)))
   error.df$col <- factor(as.numeric(as.character(error.df$col)))
   error.df$row <- factor(as.numeric(as.character(error.df$row)))
@@ -93,12 +95,16 @@ make_phenotypes <- function(gv.df,
   error.df <- unique(error.df)
   rownames(error.df) <- NULL
 
-  if (all(!grepl('\\D', gv.df$env))) {
+  if (all(!grepl("\\D", gv.df$env))) {
     gv.df$env <- factor(as.numeric(as.character(gv.df$env)))
-  } else {gv.df$env <- factor(as.character(gv.df$env))}
-  if (all(!grepl('\\D', gv.df$id))) {
+  } else {
+    gv.df$env <- factor(as.character(gv.df$env))
+  }
+  if (all(!grepl("\\D", gv.df$id))) {
     gv.df$id <- factor(as.numeric(as.character(gv.df$id)))
-  } else {gv.df$id <- factor(as.character(gv.df$id))}
+  } else {
+    gv.df$id <- factor(as.character(gv.df$id))
+  }
   gv.df$block <- gv.df$rep <- factor(as.numeric(as.character(gv.df$rep)))
   gv.df <- gv.df[order(gv.df$env, gv.df$block), ]
   gv.df <- unique(gv.df)
@@ -106,12 +112,16 @@ make_phenotypes <- function(gv.df,
 
   if (design) {
     design.df <- droplevels(design.df[design.df$nreps != 0, ])
-    if (all(!grepl('\\D', design.df$env))) {
+    if (all(!grepl("\\D", design.df$env))) {
       design.df$env <- factor(as.numeric(as.character(design.df$env)))
-    } else {design.df$env <- factor(as.character(design.df$env))}
-    if (all(!grepl('\\D', design.df$id))) {
+    } else {
+      design.df$env <- factor(as.character(design.df$env))
+    }
+    if (all(!grepl("\\D", design.df$id))) {
       design.df$id <- factor(as.numeric(as.character(design.df$id)))
-    } else {design.df$id <- factor(as.character(design.df$id))}
+    } else {
+      design.df$id <- factor(as.character(design.df$id))
+    }
     design.df$nreps <- factor(as.numeric(as.character(design.df$nreps)))
     design.df <- design.df[order(design.df$env, design.df$id), ]
     design.df <- unique(design.df)

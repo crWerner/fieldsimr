@@ -293,9 +293,11 @@ multi_asr_output <- function(pop,
 
   envs <- factor(rep(1:nenvs, times = length(pop@id) * nreps))
   reps <- factor(unlist(lapply(nreps, function(x) rep(1:x, each = length(pop@id)))))
-  if (all(!grepl('\\D', pop@id))) {
+  if (all(!grepl("\\D", pop@id))) {
     ids <- factor(as.numeric(as.character(pop@id)))
-  } else {ids <- factor(as.character(pop@id))}
+  } else {
+    ids <- factor(as.character(pop@id))
+  }
 
   trait_means <- cbind(pop@gv[, 1:ntraits])
   slopes <- pop@gv[, (ntraits + 1):ncol(pop@gv)]

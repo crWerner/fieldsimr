@@ -4,12 +4,12 @@
 \alias{measure_variances}
 \title{Measure variances from a covariance matrix}
 \usage{
-measure_variances(mat, estimate = FALSE)
+measure_variances(mat, correction = FALSE)
 }
 \arguments{
 \item{mat}{A symmetric \code{n x n} positive (semi)-definite variance matrix.}
 
-\item{estimate}{When \code{TRUE} (default is \code{FALSE}), the variance components are treated
+\item{correction}{When \code{TRUE} (default is \code{FALSE}), the variance components are treated
 as estimates and sample corrections are applied.}
 }
 \value{

@@ -3,7 +3,7 @@
 #' Creates a table of variance components derived from a user-defined covariance matrix.
 #'
 #' @param mat A symmetric \code{n x n} positive (semi)-definite variance matrix.
-#' @param estimate When \code{TRUE} (default is \code{FALSE}), the variance components are treated
+#' @param correction When \code{TRUE} (default is \code{FALSE}), the variance components are treated
 #'   as estimates and sample corrections are applied.
 #'
 #' @return A table which partitions the total variance into main effect and interaction variance,
@@ -28,17 +28,17 @@
 #'
 #' @export
 measure_variances <- function(mat,
-                              estimate = FALSE) {
+                              correction = FALSE) {
   if (!is.matrix(mat)) stop("'mat' must be a matrix")
   if (!isSymmetric(mat)) stop("'mat' must be a symmetric matrix")
   if (any(diag(mat) < 0)) stop("All diagonal elements of 'mat' must >= 0")
   if (any(is.na(mat))) stop("'mat' must not contain missing values")
-  if (!is.logical(estimate)) stop("'estimate' must be logical")
+  if (!is.logical(correction)) stop("'correction' must be logical")
 
   n <- ncol(mat)
   total_var <- mean(diag(mat))
 
-  if (estimate) {
+  if (correction) {
     main_eff <- mean(mat[upper.tri(mat)])
     if (main_eff < 0) stop("The mean upper triangular element of 'mat' must be >= 0")
     if (main_eff < 1e-8) warning("The main effect variance is zero")
@@ -57,7 +57,7 @@ measure_variances <- function(mat,
       ),
       Variance = c(main_eff, int_eff, het_scale, lack_cor, total_var)
     )
-  } else if (!estimate) {
+  } else if (!correction) {
     main_eff <- mean(mat)
     if (main_eff < 0) stop("The mean element of 'mat' must be >= 0")
     if (main_eff < 1e-8) warning("The main effect variance is zero")

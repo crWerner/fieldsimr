@@ -420,9 +420,11 @@ compsym_asr_output <- function(pop,
 
   envs <- factor(rep(1:nenvs, times = length(pop@id) * nreps))
   reps <- factor(unlist(lapply(nreps, function(x) rep(1:x, each = length(pop@id)))))
-  if (all(!grepl('\\D', pop@id))) {
+  if (all(!grepl("\\D", pop@id))) {
     ids <- factor(as.numeric(as.character(pop@id)))
-  } else {ids <- factor(as.character(pop@id))}
+  } else {
+    ids <- factor(as.character(pop@id))
+  }
 
   main <- as.list(as.data.frame(pop@gv[, seq(1, (ntraits + ntraits * nenvs), (nenvs + 1))]))
   int <- pop@gv[, -seq(1, (ntraits + ntraits * nenvs), nenvs + 1)]
