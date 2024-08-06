@@ -31,7 +31,7 @@ struc_cor_mat(
 \strong{Note:} \code{-1 < skew < 1}.}
 
 \item{base.mat}{An optional \code{n x n} base correlation matrix.
-When supplied, \code{base.cor} and \code{skew} are ignored and noise simulated based on \code{rank}.}
+When supplied, \code{base.cor} and \code{skew} are ignored and noise is simulated based on \code{rank}.}
 
 \item{pos.def}{When \code{TRUE} (default is \code{FALSE}), the function \code{bend} of the R package
 \href{https://cran.r-project.org/package=mbend}{`mbend`} is used to

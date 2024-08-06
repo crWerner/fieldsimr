@@ -79,7 +79,7 @@ rand_cor_mat <- function(n = 5,
 #' @param skew A scalar defining the skewness imposed on the correlations.
 #'   \strong{Note:} \code{-1 < skew < 1}.
 #' @param base.mat An optional \code{n x n} base correlation matrix.
-#'   When supplied, \code{base.cor} and \code{skew} are ignored and noise simulated based on \code{rank}.
+#'   When supplied, \code{base.cor} and \code{skew} are ignored and noise is simulated based on \code{rank}.
 #' @param pos.def When \code{TRUE} (default is \code{FALSE}), the function \code{bend} of the R package
 #'   \href{https://cran.r-project.org/package=mbend}{`mbend`} is used to
 #'   bend a non-positive (semi)-definite matrix to be positive (semi)-definite.
@@ -123,7 +123,7 @@ struc_cor_mat <- function(n = 5,
     }
     if (!(is.atomic(range) && length(range) == 1L)) stop("'range' must be a scalar")
     if (range < 0) stop("'range' must be a positive number")
-    if (abs_base_cor + range > 1) stop("The sum of 'base.cor' and 'range' must be <= 1")
+    if (abs_base_cor + range > 1) stop("The absolute sum of 'base.cor' and 'range' must be <= 1")
     if (rank < 1 || rank %% 1 != 0) stop("'rank' must be a positive integer")
     if (!(is.atomic(skew) && length(skew) == 1L)) stop("'skew' must be a scalar")
     if (skew < -1 || skew > 1) stop("'skew' must be a value >= -1 and <= 1")
