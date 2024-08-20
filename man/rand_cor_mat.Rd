@@ -37,12 +37,17 @@ Creates a symmetric \code{n x n} correlation matrix with user-defined minimum an
 correlations based on a continuous uniform distribution.
 }
 \examples{
-# Simulate a random correlation matrix with 10 columns and rows.
+# Simulate and visualise a random correlation matrix with 10 columns and rows.
 cor_mat <- rand_cor_mat(
   n = 10,
   min.cor = -0.2,
   max.cor = 0.8,
   pos.def = TRUE
+)
+
+plot_matrix(
+  mat = cor_mat,
+  order = TRUE
 )
 
 }

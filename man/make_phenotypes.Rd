@@ -42,14 +42,20 @@ or \link[FieldSimR]{unstr_asr_output},
 or any data frame matching the description below.
 }
 \examples{
-# Generate phenotypes by combining the genetic values and plot errors provided
+# Generate and visualise phenotypes by combining the genetic values and plot errors provided
 # in the two example data frames gv_df_unstr and error_df_bivar.
 
-pheno_df <- make_phenotypes(
+pheno_ls <- make_phenotypes(
   gv.df = gv_df_unstr,
   error.df = error_df_bivar,
   randomise = TRUE,
   return.effects = TRUE
+)
+
+plot_effects(
+  df = pheno_ls$pheno.df[pheno_ls$pheno.df$env == 1, ],
+  effect = "y.Trait1",
+  labels = TRUE,
 )
 
 }

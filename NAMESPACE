@@ -3,6 +3,7 @@
 export(compsym_asr_input)
 export(compsym_asr_output)
 export(field_trial_error)
+export(group_cor_mat)
 export(make_phenotypes)
 export(measure_variances)
 export(multi_asr_input)

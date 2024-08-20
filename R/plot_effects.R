@@ -196,7 +196,7 @@ plot_effects <- function(df,
 #' @examples
 #' # Display a random correlation matrix.
 #'
-#' corA <- rand_cor_mat(
+#' cor_mat <- rand_cor_mat(
 #'   n = 10,
 #'   min.cor = -1,
 #'   max.cor = 1
@@ -206,9 +206,9 @@ plot_effects <- function(df,
 #' group_df <- data.frame(variable = 1:10, group = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4))
 #'
 #' plot_matrix(
-#'   mat = corA,
-#'   order = TRUE,
+#'   mat = cor_mat,
 #'   group.df = group_df,
+#'   order = TRUE,
 #'   labels = TRUE
 #' )
 #'

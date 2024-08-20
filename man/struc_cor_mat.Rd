@@ -18,7 +18,7 @@ struc_cor_mat(
 \arguments{
 \item{n}{A scalar defining the dimensions of the correlation matrix.}
 
-\item{base.cor}{A scalar defining the baseline correlation.\cr
+\item{base.cor}{A scalar defining the baseline correlation. \cr
 \strong{Note:} \code{-1 < base.cor < 1}.}
 
 \item{range}{A scalar defining the range of correlations around the baseline. By default,
@@ -49,13 +49,19 @@ A symmetric \code{n x n} correlation matrix with defined rank.
 Creates a symmetric \code{n x n} correlation matrix with user-defined structure and rank.
 }
 \examples{
-# Simulate a correlation matrix with 10 columns and rows, rank equal to 3 and
+# Simulate and visualise a correlation matrix with 10 columns and rows, rank equal to 4 and
 # negatively skewed correlations.
 cor_mat <- struc_cor_mat(
   n = 10,
   base.cor = 0.3,
+  range = 0.7,
   rank = 4,
   skew = -0.5
+)
+
+plot_matrix(
+  mat = cor_mat,
+  order = TRUE
 )
 
 }
