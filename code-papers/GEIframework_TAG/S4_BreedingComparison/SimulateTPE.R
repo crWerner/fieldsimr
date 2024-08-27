@@ -35,7 +35,7 @@ gamma <- -0.7  # skewness of the genetic correlation distribution
 
 # The simulation
 # 1. Simulate a diagonal genetic variance matrix for all environments in the TPE 
-# using FieldSimR's function rand_diag_mat().
+# using FieldSimR's function skew_diag_mat().
 De <- skew_diag_mat(n = p,
                     shape = alpha,
                     scale = beta)
@@ -46,10 +46,10 @@ mean(diag(De)) # mean genetic variance within environments
 
 # 2. Simulate a between-environment genetic correlation matrix for all environments 
 # in the TPE using FieldSimR's function rr_cor_mat().
-Ce <- rr_cor_mat(n = p,
-                 base.cor = rho,
-                 rank = k,
-                 skew = gamma)
+Ce <- struc_cor_mat(n = p,
+                    base.cor = rho,
+                    rank = k,
+                    skew = gamma)
 # Plot the correlation matrix using FieldSimR's functions plot_hist() and plot_matrix()
 plot_hist(df = Ce[upper.tri(Ce)])
 mean(Ce[upper.tri(Ce)])
@@ -69,13 +69,13 @@ plot_matrix(Ge[1:200,1:200],
 
 
 # 4. Obtain measures of variance explained to tune the matrices in Steps 1 and 2 using 
-# FieldSimR's function measure_interactions().
-measure_interactions(mat = Ge)
+# FieldSimR's function measure_variances().
+measure_variances(mat = Ge)
 
 
 # 5. Potential to simulate some Ge with groupings
 # - ar1 base function
-# - gxy and gxl using an extended version of rr_cor_mat
+# - gxy and gxl using an extended version of struc_cor_mat()
 
 # Generate MET samples
 # n_samples = 20
