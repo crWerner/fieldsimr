@@ -233,7 +233,7 @@ plot_matrix <- function(mat,
   groups <- FALSE
   ngroups <- 1
   if (!is.null(group.df)) {
-    if (is.vector(group.df)) {
+    if (is.vector(group.df) && length(group.df) > 1) {
       group.df <- data.frame(variable = 1:n, group = group.df)
     }
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
