@@ -95,10 +95,6 @@
 
 * Updated `qq_plot` and `plot_hist` to handle a matrix as input through the `df` argument (converts to a data frame internally).
 
-* Added new function `measure_variances` for producing summaries of covariance matrices in terms of variance explained (currently not pushed to CRAN).
-
-* Added new function `plot_regression` for graphically displaying a (multiple) linear regression, e.g., by supplying covariates and slopes. This function can also handle a matrix of effects, from which covariates and slopes are constructed based on a singular value decomposition.
-
 * Added new function `group_cor_mat` for simulating structured correlation matrices with multiple groups and reduced rank. 
 
 
