@@ -20,7 +20,7 @@
 # 2. Simulating a between-environment genetic correlation matrix using struc_cor_mat()
 # 3. Constructing the between-environment genetic variance matrix by combining the
 #    matrices in Steps 1. and 2.
-# 4. Obtaining measures of variance explained using measure_interactions()
+# 4. Obtaining measures of variance explained using measure_variances()
 
 # It is also demonstrated how to simulate the between-environment genetic covariance matrix
 # with specific structure, including genotype by year and genotype location interaction,
@@ -76,7 +76,7 @@ mean(Ge[upper.tri(Ge)]) # mean genetic correlation between environments
 
 
 # 4. Obtain measures of variance explained to tune the matrices in Steps 1 and 2 using
-# FieldSimR's function measure_interactions().
+# FieldSimR's function measure_variances().
 measure_variances(mat = Ge)
 # The mean genetic variance is partitioned into main effect and interaction variance.
 # The interaction variance is further partitioned into heterogeneity of genetic variance
