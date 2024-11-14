@@ -75,7 +75,7 @@ asr_main <- asreml(y.Trait1 ~ 1 + env,
                    residual = ~ dsum(~ ar1(col):ar1(row) | env),
                    data     = met_df,
                    workspace = "1Gb")
-asr_main = update.asreml(asr_main)
+asr_main <- update.asreml(asr_main)
 
 # Predicted genotype main effects
 g_met_pred <- asr_main$coefficients$random[
@@ -99,7 +99,7 @@ asr_comp <- asreml(y.Trait1 ~ 1 + env,
                    residual = ~ dsum(~ ar1(col):ar1(row) | env),
                    data     = met_df,
                    workspace = "1Gb")
-asr_comp = update.asreml(asr_comp)
+asr_comp <- update.asreml(asr_comp)
 
 # Predicted genotype main effects
 g_met_pred <- asr_comp$coefficients$random[
@@ -126,7 +126,7 @@ asr_mdiag <- asreml(y.Trait1 ~ 1 + env,
                     residual = ~ dsum(~ ar1(col):ar1(row) | env),
                     data     = met_df,
                     workspace = "1Gb")
-asr_mdiag = update.asreml(asr_mdiag)
+asr_mdiag <- update.asreml(asr_mdiag)
 
 # Predicted genotype main effects
 g_met_pred <- asr_mdiag$coefficients$random[
@@ -153,7 +153,7 @@ asr_diag <- asreml(y.Trait1 ~ 1 + env,
                    residual = ~ dsum(~ ar1(col):ar1(row) | env),
                    data = met_df,
                    workspace = "1Gb")
-asr_diag = update.asreml(asr_diag)
+asr_diag <- update.asreml(asr_diag)
 
 # Predicted genotype by environment effects
 ge_met_pred <- asr_diag$coefficients$random[
