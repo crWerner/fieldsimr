@@ -16,15 +16,15 @@
 # methods are demonstrated with FieldSimR and AlphaSimR, which are used
 # to simulate GEI based on a reduced rank multiplicative model.
 
-# The simulation involves six steps:
-# 2. Simulating genetic values in AlphaSimR using FieldSimR's wrapper functions
+# The simulation involves five steps:
+# 1. Simulating genetic values in AlphaSimR using FieldSimR's wrapper functions
 #    multi_asr_input() and multi_asr_output()
-#    - Simulating GE effects with GEI for all environments that constitute the TPE
-# 3. Sampling a subset of environments for a MET from the full TPE and summarising the
+#    - Simulating genetic values with GEI for all environments that constitute the TPE
+# 2. Sampling a subset of environments from the full TPE within a MET and summarising the
 #    MET-TPE alignment
-# 4. Simulating plot errors with spatial variation using field_trial_error()
-# 5. Constructing a MET dataset by combining the effects in 3. and 4. using make_phenotypes()
-# 6. Obtaining measures of expected accuracy to summarise MET dataset
+# 3. Simulating plot errors with spatial variation using field_trial_error()
+# 4. Constructing a MET dataset by combining the effects in 3. and 4. using make_phenotypes()
+# 5. Obtaining measures of expected accuracy to summarise MET dataset
 
 # Install FieldSimR from github using devtools
 # devtools::install_github("crWerner/fieldsimr")
