@@ -294,7 +294,7 @@ group_cor_mat <- function(n = c(5, 5),
   if (!(is.atomic(skew) && length(skew) == 1L)) stop("'skew' must be a scalar")
   if (skew < -1 || skew > 1) stop("'skew' must be a value >= -1 and <= 1")
 
-  if (length(unique(abs_within_cor)) > 1) {
+  if (length(unique(abs_within_cor)) > 1 && rank < ntotal) {
     warning("More than one unique value supplied in 'within.cor', defined rank will not be achieved")
   } else if (any(abs_within_cor + range < 1)) warning("The absolute sum of 'within.cor' and 'range' is not 1, defined rank will not be achieved")
   if (!pos.def) {
