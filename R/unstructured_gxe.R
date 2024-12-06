@@ -560,7 +560,7 @@ unstr_asr_output <- function(pop,
                              nenvs,
                              nreps = 1) {
   if (ntraits < 1 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
-  if (nenvs < 2 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
+  if (nenvs < 1 | nenvs %% 1 != 0) stop("'nenvs' must be a positive integer")
 
   if ((sum(nreps < 1) > 0) | (sum(nreps %% 1 != 0) > 0)) {
     stop("'nreps' must contain positive integers")
