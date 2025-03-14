@@ -429,8 +429,11 @@ qq_plot <- function(df,
   if (!(effect %in% colnames(df))) {
     stop("'df' must contain the effect to be plotted")
   }
-  if (any(is.na(df[[effect]]))) stop("'df' must not contain missing values")
-
+  if (any(is.na(df[[effect]]))) {
+    warning ("Missing values removed from 'df'")
+    df[[effect]] <- df[[effect]][!is.na(df[[effect]])]
+  }
+  
   if (!labels) {
     qq_df <- data.frame(effect = df[[effect]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
