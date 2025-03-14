@@ -430,10 +430,10 @@ qq_plot <- function(df,
     stop("'df' must contain the effect to be plotted")
   }
   if (any(is.na(df[[effect]]))) {
-    warning ("Missing values removed from 'df'")
+    warning("Missing values removed from 'df'")
     df[[effect]] <- df[[effect]][!is.na(df[[effect]])]
   }
-  
+
   if (!labels) {
     qq_df <- data.frame(effect = df[[effect]])
     p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
@@ -553,7 +553,7 @@ plot_hist <- function(df,
     stop("'df' must contain the value to be plotted")
   }
   if (any(is.na(df[[value]]))) {
-    warning ("Missing values removed from 'df'")
+    warning("Missing values removed from 'df'")
     df[[value]] <- df[[value]][!is.na(df[[value]])]
   }
   if (!is.logical(density)) stop("'density' must be logical")
