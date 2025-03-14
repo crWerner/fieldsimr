@@ -239,7 +239,7 @@ plot_matrix <- function(mat,
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
     colnames(group.df)[1:2] <- c("variable", "group")
-    if (any(is.na(group.df[, 1:2]))) stop("'group.df' must not contain missing values")
+    if (any(group.df[, 1:2]))) stop("'group.df' must not contain missing values")
     if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
 
     group.df$variable <- factor(as.numeric(as.character(group.df$variable)))
@@ -551,6 +551,10 @@ plot_hist <- function(df,
   }
   if (!(value %in% colnames(df))) {
     stop("'df' must contain the value to be plotted")
+  }
+  if (any(is.na(df[[value]]))) {
+    warning ("Missing values removed from 'df'")
+    df[[value]] <- df[[value]][!is.na(df[[value]])]
   }
   if (!is.logical(density)) stop("'density' must be logical")
   if (!(is.atomic(bins) && length(bins) == 1L)) stop("'bins' must be a scalar")
