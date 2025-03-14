@@ -234,7 +234,7 @@ make_phenotypes <- function(gv.df,
   error_env_names <- as.character(error.df[["env"]])
   if (any(gv_env_names != error_env_names)) warning("'env' names in 'gv.df' and 'error.df' do not match, names in 'gv.df' will be used")
 
-  gv_df_names <- data.frame(env = factor(gv_env_names))
+  gv_df_names <- data.frame(env = gv.df[["env"]])
   error_df_names <- error.df[, c("block", "col", "row")]
   ids <- gv.df$id
   reps <- gv.df$rep
