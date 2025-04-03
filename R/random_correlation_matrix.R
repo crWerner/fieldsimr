@@ -141,7 +141,7 @@ struc_cor_mat <- function(n = 5,
     if (!(is.atomic(skew) && length(skew) == 1L)) stop("'skew' must be a scalar")
     if (skew < -1 || skew > 1) stop("'skew' must be a value >= -1 and <= 1")
 
-    if (abs_base_cor + range < 1) warning("The absolute sum of 'base.cor' and 'range' is not 1, defined rank will not be achieved")
+    if (abs_base_cor + range < 1 && rank < n) warning("The absolute sum of 'base.cor' and 'range' is not 1, defined rank will not be achieved")
     if (!pos.def) {
       insertion <- paste0("matrix will be indefinite and ")
     } else {
