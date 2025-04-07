@@ -332,7 +332,9 @@ plot_matrix <- function(mat,
       axis.text = ggplot2::element_text(size = 10),
       axis.title = ggplot2::element_text(size = 11),
       panel.background = ggplot2::element_blank(),
-      plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40")
+      plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 6, b = 0, l = 0))
     ) +
     ggplot2::annotate(
       geom = "rect", xmin = 0.5, ymin = 0.5,
@@ -350,15 +352,8 @@ plot_matrix <- function(mat,
         fill = "transparent", colour = "black", linewidth = 0.05, inherit.aes = FALSE
       )
   }
-  if (labels) {
+  if (!labels) {
     p <- p + ggplot2::theme(
-      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
-      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 6, b = 0, l = 0))
-    )
-  } else {
-    p <- p + ggplot2::theme(
-      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0)),
-      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0)),
       axis.ticks = ggplot2::element_blank(),
       axis.text = ggplot2::element_blank()
     )
