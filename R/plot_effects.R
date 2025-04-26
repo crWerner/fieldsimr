@@ -236,7 +236,7 @@ plot_matrix <- function(mat,
   ngroups <- 1
   if (!is.null(group.df)) {
     if (is.vector(group.df) && length(group.df) > 1) {
-      group.df <- data.frame(variable = 1:length(group.df), group = group.df)
+      group.df <- data.frame(variable = colnames(mat), group = group.df)
     }
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
@@ -292,7 +292,7 @@ plot_matrix <- function(mat,
       order2 <- cluster::agnes(x = dis_mat, diss = TRUE, method = "average")$order.lab
     } else if (ngroups > 1) {
       order2 <- c()
-      for (i in 1:ngroups) {
+      for (i in levels(group.df$group)) {
         ord <- as.character(group.df$variable[group.df$group == i])
         dis_mat_tmp <- as.matrix(dis_mat[ord, ord])
         if (ncol(dis_mat_tmp) == 1) {
