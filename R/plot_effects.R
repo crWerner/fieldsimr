@@ -216,13 +216,12 @@ plot_effects <- function(df,
 plot_matrix <- function(mat,
                         order = FALSE,
                         group.df = NULL,
-                        labels = TRUE,
-                        tol = 1e-13) {
+                        labels = TRUE) {
   if (!is.matrix(mat)) stop("'mat' must be a matrix")
   if (!isSymmetric(mat)) stop("'mat' must be a symmetric matrix")
   if (any(colnames(mat) != rownames(mat))) stop("colnames and rownames of 'mat' must match")
 
-  mat <- round(mat, -(log10(tol)))
+  mat <- round(mat, 8)
   n <- ncol(mat)
   if (is.null(colnames(mat)) && !is.null(rownames(mat))) {
     colnames(mat) <- rownames(mat)
