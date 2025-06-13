@@ -426,8 +426,8 @@ qq_plot <- function(df,
     stop("'df' must contain the effect to be plotted")
   }
   if (any(is.na(df[[effect]]))) {
-    warning("Missing values removed from 'df'")
-    df[[effect]] <- df[[effect]][!is.na(df[[effect]])]
+    message("Missing values removed from 'df'")
+    df <- df[!is.na(df[[effect]]),]
   }
 
   if (!labels) {
@@ -549,8 +549,8 @@ plot_hist <- function(df,
     stop("'df' must contain the value to be plotted")
   }
   if (any(is.na(df[[value]]))) {
-    warning("Missing values removed from 'df'")
-    df[[value]] <- df[[value]][!is.na(df[[value]])]
+    message("Missing values removed from 'df'")
+    df <- df[!is.na(df[[value]]),]
   }
   if (!is.logical(density)) stop("'density' must be logical")
   if (!(is.atomic(bins) && length(bins) == 1L)) stop("'bins' must be a scalar")
