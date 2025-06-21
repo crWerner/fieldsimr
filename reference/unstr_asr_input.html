@@ -25,7 +25,7 @@ generate a data frame with output values."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">FieldSimR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@ generate a data frame with output values.</p>
 <span>  ntraits <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  nenvs <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  mean <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  var <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Tvar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Evar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  corA <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -90,8 +90,6 @@ generate a data frame with output values.</p>
 <span>  TcorDD <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  EcorDD <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  relAA <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  TrelAA <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ErelAA <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  corAA <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  TcorAA <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  EcorAA <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -194,18 +192,6 @@ that is in a diploid organism with allele frequency of 0.5. If only one value is
 all environment-within-trait combinations will be assigned the same value. By default,
 <code>relAA = NULL</code> and epistasis is not simulated. <br><strong>Alternatively</strong>, if a separable structure between traits and environments is desired,
 <code>TrelAA</code> and <code>ErelAA</code> can be specified.</p></dd>
-
-
-<dt id="arg-trelaa">TrelAA<a class="anchor" aria-label="anchor" href="#arg-trelaa"></a></dt>
-<dd><p>A vector defining the relative magnitude of epistatic variance
- to additive genetic variance for each trait. Must be provided in combination
-with <code>ErelAA</code>. <br><strong>Alternatively</strong>, <code>relAA</code> can be specified.</p></dd>
-
-
-<dt id="arg-erelaa">ErelAA<a class="anchor" aria-label="anchor" href="#arg-erelaa"></a></dt>
-<dd><p>A vector defining the relative magnitude of epistatic variance
-to additive genetic variance for each environment. Must be provided in
-combination with <code>TrelAA</code>. <br><strong>Alternatively</strong>, <code>relAA</code> can be specified.</p></dd>
 
 
 <dt id="arg-coraa">corAA<a class="anchor" aria-label="anchor" href="#arg-coraa"></a></dt>
