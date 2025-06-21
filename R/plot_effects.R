@@ -214,40 +214,40 @@ plot_effects <- function(df,
 #'
 #' @export
 plot_matrix <- function(mat,
-                        order = FALSE,
+                        order = TRUE,
                         group.df = NULL,
                         labels = TRUE) {
   if (!is.matrix(mat)) stop("'mat' must be a matrix")
-  if (!isSymmetric(mat)) stop("'mat' must be a symmetric matrix")
+  mat <- round(mat, 8)
+  if (!isSymmetric(mat, check.attributes = FALSE)) stop("'mat' must be a symmetric matrix")
   if (any(colnames(mat) != rownames(mat))) stop("colnames and rownames of 'mat' must match")
 
-  mat <- round(mat, 8)
   n <- ncol(mat)
-  if (is.null(colnames(mat)) && !is.null(rownames(mat))) {
-    colnames(mat) <- rownames(mat)
-  } else if (!is.null(colnames(mat)) && is.null(rownames(mat))) {
-    rownames(mat) <- colnames(mat)
+  if (!is.null(colnames(mat))) {
+    var_names <- rownames(mat) <- colnames(mat)
+  } else if (is.null(colnames(mat)) && !is.null(rownames(mat))) {
+    var_names <- colnames(mat) <- rownames(mat)
   } else {
-    colnames(mat) <- rownames(mat) <- 1:n
+    var_names <- colnames(mat) <- rownames(mat) <- 1:n
   }
 
   groups <- FALSE
   ngroups <- 1
   if (!is.null(group.df)) {
     if (is.vector(group.df) && length(group.df) > 1) {
-      group.df <- data.frame(variable = colnames(mat), group = group.df)
+      group.df <- data.frame(var = var_names, group = group.df)
     }
     if (!is.data.frame(group.df)) stop("'group.df' must be a data frame")
     if (ncol(group.df) < 2) stop("'group.df' must be a data frame with columns containing the variable names followed by the group numbers")
-    colnames(group.df)[1:2] <- c("variable", "group")
+    colnames(group.df)[1:2] <- c("var", "group")
     if (any(is.na(group.df[, 1:2]))) stop("'group.df' must not contain missing values")
-    if (any(!colnames(mat) %in% group.df$variable)) stop("'group.df' must contain all variables in 'mat'")
+    if (any(!var_names %in% group.df$var)) stop("'group.df' must contain all variables in 'mat'")
 
-    group.df$variable <- factor(as.numeric(as.character(group.df$variable)))
-    group.df$group <- factor(as.numeric(as.character(group.df$group)))
+    group.df$var <- make_factor(group.df$var)
+    group.df$group <- make_factor(group.df$group)
     group.df <- group.df[order(group.df$group), ]
     rownames(group.df) <- NULL
-    ord <- as.character(group.df$variable)
+    ord <- as.character(group.df$var)
     mat <- mat[ord, ord]
     groups <- TRUE
     ngroups <- nlevels(group.df$group)
@@ -278,8 +278,8 @@ plot_matrix <- function(mat,
     df[[effect_short]][df$var1 == df$var2] <- NA
   }
   levs <- unique(df$var1)
-  df$var1 <- factor(as.numeric(as.character(df$var1)), levels = levs)
-  df$var2 <- factor(as.numeric(as.character(df$var2)), levels = levs)
+  df$var1 <- factor(df$var1, levels = levs)
+  df$var2 <- factor(df$var2, levels = levs)
 
   if (order) {
     if (!is_cor_mat) {
@@ -292,7 +292,7 @@ plot_matrix <- function(mat,
     } else if (ngroups > 1) {
       order2 <- c()
       for (i in levels(group.df$group)) {
-        ord <- as.character(group.df$variable[group.df$group == i])
+        ord <- as.character(group.df$var[group.df$group == i])
         dis_mat_tmp <- as.matrix(dis_mat[ord, ord])
         if (ncol(dis_mat_tmp) == 1) {
           order2 <- c(order2, ord)
