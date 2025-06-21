@@ -410,29 +410,35 @@ plot_matrix <- function(mat,
 #' @export
 qq_plot <- function(df,
                     effect,
-                    labels = FALSE) {
+                    labels = FALSE,
+                    dim.names = NULL) {
   print_title <- TRUE
   if (is.vector(df) | is.matrix(df)) {
     df <- data.frame(Effect = c(df))
     effect <- "Effect"
     print_title <- FALSE
   }
+  effect_name <- effect
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop ("'effect' must be a character")
+  
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
-
-  if (!(effect %in% colnames(df))) {
+  if (!(effect_name %in% colnames(df))) {
     stop("'df' must contain the effect to be plotted")
   }
-  if (any(is.na(df[[effect]]))) {
+  if (any(is.na(df[[effect_name]]))) {
     message("Missing values removed from 'df'")
-    df <- df[!is.na(df[[effect]]),]
+    if (ncol(df) == 1) {
+        df <- data.frame(df[!is.na(df[[effect_name]]), ])
+        colnames(df) <- effect_name
+    } else df <- df[!is.na(df[[effect_name]]), ]
   }
-
+  
   if (!labels) {
-    qq_df <- data.frame(effect = df[[effect]])
-    p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
+    qq_df <- data.frame(effect = df[[effect_name]])
+    colnames(qq_df) <- effect_name
+    p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = get(effect_name))) +
       ggplot2::stat_qq()
     qq_df <- data.frame(
       ggplot2::ggplot_build(p)$data[[1]]["sample"],
@@ -440,7 +446,7 @@ qq_plot <- function(df,
     )
     mid_pt_x <- mean(qq_df$theoretical, na.rm = TRUE)
     max_pt_x <- max(abs(c(mid_pt_x - min(qq_df$theoretical, na.rm = TRUE), max(qq_df$theoretical, na.rm = TRUE) - mid_pt_x)), na.rm = TRUE) + 1e-8
-
+    
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_point(size = 2) +
@@ -453,44 +459,50 @@ qq_plot <- function(df,
       ) +
       ggplot2::lims(x = c(mid_pt_x - max_pt_x, mid_pt_x + max_pt_x))
     if (print_title) {
-      p <- p + ggplot2::ggtitle(label = effect)
+      p <- p + ggplot2::ggtitle(label = effect_name)
     }
     return(p)
   }
-
+  
   if (labels) {
-    if (any(!c("col", "row") %in% colnames(df))) {
-      stop("'df' must contain the columns 'col' and 'row' if labels are to be plotted")
+    if (is.null(dim.names)) dim.names <- c("col", "row")
+    if (length(dim.names) != 2 | !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+    col_name <- dim.names[1]
+    row_name <- dim.names[2]
+    if (any(!c(col_name, row_name) %in% colnames(df))) {
+      stop("'df' must contain the columns specified in 'dim.names' if labels are to be plotted")
     }
     qq_df <- data.frame(
-      col = df[["col"]],
-      row = df[["row"]],
-      effect = df[[effect]]
+      col = df[[col_name]],
+      row = df[[row_name]],
+      effect = df[[effect_name]]
     )
-    qq_df$col <- factor(as.numeric(as.character(qq_df$col)))
-    qq_df$row <- factor(as.numeric(as.character(qq_df$row)))
-    p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = effect)) +
+    colnames(qq_df) <- c(col_name, row_name, effect_name)
+    qq_df[[col_name]] <- make_factor(qq_df[[col_name]])
+    qq_df[[row_name]] <- make_factor(qq_df[[row_name]])
+    p <- ggplot2::ggplot(qq_df, ggplot2::aes(sample = get(effect_name))) +
       ggplot2::stat_qq()
     qq_df <- data.frame(
-      col = qq_df$col[order(qq_df$effect)],
-      row = qq_df$row[order(qq_df$effect)],
+      col = qq_df[[col_name]][order(qq_df[[effect_name]])],
+      row = qq_df[[row_name]][order(qq_df[[effect_name]])],
       ggplot2::ggplot_build(p)$data[[1]]["sample"],
       ggplot2::ggplot_build(p)$data[[1]]["theoretical"]
     )
-    qq_df <- qq_df[order(qq_df$col, qq_df$row), ]
+    colnames(qq_df) <- c(col_name, row_name, "sample", "theoretical")
+    qq_df <- qq_df[order(qq_df[[col_name]], qq_df[[row_name]]), ]
     rownames(qq_df) <- NULL
-
+    
     mid_pt_x <- mean(qq_df$theoretical, na.rm = TRUE)
     max_pt_x <- max(abs(c(mid_pt_x - min(qq_df$theoretical, na.rm = TRUE), max(qq_df$theoretical, na.rm = TRUE) - mid_pt_x)), na.rm = TRUE) + 1e-8
-
-    qq_df$cr.label <- factor(paste0(qq_df$col, ":", qq_df$row))
+    
+    qq_df$cr.label <- factor(paste0(qq_df[[col_name]], ":", qq_df[[row_name]]))
     theoretical <- cr.label <- NULL
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = cr.label)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_text(size = 4) +
       ggplot2::labs(
         y = "Sample quantiles", x = "Theoretical quantiles",
-        subtitle = "Effects indexed as col:row"
+        subtitle = paste0("Effects indexed as ", col_name,":",row_name)
       ) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
@@ -501,7 +513,7 @@ qq_plot <- function(df,
       ) +
       ggplot2::lims(x = c(mid_pt_x - max_pt_x, mid_pt_x + max_pt_x))
     if (print_title) {
-      p <- p + ggplot2::ggtitle(label = effect)
+      p <- p + ggplot2::ggtitle(label = effect_name)
     }
     return(p)
   }
