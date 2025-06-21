@@ -144,7 +144,7 @@
 unstr_asr_input <- function(ntraits = 1,
                             nenvs = 2,
                             mean = 0,
-                            var = 1,
+                            var = NULL,
                             Tvar = NULL,
                             Evar = NULL,
                             corA = NULL,
