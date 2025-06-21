@@ -266,7 +266,7 @@ plot_matrix <- function(mat,
   effect <- "Correlation matrix"
   effect_short <- "cor"
   effect_short2 <- "Cor."
-  if (any(diag(mat) != 1) | max(mat) > 1) {
+  if (any(diag(mat) != 1) || max(mat) > 1) {
     is_cor_mat <- FALSE
     effect <- "Covariance matrix"
     effect_short <- "cov"
@@ -416,7 +416,7 @@ qq_plot <- function(df,
                     labels = FALSE,
                     dim.names = NULL) {
   print_title <- TRUE
-  if (is.vector(df) | is.matrix(df)) {
+  if (is.vector(df) || is.matrix(df)) {
     df <- data.frame(Effect = c(df))
     effect <- "Effect"
     print_title <- FALSE
@@ -469,7 +469,7 @@ qq_plot <- function(df,
   
   if (labels) {
     if (is.null(dim.names)) dim.names <- c("col", "row")
-    if (length(dim.names) != 2 | !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+    if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
     col_name <- dim.names[1]
     row_name <- dim.names[2]
     if (any(!c(col_name, row_name) %in% colnames(df))) {
@@ -552,7 +552,7 @@ plot_hist <- function(df,
                       bins = 30,
                       density = FALSE) {
   print_title <- TRUE
-  if (is.vector(df) | is.matrix(df)) {
+  if (is.vector(df) || is.matrix(df)) {
     df <- data.frame(Value = c(df))
     value <- "Value"
     print_title <- FALSE
@@ -648,7 +648,7 @@ sample_variogram <- function(df,
                              min.pairs = 30,
                              dim.names = NULL) {
   if (is.null(dim.names)) dim.names <- c("col", "row")
-  if (length(dim.names) != 2 | !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+  if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
   col_name <- dim.names[1]
   row_name <- dim.names[2]
   effect_name <- effect
