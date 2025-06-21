@@ -469,7 +469,7 @@ qq_plot <- function(df,
   
   if (labels) {
     if (is.null(dim.names)) dim.names <- c("col", "row")
-    if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+    if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters defining the column and row dimensions")
     col_name <- dim.names[1]
     row_name <- dim.names[2]
     if (any(!c(col_name, row_name) %in% colnames(df))) {
@@ -648,7 +648,7 @@ sample_variogram <- function(df,
                              min.pairs = 30,
                              dim.names = NULL) {
   if (is.null(dim.names)) dim.names <- c("col", "row")
-  if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+  if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters defining the column and row dimensions")
   col_name <- dim.names[1]
   row_name <- dim.names[2]
   effect_name <- effect
