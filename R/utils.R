@@ -30,3 +30,43 @@ fill_matrix <- function(mat) {
   mat[is.na(mat)] <- ((colwise + rowwise) / 2)[is.na(mat)]
   mat
 }
+
+
+#' Check object class
+#'
+#' Checks the class of objects, with particular focus on numeric vs character factors.
+#' @noRd
+check_class <- function(object) {
+  if (is.numeric(object)) {
+    return("numeric")
+  } else if (is.character(object)) {
+    suppressWarnings(character_is_numeric <- all(!is.na(as.numeric(unique(object)))))
+    if (character_is_numeric) {
+      return("numeric character")
+    } else return("character")
+  } else if (is.factor(object)) {
+    suppressWarnings(levels_are_numeric <- all(!is.na(as.numeric(levels(object)))))
+    if (levels_are_numeric) {
+      return("numeric factor")
+    } else {
+      return("character factor")
+    }
+  } else {
+    return(class(object))
+  }
+}
+
+
+#' Make factor
+#'
+#' Converts an object to a factor, preserving the order for character objects.
+#' @noRd
+make_factor <- function(object) {
+  if (check_class(object) %in% c("numeric", "numeric character")) {
+    return(factor(as.numeric(object)))
+  } else if (check_class(object) %in% "character") {
+    return(factor(object, levels = unique(object)))
+  } else {
+    return(object)
+  }
+}
