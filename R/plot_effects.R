@@ -473,7 +473,7 @@ qq_plot <- function(df,
     col_name <- dim.names[1]
     row_name <- dim.names[2]
     if (any(!c(col_name, row_name) %in% colnames(df))) {
-      stop("'df' must contain the columns specified in 'dim.names' if labels are to be plotted")
+      stop("'df' must contain the column and row dimensions specified in 'dim.names' if labels are to be plotted")
     }
     qq_df <- data.frame(
       col = df[[col_name]],
@@ -657,7 +657,7 @@ sample_variogram <- function(df,
     stop("'df' must be a data frame")
   }
   if (any(!c(col_name, row_name, effect_name) %in% colnames(df))) {
-    stop("'df' must contain the columns specified in 'dim.names', and the effect to be plotted")
+    stop("'df' must contain the column and row dimensions specified in 'dim.names', and the effect to be plotted")
   }
   if (any(is.na(df[[effect_name]]))) {
     message("Missing values removed from 'df'")
