@@ -4,17 +4,19 @@
 \alias{plot_effects}
 \title{Graphics for plot effects}
 \usage{
-plot_effects(df, effect, blocks = TRUE, labels = TRUE)
+plot_effects(df, effect, blocks = TRUE, labels = TRUE, dim.names = NULL)
 }
 \arguments{
-\item{df}{A data frame with the columns 'col', 'row', and the effects to be plotted.}
+\item{df}{A data frame with columns containing the column and row dimensions, and the effects to be plotted.}
 
-\item{effect}{The name of the effects to be plotted.}
+\item{effect}{A character defining the effects to be plotted.}
 
 \item{blocks}{When \code{TRUE} (default), the field array is split into blocks.
-This requires an additional column 'block' in the data frame.}
+This requires an additional column in the data frame, as specified by \code{dim.names}.}
 
 \item{labels}{When \code{TRUE} (default), column and row labels are displayed.}
+
+\item{dim.names}{An optional vector defining the column, row and block dimensions ('col', 'row' and 'block' by default).}
 }
 \value{
 A graphical field array with x- and y-axes displaying the column and row numbers,

@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot_effects.R
 \name{plot_hist}
 \alias{plot_hist}
-\title{Histogram of values}
+\title{Histogram of effects.}
 \usage{
-plot_hist(df, value = NULL, bins = 30, density = FALSE)
+plot_hist(df, effect = NULL, bins = 30, density = FALSE)
 }
 \arguments{
-\item{df}{A data frame or vector with the values to be plotted.}
+\item{df}{A data frame or vector with the effects to be plotted.}
 
-\item{value}{The name of the values to be plotted. Ignored when 'df' is a vector.}
+\item{effect}{A character defining the effects to be plotted. Ignored when 'df' is a vector.}
 
 \item{bins}{Argument passed to \code{ggplot2} (default is \code{30}). Controls the number
 of bins in the histogram.}
@@ -22,7 +22,7 @@ A histogram with x- and y-axes displaying the values and their frequency, respec
   When \code{density = TRUE}, a density curve is superimposed onto the histogram.
 }
 \description{
-Creates a histogram of user-defined values (e.g., effects, correlations, or covariances).
+Creates a histogram of user-defined effects.
 }
 \examples{
 # Histogram of the simulated plot errors in the example data frame 'error_df_bivar'
@@ -30,7 +30,7 @@ Creates a histogram of user-defined values (e.g., effects, correlations, or cova
 error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 plot_hist(
   df = error_df,
-  value = "e.Trait1",
+  effect = "e.Trait1",
   density = TRUE
 )
 

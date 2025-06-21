@@ -4,7 +4,7 @@
 \alias{plot_matrix}
 \title{Graphics for matrices}
 \usage{
-plot_matrix(mat, order = FALSE, group.df = NULL, labels = TRUE)
+plot_matrix(mat, order = TRUE, group.df = NULL, labels = TRUE)
 }
 \arguments{
 \item{mat}{A symmetric matrix.}

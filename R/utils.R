@@ -43,7 +43,9 @@ check_class <- function(object) {
     suppressWarnings(character_is_numeric <- all(!is.na(as.numeric(unique(object)))))
     if (character_is_numeric) {
       return("numeric character")
-    } else return("character")
+    } else {
+      return("character")
+    }
   } else if (is.factor(object)) {
     suppressWarnings(levels_are_numeric <- all(!is.na(as.numeric(levels(object)))))
     if (levels_are_numeric) {
@@ -69,4 +71,27 @@ make_factor <- function(object) {
   } else {
     return(object)
   }
+}
+
+
+#' Pad out a data frame
+#'
+#' Pads out a data frame to include all combinations of the two columns specified,
+#' creating dummy rows for missing values.
+#' @noRd
+padout_df <- function(df, var1 = "env", var2 = "id") {
+  df[[var1]] <- make_factor(df[[var1]])
+  df[[var2]] <- make_factor(df[[var2]])
+  all_combos <- expand.grid(
+    levels(df[[var1]]),
+    levels(df[[var2]]),
+    stringsAsFactors = FALSE
+  )
+  names(all_combos) <- c(var1, var2)
+  padded_df <- merge(all_combos, df, by = c(var1, var2), all.x = TRUE, sort = FALSE)
+  all_cols <- union(names(df), names(padded_df))
+  padded_df <- padded_df[, all_cols]
+  padded_df[[var1]] <- make_factor(padded_df[[var1]])
+  padded_df[[var2]] <- make_factor(padded_df[[var2]])
+  return(padded_df)
 }

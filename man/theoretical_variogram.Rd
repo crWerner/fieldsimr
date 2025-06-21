@@ -7,7 +7,7 @@
 theoretical_variogram(
   ncols = 10,
   nrows = 20,
-  varR = 1,
+  var = 1,
   col.cor = 0.5,
   row.cor = 0.7,
   prop.spatial = 1
@@ -18,7 +18,7 @@ theoretical_variogram(
 
 \item{nrows}{A scalar defining the number of rows.}
 
-\item{varR}{A scalar defining the error variance.}
+\item{var}{A scalar defining the variance of the variogram.}
 
 \item{col.cor}{A scalar defining the column autocorrelation,}
 
@@ -41,7 +41,7 @@ Creates a theoretical variogram for a separable first order autoregressive (AR1)
 variogram <- theoretical_variogram(
   ncols = 10,
   nrows = 20,
-  varR = 1,
+  var = 1,
   col.cor = 0.5,
   row.cor = 0.7,
   prop.spatial = 0.5

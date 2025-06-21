@@ -33,11 +33,11 @@ plot_effects <- function(df,
                          labels = TRUE,
                          dim.names = NULL) {
   if (is.null(dim.names)) dim.names <- c("col", "row")
-  if (!blocks && (length(dim.names) != 2 || !is.character(dim.names))) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+  if (!blocks && (length(dim.names) != 2 || !is.character(dim.names))) stop("Elements in 'dim.names' must be characters naming the column and row dimensions")
   col_name <- dim.names[1]
   row_name <- dim.names[2]
   effect_name <- effect
-  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop ("'effect' must be a character")
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop("'effect' must be a character")
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
@@ -47,11 +47,11 @@ plot_effects <- function(df,
   df <- padout_df(df, var1 = col_name, var2 = row_name)
   ncols <- nlevels(df[[col_name]])
   nrows <- nlevels(df[[row_name]])
-  
+
   nblocks <- 1
   if (blocks) {
     if (length(dim.names) == 2) dim.names <- c(dim.names, "block")
-    if (length(dim.names) != 3 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters defining the column, row and block dimensions")
+    if (length(dim.names) != 3 || !is.character(dim.names)) stop("Elements in 'dim.names' must be characters defining the column, row and block dimensions")
     block_name <- dim.names[3]
     if (!block_name %in% colnames(df)) {
       stop("'df' must contain the block dimensions specified in 'dim.names' if blocks are to be plotted")
@@ -59,16 +59,16 @@ plot_effects <- function(df,
     df[[block_name]] <- make_factor(df[[block_name]])
     nblocks <- nlevels(df[[block_name]])
   }
-  
+
   plot_x_min <- rep(seq(0.5, ncols - 0.5, 1), each = nrows)
   plot_y_min <- rep(seq(0.5, nrows - 0.5, 1), ncols)
   plot_x_max <- rep(seq(1.5, ncols + 0.5, 1), each = nrows)
   plot_y_max <- rep(seq(1.5, nrows + 0.5, 1), ncols)
-  
+
   if (nblocks > 1) {
     df1 <- df[df[[block_name]] == 1, ]
     df2 <- df[df[[block_name]] == 2, ]
-    
+
     check1 <- unique(df[df[[block_name]] == 1, row_name])
     check2 <- unique(df[df[[block_name]] == 2, row_name])
     check3 <- unique(df[df[[block_name]] == 1, col_name])
@@ -79,12 +79,12 @@ plot_effects <- function(df,
       y_min <- (seq(0, nrows, dist) + 0.5)[1:nblocks]
       x_max <- rep((ncols + 0.5), nblocks)
       y_max <- (seq(0, nrows, dist) + 0.5)[2:(nblocks + 1)]
-      
+
       block_x_min <- rep(0.5, nblocks)
       block_y_min <- y_max
       block_x_max <- rep((ncols + 0.5), nblocks)
       block_y_max <- y_max
-      
+
       block_x_min_2 <- rep(0, nblocks)
       block_y_min_2 <- y_max
       block_x_max_2 <- rep((ncols + 1), nblocks)
@@ -95,12 +95,12 @@ plot_effects <- function(df,
       y_min <- rep(0.5, nblocks)
       x_max <- (seq(0, ncols, dist) + 0.5)[2:(nblocks + 1)]
       y_max <- rep((nrows + 0.5), nblocks)
-      
+
       block_x_min <- x_max
       block_y_min <- rep(0.5, nblocks)
       block_x_max <- x_max
       block_y_max <- rep((nrows + 0.5), nblocks)
-      
+
       block_x_min_2 <- x_max
       block_y_min_2 <- rep(0, nblocks)
       block_x_max_2 <- x_max
@@ -109,7 +109,7 @@ plot_effects <- function(df,
       stop("Check column and row assignment within blocks")
     }
   }
-  
+
   if (!tolower(effect_name) %in% c("block", "rep")) {
     mid_pt <- mean(df[[effect_name]], na.rm = TRUE)
     max_pt <- max(abs(c(mid_pt - min(df[[effect_name]], na.rm = TRUE), max(df[[effect_name]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
@@ -152,7 +152,7 @@ plot_effects <- function(df,
       xmax = ncols + 0.5, ymax = nrows + 0.5,
       fill = "transparent", col = "black", lwd = 1.5
     )
-  
+
   if (labels) {
     p <- p + ggplot2::theme(
       axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
@@ -166,7 +166,7 @@ plot_effects <- function(df,
       axis.text = ggplot2::element_blank()
     )
   }
-  
+
   if (nblocks > 1) {
     for (i in 1:(nblocks - 1)) {
       p <- p + ggplot2::geom_segment(
@@ -431,8 +431,8 @@ qq_plot <- function(df,
     print_title <- FALSE
   }
   effect_name <- effect
-  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop ("'effect' must be a character")
-  
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop("'effect' must be a character")
+
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
@@ -442,11 +442,13 @@ qq_plot <- function(df,
   if (any(is.na(df[[effect_name]]))) {
     message("Missing values removed from 'df'")
     if (ncol(df) == 1) {
-        df <- data.frame(df[!is.na(df[[effect_name]]), ])
-        colnames(df) <- effect_name
-    } else df <- df[!is.na(df[[effect_name]]), ]
+      df <- data.frame(df[!is.na(df[[effect_name]]), ])
+      colnames(df) <- effect_name
+    } else {
+      df <- df[!is.na(df[[effect_name]]), ]
+    }
   }
-  
+
   if (!labels) {
     qq_df <- data.frame(effect = df[[effect_name]])
     colnames(qq_df) <- effect_name
@@ -458,7 +460,7 @@ qq_plot <- function(df,
     )
     mid_pt_x <- mean(qq_df$theoretical, na.rm = TRUE)
     max_pt_x <- max(abs(c(mid_pt_x - min(qq_df$theoretical, na.rm = TRUE), max(qq_df$theoretical, na.rm = TRUE) - mid_pt_x)), na.rm = TRUE) + 1e-8
-    
+
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample)) +
       ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
       ggplot2::geom_point(size = 2) +
@@ -475,10 +477,10 @@ qq_plot <- function(df,
     }
     return(p)
   }
-  
+
   if (labels) {
     if (is.null(dim.names)) dim.names <- c("col", "row")
-    if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters defining the column and row dimensions")
+    if (length(dim.names) != 2 || !is.character(dim.names)) stop("Elements in 'dim.names' must be characters defining the column and row dimensions")
     col_name <- dim.names[1]
     row_name <- dim.names[2]
     if (any(!c(col_name, row_name) %in% colnames(df))) {
@@ -503,10 +505,10 @@ qq_plot <- function(df,
     colnames(qq_df) <- c(col_name, row_name, "sample", "theoretical")
     qq_df <- qq_df[order(qq_df[[col_name]], qq_df[[row_name]]), ]
     rownames(qq_df) <- NULL
-    
+
     mid_pt_x <- mean(qq_df$theoretical, na.rm = TRUE)
     max_pt_x <- max(abs(c(mid_pt_x - min(qq_df$theoretical, na.rm = TRUE), max(qq_df$theoretical, na.rm = TRUE) - mid_pt_x)), na.rm = TRUE) + 1e-8
-    
+
     qq_df$cr.label <- factor(paste0(qq_df[[col_name]], ":", qq_df[[row_name]]))
     theoretical <- cr.label <- NULL
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = cr.label)) +
@@ -514,7 +516,7 @@ qq_plot <- function(df,
       ggplot2::geom_text(size = 4) +
       ggplot2::labs(
         y = "Sample quantiles", x = "Theoretical quantiles",
-        subtitle = paste0("Effects indexed as ", col_name,":",row_name)
+        subtitle = paste0("Effects indexed as ", col_name, ":", row_name)
       ) +
       ggplot2::theme(
         plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
@@ -531,11 +533,11 @@ qq_plot <- function(df,
   }
 }
 
-#' Histogram of values
+#' Histogram of effects.
 #'
-#' Creates a histogram of user-defined values (e.g., effects, correlations, or covariances).
+#' Creates a histogram of user-defined effects.
 #'
-#' @param df A data frame or vector with the values to be plotted.
+#' @param df A data frame or vector with the effects to be plotted.
 #' @param effect A character defining the effects to be plotted. Ignored when 'df' is a vector.
 #' @param bins Argument passed to \code{ggplot2} (default is \code{30}). Controls the number
 #'   of bins in the histogram.
@@ -551,67 +553,88 @@ qq_plot <- function(df,
 #' error_df <- error_df_bivar[error_df_bivar$env == 1, ]
 #' plot_hist(
 #'   df = error_df,
-#'   value = "e.Trait1",
+#'   effect = "e.Trait1",
 #'   density = TRUE
 #' )
 #'
 #' @export
 plot_hist <- function(df,
-                      value = NULL,
+                      effect = NULL,
                       bins = 30,
                       density = FALSE) {
   print_title <- TRUE
   if (is.vector(df) || is.matrix(df)) {
     df <- data.frame(Value = c(df))
-    value <- "Value"
+    effect <- "Value"
     print_title <- FALSE
   }
-  value_name <- value
-  if (!(all(is.character(value_name)) && length(value_name) == 1)) stop ("'value' must be a character")
-  
+  effect_name <- effect
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop("'effect' must be a character")
+
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  if (!(value_name %in% colnames(df))) {
-    stop("'df' must contain the value to be plotted")
+  if (!(effect_name %in% colnames(df))) {
+    stop("'df' must contain the effect to be plotted")
   }
-  if (any(is.na(df[[value_name]]))) {
+  if (any(is.na(df[[effect_name]]))) {
     message("Missing values removed from 'df'")
     if (ncol(df) == 1) {
-      df <- data.frame(df[!is.na(df[[value_name]]), ])
-      colnames(df) <- value_name
-    } else df <- df[!is.na(df[[value_name]]), ]
+      df <- data.frame(df[!is.na(df[[effect_name]]), ])
+      colnames(df) <- effect_name
+    } else {
+      df <- df[!is.na(df[[effect_name]]), ]
+    }
   }
-  if (!is.logical(density)) 
+  if (!is.logical(density)) {
     stop("'density' must be logical")
-  if (!(is.atomic(bins) && length(bins) == 1L)) 
+  }
+  if (!(is.atomic(bins) && length(bins) == 1L)) {
     stop("'bins' must be a scalar")
-  if (bins < 1 || bins%%1 != 0) 
+  }
+  if (bins < 1 || bins %% 1 != 0) {
     stop("'bins' must be a positive integer")
-  mean_value <- mean(df[[value_name]], na.rm = TRUE)
-  sd_value <- stats::sd(df[[value_name]], na.rm = TRUE)
+  }
+  mean_effect <- mean(df[[effect_name]], na.rm = TRUE)
+  sd_effect <- stats::sd(df[[effect_name]], na.rm = TRUE)
   count <- NULL
-  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(value_name))) + 
-    ggplot2::geom_histogram(color = "black", alpha = 0.3, 
-                            position = "identity", bins = bins) + ggplot2::geom_vline(data = df, 
-                                                                                      ggplot2::aes(xintercept = mean_value), colour = "steelblue", 
-                                                                                      linewidth = 0.75) + ggplot2::labs(y = "Frequency", x = "Value") + 
-    ggplot2::theme(plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, 
-                                                                               r = 0, b = 6, l = 0), size = 12, colour = "gray40"), 
-                   axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, 
-                                                                                 r = 0, b = 0, l = 0), size = 11), axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, 
-                                                                                                                                                                                 r = 4, b = 0, l = 0), size = 11), axis.text = ggplot2::element_text(size = 10))
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(effect_name))) +
+    ggplot2::geom_histogram(
+      color = "black", alpha = 0.3,
+      position = "identity", bins = bins
+    ) +
+    ggplot2::geom_vline(
+      data = df,
+      ggplot2::aes(xintercept = mean_effect), colour = "steelblue",
+      linewidth = 0.75
+    ) +
+    ggplot2::labs(y = "Frequency", x = "Value") +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(margin = ggplot2::margin(
+        t = 4,
+        r = 0, b = 6, l = 0
+      ), size = 12, colour = "gray40"),
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(
+        t = 6,
+        r = 0, b = 0, l = 0
+      ), size = 11), axis.title.y = ggplot2::element_text(margin = ggplot2::margin(
+        t = 0,
+        r = 4, b = 0, l = 0
+      ), size = 11), axis.text = ggplot2::element_text(size = 10)
+    )
   if (print_title) {
-    p <- p + ggplot2::ggtitle(label = value_name)
+    p <- p + ggplot2::ggtitle(label = effect_name)
   }
   if (density) {
-    if (bins < 2) 
+    if (bins < 2) {
       stop("'bins' must be > 1 to print density curve")
-    bin_width <- (max(df[[value_name]], na.rm = TRUE) - min(df[[value_name]], 
-                                                       na.rm = TRUE))/(bins - 1)
-    n <- length(df[[value_name]][!is.na(df[[value_name]])])
-    p <- p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count) * 
-                                                  bin_width), fill = "transparent", linewidth = 1)
+    }
+    bin_width <- (max(df[[effect_name]], na.rm = TRUE) - min(df[[effect_name]],
+      na.rm = TRUE
+    )) / (bins - 1)
+    n <- length(df[[effect_name]][!is.na(df[[effect_name]])])
+    p <- p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count) *
+      bin_width), fill = "transparent", linewidth = 1)
   }
   return(p)
 }
@@ -657,11 +680,11 @@ sample_variogram <- function(df,
                              min.pairs = 30,
                              dim.names = NULL) {
   if (is.null(dim.names)) dim.names <- c("col", "row")
-  if (length(dim.names) != 2 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters defining the column and row dimensions")
+  if (length(dim.names) != 2 || !is.character(dim.names)) stop("Elements in 'dim.names' must be characters defining the column and row dimensions")
   col_name <- dim.names[1]
   row_name <- dim.names[2]
   effect_name <- effect
-  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop ("'effect' must be a character")
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop("'effect' must be a character")
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
@@ -672,46 +695,85 @@ sample_variogram <- function(df,
     message("Missing values removed from 'df'")
     df <- df[!is.na(df[[effect_name]]), ]
   }
-  variogram_df <- data.frame(col = df[[col_name]], 
-                             row = df[[row_name]], 
-                             effect = df[[effect_name]])
+  variogram_df <- data.frame(
+    col = df[[col_name]],
+    row = df[[row_name]],
+    effect = df[[effect_name]]
+  )
   colnames(variogram_df) <- c(col_name, row_name, effect_name)
   variogram_df[[col_name]] <- make_factor(variogram_df[[col_name]])
   variogram_df[[row_name]] <- make_factor(variogram_df[[row_name]])
-  variogram_df <- variogram_df[order(variogram_df[[col_name]], variogram_df[[row_name]]), 
-  ]
+  variogram_df <- variogram_df[order(variogram_df[[col_name]], variogram_df[[row_name]]), ]
   rownames(variogram_df) <- NULL
-  if(check_class(variogram_df[[col_name]]) %in% c("character","character factor") || check_class(variogram_df[[row_name]]) %in% c("character","character factor")) stop ("column and row dimensions must be numeric")
-  col_dis <- abs(outer(as.numeric(as.character(variogram_df[[col_name]])), 
-                       as.numeric(as.character(variogram_df[[col_name]])), FUN = "-"))
-  row_dis <- abs(outer(as.numeric(as.character(variogram_df[[row_name]])), 
-                       as.numeric(as.character(variogram_df[[row_name]])), FUN = "-"))
-  var_mat <- outer(variogram_df[[effect_name]], variogram_df[[effect_name]], 
-                   FUN = "-")^2/2
-  variogram_df <- data.frame(col.dis = col_dis[upper.tri(col_dis, 
-                                                         diag = TRUE)], row.dis = row_dis[upper.tri(row_dis, diag = TRUE)], 
-                             semivar = var_mat[upper.tri(var_mat, diag = TRUE)])
-  variogram_df <- variogram_df[order(variogram_df$col.dis, 
-                                     variogram_df$row.dis), ]
-  variogram_df <- data.frame(col.dis = rep(unique(variogram_df$col.dis), 
-                                           each = length(unique(variogram_df$row.dis))), row.dis = unique(variogram_df$row.dis), 
-                             npairs = c(with(variogram_df, tapply(semivar, list(row.dis, 
-                                                                            col.dis), function(x) length(x[!is.na(x)])))), semivar = c(with(variogram_df, 
-                                                                                                                                            tapply(semivar, list(row.dis, col.dis), function(x) mean(x, 
-                                                                                                                                                                                                     na.rm = T)))))
-  lattice::lattice.options(layout.heights = list(bottom.padding = list(x = -1), 
-                                                 top.padding = list(x = -1.5)), layout.widths = list(left.padding = list(x = -1.25), 
-                                                                                                     right.padding = list(x = -3)))
+  if (check_class(variogram_df[[col_name]]) %in% c("character", "character factor") || check_class(variogram_df[[row_name]]) %in% c("character", "character factor")) stop("column and row dimensions must be numeric")
+  col_dis <- abs(outer(as.numeric(as.character(variogram_df[[col_name]])),
+    as.numeric(as.character(variogram_df[[col_name]])),
+    FUN = "-"
+  ))
+  row_dis <- abs(outer(as.numeric(as.character(variogram_df[[row_name]])),
+    as.numeric(as.character(variogram_df[[row_name]])),
+    FUN = "-"
+  ))
+  var_mat <- outer(variogram_df[[effect_name]], variogram_df[[effect_name]],
+    FUN = "-"
+  )^2 / 2
+  variogram_df <- data.frame(
+    col.dis = col_dis[upper.tri(col_dis,
+      diag = TRUE
+    )], row.dis = row_dis[upper.tri(row_dis, diag = TRUE)],
+    semivar = var_mat[upper.tri(var_mat, diag = TRUE)]
+  )
+  variogram_df <- variogram_df[order(
+    variogram_df$col.dis,
+    variogram_df$row.dis
+  ), ]
+  variogram_df <- data.frame(
+    col.dis = rep(unique(variogram_df$col.dis),
+      each = length(unique(variogram_df$row.dis))
+    ), row.dis = unique(variogram_df$row.dis),
+    npairs = c(with(variogram_df, tapply(semivar, list(
+      row.dis,
+      col.dis
+    ), function(x) length(x[!is.na(x)])))), semivar = c(with(
+      variogram_df,
+      tapply(semivar, list(row.dis, col.dis), function(x) {
+        mean(x,
+          na.rm = T
+        )
+      })
+    ))
+  )
+  lattice::lattice.options(layout.heights = list(
+    bottom.padding = list(x = -1),
+    top.padding = list(x = -1.5)
+  ), layout.widths = list(
+    left.padding = list(x = -1.25),
+    right.padding = list(x = -3)
+  ))
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-  p <- lattice::wireframe(semivar ~ row.dis * col.dis, data = variogram_df[variogram_df$npairs >= 
-                                                                             min.pairs, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30, 
-                          screen = list(z = 30, x = -60, y = 0), aspect = c(1, 
-                                                                            0.66), scales = list(distance = c(1.2, 1.2, 0.5), 
-                                                                                                 arrows = F, cex = 0.7, col = "black"), zlab = list(label = paste("Semivariance"), 
-                                                                                                                                                    cex = 0.9, rot = 90, just = c(0.5, -2.25)), xlab = list(label = paste("Row displacement"), 
-                                                                                                                                                                                                            cex = 0.9, rot = 19, just = c(0.5, -0.75)), ylab = list(label = paste("Column displacement"), 
-                                                                                                                                                                                                                                                                    cex = 0.9, rot = -49, just = c(0.5, -0.75)), par.settings = list(axis.line = list(col = "transparent"), 
-                                                                                                                                                                                                                                                                                                                                     clip = list(panel = "off")))
+  p <- lattice::wireframe(semivar ~ row.dis * col.dis,
+    data = variogram_df[variogram_df$npairs >=
+      min.pairs, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
+    screen = list(z = 30, x = -60, y = 0), aspect = c(
+      1,
+      0.66
+    ), scales = list(
+      distance = c(1.2, 1.2, 0.5),
+      arrows = F, cex = 0.7, col = "black"
+    ), zlab = list(
+      label = paste("Semivariance"),
+      cex = 0.9, rot = 90, just = c(0.5, -2.25)
+    ), xlab = list(
+      label = paste("Row displacement"),
+      cex = 0.9, rot = 19, just = c(0.5, -0.75)
+    ), ylab = list(
+      label = paste("Column displacement"),
+      cex = 0.9, rot = -49, just = c(0.5, -0.75)
+    ), par.settings = list(
+      axis.line = list(col = "transparent"),
+      clip = list(panel = "off")
+    )
+  )
   variogram_df$col.dis <- factor(variogram_df$col.dis)
   variogram_df$row.dis <- factor(variogram_df$row.dis)
   p$data <- variogram_df

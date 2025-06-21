@@ -9,7 +9,7 @@ unstr_asr_input(
   ntraits = 1,
   nenvs = 2,
   mean = 0,
-  var = 1,
+  var = NULL,
   Tvar = NULL,
   Evar = NULL,
   corA = NULL,
@@ -23,8 +23,6 @@ unstr_asr_input(
   TcorDD = NULL,
   EcorDD = NULL,
   relAA = NULL,
-  TrelAA = NULL,
-  ErelAA = NULL,
   corAA = NULL,
   TcorAA = NULL,
   EcorAA = NULL
@@ -103,16 +101,6 @@ all environment-within-trait combinations will be assigned the same value. By de
 \code{relAA = NULL} and epistasis is not simulated. \cr
 \strong{Alternatively}, if a separable structure between traits and environments is desired,
 \code{TrelAA} and \code{ErelAA} can be specified.}
-
-\item{TrelAA}{A vector defining the relative magnitude of epistatic variance
- to additive genetic variance for each trait. Must be provided in combination
-with \code{ErelAA}. \cr
-\strong{Alternatively}, \code{relAA} can be specified.}
-
-\item{ErelAA}{A vector defining the relative magnitude of epistatic variance
-to additive genetic variance for each environment. Must be provided in
-combination with \code{TrelAA}. \cr
-\strong{Alternatively}, \code{relAA} can be specified.}
 
 \item{corAA}{A matrix of epistatic correlations between environment-within-trait
 combinations (similar to \code{corA}). If not specified and epistasis is simulated, a

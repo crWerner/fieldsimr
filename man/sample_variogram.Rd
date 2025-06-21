@@ -4,14 +4,16 @@
 \alias{sample_variogram}
 \title{Sample variogram}
 \usage{
-sample_variogram(df, effect, min.np = 30)
+sample_variogram(df, effect, min.pairs = 30, dim.names = NULL)
 }
 \arguments{
-\item{df}{A data frame with the columns 'col', 'row', and the effects to be plotted.}
+\item{df}{A data frame with columns containing the column and row dimensions, and the effects to be plotted.}
 
 \item{effect}{The name of the effects to be plotted.}
 
-\item{min.np}{Minimum number of pairs for which semivariances are displayed (default is 30).}
+\item{min.pairs}{Minimum number of pairs for which semivariances are displayed (default is 30).}
+
+\item{dim.names}{An optional vector defining the column and row dimensions ('col' and 'row' by default).}
 }
 \value{
 A sample variogram with x- and y-axes displaying the row and
