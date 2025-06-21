@@ -629,55 +629,64 @@ plot_hist <- function(df,
 #' @export
 sample_variogram <- function(df,
                              effect,
-                             min.np = 30) {
+                             min.np = 30,
+                             dim.names = NULL) {
+  if (is.null(dim.names)) dim.names <- c("col", "row")
+  if (length(dim.names) != 2 | !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+  col_name <- dim.names[1]
+  row_name <- dim.names[2]
+  effect_name <- effect
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop ("'effect' must be a character")
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
-
-  if (any(!c("col", "row", effect) %in% colnames(df))) {
-    stop("'df' must contain the columns 'col' and 'row', and the effect to be plotted")
+  if (any(!c(col_name, row_name, effect_name) %in% colnames(df))) {
+    stop("'df' must contain the columns specified in 'dim.names', and the effect to be plotted")
   }
-  if (any(is.na(df[[effect]]))) stop("'df' must not contain missing values")
-
-  variogram_df <- data.frame(
-    col = df[["col"]],
-    row = df[["row"]],
-    effect = df[[effect]]
-  )
-  variogram_df <- variogram_df[order(variogram_df$col, variogram_df$row), ]
-
-  col_dis <- abs(outer(as.numeric(as.character(variogram_df$col)), as.numeric(as.character(variogram_df$col)), FUN = "-"))
-  row_dis <- abs(outer(as.numeric(as.character(variogram_df$row)), as.numeric(as.character(variogram_df$row)), FUN = "-"))
-  var_mat <- outer(variogram_df$effect, variogram_df$effect, FUN = "-")^2 / 2
-  variogram_df <- data.frame(
-    col.dis = col_dis[upper.tri(col_dis, diag = TRUE)],
-    row.dis = row_dis[upper.tri(row_dis, diag = TRUE)],
-    semivar = var_mat[upper.tri(var_mat, diag = TRUE)]
-  )
-  variogram_df <- variogram_df[order(variogram_df$col.dis, variogram_df$row.dis), ]
-
-  variogram_df <- data.frame(
-    col.dis = rep(unique(variogram_df$col.dis), each = length(unique(variogram_df$row.dis))),
-    row.dis = unique(variogram_df$row.dis),
-    np = c(with(variogram_df, tapply(semivar, list(row.dis, col.dis), function(x) length(x[!is.na(x)])))),
-    semivar = c(with(variogram_df, tapply(semivar, list(row.dis, col.dis), function(x) mean(x, na.rm = T))))
-  )
-
-  lattice::lattice.options(
-    layout.heights = list(bottom.padding = list(x = -1), top.padding = list(x = -1.5)),
-    layout.widths = list(left.padding = list(x = -1.25), right.padding = list(x = -3))
-  )
+  if (any(is.na(df[[effect_name]]))) {
+    message("Missing values removed from 'df'")
+    df <- df[!is.na(df[[effect_name]]), ]
+  }
+  variogram_df <- data.frame(col = df[[col_name]], 
+                             row = df[[row_name]], 
+                             effect = df[[effect_name]])
+  colnames(variogram_df) <- c(col_name, row_name, effect_name)
+  variogram_df[[col_name]] <- make_factor(variogram_df[[col_name]])
+  variogram_df[[row_name]] <- make_factor(variogram_df[[row_name]])
+  variogram_df <- variogram_df[order(variogram_df[[col_name]], variogram_df[[row_name]]), 
+  ]
+  rownames(variogram_df) <- NULL
+  if(check_class(variogram_df[[col_name]]) %in% c("character","character factor") || check_class(variogram_df[[row_name]]) %in% c("character","character factor")) stop ("column and row dimensions must be numeric")
+  col_dis <- abs(outer(as.numeric(as.character(variogram_df[[col_name]])), 
+                       as.numeric(as.character(variogram_df[[col_name]])), FUN = "-"))
+  row_dis <- abs(outer(as.numeric(as.character(variogram_df[[row_name]])), 
+                       as.numeric(as.character(variogram_df[[row_name]])), FUN = "-"))
+  var_mat <- outer(variogram_df[[effect_name]], variogram_df[[effect_name]], 
+                   FUN = "-")^2/2
+  variogram_df <- data.frame(col.dis = col_dis[upper.tri(col_dis, 
+                                                         diag = TRUE)], row.dis = row_dis[upper.tri(row_dis, diag = TRUE)], 
+                             semivar = var_mat[upper.tri(var_mat, diag = TRUE)])
+  variogram_df <- variogram_df[order(variogram_df$col.dis, 
+                                     variogram_df$row.dis), ]
+  variogram_df <- data.frame(col.dis = rep(unique(variogram_df$col.dis), 
+                                           each = length(unique(variogram_df$row.dis))), row.dis = unique(variogram_df$row.dis), 
+                             npairs = c(with(variogram_df, tapply(semivar, list(row.dis, 
+                                                                            col.dis), function(x) length(x[!is.na(x)])))), semivar = c(with(variogram_df, 
+                                                                                                                                            tapply(semivar, list(row.dis, col.dis), function(x) mean(x, 
+                                                                                                                                                                                                     na.rm = T)))))
+  lattice::lattice.options(layout.heights = list(bottom.padding = list(x = -1), 
+                                                 top.padding = list(x = -1.5)), layout.widths = list(left.padding = list(x = -1.25), 
+                                                                                                     right.padding = list(x = -3)))
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
-  p <- lattice::wireframe(semivar ~ row.dis * col.dis,
-    data = variogram_df[variogram_df$np >= min.np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30,
-    screen = list(z = 30, x = -60, y = 0), aspect = c(1, 0.66),
-    scales = list(distance = c(1.2, 1.2, 0.5), arrows = F, cex = 0.7, col = "black"),
-    zlab = list(label = paste("Semivariance"), cex = 0.9, rot = 90, just = c(0.5, -2.25)),
-    xlab = list(label = paste("Row displacement"), cex = 0.9, rot = 19, just = c(0.5, -0.75)),
-    ylab = list(label = paste("Column displacement"), cex = 0.9, rot = -49, just = c(0.5, -0.75)),
-    par.settings = list(axis.line = list(col = "transparent"), clip = list(panel = "off"))
-  )
+  p <- lattice::wireframe(semivar ~ row.dis * col.dis, data = variogram_df[variogram_df$npairs >= 
+                                                                             min.np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30, 
+                          screen = list(z = 30, x = -60, y = 0), aspect = c(1, 
+                                                                            0.66), scales = list(distance = c(1.2, 1.2, 0.5), 
+                                                                                                 arrows = F, cex = 0.7, col = "black"), zlab = list(label = paste("Semivariance"), 
+                                                                                                                                                    cex = 0.9, rot = 90, just = c(0.5, -2.25)), xlab = list(label = paste("Row displacement"), 
+                                                                                                                                                                                                            cex = 0.9, rot = 19, just = c(0.5, -0.75)), ylab = list(label = paste("Column displacement"), 
+                                                                                                                                                                                                                                                                    cex = 0.9, rot = -49, just = c(0.5, -0.75)), par.settings = list(axis.line = list(col = "transparent"), 
+                                                                                                                                                                                                                                                                                                                                     clip = list(panel = "off")))
   variogram_df$col.dis <- factor(variogram_df$col.dis)
   variogram_df$row.dis <- factor(variogram_df$row.dis)
   p$data <- variogram_df
