@@ -542,41 +542,52 @@ plot_hist <- function(df,
     value <- "Value"
     print_title <- FALSE
   }
+  value_name <- value
+  if (!(all(is.character(value_name)) && length(value_name) == 1)) stop ("'value' must be a character")
+  
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  if (!(value %in% colnames(df))) {
+  if (!(value_name %in% colnames(df))) {
     stop("'df' must contain the value to be plotted")
   }
-  if (any(is.na(df[[value]]))) {
+  if (any(is.na(df[[value_name]]))) {
     message("Missing values removed from 'df'")
-    df <- df[!is.na(df[[value]]),]
+    if (ncol(df) == 1) {
+      df <- data.frame(df[!is.na(df[[value_name]]), ])
+      colnames(df) <- value_name
+    } else df <- df[!is.na(df[[value_name]]), ]
   }
-  if (!is.logical(density)) stop("'density' must be logical")
-  if (!(is.atomic(bins) && length(bins) == 1L)) stop("'bins' must be a scalar")
-  if (bins < 1 || bins %% 1 != 0) stop("'bins' must be a positive integer")
-
-  mean_value <- mean(df[[value]], na.rm = TRUE)
-  sd_value <- stats::sd(df[[value]], na.rm = TRUE)
+  if (!is.logical(density)) 
+    stop("'density' must be logical")
+  if (!(is.atomic(bins) && length(bins) == 1L)) 
+    stop("'bins' must be a scalar")
+  if (bins < 1 || bins%%1 != 0) 
+    stop("'bins' must be a positive integer")
+  mean_value <- mean(df[[value_name]], na.rm = TRUE)
+  sd_value <- stats::sd(df[[value_name]], na.rm = TRUE)
   count <- NULL
-  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(value))) +
-    ggplot2::geom_histogram(color = "black", alpha = 0.3, position = "identity", bins = bins) +
-    ggplot2::geom_vline(data = df, ggplot2::aes(xintercept = mean_value), colour = "steelblue", linewidth = 0.75) +
-    ggplot2::labs(y = "Frequency", x = "Value") +
-    ggplot2::theme(
-      plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, r = 0, b = 6, l = 0), size = 12, colour = "gray40"),
-      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, r = 0, b = 0, l = 0), size = 11),
-      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 4, b = 0, l = 0), size = 11),
-      axis.text = ggplot2::element_text(size = 10)
-    )
+  p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(value_name))) + 
+    ggplot2::geom_histogram(color = "black", alpha = 0.3, 
+                            position = "identity", bins = bins) + ggplot2::geom_vline(data = df, 
+                                                                                      ggplot2::aes(xintercept = mean_value), colour = "steelblue", 
+                                                                                      linewidth = 0.75) + ggplot2::labs(y = "Frequency", x = "Value") + 
+    ggplot2::theme(plot.title = ggplot2::element_text(margin = ggplot2::margin(t = 4, 
+                                                                               r = 0, b = 6, l = 0), size = 12, colour = "gray40"), 
+                   axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 6, 
+                                                                                 r = 0, b = 0, l = 0), size = 11), axis.title.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, 
+                                                                                                                                                                                 r = 4, b = 0, l = 0), size = 11), axis.text = ggplot2::element_text(size = 10))
   if (print_title) {
-    p <- p + ggplot2::ggtitle(label = value)
+    p <- p + ggplot2::ggtitle(label = value_name)
   }
   if (density) {
-    if (bins < 2) stop("'bins' must be > 1 to print density curve")
-    bin_width <- (max(df[[value]], na.rm = TRUE) - min(df[[value]], na.rm = TRUE)) / (bins - 1)
-    n <- length(df[[value]][!is.na(df[[value]])])
-    p <- p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count) * bin_width), fill = "transparent", linewidth = 1)
+    if (bins < 2) 
+      stop("'bins' must be > 1 to print density curve")
+    bin_width <- (max(df[[value_name]], na.rm = TRUE) - min(df[[value_name]], 
+                                                       na.rm = TRUE))/(bins - 1)
+    n <- length(df[[value_name]][!is.na(df[[value_name]])])
+    p <- p + ggplot2::geom_density(ggplot2::aes(y = ggplot2::after_stat(count) * 
+                                                  bin_width), fill = "transparent", linewidth = 1)
   }
   return(p)
 }
