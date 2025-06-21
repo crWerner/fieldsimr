@@ -86,14 +86,6 @@
 #'   \code{relAA = NULL} and epistasis is not simulated. \cr
 #'   \strong{Alternatively}, if a separable structure between traits and environments is desired,
 #'   \code{TrelAA} and \code{ErelAA} can be specified.
-#' @param TrelAA A vector defining the relative magnitude of epistatic variance
-#'    to additive genetic variance for each trait. Must be provided in combination
-#'   with \code{ErelAA}. \cr
-#'   \strong{Alternatively}, \code{relAA} can be specified.
-#' @param ErelAA A vector defining the relative magnitude of epistatic variance
-#'   to additive genetic variance for each environment. Must be provided in
-#'   combination with \code{TrelAA}. \cr
-#'   \strong{Alternatively}, \code{relAA} can be specified.
 #' @param corAA A matrix of epistatic correlations between environment-within-trait
 #'   combinations (similar to \code{corA}). If not specified and epistasis is simulated, a
 #'   diagonal matrix is constructed. \cr
@@ -166,287 +158,174 @@ unstr_asr_input <- function(ntraits = 1,
                             TcorDD = NULL,
                             EcorDD = NULL,
                             relAA = NULL,
-                            TrelAA = NULL,
-                            ErelAA = NULL,
                             corAA = NULL,
                             TcorAA = NULL,
                             EcorAA = NULL) {
-  if (ntraits < 1 | ntraits %% 1 != 0) stop("'ntraits' must be a positive integer")
-  if (nenvs < 2 | nenvs %% 1 != 0) stop("'nenvs' must be an integer > 1")
-
-  if (is.null(meanDD) & is.null(varDD) & is.null(EvarDD) & is.null(relAA) & is.null(ErelAA)) {
-    labels <- "A"
-  } else if (is.null(meanDD) & is.null(varDD) & is.null(EvarDD)) {
-    labels <- c("A", "AA")
-  } else if (is.null(relAA) & is.null(ErelAA)) {
-    labels <- c("A", "DD")
-  } else {
-    labels <- c("A", "DD", "AA")
+if (!(is.atomic(ntraits) && length(ntraits) == 1L)) 
+    stop("'ntraits' must be a scalar")
+  if (!ntraits > 0 || ntraits%%1 != 0) 
+    stop("'ntraits' must be a positive integer")
+  if (!(is.atomic(nenvs) && length(nenvs) == 1L)) 
+    stop("'nenvs' must be a scalar")
+  if (!nenvs > 1 || nenvs%%1 != 0) 
+    stop("'nenvs' must be an integer greater than 1")
+  
+  labelDD <- labelAA <- NULL
+  if (!is.null(meanDD) || !is.null(varDD) || !is.null(EvarDD) || !is.null(TvarDD) ||
+      !is.null(corDD) || !is.null(TcorDD) || !is.null(EcorDD)) {
+      labelDD <- "DD"
   }
-
-
-  for (i in labels) {
-    if (i == "A") {
+  if (!is.null(relAA) ||
+      !is.null(corAA) || !is.null(TcorAA) || !is.null(EcorAA)) {
+      labelAA <- "AA"
+  }
+  labels <- c("A", labelDD, labelAA)
+  
+  var_fn <- function (var, Evar = NULL, Tvar = NULL, ntraits, nenvs) {
+            var_name <- "var_name"
+            Evar_name <- "Evar_name"
+            Tvar_name <- "Tvar_name"
+            if (is.null(var) && is.null(Evar) && is.null(Tvar)) {
+               message(paste0("'", var_name, "' has been set to 1 for all environment-within-trait combinations"))
+               var <- 1
+            }
+            if (!is.null(var)) {
+              if(!is.null(Evar) || !is.null(Tvar)) message(paste0("'", var_name, "' is set, '", Evar_name, "' and '", Tvar_name, "' will be ignored"))
+              var <- round(c(var), 8)
+              if (!is.vector(var)) stop (paste0("'", var_name, "' must be a vector"))
+              Evar <- Tvar <- NULL
+              if (length(var) == 1) {
+                var <- rep(var, each = ntraits * nenvs)
+              } else if (length(var) != (ntraits * nenvs)) {
+                stop(paste0("Number of values in '", var_name, "' must match number of environment-within-trait combinations"))
+              }
+            } else {
+              if (is.null(Evar)) {
+                message(paste0("'", Evar_name, "' has been set to 1 for all environments"))
+                Evar <- 1
+              }
+              Evar <- round(c(Evar), 8)
+              if (!is.vector(Evar)) stop (paste0("'", Evar_name, "' must be a vector"))
+              if (length(Evar) == 1) {
+                Evar <- rep(Evar, each = nenvs)
+              } else if (length(Evar) != nenvs) stop(paste0("Number of values in '", Evar_name, "' must be 1 or match number of environments"))
+              if (is.null(Tvar)) {
+                message(paste0("'", Tvar_name, "' has been set to 1 for all traits"))
+                Tvar <- 1
+              }
+              Tvar <- round(c(Tvar), 8)
+              if (!is.vector(Tvar)) stop (paste0("'", Tvar_name, "' must be a vector"))
+              if (length(Tvar) == 1) {
+                Tvar <- rep(Tvar, each = ntraits)
+              } else if (length(Tvar) != ntraits) stop(paste0("Number of values in '", Tvar_name, "' must be 1 or match number of traits"))
+              var <- rep(Tvar, each = nenvs) * rep(Evar, ntraits)
+            }
+            return(var)
+  }
+  
+  cor_fn <- function (cor, Ecor = NULL, Tcor = NULL, ntraits, nenvs) {
+            cor_name <- "cor_name"
+            Ecor_name <- "Ecor_name"
+            Tcor_name <- "Tcor_name"
+            if (is.null(cor) && is.null(Ecor) && is.null(Tcor)) {
+              message(paste0("'", cor_name, "' has been set to a diagonal matrix"))
+              cor <- diag(1, nrow = ntraits * nenvs)
+            }
+            if (!is.null(cor)) {
+              cor <- round(cbind(cor), 8)
+              if (!is.matrix(cor)) stop (paste0("'", cor_name, "' must be a matrix"))
+              if (!is.null(Ecor) || !is.null(Tcor)) message (paste0("'", cor_name, "' is set, '", Ecor_name, "' and '", Tcor_name, "' will be ignored"))
+              Ecor <- Tcor <- NULL
+              if (any(unique(diag(cor)) != 1) || any(abs(cor) > 1) || !isSymmetric(cor)) {
+                stop(paste0("'", cor_name, "' must be a symmetric correlation matrix"))
+              }
+              if (ncol(cor) == 1) {
+                 cor <- diag(1, nrows = ntraits * nenvs)
+              } else if (ncol(cor) != (ntraits * nenvs)) {
+                stop(paste0("Dimensions of '", cor_name, "' must match number of environment-within-trait combinations"))
+              }
+              } else {
+              if (is.null(Ecor)) {
+                message(paste0("'", Ecor_name, "' has been set to a diagonal matrix"))
+                Ecor <- diag(1, nrows = nenvs)
+              }
+                Ecor <- round(cbind(Ecor), 8)
+              if (!is.matrix(Ecor)) stop (paste0("'", Ecor_name, "' must be a matrix"))
+              if (ncol(Ecor) == 1) {
+                Ecor <- diag(1, nrows = nenvs)
+              } else stop(paste0("Dimensions of '", Ecor_name, "' must match number of environments"))
+              if (is.null(Tcor)) {
+                message(paste0("'", Tcor_name, "' has been set to a diagonal matrix"))
+                Tcor <- diag(1, nrows = ntraits)
+              }
+                Tcor <- round(cbind(Tcor), 8)
+                if (!is.matrix(Tcor)) stop (paste0("'", Tcor_name, "' must be a matrix"))
+                if (ncol(Tcor) == 1) {
+                  Tcor <- diag(1, nrows = ntraits)
+                } else stop(paste0("Dimensions of '", Tcor_name, "' must match number of traits"))
+                cor_mat <- kronecker(TcorA, EcorA)
+              }
+            return(cor)
+  }
+  
+  if ("A" %in% labels) {
+      mean <- round(c(mean), 8)
+      if (!is.vector(mean)) stop (paste0("'mean' must be a vector"))
       if (length(mean) == 1) {
-        mean_pseudo <- rep(mean, each = ntraits * nenvs)
-      } else if (length(mean) == (ntraits * nenvs)) {
-        mean_pseudo <- mean
-      } else {
-        stop("Number of values in 'mean' must be 1 or match
-              number of environment-within-trait combinations")
+         if (mean == 0) {
+             message(paste0("'mean' has been set to 0 for all environment-within-trait combinations"))
+             var <- 1
+        }
+        mean <- rep(mean, each = ntraits * nenvs)
       }
-
-
-      if (is.null(var) & !(!is.null(Evar) & !is.null(Tvar))) {
-        stop("Either 'var' or 'Tvar' & 'Evar' must be specified")
-      } else if (!is.null(var)) {
-        if (!is.null(Evar) | !is.null(Tvar)) {
-          stop("'Tvar' & 'Evar' must be NULL if 'var' is specified")
-        }
-        if (length(var) == 1) {
-          var_pseudo <- rep(var, each = ntraits * nenvs)
-        } else if (length(var) == (ntraits * nenvs)) {
-          var_pseudo <- var
-        } else {
-          stop("Number of values in 'var' must be 1 or match number of
-                 environment-within-trait combinations")
-        }
-      } else if (!is.null(Evar)) {
-        if (length(Evar) != nenvs) {
-          stop("Number of values in 'Evar' must match number of environments")
-        }
-        if (is.null(Tvar)) stop("'Tvar' must be specified")
-        if (length(Tvar) != ntraits) {
-          stop("Number of values in 'Tvar' must match number of traits'")
-        }
-        var_pseudo <- rep(Tvar, each = nenvs) * rep(Evar, ntraits)
-      } else {
-        stop("Either 'var' or 'Evar' must be specified")
+      else if (length(mean) != (ntraits * nenvs)) {
+        stop("Number of values in 'mean' must match number of environment-within-trait combinations")
       }
-
-      if (is.null(corA) & !(!is.null(EcorA) & !is.null(TcorA))) {
-        stop("Either 'corA' or 'TcorA' & 'EcorA' must be specified")
-      } else if (!is.null(corA)) {
-        if (!is.null(EcorA) | !is.null(TcorA)) {
-          stop("'TcorA' & 'EcorA' must be NULL if 'corA' is specified")
-        }
-        if (nrow(corA) != length(mean_pseudo) | ncol(corA) != length(mean_pseudo)) {
-          stop("Dimensions of 'corA' must match number of environment-within-trait
-               combinations")
-        }
-        corA <- round(corA, 18)
-        if (any(unique(diag(corA)) != 1) | any(corA > 1) | any(corA < (-1)) | !isSymmetric(corA)) {
-          stop("'corA' must be a symmetric correlation matrix")
-        }
-        cor_pseudo <- corA
-      } else if (!is.null(EcorA)) {
-        if (is.null(TcorA) & ntraits == 1) {
-          TcorA <- matrix(1)
-        } else if (is.null(TcorA) & ntraits > 1) {
-          stop("'TcorA' must be specified in combination with
-                   'EcorA' if 'ntraits' > 1")
-        } else if (length(TcorA) == 1) {
-          TcorA <- matrix(1)
-        } else {
-          TcorA <- round(TcorA, 18)
-          if (any(unique(diag(TcorA)) != 1) | any(TcorA > 1) | any(TcorA < (-1)) | !isSymmetric(TcorA)) {
-            stop("'TcorA' must be a symmetric correlation matrix")
-          }
-        }
-        if ((nrow(EcorA) * nrow(TcorA)) != length(mean_pseudo) | (ncol(EcorA) * ncol(TcorA)) != length(mean_pseudo)) {
-          stop("Dimensions of the 'TcorA' & 'EcorA' Kronecker product must
-                 match number of environment-within-trait combinations")
-        }
-        EcorA <- round(EcorA, 18)
-        if (any(unique(diag(EcorA)) != 1) | any(EcorA > 1) | any(EcorA < (-1)) | !isSymmetric(EcorA)) {
-          stop("'EcorA' must be a symmetric correlation matrix")
-        }
-        cor_pseudo <- kronecker(TcorA, EcorA)
-      } else {
-        stop("Either 'corA' or 'EcorA' must be specified")
-      }
-
-
-      input_asr <- list(
-        mean = mean_pseudo,
-        var = var_pseudo,
-        corA = cor_pseudo
-      )
+      
+      var <- var_fn(var = var, Tvar = Tvar, Evar = Evar, ntraits = ntraits, nenvs = nenvs)
+      corA <- cor_fn(cor = corA, Tcor = TcorA, Ecor = EcorA, ntraits = ntraits, nenvs = nenvs)
+      
+      input_asr <- list(mean = mean, var = var, 
+                        corA = corA)
     }
-
-    if (i == "DD") {
+    if ("DD" %in% labels) {
+      if (is.null(meanDD)) {
+        message("'meanDD' has been set to 1 for all environment-within-trait combinations")
+        meanDD <- 1
+      }
+      meanDD <- round(c(meanDD), 8)
+      if (!is.vector(meanDD)) stop ("'meanDD' must be a vector")
       if (length(meanDD) == 1) {
-        mean_pseudo <- rep(meanDD, each = ntraits * nenvs)
-      } else if (length(meanDD) == (ntraits * nenvs)) {
-        mean_pseudo <- meanDD
-      } else {
-        stop("Number of values in 'meanDD' must be 1 or match number of
-              environment-within-trait combinations")
+        meanDD <- rep(meanDD, each = ntraits * nenvs)
       }
-
-      if (is.null(varDD) & !(!is.null(EvarDD) & !is.null(TvarDD))) {
-        stop("Either 'varDD' or 'TvarDD' & 'EvarDD' must be specified")
-      } else if (!is.null(varDD)) {
-        if (!is.null(EvarDD) | !is.null(TvarDD)) {
-          stop("'TvarDD' & 'EvarDD' must be NULL if 'varDD' is specified")
-        }
-        if (length(varDD) == 1) {
-          var_pseudo <- rep(varDD, each = ntraits * nenvs)
-        } else if (length(varDD) == (ntraits * nenvs)) {
-          var_pseudo <- varDD
-        } else {
-          stop("Number of values in 'varDD' must be 1 or match number of
-                environment-within-trait combinations")
-        }
-      } else if (!is.null(EvarDD)) {
-        if (length(Evar) != nenvs) {
-          stop("Number of values in 'EvarDD' must match number of environments")
-        }
-        if (is.null(TvarDD)) stop("'TvarDD' must be specified")
-        if (length(TvarDD) != ntraits) {
-          stop("Number of values in 'TvarDD' must must match number of traits")
-        }
-        var_pseudo <- rep(TvarDD, each = nenvs) * rep(EvarDD, ntraits)
-      } else {
-        stop("Either 'varDD' or 'EvarDD' must be specified")
+      else if (length(meanDD) != (ntraits * nenvs)) {
+        stop("Number of values in 'meanDD' must match number of environment-within-trait combinations")
       }
-
-
-      if (is.null(corDD) & !(!is.null(EcorDD) & !is.null(TcorDD))) {
-        stop("Either 'corDD' or 'TcorDD' & 'EcorDD' must be specified")
-      } else if (!is.null(corDD)) {
-        if (!is.null(EcorDD) | !is.null(TcorDD)) {
-          stop("'TcorDD' & 'EcorDD' must be NULL if 'corDD' is specified")
-        }
-        if (nrow(corDD) != length(mean_pseudo) | ncol(corDD) != length(mean_pseudo)) {
-          stop("Dimensions of 'corDD' must match number of environment-within-trait
-               combinations")
-        }
-        corDD <- round(corDD, 18)
-        if (any(unique(diag(corDD)) != 1) | any(corDD > 1) | any(corDD < (-1)) | !isSymmetric(corDD)) {
-          stop("'corDD' must be a symmetric correlation matrix")
-        }
-        cor_pseudo <- corDD
-      } else if (!is.null(EcorDD)) {
-        if (is.null(TcorDD) & ntraits == 1) {
-          TcorDD <- matrix(1)
-        } else if (is.null(TcorDD) & ntraits > 1) {
-          stop("'TcorDD' must be specified in combination with
-                   'EcorDD' if 'ntraits' > 1")
-        } else if (length(TcorDD) == 1) {
-          TcorDD <- matrix(1)
-        } else {
-          TcorDD <- round(TcorDD, 18)
-          if (any(unique(diag(TcorDD)) != 1) | any(TcorDD > 1) | any(TcorDD < (-1)) | !isSymmetric(TcorDD)) {
-            stop("'TcorDD' must be a symmetric correlation matrix")
-          }
-        }
-        if ((nrow(EcorDD) * nrow(TcorDD)) != length(mean_pseudo) | (ncol(EcorDD) * ncol(TcorDD)) != length(mean_pseudo)) {
-          stop("Dimensions of the 'TcorDD' & 'EcorDD' Kronecker product must
-                 match number of environment-within-trait combinations")
-        }
-        EcorDD <- round(EcorDD, 18)
-        if (any(unique(diag(EcorDD)) != 1) | any(EcorDD > 1) | any(EcorDD < (-1)) | !isSymmetric(EcorDD)) {
-          stop("'EcorDD' must be a symmetric correlation matrix")
-        }
-        cor_pseudo <- kronecker(TcorDD, EcorDD)
-      } else {
-        stop("Either 'corDD' or 'EcorDD' must be specified")
-      }
-
-
-      input_asr <- c(
-        input_asr,
-        list(
-          meanDD = mean_pseudo,
-          varDD = var_pseudo,
-          corDD = cor_pseudo
-        )
-      )
+      
+      varDD <- var_fn(var = varDD, Tvar = TvarDD, Evar = EvarDD, ntraits = ntraits, nenvs = nenvs)
+      corDD <- cor_fn(cor = corDD, Tcor = TcorDD, Ecor = EcorDD, ntraits = ntraits, nenvs = nenvs)
+      
+      input_asr <- c(input_asr, list(meanDD = meanDD, 
+                                     varDD = varDD, corDD = corDD))
     }
-
-    if (i == "AA") {
-      if (is.null(relAA) & !(!is.null(ErelAA) & !is.null(TrelAA))) {
-        stop("Either 'relAA' or 'TrelAA' & 'ErelAA' must be specified")
-      } else if (!is.null(relAA)) {
-        if (!is.null(ErelAA) | !is.null(TrelAA)) {
-          stop("'TrelAA' & 'ErelAA' must be NULL if 'relAA' is specified")
+    if ("AA" %in% labels) {
+        if (is.null(relAA)) {
+            message("'relAA' has been set to 1 for all environment-within-trait combinations")
+            relAA <- 1
         }
-        if (length(relAA) == ntraits) {
-          var_pseudo <- rep(relAA, each = nenvs)
-        } else if (length(relAA) == (ntraits * nenvs)) {
-          var_pseudo <- relAA
-        } else {
-          stop("Number of values in 'relAA' must match number of
-               environment-within-trait combinations")
+        relAA <- round(c(relAA), 8)
+        if (!is.vector(relAA)) stop ("'relAA' must be a vector")
+        if (length(relAA) == 1) {
+            relAA <- rep(relAA, each = ntraits * nenvs)
         }
-      } else if (!is.null(ErelAA)) {
-        if (length(ErelAA) != nenvs) {
-          stop("Number of values in 'ErelAA' must match number of environments")
+        else if (length(relAA) != (ntraits * nenvs)) {
+          stop("Number of values in 'relAA' must match number of environment-within-trait combinations")
         }
-        if (is.null(TrelAA)) stop("'TrelAA' must be specified")
-        if (length(TrelAA) != ntraits) {
-          stop("Number of values in 'TrelAA' must match number of traits")
-        }
-        var_pseudo <- rep(TrelAA, each = nenvs) * rep(ErelAA, ntraits)
-      } else {
-        stop("Either 'relAA' or 'ErelAA' must be specified")
-      }
-
-      if (is.null(corAA) & !(!is.null(EcorAA) & !is.null(TcorAA))) {
-        stop("Either 'corAA' or 'TcorAA' & 'EcorAA' must be specified")
-      } else if (!is.null(corAA)) {
-        if (!is.null(EcorAA) | !is.null(TcorAA)) {
-          stop("'TcorAA' & 'EcorAA' must be NULL if 'corAA' is specified")
-        }
-        if (nrow(corAA) != length(mean_pseudo) | ncol(corAA) != length(mean_pseudo)) {
-          stop("Dimensions of 'corAA' must match number of environment-within-trait
-               combinations")
-        }
-        corAA <- round(corAA, 18)
-        if (any(unique(diag(corAA)) != 1) | any(corAA > 1) | any(corAA < (-1)) | !isSymmetric(corAA)) {
-          stop("'corAA' must be a symmetric correlation matrix")
-        }
-        cor_pseudo <- corAA
-      } else if (!is.null(EcorAA)) {
-        if (is.null(TcorAA) & ntraits == 1) {
-          TcorAA <- matrix(1)
-        } else if (is.null(TcorAA) & ntraits > 1) {
-          stop("'TcorAA' must be specified in combination with
-                   'EcorAA' if ntraits > 1")
-        } else if (length(TcorAA) == 1) {
-          TcorAA <- matrix(1)
-        } else {
-          TcorAA <- round(TcorAA, 18)
-          if (any(unique(diag(TcorAA)) != 1) | any(TcorAA > 1) | any(TcorAA < (-1)) | !isSymmetric(TcorAA)) {
-            stop("'TcorAA' must be a symmetric correlation matrix")
-          }
-        }
-        if ((nrow(EcorAA) * nrow(TcorAA)) != length(mean_pseudo) | (ncol(EcorAA) * ncol(TcorAA)) != length(mean_pseudo)) {
-          stop("Dimension of the 'TcorAA' & 'EcorAA' Kronecker product must
-                 match number of environment-within-trait combinations")
-        }
-        EcorAA <- round(EcorAA, 18)
-        if (any(unique(diag(EcorAA)) != 1) | any(EcorAA > 1) | any(EcorAA < (-1)) | !isSymmetric(EcorAA)) {
-          stop("'EcorAA' must be a symmetric correlation matrix")
-        }
-        cor_pseudo <- kronecker(TcorAA, EcorAA)
-      } else {
-        stop("Either 'corAA' or 'EcorAA' must be specified")
-      }
-
-
-      input_asr <- c(
-        input_asr,
-        list(
-          meanAA = rep(0, nenvs * ntraits),
-          relAA = var_pseudo,
-          corAA = cor_pseudo
-        )
-      )
-    }
+      if(any(relAA < 0)) stop ("'relAA' must contain positive values")
+      
+      corAA <- cor_fn(cor = corAA, Tcor = TcorAA, Ecor = EcorAA, ntraits = ntraits, nenvs = nenvs)
+      input_asr <- c(input_asr, list(relAA = relAA, corAA = corAA))
   }
-
   return(input_asr)
 }
 
