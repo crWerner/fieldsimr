@@ -4,11 +4,12 @@
 #' Requires a data frame generated with the functions \link[FieldSimR]{field_trial_error} or \link[FieldSimR]{make_phenotypes},
 #' or any data frame matching the description below.
 #'
-#' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
-#' @param effect The name of the effects to be plotted.
+#' @param df A data frame with columns containing the column and row dimensions, and the effects to be plotted.
+#' @param effect A character defining the effects to be plotted.
 #' @param blocks When \code{TRUE} (default), the field array is split into blocks.
-#'   This requires an additional column 'block' in the data frame.
+#'   This requires an additional column in the data frame, as specified by \code{dim.names}.
 #' @param labels When \code{TRUE} (default), column and row labels are displayed.
+#' @param dim.names An optional vector defining the column, row and block dimensions ('col', 'row' and 'block' by default).
 #'
 #' @return A graphical field array with x- and y-axes displaying the column and row numbers,
 #'  and colour gradient ranging from red (low value) to green (high value).
@@ -29,7 +30,8 @@
 plot_effects <- function(df,
                          effect,
                          blocks = TRUE,
-                         labels = TRUE) {
+                         labels = TRUE,
+                         dim.names = NULL) {
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
@@ -381,9 +383,10 @@ plot_matrix <- function(mat,
 #' Creates a normal quantile-quantile (Q-Q) plot for a set of effects (e.g., phenotypes, genetic values, or plot errors).
 #'
 #' @param df A data frame or vector with the effects to be plotted.
-#' @param effect The name of the effects to be plotted. Ignored when 'df' is a vector.
+#' @param effect A character defining the effects to be plotted. Ignored when 'df' is a vector.
 #' @param labels When \code{TRUE} (default is \code{FALSE}), column and row labels are displayed.
-#'   This requires additional columns 'col' and 'row' in the data frame.
+#'   This requires additional columns in the data frame, as specified by \code{dim.names}.
+#' @param dim.names An optional vector defining the column and row dimensions ('col' and 'row' by default).
 #'
 #' @return A Q-Q plot with x- and y-axes displaying the theoretical and sample quantiles of
 #'   the effects, respectively.
@@ -524,7 +527,7 @@ qq_plot <- function(df,
 #' Creates a histogram of user-defined values (e.g., effects, correlations, or covariances).
 #'
 #' @param df A data frame or vector with the values to be plotted.
-#' @param value The name of the values to be plotted. Ignored when 'df' is a vector.
+#' @param effect A character defining the effects to be plotted. Ignored when 'df' is a vector.
 #' @param bins Argument passed to \code{ggplot2} (default is \code{30}). Controls the number
 #'   of bins in the histogram.
 #' @param density When \code{TRUE} (default is \code{FALSE}), a density curve is superimposed
@@ -608,9 +611,10 @@ plot_hist <- function(df,
 #'
 #' Creates a sample variogram for a set of effects (e.g., plot errors).
 #'
-#' @param df A data frame with the columns 'col', 'row', and the effects to be plotted.
+#' @param df A data frame with columns containing the column and row dimensions, and the effects to be plotted.
 #' @param effect The name of the effects to be plotted.
-#' @param min.np Minimum number of pairs for which semivariances are displayed (default is 30).
+#' @param min.pairs Minimum number of pairs for which semivariances are displayed (default is 30).
+#' @param dim.names An optional vector defining the column and row dimensions ('col' and 'row' by default).
 #'
 #' @return A sample variogram with x- and y-axes displaying the row and
 #'   column displacements, and the z-axis displaying the average semivariances (variogram ordinates)
@@ -641,7 +645,7 @@ plot_hist <- function(df,
 #' @export
 sample_variogram <- function(df,
                              effect,
-                             min.np = 30,
+                             min.pairs = 30,
                              dim.names = NULL) {
   if (is.null(dim.names)) dim.names <- c("col", "row")
   if (length(dim.names) != 2 | !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
@@ -691,7 +695,7 @@ sample_variogram <- function(df,
                                                                                                      right.padding = list(x = -3)))
   graphics::par(mar = c(5.1, 4.1, 4.1, 2.1))
   p <- lattice::wireframe(semivar ~ row.dis * col.dis, data = variogram_df[variogram_df$npairs >= 
-                                                                             min.np, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30, 
+                                                                             min.pairs, ], drape = T, colorkey = F, zoom = 0.97, cuts = 30, 
                           screen = list(z = 30, x = -60, y = 0), aspect = c(1, 
                                                                             0.66), scales = list(distance = c(1.2, 1.2, 0.5), 
                                                                                                  arrows = F, cex = 0.7, col = "black"), zlab = list(label = paste("Semivariance"), 
@@ -711,7 +715,7 @@ sample_variogram <- function(df,
 #'
 #' @param ncols A scalar defining the number of columns.
 #' @param nrows A scalar defining the number of rows.
-#' @param varR A scalar defining the error variance.
+#' @param var A scalar defining the variance of the variogram.
 #' @param col.cor A scalar defining the column autocorrelation,
 #' @param row.cor A scalar defining the row autocorrelation.
 #' @param prop.spatial A scalar defining the proportion of spatial trend.
@@ -727,7 +731,7 @@ sample_variogram <- function(df,
 #' variogram <- theoretical_variogram(
 #'   ncols = 10,
 #'   nrows = 20,
-#'   varR = 1,
+#'   var = 1,
 #'   col.cor = 0.5,
 #'   row.cor = 0.7,
 #'   prop.spatial = 0.5
@@ -743,7 +747,7 @@ sample_variogram <- function(df,
 #' @export
 theoretical_variogram <- function(ncols = 10,
                                   nrows = 20,
-                                  varR = 1,
+                                  var = 1,
                                   col.cor = 0.5,
                                   row.cor = 0.7,
                                   prop.spatial = 1) {
@@ -753,7 +757,7 @@ theoretical_variogram <- function(ncols = 10,
   variogram_df <- data.frame(
     col.dis = col_dis,
     row.dis = row_dis,
-    semivar = varR * (prop_rand + prop.spatial * (1 - col.cor^(col_dis) * row.cor^(row_dis)))
+    semivar = var * (prop_rand + prop.spatial * (1 - col.cor^(col_dis) * row.cor^(row_dis)))
   )
   variogram_df$semivar[1] <- 0
   variogram_df$col.dis <- as.numeric(as.character(variogram_df$col.dis))
