@@ -32,65 +32,75 @@ plot_effects <- function(df,
                          blocks = TRUE,
                          labels = TRUE,
                          dim.names = NULL) {
+  if (is.null(dim.names)) dim.names <- c("col", "row")
+  if (!blocks && (length(dim.names) != 2 || !is.character(dim.names))) stop ("Elements in 'dim.names' must be characters naming the column and row dimensions")
+  col_name <- dim.names[1]
+  row_name <- dim.names[2]
+  effect_name <- effect
+  if (!(all(is.character(effect_name)) && length(effect_name) == 1)) stop ("'effect' must be a character")
   if (!is.data.frame(df)) {
     stop("'df' must be a data frame")
   }
-  colnames(df)[grep("block|col|row", tolower(colnames(df)))] <- tolower(colnames(df))[grep("block|col|row", tolower(colnames(df)))]
-
-  if (any(!c("col", "row", effect) %in% colnames(df))) {
-    stop("'df' must contain the columns 'col', 'row', and the effect to be plotted")
+  if (any(!c(col_name, row_name, effect_name) %in% colnames(df))) {
+    stop("'df' must contain the columns specified in 'dim.names', and the effect to be plotted")
   }
-  df$col <- factor(as.numeric(as.character(df$col)))
-  ncols <- nlevels(df$col)
-  df$row <- factor(as.numeric(as.character(df$row)))
-  nrows <- nlevels(df$row)
-
+  df <- padout_df(df, var1 = col_name, var2 = row_name)
+  ncols <- nlevels(df[[col_name]])
+  nrows <- nlevels(df[[row_name]])
+  
   nblocks <- 1
   if (blocks) {
-    if (!"block" %in% colnames(df)) {
-      stop("'df' must contain the column 'block' if blocks are to be plotted")
+    if (length(dim.names) == 2) dim.names <- c(dim.names, "block")
+    if (length(dim.names) != 3 || !is.character(dim.names)) stop ("Elements in 'dim.names' must be characters defining the column, row and block dimensions")
+    block_name <- dim.names[3]
+    if (!block_name %in% colnames(df)) {
+      stop("'df' must contain the block dimensions specified in 'dim.names' if blocks are to be plotted")
     }
-    df$block <- factor(as.numeric(as.character(df$block)))
-    nblocks <- nlevels(df$block)
+    df[[block_name]] <- make_factor(df[[block_name]])
+    nblocks <- nlevels(df[[block_name]])
   }
-
+  
   plot_x_min <- rep(seq(0.5, ncols - 0.5, 1), each = nrows)
   plot_y_min <- rep(seq(0.5, nrows - 0.5, 1), ncols)
   plot_x_max <- rep(seq(1.5, ncols + 0.5, 1), each = nrows)
   plot_y_max <- rep(seq(1.5, nrows + 0.5, 1), ncols)
-
+  
   if (nblocks > 1) {
-    df1 <- df[df[["block"]] == 1, ]
-    df2 <- df[df[["block"]] == 2, ]
-
-    if (any(unique(df[df[["block"]] == 1, ]$row) == unique(df[df[["block"]] == 2, ]$row)) == FALSE) {
+    df1 <- df[df[[block_name]] == 1, ]
+    df2 <- df[df[[block_name]] == 2, ]
+    
+    check1 <- unique(df[df[[block_name]] == 1, row_name])
+    check2 <- unique(df[df[[block_name]] == 2, row_name])
+    check3 <- unique(df[df[[block_name]] == 1, col_name])
+    check4 <- unique(df[df[[block_name]] == 2, col_name])
+    if (any(check1[!is.na(check1)] != check2[!is.na(check2)])) {
       dist <- (nrows / nblocks)
       x_min <- rep(0.5, nblocks)
       y_min <- (seq(0, nrows, dist) + 0.5)[1:nblocks]
       x_max <- rep((ncols + 0.5), nblocks)
       y_max <- (seq(0, nrows, dist) + 0.5)[2:(nblocks + 1)]
-
+      
       block_x_min <- rep(0.5, nblocks)
       block_y_min <- y_max
       block_x_max <- rep((ncols + 0.5), nblocks)
       block_y_max <- y_max
-
+      
       block_x_min_2 <- rep(0, nblocks)
       block_y_min_2 <- y_max
       block_x_max_2 <- rep((ncols + 1), nblocks)
       block_y_max_2 <- y_max
-    } else if (any(unique(df[df[["block"]] == 1, ]$col) == unique(df[df[["block"]] == 2, ]$col)) == FALSE) {
+    } else if (any(check3[!is.na(check3)] != check4[!is.na(check4)])) {
       dist <- (ncols / nblocks)
       x_min <- (seq(0, ncols, dist) + 0.5)[1:nblocks]
       y_min <- rep(0.5, nblocks)
       x_max <- (seq(0, ncols, dist) + 0.5)[2:(nblocks + 1)]
       y_max <- rep((nrows + 0.5), nblocks)
-
+      
       block_x_min <- x_max
       block_y_min <- rep(0.5, nblocks)
       block_x_max <- x_max
       block_y_max <- rep((nrows + 0.5), nblocks)
-
+      
       block_x_min_2 <- x_max
       block_y_min_2 <- rep(0, nblocks)
       block_x_max_2 <- x_max
@@ -99,20 +109,19 @@ plot_effects <- function(df,
       stop("Check column and row assignment within blocks")
     }
   }
-
-  col <- row <- NULL
-  if (effect != "block") {
-    mid_pt <- mean(df[[effect]], na.rm = TRUE)
-    max_pt <- max(abs(c(mid_pt - min(df[[effect]], na.rm = TRUE), max(df[[effect]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
-    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
-      ggplot2::geom_tile(ggplot2::aes(fill = get(effect))) +
+  
+  if (!tolower(effect_name) %in% c("block", "rep")) {
+    mid_pt <- mean(df[[effect_name]], na.rm = TRUE)
+    max_pt <- max(abs(c(mid_pt - min(df[[effect_name]], na.rm = TRUE), max(df[[effect_name]], na.rm = TRUE) - mid_pt)), na.rm = TRUE) + 1e-8
+    p <- ggplot2::ggplot(data = df, ggplot2::aes(x = get(col_name), y = get(row_name))) +
+      ggplot2::geom_tile(ggplot2::aes(fill = get(effect_name))) +
       ggplot2::scale_fill_gradient2(
         low = "#A51122", mid = "#FEFDBE", high = "#006228",
         midpoint = mid_pt, limits = c(mid_pt - max_pt, mid_pt + max_pt)
       ) +
-      ggplot2::ggtitle(label = effect) +
+      ggplot2::ggtitle(label = effect_name) +
       ggplot2::labs(fill = "Effect")
-  } else if (effect == "block") {
+  } else if (tolower(effect_name) %in% c("block", "rep")) {
     p <- ggplot2::ggplot(data = df, ggplot2::aes(x = col, y = row)) +
       ggplot2::geom_tile(ggplot2::aes(fill = get(effect)), alpha = 0.6) +
       ggplot2::scale_fill_manual(values = c("#888888", "#6699CC", "#882255", "#117733", "#332288")) +
@@ -143,7 +152,7 @@ plot_effects <- function(df,
       xmax = ncols + 0.5, ymax = nrows + 0.5,
       fill = "transparent", col = "black", lwd = 1.5
     )
-
+  
   if (labels) {
     p <- p + ggplot2::theme(
       axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
@@ -157,7 +166,7 @@ plot_effects <- function(df,
       axis.text = ggplot2::element_blank()
     )
   }
-
+  
   if (nblocks > 1) {
     for (i in 1:(nblocks - 1)) {
       p <- p + ggplot2::geom_segment(
