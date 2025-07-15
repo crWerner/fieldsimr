@@ -524,7 +524,7 @@ qq_plot <- function(df,
     qq_df$cr.label <- factor(paste0(qq_df[[col_name]], ":", qq_df[[row_name]]))
     theoretical <- cr.label <- NULL
     p <- ggplot2::ggplot(data = qq_df, ggplot2::aes(x = theoretical, y = sample, label = cr.label)) +
-      ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 0.75, inherit.aes = F) +
+      ggplot2::stat_qq_line(data = qq_df, ggplot2::aes(sample = sample), colour = "steelblue", linewidth = 1, alpha = 0.5, inherit.aes = F) +
       ggplot2::geom_text(size = 4) +
       ggplot2::labs(
         y = "Sample quantiles", x = "Theoretical quantiles",
@@ -618,7 +618,7 @@ plot_hist <- function(df,
     ggplot2::geom_vline(
       data = df,
       ggplot2::aes(xintercept = mean_effect), colour = "steelblue",
-      linewidth = 0.75
+      linewidth = 1, alpha = 0.5
     ) +
     ggplot2::labs(y = "Frequency", x = "Value") +
     ggplot2::theme(
