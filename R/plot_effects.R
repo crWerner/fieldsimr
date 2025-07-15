@@ -135,8 +135,6 @@ plot_effects <- function(df,
   }
   p <- p + ggplot2::scale_x_discrete(expand = c(0.0001, 0.0001)) +
     ggplot2::scale_y_discrete(limits = rev, expand = c(0.0001, 0.0001)) +
-    ggplot2::xlab("Column") +
-    ggplot2::ylab("Row") +
     ggplot2::theme_grey(base_size = 10) +
     ggplot2::theme(
       legend.title = ggplot2::element_text(size = 11),
@@ -159,6 +157,10 @@ plot_effects <- function(df,
       fill = "transparent", col = "black", lwd = 1.5
     )
 
+  if (tolower(col_name) %in% c("col", "column")  && tolower(row_name) %in% "row") {
+      p <- p + ggplot2::xlab("Column") + ggplot2::ylab("Row")
+  } else p <- p + ggplot2::xlab(col_name) + ggplot2::ylab(row_name)
+  
   if (labels) {
     p <- p + ggplot2::theme(
       axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 8, r = 0, b = 0, l = 0)),
@@ -543,7 +545,7 @@ qq_plot <- function(df,
   }
 }
 
-#' Histogram of effects.
+#' Histogram of effects
 #'
 #' Creates a histogram of user-defined effects.
 #'
