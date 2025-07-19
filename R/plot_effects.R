@@ -798,13 +798,13 @@ sample_variogram <- function(df,
 
 #' Theoretical variogram
 #'
-#' Creates a theoretical variogram for a separable first order autoregressive (AR1) process.
+#' Creates a theoretical variogram for a two-dimensional separable first order autoregressive (AR1) process.
 #'
 #' @param ncols A scalar defining the number of columns.
 #' @param nrows A scalar defining the number of rows.
-#' @param var A scalar defining the variance of the variogram.
 #' @param col.cor A scalar defining the column autocorrelation,
 #' @param row.cor A scalar defining the row autocorrelation.
+#' @param var A scalar defining the variance of the AR1 process
 #' @param prop.spatial A scalar defining the proportion of spatial trend.
 #'
 #' @return A theoretical variogram with x- and y-axes displaying the row and column displacements,
@@ -818,9 +818,9 @@ sample_variogram <- function(df,
 #' variogram <- theoretical_variogram(
 #'   ncols = 10,
 #'   nrows = 20,
-#'   var = 1,
 #'   col.cor = 0.5,
 #'   row.cor = 0.7,
+#'   var = 1,
 #'   prop.spatial = 0.5
 #' )
 #'
@@ -834,9 +834,9 @@ sample_variogram <- function(df,
 #' @export
 theoretical_variogram <- function(ncols = 10,
                                   nrows = 20,
-                                  var = 1,
                                   col.cor = 0.5,
                                   row.cor = 0.7,
+                                  var = 1,
                                   prop.spatial = 1) {
   prop_rand <- 1 - prop.spatial
   col_dis <- rep(0:(ncols - 1), each = nrows)
