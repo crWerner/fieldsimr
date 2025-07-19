@@ -818,9 +818,9 @@ sample_variogram <- function(df,
 #' variogram <- theoretical_variogram(
 #'   ncols = 10,
 #'   nrows = 20,
+#'   var = 1,
 #'   col.cor = 0.5,
 #'   row.cor = 0.7,
-#'   var = 1,
 #'   prop.spatial = 0.5
 #' )
 #'
@@ -834,9 +834,9 @@ sample_variogram <- function(df,
 #' @export
 theoretical_variogram <- function(ncols = 10,
                                   nrows = 20,
+                                  var = 1,
                                   col.cor = 0.5,
                                   row.cor = 0.7,
-                                  var = 1,
                                   prop.spatial = 1) {
   prop_rand <- 1 - prop.spatial
   col_dis <- rep(0:(ncols - 1), each = nrows)
