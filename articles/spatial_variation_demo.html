@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Simulation of plot errors and phenotypes in a plant breeding field trial • FieldSimR</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simulation of plot errors and phenotypes in a plant breeding field trial">
 </head>
@@ -289,23 +289,23 @@ graphic for each of the four simulated error terms.</p>
 <p><strong>Total plot error</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_total_env1</span>, effect <span class="op">=</span> <span class="st">"e.Trait1"</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-10-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Spatial error</strong> simulated using bivariate
 interpolation</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_terms_env1</span>, effect <span class="op">=</span> <span class="st">"e.spat"</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-11-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Random error</strong></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_terms_env1</span>, effect <span class="op">=</span> <span class="st">"e.rand"</span>, labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-12-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Extraneous variation </strong>in the row direction</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">e_terms_env1</span>, effect <span class="op">=</span> <span class="st">"e.ext.row"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-13-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
 </div>
@@ -336,7 +336,7 @@ of genotypes to plots using an external R package or software.</p>
 <p><strong>Simulated phenotypes</strong></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_effects.html">plot_effects</a></span><span class="op">(</span><span class="va">pheno_env1</span>, effect <span class="op">=</span> <span class="st">"y.Trait1"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-15-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="864" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p><strong>Histogram showing the phenotypes of the 100 maize hybrids for
 grain yield in the two blocks in Environment 1</strong></p>
@@ -345,7 +345,7 @@ grain yield in the two blocks in Environment 1</strong></p>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#e9ecef"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span>, position <span class="op">=</span> <span class="st">"identity"</span>, bins <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"violetred3"</span>, <span class="st">"goldenrod3"</span>, <span class="st">"skyblue2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Phenotypes for grain yield (t/ha)"</span>, y <span class="op">=</span> <span class="st">"Count"</span>, fill <span class="op">=</span> <span class="st">"Block"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-16-1.png" width="864" style="display: block; margin: auto;"></p>
+<p><img src="spatial_variation_demo_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="864" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -358,7 +358,7 @@ grain yield in the two blocks in Environment 1</strong></p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
